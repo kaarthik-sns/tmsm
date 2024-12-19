@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { NextResponse } from 'next/server'
-import User from '@/models/user'
+import User from '@/models/User'
 import connectToDatabase from '@/lib/mongodb';
 
 
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
         return NextResponse.json({ message: "Invalid email format" }, { status: 400 });
     }
     if (confirmPassword !== password) {
-        return NextResponse.json({message:"Password do not match"}, { status:400})
+        return NextResponse.json({message:"Password does not match"}, { status:400})
     }
     if (password.length < 6) {
         return NextResponse.json({ message: "Password must be at least 6 character long" }, { status: 400 });
