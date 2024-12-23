@@ -13,6 +13,7 @@ const UserSchema = new Schema({
       return `${Math.floor(Math.random() * 1000000)}`; // Generates a random number with "tmsm" prefix
     }
   },
+  created_at: { type: Date, required: false },
   updated_at: { type: Date, default: Date.now },
 
 });
@@ -23,8 +24,8 @@ UserSchema.statics.getByName = function (name: string) {
 };
 
 // Get user by id
-UserSchema.statics.getById = function (id:string) {
-  return this.findOne({_id:id});
+UserSchema.statics.getById = function (id: string) {
+  return this.findOne({ _id: id });
 }
 
 // Get user by email

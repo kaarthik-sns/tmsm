@@ -40,7 +40,9 @@ export async function POST(request: Request) {
             email,
             name,
             password: hashedPassword,
+            created_at: new Date()
         });
+
         await newUser.save();
 
         const verificationLink = `${process.env.BASE_URL}/verify-email?code=${newUser.email_code}`;

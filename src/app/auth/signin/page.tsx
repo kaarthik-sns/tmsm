@@ -21,23 +21,27 @@ const SignIn: React.FC = () => {
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
+
     e.preventDefault();
     setPending(true);
+
     const res = await signIn("credentials", {
       redirect: false,
       email,
       password,
-      is_admin:false
+      is_admin: false
     });
+
     if (res?.ok) {
       toast.success("login successful");
       router.push("/");
-    } else if (res?.status === 401) {
-      setError("Invalid Credentials");
+    } else if (res?.error) {
+      setError(res.error);
       setPending(false);
     } else {
       setError("Something went wrong");
     }
+
   };
 
   return (
