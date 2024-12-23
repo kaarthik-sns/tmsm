@@ -1,16 +1,28 @@
 import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 
 // Middleware function
-export function middleware(req) {
+export async function middleware(req) {
     const url = req.nextUrl;
     const pathname = url.pathname;
-
-    // Retrieve a cookie or header to verify if the user is logged in
-    const isLoggedIn = req.cookies.get('adminToken'); // Replace 'adminToken' with your actual authentication token key
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
     // Avoid infinite redirects by excluding `/admin/auth/signin` and other authenticated paths like `/admin/profile`
-    if (pathname.startsWith('/admin') && pathname !== '/admin/auth/signin' && pathname !== '/admin/profile' && !isLoggedIn) {
+    if (pathname.startsWith('/admin') && pathname !== '/admin/auth/signin' && !token) {
         url.pathname = '/admin/auth/signin';
+        return NextResponse.redirect(url);
+    }
+
+    if (pathname === '/admin/auth/signin' && token) {
+        url.pathname = '/admin/profile';
+        return NextResponse.redirect(url);
+    }
+
+    console.log('pathname:',pathname);
+    console.log('token:',token);
+
+    if (pathname === '/auth/signin' && token) {
+        url.pathname = '/';
         return NextResponse.redirect(url);
     }
 
