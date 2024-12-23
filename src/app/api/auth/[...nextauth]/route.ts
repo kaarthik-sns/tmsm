@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import User from "@/models/User";
+import Admin from "@/models/Admin";
 import connectToDatabase from "@/lib/mongodb";
 import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -14,11 +15,22 @@ const handler = NextAuth({
             credentials: {
                 email: {},
                 password: {},
+                is_admin:{}
             },
             async authorize(credentials) {
                 try {
                     await connectToDatabase();
-                    const user = await User.findOne({ email: credentials?.email });
+
+                    const is_admin = credentials?.is_admin === "true";
+
+                    var user = await User.findOne({ email: credentials?.email });
+
+                    if(is_admin) {
+                         user = await Admin.findOne({ email: credentials?.email });
+                    } 
+
+                    console.log(user);
+                    
                     if (!user) {
                         throw new Error("")
                     }
@@ -56,9 +68,6 @@ const handler = NextAuth({
             return session;
         }
 
-    },
-    pages: {
-        signIn: "/sign-in",
     },
     secret: process.env.NEXTAUTH_SECRET
 

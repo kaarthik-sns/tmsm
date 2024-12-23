@@ -27,10 +27,11 @@ const SignIn: React.FC = () => {
       redirect: false,
       email,
       password,
+      is_admin: true
     });
     if (res?.ok) {
       toast.success("login successful");
-      router.push("/");
+      router.push("/admin");
     } else if (res?.status === 401) {
       setError("Invalid Credentials");
       setPending(false);
@@ -293,6 +294,14 @@ const SignIn: React.FC = () => {
                     Don’t have an account?{" "}
                     <Link href="/auth/signup" className="text-primary">
                       Sign Up
+                    </Link>
+                  </p>
+                </div>
+
+                <div className="mt-6 text-center">
+                  <p>
+                    <Link href="/admin/forgot-password" className="text-primary">
+                      Forgot Password?{" "}
                     </Link>
                   </p>
                 </div>
