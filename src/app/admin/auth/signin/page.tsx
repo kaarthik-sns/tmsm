@@ -29,6 +29,7 @@ const SignIn: React.FC = () => {
       password,
     });
     if (res?.ok) {
+
       toast.success("login successful");
       router.push("/admin/profile/");
     } else if (res?.status === 401) {
