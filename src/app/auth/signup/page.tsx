@@ -3,9 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import AuthLayout from '@/components/Layouts/AuthLayout';
 
 import { useState } from "react";
