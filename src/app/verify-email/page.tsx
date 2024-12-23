@@ -60,5 +60,10 @@ export default function VerifyEmailPage() {
         verifyEmail();
     }, [code]);
 
-    return <div>{message}</div>;
+    // return <div>{message}</div>;
+    return (<div className="max-w-md h-40 mx-auto mt-12 rounded-lg border-2 flex items-center justify-center">
+
+        <p className="mt-3 text-gray-700 max-w-xs mx-auto">{message} <a className="font-medium text-indigo-600" href='auth/signin'>Click to SignIn</a></p> 
+
+    </div>)
 }
