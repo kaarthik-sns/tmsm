@@ -30,7 +30,7 @@ const SignIn: React.FC = () => {
     });
     if (res?.ok) {
       toast.success("login successful");
-      router.push("/");
+      router.push("/admin/profile/");
     } else if (res?.status === 401) {
       setError("Invalid Credentials");
       setPending(false);
