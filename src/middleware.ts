@@ -8,8 +8,8 @@ export function middleware(req) {
     // Retrieve a cookie or header to verify if the user is logged in
     const isLoggedIn = req.cookies.get('adminToken'); // Replace 'adminToken' with your actual authentication token key
 
-    // Avoid infinite redirects by excluding `/admin/auth/signin` from the check
-    if (pathname.startsWith('/admin') && pathname !== '/admin/auth/signin' && !isLoggedIn) {
+    // Avoid infinite redirects by excluding `/admin/auth/signin` and other authenticated paths like `/admin/profile`
+    if (pathname.startsWith('/admin') && pathname !== '/admin/auth/signin' && pathname !== '/admin/profile' && !isLoggedIn) {
         url.pathname = '/admin/auth/signin';
         return NextResponse.redirect(url);
     }
