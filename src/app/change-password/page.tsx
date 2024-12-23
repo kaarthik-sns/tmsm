@@ -39,9 +39,11 @@ const changePassword: React.FC = () => {
         const data = await res.json();
 
         if (res.ok) {
+
             setPending(false);
             toast.success(data.message);
-            router.push("/auth/signin");
+            data.is_admin ? router.push("/admin/auth/signin") : router.push("/auth/signin");
+            
         } else if (res.status === 400) {
             setError(data.message);
             setPending(false);

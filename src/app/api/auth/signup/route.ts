@@ -69,9 +69,8 @@ export async function POST(request: Request) {
             message: htmlBody
         })
 
-
         console.log("Email sent successfully:", result);
-        return NextResponse.json({ message: "User created" }, { status: 201 });
+        return NextResponse.json({ message: "Registration successful" }, { status: 201 });
 
     } catch (error) {
         console.log(error)
