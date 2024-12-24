@@ -9,6 +9,8 @@ import { verification } from '@/lib/template/verification';
 export async function POST(request: Request) {
     const { name, email, password, confirmPassword } = await request.json();
 
+    // const testData = [];
+
     const isValidEmail = (email: string) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
@@ -42,6 +44,29 @@ export async function POST(request: Request) {
             password: hashedPassword,
             created_at: new Date()
         });
+
+
+        // for (let i = 0; i < 1000; i++) {
+        //     testData.push({
+        //         name: `Test User ${i + 1}`,
+        //         email: `testuser${i + 1}@example.com`,
+        //         password: hashedPassword, // Same hash for simplicity
+        //         is_active: true,
+        //         is_verify: true,
+        //         is_approve: true,
+        //         created_at: new Date(),
+        //         email_code: '',
+        //         updated_at: new Date(),
+        //     });
+        // }
+
+        // try {
+        //     await User.insertMany(testData);
+        //     console.log('Test data added successfully');
+        // } catch (error) {
+        //     console.error('Error adding test data:', error);
+        // }
+
 
         await newUser.save();
 
