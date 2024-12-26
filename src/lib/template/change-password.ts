@@ -48,8 +48,8 @@ export const changePassword = `<!DOCTYPE html>
 <body>
     <div class="container">
         <h1>Reset Your Password</h1>
-        <p>To rest your TMSM Password, please click below button </p>
-        <a href="{{forgotPasswordLink}}" class="button">Rest password</a>
+        <p>To reset your TMSM Password, please click below button </p>
+        <a href="{{forgotPasswordLink}}" class="button">Reset password</a>
         <p>If the button doesn't work, copy and paste the following link into your browser:</p>
         <p>{{forgotPasswordLink}}</p>
         <div class="footer">

@@ -1,37 +1,63 @@
 'use client';
 import { useEffect, useState } from "react"
 import axios from "axios";
+import SwitcherFour from "@/components/Switchers/SwitcherFour";
+import { BsPencilSquare } from "react-icons/bs";
+import { BsFillTrash3Fill } from "react-icons/bs";
 
 const UserTable = () => {
-    const [areAllChecked, setAllChecked] = useState(false);
-    const [checkboxItems, setCheckboxItem] = useState({});
+
     const [pages, setPages] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [tableItems, setTableItems] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState("");
     const [status, setStatus] = useState("");
-
-    // set or unset all checkbox items
-    const handleCheckboxItems = () => {
-        setAllChecked(!areAllChecked);
-        const updatedCheckboxItems = {};
-        tableItems.forEach((item, idx) => {
-            updatedCheckboxItems[`checkbox${idx}`] = !areAllChecked;
-        });
-        setCheckboxItem(updatedCheckboxItems);
-    };
-
-    // Update checked value
-    const handleCheckboxChange = (e, idx) => {
-        setAllChecked(false);
-        setCheckboxItem((prevCheckboxItems) => ({
-            ...prevCheckboxItems,
-            [`checkbox${idx}`]: e.target.checked,
-        }));
-    };
+    const [switchStates, setSwitchStates] = useState<boolean[]>([]);
+    const [switchStates2, setSwitchStates2] = useState<boolean[]>([]);
 
     useEffect(() => {
-        
+        if (tableItems.length > 0) {
+            setSwitchStates(tableItems.map((item) => item.is_active));
+            setSwitchStates2(tableItems.map((item) => item.is_approve));
+
+        }
+    }, [tableItems]);
+
+    const handleToggle = async (index: number, key: "is_active" | "is_approve") => {
+        const updatedValue = !tableItems[index][key];
+
+        // Optimistically update the UI
+        setTableItems((prevItems) =>
+            prevItems.map((item, idx) =>
+                idx === index ? { ...item, [key]: updatedValue } : item
+            )
+        );
+
+        try {
+            // Call the API to update the status
+            const response = await axios.patch(`/api/update-user-status`, {
+                id: tableItems[index]._id, // Assuming each item has a unique `id`
+                [key]: updatedValue,
+            });
+
+            if (response.status !== 200) {
+                throw new Error("Failed to update status");
+            }
+        } catch (error) {
+            console.error("Error updating status:", error);
+
+            // Revert the optimistic UI update if the API call fails
+            setTableItems((prevItems) =>
+                prevItems.map((item, idx) =>
+                    idx === index ? { ...item, [key]: !updatedValue } : item
+                )
+            );
+        }
+    };
+
+
+    useEffect(() => {
+
         // Fetch table items from API
         const fetchTableItems = async () => {
             try {
@@ -46,12 +72,6 @@ const UserTable = () => {
                 setTableItems(response.data.data);
                 setPages(response.data.pagination.totalPages);
 
-                const initialCheckboxState = {};
-                response.data.data.forEach((item, idx) => {
-                    initialCheckboxState[`checkbox${idx}`] = false;
-                });
-
-                setCheckboxItem(initialCheckboxState);
 
             } catch (error) {
                 console.error("Error fetching table items:", error);
@@ -91,62 +111,49 @@ const UserTable = () => {
                 <table className="w-full table-auto text-sm text-left">
                     <thead className="text-gray-600 font-medium border-b">
                         <tr>
-                            <th className="py-3 px-6 flex items-center gap-x-4">
-                                <div>
-                                    <input
-                                        type="checkbox"
-                                        id="checkbox-all-items"
-                                        className="checkbox-item peer hidden"
-                                        checked={areAllChecked}
-                                        onChange={handleCheckboxItems}
-                                    />
-                                    <label
-                                        htmlFor="checkbox-all-items"
-                                        className="relative flex w-5 h-5 bg-white peer-checked:bg-indigo-600 rounded-md border ring-offset-2 ring-indigo-600 duration-150 peer-active:ring cursor-pointer after:absolute after:inset-x-0 after:top-[3px] after:m-auto after:w-1.5 after:h-2.5 after:border-r-2 after:border-b-2 after:border-white after:rotate-45"
-                                    ></label>
-                                </div>
-                                Username
-                            </th>
-                            <th className="py-3 px-6">Email</th>
+                            <th className="py-3 px-6">#</th>
                             <th className="py-3 px-6">Name</th>
+                            <th className="py-3 px-6">Email</th>
+                            <th className="py-3 px-6">Status</th>
+                            <th className="py-3 px-6">Approved Status</th>
+
                             <th className="py-3 px-6"></th>
                         </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y">
                         {tableItems.map((item, idx) => (
                             <tr key={idx} className="odd:bg-gray-50 even:bg-white">
-                                <td className="px-6 py-4 whitespace-nowrap flex items-center gap-x-4">
-                                    <div>
-                                        <input
-                                            type="checkbox"
-                                            id={`checkbox-${idx}`}
-                                            name={`checkbox-${idx}`}
-                                            className="checkbox-item peer hidden"
-                                            checked={checkboxItems[`checkbox${idx}`]}
-                                            onChange={(e) => handleCheckboxChange(e, idx)}
-                                        />
-                                        <label
-                                            htmlFor={`checkbox-${idx}`}
-                                            className="relative flex w-5 h-5 bg-white peer-checked:bg-indigo-600 rounded-md border ring-offset-2 ring-indigo-600 duration-150 peer-active:ring cursor-pointer after:absolute after:inset-x-0 after:top-[3px] after:m-auto after:w-1.5 after:h-2.5 after:border-r-2 after:border-b-2 after:border-white after:rotate-45"
-                                        ></label>
-                                    </div>
-                                    {item.name}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">{item.email}</td>
+                                <td className="px-6 py-4 whitespace-nowrap">{idx + 1}</td>
                                 <td className="px-6 py-4 whitespace-nowrap">{item.name}</td>
+                                <td className="px-6 py-4 whitespace-nowrap">{item.email}</td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    <SwitcherFour
+                                        isEnabled={switchStates[idx]}
+                                        onToggle={() => handleToggle(idx, "is_active")}
+                                    />
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    <SwitcherFour
+                                        isEnabled={switchStates2[idx]}
+                                        onToggle={() => handleToggle(idx, "is_approve")}
+                                    />
+                                </td>
                                 <td className="text-right px-6 whitespace-nowrap">
-                                    <a
-                                        href="#"
-                                        className="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
-                                    >
-                                        Edit
-                                    </a>
-                                    <button
-                                        href="#"
-                                        className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
-                                    >
-                                        Delete
-                                    </button>
+                                    <div className="flex items-center space-x-3.5">
+
+                                        <a
+                                            href="#"
+                                            className="py-2 px-3 cursor-pointer font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
+                                        >
+                                            <BsPencilSquare className="text-xl"/>
+                                        </a>
+                                        <a
+                                            href="#"
+                                            className="py-2 px-3 cursor-pointer font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
+                                        >
+                                            <BsFillTrash3Fill className="text-xl"/>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
