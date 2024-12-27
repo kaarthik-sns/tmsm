@@ -16,26 +16,26 @@ const Profile = () => {
 
   const { data:session} = useSession();
 
-  if (session) {
-    console.log(session);
+  // if (session) {
+  //   console.log(session);
 
-    return (
-      <DefaultLayout>
-        <p>{session.user?.name}</p>
-      </DefaultLayout>
-    );
-  }
+  //   return (
+  //     <DefaultLayout>
+  //       <p>{session.user?.name}</p>
+  //     </DefaultLayout>
+  //   );
+  // }
 
-  if (!session) {
-    return (
-      <DefaultLayout>
-        <p>You are not logged in. Please log in to view your profile.</p>
-        <Link href="/auth/signin">
-          Sign in
-        </Link>
-      </DefaultLayout>
-    );
-  }
+  // if (!session) {
+  //   return (
+  //     <DefaultLayout>
+  //       <p>You are not logged in. Please log in to view your profile.</p>
+  //       <Link href="/auth/signin">
+  //         Sign in
+  //       </Link>
+  //     </DefaultLayout>
+  //   );
+  // }
 
   return (
     <DefaultLayout>

@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 
         var existingUser = await User.findOne({ email, is_active: true });
 
-        if(is_admin) {
+        if (is_admin) {
             existingUser = await Admin.findOne({ email });
         }
 
