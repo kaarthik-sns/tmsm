@@ -13,16 +13,18 @@ const UserTable = () => {
     const [pages, setPages] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [tableItems, setTableItems] = useState([]);
-    const [searchKeyword, setSearchKeyword] = useState("");
-    const [status, setStatus] = useState("");
     const [switchStates, setSwitchStates] = useState<boolean[]>([]);
     const [switchStates2, setSwitchStates2] = useState<boolean[]>([]);
-
     const [formState, setFormState] = useState({
+        name: "",
+        email: "",
         selectOne: "",
         selectTwo: "",
     });
 
+    useEffect(() => {
+        fetchTableItems();
+    }, [currentPage]);
 
     useEffect(() => {
         if (tableItems.length > 0) {
@@ -31,6 +33,57 @@ const UserTable = () => {
 
         }
     }, [tableItems]);
+
+    const handleInputChange = (field, value) => {
+        setFormState((prev) => ({ ...prev, [field]: value }));
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (currentPage !== 1) {
+            setCurrentPage(1); // Reset page to 1; useEffect will trigger fetchTableItems
+        } else {
+            fetchTableItems(); // Directly fetch items if already on page 1
+        }
+    };
+
+    // Handle form reset
+    const handleReset = () => {
+        setFormState({
+            name: "",
+            email: "",
+            selectOne: "",
+            selectTwo: "",
+        });
+        if (currentPage !== 1) {
+            setCurrentPage(1); // Reset page to 1; useEffect will trigger fetchTableItems
+        } else {
+            fetchTableItems(); // Directly fetch items if already on page 1
+        }
+    };
+
+    // Fetch table items from API
+    const fetchTableItems = async () => {
+        try {
+            const response = await axios.get("/api/user-list", {
+                params: {
+                    page: currentPage,
+                    name: formState.name,
+                    email: formState.email,
+                    is_active: formState.selectOne,
+                    is_approve: formState.selectTwo,
+                },
+            });
+
+            setTableItems(response.data.data);
+            setPages(response.data.pagination.totalPages);
+
+
+        } catch (error) {
+            console.error("Error fetching table items:", error);
+        }
+    };
+
 
     const handleToggle = async (index: number, key: "is_active" | "is_approve") => {
         const updatedValue = !tableItems[index][key];
@@ -65,31 +118,6 @@ const UserTable = () => {
     };
 
 
-    useEffect(() => {
-
-        // Fetch table items from API
-        const fetchTableItems = async () => {
-            try {
-                const response = await axios.get("/api/user-list", {
-                    params: {
-                        page: currentPage,
-                        keyword: searchKeyword,
-                        status,
-                    },
-                });
-
-                setTableItems(response.data.data);
-                setPages(response.data.pagination.totalPages);
-
-
-            } catch (error) {
-                console.error("Error fetching table items:", error);
-            }
-        };
-
-        fetchTableItems();
-    }, [currentPage, searchKeyword, status]);
-
     // Handle Previous Page click
     const handlePrevious = () => {
         if (currentPage > 1) {
@@ -104,34 +132,6 @@ const UserTable = () => {
         }
     };
 
-    const handleSelectChange = (field: string, value: string) => {
-        setFormState((prevState) => ({ ...prevState, [field]: value }));
-    };
-
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setPending(true);
-    
-        const res = await fetch("/api/", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        });
-        const data = await res.json();
-    
-        if (res.ok) {
-          setPending(false);
-          toast.success(data.message);
-          router.push("/auth/signin");
-        } else if (res.status === 400) {
-          setError(data.message);
-          setPending(false);
-        } else if (res.status === 500) {
-          setError(data.message);
-          setPending(false);
-        }
-      };
 
     return (
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">
@@ -156,6 +156,8 @@ const UserTable = () => {
                             <input
                                 type="text"
                                 placeholder="Enter Name"
+                                value={formState.name}
+                                onChange={(e) => handleInputChange("name", e.target.value)}
                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
                         </div>
@@ -167,6 +169,8 @@ const UserTable = () => {
                             <input
                                 type="text"
                                 placeholder="Enter Email"
+                                value={formState.email}
+                                onChange={(e) => handleInputChange("email", e.target.value)}
                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
                         </div>
@@ -174,20 +178,18 @@ const UserTable = () => {
                         <div className="w-full md:w-auto">
                             <SelectGroupTwo
                                 value={formState.selectOne}
-                                onChange={(value) => handleSelectChange("selectOne", value)}
+                                onChange={(value) => handleInputChange("selectOne", value)}
                             />
                         </div>
 
                         <div className="w-full md:w-auto">
                             <SelectGroupOne
                                 value={formState.selectTwo}
-                                onChange={(value) => handleSelectChange("selectTwo", value)}
+                                onChange={(value) => handleInputChange("selectTwo", value)}
                             />
                         </div>
 
                         <div className="w-full md:w-auto">
-                            <div className="mb-6 block text-sm font-medium text-black dark:text-white">
-                            </div>
                             <button
                                 className="justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                                 type="submit"
@@ -195,9 +197,16 @@ const UserTable = () => {
                                 Search
                             </button>
                         </div>
+
+                        <div className="w-full md:w-auto">
+                            <button
+                                className="justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90" type="button"
+                                onClick={handleReset}>
+                                Reset
+                            </button>
+                        </div>
                     </div>
                 </form>
-
 
 
 

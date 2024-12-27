@@ -23,10 +23,10 @@ const SelectGroupTwo: React.FC<SelectGroupTwoProps> = ({ value, onChange }) => {
           <option value="" disabled className="text-body dark:text-bodydark">
             Select Status
           </option>
-          <option value="USA" className="text-body dark:text-bodydark">
+          <option value="true" className="text-body dark:text-bodydark">
             Yes
           </option>
-          <option value="UK" className="text-body dark:text-bodydark">
+          <option value="false" className="text-body dark:text-bodydark">
             No
           </option>
         </select>

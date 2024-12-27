@@ -6,8 +6,10 @@ export const GET = async (req: NextRequest) => {
     try {
         const { searchParams } = new URL(req.url);
         const page = parseInt(searchParams.get('page') || '1', 10);
-        const searchKeyword = searchParams.get('keyword') || '';
-        const status = searchParams.get('status') || '';
+        const name = searchParams.get('name') || '';
+        const email = searchParams.get('email') || '';
+        const is_active = searchParams.get('is_active') || '';
+        const is_approve = searchParams.get('is_approve') || '';
         const pageSize = 10;
         const skip = (page - 1) * pageSize;
 
@@ -16,11 +18,21 @@ export const GET = async (req: NextRequest) => {
 
         // Build the query object
         const query: any = {};
-        if (searchKeyword) {
-            query.name = { $regex: searchKeyword, $options: 'i' }; // Case-insensitive regex search
+
+        if (name) {
+            query.name = { $regex: name, $options: 'i' }; // Case-insensitive regex search
         }
-        if (status) {
-            query.status = status;
+
+        if (email) {
+            query.email = { $regex: email, $options: 'i' }; // Case-insensitive regex search
+        }
+
+        if (is_active != '') {
+            query.is_active = is_active;
+        }
+
+        if (is_approve != '') {
+            query.is_approve = is_approve;
         }
 
         // Fetch filtered and paginated users from the database
