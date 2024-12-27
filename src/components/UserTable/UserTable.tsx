@@ -4,6 +4,9 @@ import axios from "axios";
 import SwitcherFour from "@/components/Switchers/SwitcherFour";
 import { BsPencilSquare } from "react-icons/bs";
 import { BsFillTrash3Fill } from "react-icons/bs";
+import { AiFillEye } from "react-icons/ai";
+import SelectGroupTwo from "@/components/SelectGroup/SelectGroupTwo";
+import SelectGroupOne from "@/components/SelectGroup/SelectGroupOne";
 
 const UserTable = () => {
 
@@ -14,6 +17,12 @@ const UserTable = () => {
     const [status, setStatus] = useState("");
     const [switchStates, setSwitchStates] = useState<boolean[]>([]);
     const [switchStates2, setSwitchStates2] = useState<boolean[]>([]);
+
+    const [formState, setFormState] = useState({
+        selectOne: "",
+        selectTwo: "",
+    });
+
 
     useEffect(() => {
         if (tableItems.length > 0) {
@@ -95,6 +104,35 @@ const UserTable = () => {
         }
     };
 
+    const handleSelectChange = (field: string, value: string) => {
+        setFormState((prevState) => ({ ...prevState, [field]: value }));
+    };
+
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setPending(true);
+    
+        const res = await fetch("/api/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+        const data = await res.json();
+    
+        if (res.ok) {
+          setPending(false);
+          toast.success(data.message);
+          router.push("/auth/signin");
+        } else if (res.status === 400) {
+          setError(data.message);
+          setPending(false);
+        } else if (res.status === 500) {
+          setError(data.message);
+          setPending(false);
+        }
+      };
+
     return (
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">
             <div className="items-start justify-between md:flex">
@@ -108,7 +146,63 @@ const UserTable = () => {
                 </div>
             </div>
             <div className="mt-12 shadow-sm border rounded-lg overflow-x-auto">
-                <table className="w-full table-auto text-sm text-left">
+
+                <form onSubmit={handleSubmit}>
+                    <div className="flex flex-wrap items-center gap-5.5 p-6.5">
+                        <div className="w-full md:w-auto">
+                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                                Name
+                            </label>
+                            <input
+                                type="text"
+                                placeholder="Enter Name"
+                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                            />
+                        </div>
+
+                        <div className="w-full md:w-auto">
+                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                                Email
+                            </label>
+                            <input
+                                type="text"
+                                placeholder="Enter Email"
+                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                            />
+                        </div>
+
+                        <div className="w-full md:w-auto">
+                            <SelectGroupTwo
+                                value={formState.selectOne}
+                                onChange={(value) => handleSelectChange("selectOne", value)}
+                            />
+                        </div>
+
+                        <div className="w-full md:w-auto">
+                            <SelectGroupOne
+                                value={formState.selectTwo}
+                                onChange={(value) => handleSelectChange("selectTwo", value)}
+                            />
+                        </div>
+
+                        <div className="w-full md:w-auto">
+                            <div className="mb-6 block text-sm font-medium text-black dark:text-white">
+                            </div>
+                            <button
+                                className="justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                                type="submit"
+                            >
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+
+
+
+
+                <table className="w-full table-auto text-md text-left">
                     <thead className="text-gray-600 font-medium border-b">
                         <tr>
                             <th className="py-3 px-6">#</th>
@@ -145,13 +239,21 @@ const UserTable = () => {
                                             href="#"
                                             className="py-2 px-3 cursor-pointer font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
                                         >
-                                            <BsPencilSquare className="text-xl"/>
+                                            <BsPencilSquare className="text-xl" />
                                         </a>
+                                        {(!switchStates[idx] || !switchStates2[idx]) && (
+                                            <a
+                                                href="#"
+                                                className="py-2 px-3 cursor-pointer font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
+                                            >
+                                                <BsFillTrash3Fill className="text-xl" />
+                                            </a>
+                                        )}
                                         <a
                                             href="#"
                                             className="py-2 px-3 cursor-pointer font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
                                         >
-                                            <BsFillTrash3Fill className="text-xl"/>
+                                            <AiFillEye className="text-xl" />
                                         </a>
                                     </div>
                                 </td>
@@ -173,7 +275,7 @@ const UserTable = () => {
                     </a>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 
