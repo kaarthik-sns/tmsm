@@ -7,6 +7,7 @@ import { BsFillTrash3Fill } from "react-icons/bs";
 import { AiFillEye } from "react-icons/ai";
 import SelectGroupTwo from "@/components/SelectGroup/SelectGroupTwo";
 import SelectGroupOne from "@/components/SelectGroup/SelectGroupOne";
+import Link from "next/link";
 
 const UserTable = () => {
 
@@ -158,7 +159,7 @@ const UserTable = () => {
                                 placeholder="Enter Name"
                                 value={formState.name}
                                 onChange={(e) => handleInputChange("name", e.target.value)}
-                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                className="w-full md:w-64 rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
                         </div>
 
@@ -171,7 +172,7 @@ const UserTable = () => {
                                 placeholder="Enter Email"
                                 value={formState.email}
                                 onChange={(e) => handleInputChange("email", e.target.value)}
-                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                className="w-full md:w-64 rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
                         </div>
 
@@ -189,24 +190,25 @@ const UserTable = () => {
                             />
                         </div>
 
-                        <div className="w-full md:w-auto">
+                        <div className="w-full md:w-auto flex justify-between gap-4 mt-5 md:mt-5">
                             <button
                                 className="justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                                 type="submit"
                             >
                                 Search
                             </button>
-                        </div>
 
-                        <div className="w-full md:w-auto">
                             <button
-                                className="justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90" type="button"
-                                onClick={handleReset}>
+                                className="justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                                type="button"
+                                onClick={handleReset}
+                            >
                                 Reset
                             </button>
                         </div>
                     </div>
                 </form>
+
 
 
 
@@ -224,51 +226,62 @@ const UserTable = () => {
                         </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y">
-                        {tableItems.map((item, idx) => (
-                            <tr key={idx} className="odd:bg-gray-50 even:bg-white">
-                                <td className="px-6 py-4 whitespace-nowrap">{idx + 1}</td>
-                                <td className="px-6 py-4 whitespace-nowrap">{item.name}</td>
-                                <td className="px-6 py-4 whitespace-nowrap">{item.email}</td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <SwitcherFour
-                                        isEnabled={switchStates[idx]}
-                                        onToggle={() => handleToggle(idx, "is_active")}
-                                    />
+                        {tableItems.length === 0 ? (
+                            <tr>
+                                <td colSpan="6" className="text-center px-6 py-4 whitespace-nowrap">
+                                    No data found
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <SwitcherFour
-                                        isEnabled={switchStates2[idx]}
-                                        onToggle={() => handleToggle(idx, "is_approve")}
-                                    />
-                                </td>
-                                <td className="text-right px-6 whitespace-nowrap">
-                                    <div className="flex items-center space-x-3.5">
-
-                                        <a
-                                            href="#"
-                                            className="py-2 px-3 cursor-pointer font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
-                                        >
-                                            <BsPencilSquare className="text-xl" />
-                                        </a>
-                                        {(!switchStates[idx] || !switchStates2[idx]) && (
+                            </tr>
+                        ) : (
+                            tableItems.map((item, idx) => (
+                                <tr key={idx} className="odd:bg-gray-50 even:bg-white">
+                                    <td className="px-6 py-4 whitespace-nowrap">{idx + 1}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{item.name}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{item.email}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <SwitcherFour
+                                            isEnabled={switchStates[idx]}
+                                            onToggle={() => handleToggle(idx, "is_active")}
+                                        />
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <SwitcherFour
+                                            isEnabled={switchStates2[idx]}
+                                            onToggle={() => handleToggle(idx, "is_approve")}
+                                        />
+                                    </td>
+                                    <td className="text-right px-6 whitespace-nowrap">
+                                        <div className="flex items-center space-x-3.5">
                                             <a
                                                 href="#"
                                                 className="py-2 px-3 cursor-pointer font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
                                             >
-                                                <BsFillTrash3Fill className="text-xl" />
+                                                <BsPencilSquare className="text-xl" />
                                             </a>
-                                        )}
-                                        <a
-                                            href="#"
-                                            className="py-2 px-3 cursor-pointer font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
-                                        >
-                                            <AiFillEye className="text-xl" />
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
+                                            <Link
+                                                href={{
+                                                    pathname: "/admin/view-profile",
+                                                    query: { userId: item._id },
+                                                }}
+                                                className="py-2 px-3 cursor-pointer font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
+                                            >
+                                                <AiFillEye className="text-xl" />
+                                            </Link>
+                                            {(!switchStates[idx] || !switchStates2[idx]) && (
+                                                <a
+                                                    href="#"
+                                                    className="py-2 px-3 cursor-pointer font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
+                                                >
+                                                    <BsFillTrash3Fill className="text-xl" />
+                                                </a>
+                                            )}
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        )}
                     </tbody>
+
                 </table>
             </div>
             <div className="max-w-screen-xl mx-auto mt-12 px-4 text-gray-600 md:px-8">

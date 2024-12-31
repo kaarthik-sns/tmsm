@@ -7,6 +7,7 @@ const UserSchema = new Schema({
   is_active: { type: Boolean, default: true }, // account active or not status
   is_verify: { type: Boolean, default: false }, // email verified or not status
   is_approve: { type: Boolean, default: false }, // admin approved or not status
+  is_delete: { type: Boolean, default: false }, // user deleted or not status
   email_code: {
     type: String,
     default: function () {
