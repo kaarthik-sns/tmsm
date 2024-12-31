@@ -241,3 +241,48 @@ input[type="search"]::-webkit-search-cancel-button {
 [x-cloak] {
     display: none !important;
 }
+
+/*custom styles*/
+
+.f-logo {
+    width: 100%;
+}
+.f-5 {
+    padding:10rem !important;
+}
+.bg-color-custom {
+    background: #FFF2D7;
+}
+.bg-color-custom-top {
+    background: #f8f0df;
+}
+.text-custom {
+    color: #653D27;
+    background: #FFD16C;
+    border-color: #FFD16C;
+}
+.dark-text {
+    color: #653D27;
+}
+.border-strokes {
+    border-color: #343434;
+}
+.bg-graydark {
+    background-color: rgb(255 0 0);
+    color: #fff !important;
+}
+.text-bodydark1 {
+    color: #653D27;
+}
+.hover\:bg-graydark:hover {
+    background-color: rgb(255 0 0) !important;
+    color: #fff;
+}
+.hover\:bg-indigo-500:hover{
+    background: #ff0000 !important;
+    color: #fff;
+}
+
+.dark-text-active {
+    color: #ff0000;
+}
