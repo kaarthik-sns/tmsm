@@ -54,6 +54,9 @@ const handler = NextAuth({
             },
         }),
     ],
+    pages: {
+        signOut: "/", // Redirect to the homepage on sign-out
+    },
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
@@ -82,7 +85,7 @@ const handler = NextAuth({
                 try {
                     await Users_activity_log.create({
                         user_id: user._id,  // Ensure user.id exists
-                        desc: user.name+' Logged In',
+                        desc: user.name + ' Logged In',
                         created_at: new Date()
                     });
                     console.log('User activity log created successfully.');

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import User from '@/models/User'; // Adjust this path based on your project structure
+import User from '@/models/User';
 import connectToDatabase from '@/lib/mongodb';
 
 export async function GET(req: NextRequest) {

@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
         user.password = hashedPassword;
         await user.save();
 
-        return NextResponse.json({ message: 'Your email has been successfully verified' });
+        return NextResponse.json({ message: 'Your Password has been successfully Changed', is_admin : is_admin });
     } catch (error) {
         console.error(error);
         return NextResponse.json({ message: 'An error occurred while processing your request' }, { status: 500 });
