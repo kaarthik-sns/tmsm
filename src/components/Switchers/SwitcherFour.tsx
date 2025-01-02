@@ -16,11 +16,11 @@ const SwitcherFour = ({
         />
         {/* Background changes dynamically based on `isEnabled` */}
         <div
-          className={`block h-8 w-14 rounded-full transition-colors ${isEnabled ? "bg-green-500" : "bg-black"
+          className={`block h-6 w-10 rounded-full transition-colors text-xs ${isEnabled ? "bg-green-500" : "bg-black"
             }`}
         ></div>
         <div
-          className={`absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white transition-all ${isEnabled && "!right-1 !translate-x-full"
+          className={`absolute left-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-white transition-all ${isEnabled && "!right-1 !translate-x-full"
             }`}
         ></div>
       </div>

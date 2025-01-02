@@ -19,7 +19,7 @@ export async function middleware(req) {
     }
 
     if (pathname === '/admin/auth/signin' && token) {
-        url.pathname = '/admin/';
+        url.pathname = '/admin/dashboard';
         return NextResponse.redirect(url);
     }
 

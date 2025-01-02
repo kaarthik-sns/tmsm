@@ -10,6 +10,13 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
 import { exit } from "process";
+import { Metadata } from "next";
+
+// export const metadata: Metadata = {
+//   title: "Forgot Passsword - TMSM",
+//   description:
+//     "",
+// };
 
 const ForgotPassword: React.FC = () => {
 
@@ -52,7 +59,27 @@ const ForgotPassword: React.FC = () => {
     <AuthLayout>
 
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div className="flex flex-wrap items-center">
+        <div className="flex flex-wrap items-center bg-color-custom">
+        <div className="hidden w-full xl:block xl:w-1/2">
+            <div className="px-26 py-17.5 text-center">
+              <Link className="mb-5.5 inline-block" href="/">
+                <Image
+                  className="hidden dark:block f-logo"
+                  src={"/images/logo/logo.svg"}
+                  alt="Logo"
+                  width={300}
+                  height={100}
+                />
+                <Image
+                  className="dark:hidden f-logo"
+                  src={"/images/logo/logo-dark.svg"}
+                  alt="Logo"
+                  width={300}
+                  height={100}
+                />
+              </Link>
+            </div>
+          </div>
           <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               <h2 className="mb-6 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
@@ -80,7 +107,7 @@ const ForgotPassword: React.FC = () => {
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
                       required
                       placeholder="Enter your email"
-                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      className="w-full rounded-lg border border-strokes bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
                     <span className="absolute right-4 top-4">
@@ -107,15 +134,15 @@ const ForgotPassword: React.FC = () => {
                   <input
                     type="submit"
                     value="Request rest password link"
-                    className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                    className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
                   />
                 </div>
 
                 <div className="mt-6 text-center">
                   <p>
                     {" "}
-                    <Link href="/auth/signin" className="text-primary">
-                      Bsck to Sign in
+                    <Link href="/admin/auth/signin" className="text-primary dark-text">
+                      Back to Sign in
                     </Link>
                   </p>
                 </div>

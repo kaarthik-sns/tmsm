@@ -10,14 +10,14 @@ const SelectGroupTwo: React.FC<SelectGroupTwoProps> = ({ value, onChange }) => {
   return (
     <div>
       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Select Status
+      Select Status
       </label>
 
-      <div className="relative z-20 bg-white dark:bg-form-input">
+      <div className="relative z-20 bg-transparent dark:bg-form-input">
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-10 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${value ? "text-black dark:text-white" : ""
+          className={`w-full md:w-64 relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary md:text-sm ${value ? "text-black dark:text-white" : ""
             }`}
         >
           <option value="" disabled className="text-body dark:text-bodydark">

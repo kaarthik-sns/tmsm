@@ -2,12 +2,14 @@ import mongoose, { Schema, model, models } from "mongoose";
 
 const UserSchema = new Schema({
   name: { type: String, required: true },
+  lastname: { type: String, required: false },
   email: { type: String, required: true, unique: true },
   password: { type: String },
+  phonenumber: { type: String, required: false },
   is_active: { type: Boolean, default: true }, // account active or not status
   is_verify: { type: Boolean, default: false }, // email verified or not status
   is_approve: { type: Boolean, default: false }, // admin approved or not status
-  is_delete: { type: Boolean, default: false }, // user deleted or not status
+  is_delete: { type: Boolean, default: false }, // admin approved or not status
   email_code: {
     type: String,
     default: function () {
@@ -24,10 +26,10 @@ const UserSchema = new Schema({
   marital_status: { type: String, required: false },
   religion: { type: String, required: false },
   caste: { type: String, required: false },
-  sub_caste: { type: String, required: false },
+  subcaste: { type: String, required: false },
 
   age: { type: Number, required: false },
-  date_of_birth: { type: Date, required: false },
+  birthdate: { type: Date, required: false },
 
   place_of_birth: { type: String, required: false },
   education: { type: String, required: false },
@@ -43,14 +45,14 @@ const UserSchema = new Schema({
   horoscope: { type: String, required: false },
 
   father_name: { type: String, required: false },
-  father_phoneNumber: { type: String, required: false },
+  father_phonenumber: { type: String, required: false },
   father_occupation: { type: String, required: false },
   father_religion: { type: String, required: false },
   father_profession: { type: String, required: false },
   father_placeOfWork: { type: String, required: false },
 
   mother_name: { type: String, required: false },
-  mother_phoneNumber: { type: String, required: false },
+  mother_phonenumber: { type: String, required: false },
   mother_occupation: { type: String, required: false },
   mother_religion: { type: String, required: false },
   mother_profession: { type: String, required: false },

@@ -1,34 +1,27 @@
 "use client";
 import React from "react";
 
-interface SelectGroupTwoProps {
-  value: string;
-  onChange: (value: string) => void;
-}
-
-const SelectGroupTwo: React.FC<SelectGroupTwoProps> = ({ value, onChange }) => {
+const SelectGroupReligion = ({ religions, selectedReligion, onReligionChange }) => {
   return (
-    <div>
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-      Select Approved Status
-      </label>
-
+    <div className="mb-4.5">
       <div className="relative z-20 bg-transparent dark:bg-form-input">
         <select
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className={`w-full md:w-64 elative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary md:text-sm ${value ? "text-black dark:text-white" : ""
-            }`}
+          value={selectedReligion || ""}
+          onChange={onReligionChange}
+          className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
         >
           <option value="" disabled className="text-body dark:text-bodydark">
-            Select Approved Status
+            Select Religion
           </option>
-          <option value="true" className="text-body dark:text-bodydark">
-            Yes
-          </option>
-          <option value="false" className="text-body dark:text-bodydark">
-            No
-          </option>
+          {religions.map((religion, index) => (
+            <option
+              key={index}
+              value={religion}
+              className="text-body dark:text-bodydark"
+            >
+              {religion}
+            </option>
+          ))}
         </select>
 
         <span className="absolute right-4 top-1/2 z-30 -translate-y-1/2">
@@ -55,6 +48,4 @@ const SelectGroupTwo: React.FC<SelectGroupTwoProps> = ({ value, onChange }) => {
   );
 };
 
-export default SelectGroupTwo;
-
-
+export default SelectGroupReligion;
