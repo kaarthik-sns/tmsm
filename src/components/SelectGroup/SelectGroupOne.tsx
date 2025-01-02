@@ -9,7 +9,7 @@ interface SelectGroupTwoProps {
 const SelectGroupTwo: React.FC<SelectGroupTwoProps> = ({ value, onChange }) => {
   return (
     <div>
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white dark-text">
       Select Approved Status
       </label>
 
@@ -21,7 +21,7 @@ const SelectGroupTwo: React.FC<SelectGroupTwoProps> = ({ value, onChange }) => {
             }`}
         >
           <option value="" disabled className="text-body dark:text-bodydark">
-            Select Approved Status
+            Select Status
           </option>
           <option value="true" className="text-body dark:text-bodydark">
             Yes

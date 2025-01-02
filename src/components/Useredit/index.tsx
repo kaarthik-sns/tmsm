@@ -228,7 +228,7 @@ const FormElements = () => {
                       accept="image/*"
                       onChange={handleChange}
                       name="profile_photo"
-                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
                     />
                   </div>
                 </div>
@@ -347,7 +347,7 @@ const FormElements = () => {
                 </div>
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Age <span className="text-meta-1">*</span>
+                    Age 
                   </label>
                   <input
                     type="number"
@@ -369,7 +369,7 @@ const FormElements = () => {
                 </div>
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Place of birth  <span className="text-meta-1">*</span>
+                    Place of birth  
                   </label>
                   <input
                     type="text"
@@ -507,132 +507,6 @@ const FormElements = () => {
 
               </div>
             </div>
-
-
-            {/* <!-- Photo upload start --> */}
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="font-medium dark-text dark:text-white">
-                  Photo Upload
-                </h3>
-              </div>
-              <div className="flex flex-col gap-5.5 p-6.5">
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Photo1 <span className="text-meta-1">*</span>
-                  </label>
-                  <div className="flex items-center space-x-4">
-                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                      {formData.photo1 && (
-                        <NextImage
-                          src={formData.photo1 || ""}
-                          alt="Profile Preview"
-                          width={64}
-                          height={64}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      name="photo1"
-                      onChange={handleChange}
-                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                    />
-                  </div>
-                </div>
-
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Photo2 <span className="text-meta-1">*</span>
-                  </label>
-                  <div className="flex items-center space-x-4">
-                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                      {formData.photo2 && (
-                        <NextImage
-                          src={formData.photo2 || ""}
-                          alt="Profile Preview"
-                          width={64}
-                          height={64}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      name="photo2"
-                      onChange={handleChange}
-                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                    />
-                  </div>
-                </div>
-
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Photo3 <span className="text-meta-1">*</span>
-                  </label>
-                  <div className="flex items-center space-x-4">
-                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                      {formData.photo3 && (
-                        <NextImage
-                          src={formData.photo3 || ""}
-                          alt="Profile Preview"
-                          width={64}
-                          height={64}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      name="photo3"
-                      onChange={handleChange}
-                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                    />
-                  </div>
-                </div>
-
-
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Photo4 <span className="text-meta-1">*</span>
-                  </label>
-                  <div className="flex items-center space-x-4">
-                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                      {formData.photo4 && (
-                        <NextImage
-                          src={formData.photo4 || ""}
-                          alt="Profile Preview"
-                          width={64}
-                          height={64}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      name="photo4"
-                      onChange={handleChange}
-                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* <!-- Photo upload end--> */}
-
             {/* <!-- horoscope upload start --> */}
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
@@ -646,21 +520,22 @@ const FormElements = () => {
                   accept="image/*,application/pdf"
                   name="horoscope"
                   onChange={handleChange}
-                  className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                />
+                  className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
+                  />
                 {formData.horoscope && (
                   <button
                     onClick={handlePreview} style={{ width: "200px", padding: "8px 0" }}
-                    className="mt-4 px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                  >
-                    Preview
+                    className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
+                    >
+                    View
                   </button>
+                  
                 )
                 }
               </div>
+              
             </div>
             {/* <!-- horoscope upload end--> */}
-
 
           </div>
 
@@ -916,15 +791,140 @@ const FormElements = () => {
                 </div>
               </div>
             </div>
-          </div>
+             {/* <!-- Photo upload start --> */}
+             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                <h3 className="font-medium dark-text dark:text-white">
+                  Extra Pictures
+                </h3>
+              </div>
+              <div className="flex flex-col gap-5.5 p-6.5">
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Photo1 
+                  </label>
+                  <div className="flex items-center space-x-4">
+                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
+                      {formData.photo1 && (
+                        <NextImage
+                          src={formData.photo1 || ""}
+                          alt="Profile Preview"
+                          width={64}
+                          height={64}
+                          quality={100}
+                          unoptimized={true}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      name="photo1"
+                      onChange={handleChange}
+                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
+                    />
+                  </div>
+                </div>
 
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Photo2 
+                  </label>
+                  <div className="flex items-center space-x-4">
+                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
+                      {formData.photo2 && (
+                        <NextImage
+                          src={formData.photo2 || ""}
+                          alt="Profile Preview"
+                          width={64}
+                          height={64}
+                          quality={100}
+                          unoptimized={true}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      name="photo2"
+                      onChange={handleChange}
+                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Photo3 
+                  </label>
+                  <div className="flex items-center space-x-4">
+                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
+                      {formData.photo3 && (
+                        <NextImage
+                          src={formData.photo3 || ""}
+                          alt="Profile Preview"
+                          width={64}
+                          height={64}
+                          quality={100}
+                          unoptimized={true}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      name="photo3"
+                      onChange={handleChange}
+                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
+                    />
+                  </div>
+                </div>
+
+
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Photo4 
+                  </label>
+                  <div className="flex items-center space-x-4">
+                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
+                      {formData.photo4 && (
+                        <NextImage
+                          src={formData.photo4 || ""}
+                          alt="Profile Preview"
+                          width={64}
+                          height={64}
+                          quality={100}
+                          unoptimized={true}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      name="photo4"
+                      onChange={handleChange}
+                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* <!-- Photo upload end--> */}
+
+           
           <button
             type="submit"
-            className="mt-6 w-full rounded bg-primary py-2 px-4 text-white transition hover:bg-primary-dark"
+            className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
           >
             Submit
           </button>
         </div>
+          </div>
+
         {error && <p className="mt-4 text-red-500">{error}</p>}
       </form>
     </>
