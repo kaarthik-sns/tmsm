@@ -89,6 +89,25 @@ const UserTable = () => {
             console.error("Error fetching table items:", error);
         }
     };
+    const handleDelete = async (userId) => {
+        const confirmation = confirm("Are you sure you want to delete this user?");
+        if (!confirmation) return;
+
+        try {
+            const response = await axios.get(`/api/delete-user?userId=${userId}`, {
+            });
+
+            if (response.status === 200) {
+                alert("User deleted successfully.");
+                fetchTableItems();
+            } else {
+                alert(`Failed to delete user: ${response.data.message || "Unknown error"}`);
+            }
+        } catch (error) {
+            console.error("Error deleting user:", error);
+            alert(error.response?.data?.message || "An error occurred while deleting the user. Please try again.");
+        }
+    };
 
 
     const handleToggle = async (index: number, key: "is_active" | "is_approve") => {
@@ -127,27 +146,6 @@ const UserTable = () => {
         router.push(`/admin/users/useredit?userId=${userId}`);
     };
 
-    const handleDelete = async (userId) => {
-        const confirmation = confirm("Are you sure you want to delete this user?");
-        if (!confirmation) return;
-
-        try {
-            const response = await axios.get(`/api/delete-user?userId=${userId}`, {
-            });
-
-            if (response.status === 200) {
-                alert("User deleted successfully.");
-                fetchTableItems();
-            } else {
-                alert(`Failed to delete user: ${response.data.message || "Unknown error"}`);
-            }
-        } catch (error) {
-            console.error("Error deleting user:", error);
-            alert(error.response?.data?.message || "An error occurred while deleting the user. Please try again.");
-        }
-    };
-
-
     // Handle Previous Page click
     const handlePrevious = () => {
         if (currentPage > 1) {
@@ -180,7 +178,7 @@ const UserTable = () => {
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-wrap items-center gap-5.5 p-6.5">
                         <div className="w-full md:w-auto">
-                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                            <label className="mb-3 block text-sm font-medium text-black dark:text-white dark-text">
                                 Name
                             </label>
                             <input
@@ -193,7 +191,7 @@ const UserTable = () => {
                         </div>
 
                         <div className="w-full md:w-auto">
-                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                            <label className="mb-3 block text-sm font-medium text-black dark:text-white dark-text">
                                 Email
                             </label>
                             <input
@@ -245,13 +243,13 @@ const UserTable = () => {
                 <table className="w-full table-auto text-md text-left">
                     <thead className="text-gray-600 font-medium border-b">
                         <tr>
-                            <th className="py-3 px-6">#</th>
-                            <th className="py-3 px-6">Name</th>
-                            <th className="py-3 px-6">Email</th>
-                            <th className="py-3 px-6">Status</th>
-                            <th className="py-3 px-6">Approved Status</th>
-
-                            <th className="py-3 px-6"></th>
+                            <th className="py-3 px-6 dark-text">#</th>
+                            <th className="py-3 px-6 dark-text">Name</th>
+                            <th className="py-3 px-6 dark-text">Email</th>
+                            <th className="py-3 px-6 dark-text">Phone Number</th>
+                            <th className="py-3 px-6 dark-text">User Status</th>
+                            <th className="py-3 px-6 dark-text">Acccount Status</th>
+                            <th className="py-3 px-6">Action</th>
                         </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y">
@@ -267,6 +265,7 @@ const UserTable = () => {
                                     <td className="px-6 py-4 whitespace-nowrap">{idx + 1}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{item.name}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{item.email}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{item.phonenumber}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <SwitcherFour
                                             isEnabled={switchStates[idx]}
@@ -283,7 +282,8 @@ const UserTable = () => {
                                         <div className="flex items-center space-x-3.5">
                                             <button
                                                 onClick={() => handleEdit(item._id)}
-                                                className="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg "
+
+                                                className="py-2 px-3 font-medium  hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg "
                                             >
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -300,10 +300,10 @@ const UserTable = () => {
 
                                             <Link
                                                 href={{
-                                                    pathname: "/admin/view-profile",
+                                                    pathname: "/admin/users/userview",
                                                     query: { userId: item._id },
                                                 }}
-                                                className="py-2 px-3 cursor-pointer font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
+                                                className="inline-block px-4 py-2 text-white duration-150 font-medium  md:text-sm dark-text"
                                             >
                                                 <svg
                                                     className="fill-current"
@@ -323,11 +323,12 @@ const UserTable = () => {
                                                     />
                                                 </svg>
                                             </Link>
+
                                             {(!switchStates[idx] || !switchStates2[idx]) && (
-                                                <button
-                                                    onClick={() => handleDelete(item._id)}
-                                                    className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
-                                                >
+                                                 <button
+                                                 onClick={() => handleDelete(item._id)}
+                                                 className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
+                                             >
 
                                                     <svg
                                                         className="fill-current"
@@ -369,13 +370,13 @@ const UserTable = () => {
             </div>
             <div className="max-w-screen-xl mx-auto mt-12 px-4 text-gray-600 md:px-8">
                 <div className="flex items-center justify-between text-sm text-gray-600 font-medium">
-                    <a href="#" onClick={handlePrevious} className="px-4 py-2 border rounded-lg duration-150 hover:bg-gray-50">
+                    <a href="#" onClick={handlePrevious} className="px-4 py-2 border rounded-lg duration-150 hover:bg-gray-50 dark-text">
                         Previous
                     </a>
-                    <div>
+                    <div className="dark-text">
                         Page {currentPage} of {pages}
                     </div>
-                    <a href="#" onClick={handleNext} className="px-4 py-2 border rounded-lg duration-150 hover:bg-gray-50">
+                    <a href="#" onClick={handleNext} className="px-4 py-2 border rounded-lg duration-150 hover:bg-gray-50 dark-text">
                         Next
                     </a>
                 </div>

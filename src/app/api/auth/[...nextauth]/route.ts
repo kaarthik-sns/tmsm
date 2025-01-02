@@ -37,6 +37,10 @@ const handler = NextAuth({
                         throw new Error("Admin Not Approved Your Registration");
                     }
 
+                    if (!is_admin && !user.is_active) {
+                        throw new Error("Your account has been deactivated");
+                    }
+
                     const isValidPassword = await bcrypt.compare(
                         credentials?.password ?? "",
                         user.password as string
