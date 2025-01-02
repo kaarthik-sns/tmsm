@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 
         var existingUser = await User.findOne({ email, is_active: true });
 
-        if(is_admin) {
+        if (is_admin) {
             existingUser = await Admin.findOne({ email });
         }
 
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
         })
 
         console.log("Email sent successfully:", result);
-        return NextResponse.json({ message: "Password reset email has been sent Successfully" }, { status: 201 });
+        return NextResponse.json({ message: "Password reset email has been sent successfully" }, { status: 201 });
 
     } catch (error) {
         console.log(error)

@@ -1,16 +1,16 @@
-export const changePassword = `<!DOCTYPE html>
+export const verification = `<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Reset</title>
+    <title>We're Sorry to See You Go - TMSM</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            color:#f5f6f8 !important;
+            color: #333333;
         }
         .container {
             max-width: 600px;
@@ -21,21 +21,11 @@ export const changePassword = `<!DOCTYPE html>
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         h1 {
-            color: #333333;
+            color: #FF0000;
         }
         p {
             color: #666666;
             line-height: 1.6;
-        }
-        .button {
-            display: inline-block;
-            background-color: #007BFF;
-            color: #ffffff !important;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 20px;
         }
         .footer {
             text-align: center;
@@ -47,13 +37,13 @@ export const changePassword = `<!DOCTYPE html>
 </head>
 <body>
     <div class="container">
-        <h1>Reset Your Password</h1>
-        <p>To reset your TMSM Password, please click below button </p>
-        <a href="{{forgotPasswordLink}}" class="button">Reset password</a>
-        <p>If the button doesn't work, copy and paste the following link into your browser:</p>
-        <p>{{forgotPasswordLink}}</p>
+        <h1>We're Sorry to See You Go, {{user_name}}!</h1>
+        <p>We're reaching out to confirm that your account has been deactivated. We're sorry to see you leave, but we respect your decision.</p>
+        <p>If this was done by mistake or if you wish to reactivate your account, please don't hesitate to reach out to our support team. We'd be more than happy to assist you in restoring your account.</p>
+        <p>If you have any feedback about your experience, please feel free to share it with us. We strive to improve and provide a better experience for our users.</p>
+        <p>Thank you for being a part of TMSM. We wish you all the best in your future endeavors.</p>
         <div class="footer">
-            <p>© 2024 tmsm.com. All rights reserved.</p>
+            <p>© 2024 TMSM.com. All rights reserved.</p>
         </div>
     </div>
 </body>

@@ -60,8 +60,9 @@ const handler = NextAuth({
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                token.id = user.id;
+                token.id = user._id;
                 token.email = user.email;
+                token.name = user.name;
                 token.is_admin = user.is_admin; // Include is_admin in token
             }
             return token;
@@ -70,8 +71,8 @@ const handler = NextAuth({
             if (token) {
                 session.user = {
                     email: token.email,
-                    name: token.name,
-                    image: token.picture,
+                    name: token.name, // Ensure name is included if available
+                    id: token.id, // Map token.id to session.user.id
                     is_admin: token.is_admin, // Map is_admin to session
                 };
             }

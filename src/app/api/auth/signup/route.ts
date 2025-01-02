@@ -84,17 +84,32 @@ export async function POST(request: Request) {
 
         const template = Handlebars.compile(verification);
         const htmlBody = template({
-            verification_link: verificationLink,
+            user_name: name
         });
 
         const result = await sendEmail({
             sender,
             receipients,
-            subject: 'TMSM - verification!',
+            subject: 'TMSM - Welcome mail!',
             message: htmlBody
         })
 
-        console.log("Email sent successfully:", result);
+        const template2 = Handlebars.compile(verification);
+        const htmlBody2 = template2({
+            verification_link: verificationLink,
+            user_name: name
+        });
+
+        const result2 = await sendEmail({
+            sender,
+            receipients,
+            subject: 'TMSM - verification mail!',
+            message: htmlBody2
+        })
+
+        console.log("welcome email:", result);
+        console.log("Verification email:", result2);
+
         return NextResponse.json({ message: "Registration successful" }, { status: 201 });
 
     } catch (error) {

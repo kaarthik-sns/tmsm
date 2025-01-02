@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation"; // Updated import for query parameter extraction
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
 import SelectGroupCaste from "@/components/SelectGroup/SelectGroupCaste";
@@ -10,6 +11,8 @@ import { TriangleAlert } from "lucide-react";
 import NextImage from "next/image"; // Rename the import to avoid conflict
 
 const FormElements = () => {
+  const searchParams = useSearchParams();
+  const userId = searchParams.get("userId");
   const [profilePic, setProfilePic] = useState<File | null>(null);
   const [photo1, setPhoto1] = useState<File | null>(null);
   const [photo2, setPhoto2] = useState<File | null>(null);
@@ -38,7 +41,7 @@ const FormElements = () => {
     name: "",
     lastname: "",
     email: "",
-    phonenumber: "",
+    phoneNumber: "",
     religion: "",
     caste: "",
     subcaste: "",
@@ -76,13 +79,43 @@ const FormElements = () => {
     photo2: "",
     photo3: "",
     photo4: "",
-    horoscope: "",
-    password: ""
+    horoscope: ""
   });
 
   const formData_upload = new FormData();
 
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (userId) {
+      const fetchUserData = async () => {
+        try {
+          const response = await fetch("/api/get-user-data", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: userId }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch user data.");
+          }
+
+          const { data } = await response.json();
+          console.log(data);
+          setFormData(data);
+
+        } catch (err) {
+          console.error(err);
+          setError(err.message);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      fetchUserData();
+    }
+  }, [userId]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -138,27 +171,30 @@ const FormElements = () => {
     console.log(formData_upload);
 
     try {
-      const res = await fetch("/api/add-user", {
+      const res = await fetch("/api/update-user", {
         method: "POST",
         body: formData_upload
       });
 
       if (!res.ok) {
-        throw new Error("Failed to add user data.");
+        throw new Error("Failed to update user data.");
       }
 
       const data = await res.json();
-      toast.success("User Added successfully!");
+      toast.success("User updated successfully!");
     } catch (err) {
       setError(err.message);
-      toast.error("Failed to Add User");
+      toast.error("Failed to update User");
     }
   };
 
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>
-      <Breadcrumb pageName="Add User" />
+      <Breadcrumb pageName="Edit User" />
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
           <div className="flex flex-col gap-9">
@@ -171,7 +207,7 @@ const FormElements = () => {
               <div className="p-6.5">
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Profile Picture
+                    Profile Picture <span className="text-meta-1">*</span>
                   </label>
                   <div className="flex items-center space-x-4">
                     <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
@@ -198,6 +234,7 @@ const FormElements = () => {
                 </div>
 
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+
                   <div className="w-full xl:w-1/2">
                     <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                       First name <span className="text-meta-1">*</span>
@@ -217,7 +254,7 @@ const FormElements = () => {
                     </label>
                     <input
                       type="text"
-                      name="lastname"
+                      name="lastName"
                       value={formData.lastname || ""}
                       onChange={handleChange}
                       placeholder="Enter your last name"
@@ -225,7 +262,6 @@ const FormElements = () => {
                     />
                   </div>
                 </div>
-
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                     Email <span className="text-meta-1">*</span>
@@ -239,7 +275,6 @@ const FormElements = () => {
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
-
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                     Phone Number <span className="text-meta-1">*</span>
@@ -253,24 +288,6 @@ const FormElements = () => {
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
-
-
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Password <span className="text-meta-1">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="password"
-                    value={formData.password || ""}
-                    onChange={handleChange}
-                    placeholder="Enter your Password address"
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-
-
-
                 {/* Render SelectGroupReligion with dynamic castes */}
                 <div>
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
@@ -348,7 +365,7 @@ const FormElements = () => {
                     placeholder="Enter your age"
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
-
+                  {error && <p className="text-sm text-meta-1 mt-1">{error}</p>}
                 </div>
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
@@ -869,6 +886,7 @@ const FormElements = () => {
                     placeholder="Enter your age"
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
+                  {error && <p className="text-sm text-meta-1 mt-1">{error}</p>}
                 </div>
                 <div>
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
