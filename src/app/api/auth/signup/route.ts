@@ -5,6 +5,8 @@ import connectToDatabase from '@/lib/mongodb';
 import { sendEmail } from "@/utils/mail.util"
 import * as Handlebars from 'handlebars';
 import { verification } from '@/lib/template/verification';
+import { welcome } from '@/lib/template/welcome';
+import { welcome_admin } from '@/lib/template/welcome_admin';
 
 export async function POST(request: Request) {
     const { name, email, password, confirmPassword } = await request.json();
@@ -82,7 +84,7 @@ export async function POST(request: Request) {
             address: email
         }]
 
-        const template = Handlebars.compile(verification);
+        const template = Handlebars.compile(welcome);
         const htmlBody = template({
             user_name: name
         });
@@ -103,8 +105,29 @@ export async function POST(request: Request) {
         const result2 = await sendEmail({
             sender,
             receipients,
-            subject: 'TMSM - verification mail!',
+            subject: 'TMSM - Verification mail!',
             message: htmlBody2
+        })
+
+
+        const template3 = Handlebars.compile(welcome_admin);
+        const htmlBody3 = template3({
+            email: email,
+            name: name,
+            phonenumber: '12345678'
+        });
+
+
+        const receipients2 = [{
+            name: 'admin',
+            address: 'kaarthikr@searchnscore.com'
+        }]
+
+        const result3 = await sendEmail({
+            sender,
+            receipients: receipients2,
+            subject: 'TMSM - New User Registration!',
+            message: htmlBody3
         })
 
         console.log("welcome email:", result);

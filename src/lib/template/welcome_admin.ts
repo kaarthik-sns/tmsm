@@ -1,9 +1,9 @@
-export const welcome = `<!DOCTYPE html>
+export const welcome_admin = `<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to TMSM</title>
+    <title>New User Registration</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,30 +27,29 @@ export const welcome = `<!DOCTYPE html>
             color: #666666;
             line-height: 1.6;
         }
-        .button {
-            display: inline-block;
-            background-color: #007BFF;
-            color: #ffffff !important;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
         .footer {
             text-align: center;
             margin-top: 20px;
             font-size: 12px;
             color: #999999;
         }
+        ul {
+            list-style:none
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome, Kaarthik!</h1>
-        <p>Thank you for joining TMSM, the trusted matrimony platform. We are thrilled to have you as a part of our community!</p>
-        
-        <p>We wish you all the best in your journey to find your perfect match.</p>
+        <h1>New User Registration</h1>
+        <p>Hello Admin,</p>
+        <p>A new user has just registered on TMSM:</p>
+        <ul>
+            <li><strong>Username:</strong> {{name}}</li>
+            <li><strong>Email:</strong> {{email}}</li>
+            <li><strong>Phone Number:</strong>{{phonenumber}}</li>
+
+        </ul>
+        <p>Please take the necessary actions if required.</p>
         <div class="footer">
             <p>© 2024 TMSM.com. All rights reserved.</p>
         </div>
