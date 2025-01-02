@@ -286,3 +286,7 @@ input[type="search"]::-webkit-search-cancel-button {
 .dark-text-active {
     color: #ff0000;
 }
+.bg-green-500 {
+    --tw-bg-opacity: 1;
+    background-color: #6f9c5d;
+}
