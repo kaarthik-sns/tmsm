@@ -329,9 +329,6 @@ const FormElements = () => {
                   />
                 </div>
                 <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Date Of Birth
-                  </label>
                   <DatePickerOne
                     name="birthdate"
                     dateFormat="d-m-Y" // Format for the date

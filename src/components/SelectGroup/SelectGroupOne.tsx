@@ -10,7 +10,7 @@ const SelectGroupTwo: React.FC<SelectGroupTwoProps> = ({ value, onChange }) => {
   return (
     <div>
       <label className="mb-3 block text-sm font-medium text-black dark:text-white dark-text">
-      Select Approved Status
+       Account Status
       </label>
 
       <div className="relative z-20 bg-transparent dark:bg-form-input">

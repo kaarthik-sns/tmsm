@@ -246,8 +246,9 @@ const UserTable = () => {
                             <th className="py-3 px-6 dark-text">#</th>
                             <th className="py-3 px-6 dark-text">Name</th>
                             <th className="py-3 px-6 dark-text">Email</th>
-                            <th className="py-3 px-6 dark-text">Status</th>
-                            <th className="py-3 px-6 dark-text">Approved Status</th>
+                            <th className="py-3 px-6 dark-text">Phone Number</th>
+                            <th className="py-3 px-6 dark-text">User Status</th>
+                            <th className="py-3 px-6 dark-text">Acccount Status</th>
                             <th className="py-3 px-6">Action</th>
                         </tr>
                     </thead>
@@ -264,6 +265,7 @@ const UserTable = () => {
                                     <td className="px-6 py-4 whitespace-nowrap">{idx + 1}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{item.name}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{item.email}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{item.phonenumber}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <SwitcherFour
                                             isEnabled={switchStates[idx]}
