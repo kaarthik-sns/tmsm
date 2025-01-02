@@ -127,6 +127,27 @@ const UserTable = () => {
         router.push(`/admin/users/useredit?userId=${userId}`);
     };
 
+    const handleDelete = async (userId) => {
+        const confirmation = confirm("Are you sure you want to delete this user?");
+        if (!confirmation) return;
+
+        try {
+            const response = await axios.get(`/api/delete-user?userId=${userId}`, {
+            });
+
+            if (response.status === 200) {
+                alert("User deleted successfully.");
+                fetchTableItems();
+            } else {
+                alert(`Failed to delete user: ${response.data.message || "Unknown error"}`);
+            }
+        } catch (error) {
+            console.error("Error deleting user:", error);
+            alert(error.response?.data?.message || "An error occurred while deleting the user. Please try again.");
+        }
+    };
+
+
     // Handle Previous Page click
     const handlePrevious = () => {
         if (currentPage > 1) {
@@ -265,15 +286,15 @@ const UserTable = () => {
                                                 className="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg "
                                             >
                                                 <svg
-  xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 24 24"
-  fill="currentColor"
-  className="w-6 h-6"
->
-  <path d="M4 20h4l10-10-4-4L4 16v4zm15.656-15.656a2 2 0 010 2.828l-1.828 1.828-4-4 1.828-1.828a2 2 0 012.828 0l1.172 1.172z" />
-</svg>
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24"
+                                                    fill="currentColor"
+                                                    className="w-6 h-6"
+                                                >
+                                                    <path d="M4 20h4l10-10-4-4L4 16v4zm15.656-15.656a2 2 0 010 2.828l-1.828 1.828-4-4 1.828-1.828a2 2 0 012.828 0l1.172 1.172z" />
+                                                </svg>
 
-                                                
+
                                             </button>
 
 
@@ -304,8 +325,10 @@ const UserTable = () => {
                                             </Link>
                                             {(!switchStates[idx] || !switchStates2[idx]) && (
                                                 <button
+                                                    onClick={() => handleDelete(item._id)}
                                                     className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
                                                 >
+
                                                     <svg
                                                         className="fill-current"
                                                         width="18"
