@@ -42,6 +42,8 @@ const Profile = () => {
           setName(data.data.name);
           setEmail(data.data.email);
           setPreview(data.data.image);
+
+          console.log(data.data.image);
         } else {
           console.error("Failed to fetch user data");
         }
@@ -88,6 +90,8 @@ const Profile = () => {
     if (profilePic) formData.append("profilePic", profilePic);
     if (password) formData.append("password", password);
 
+    console.log(formData);
+    
     try {
       const response = await fetch("/api/update-admin", {
         method: "POST",

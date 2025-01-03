@@ -4,6 +4,7 @@ import Admin from '@/models/Admin';
 import { promises as fs } from 'fs';
 import path from 'path';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 
 export const config = {
   api: {
@@ -15,8 +16,8 @@ export const config = {
 
 export async function POST(req: NextRequest) {
 
-  const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads'); // Save in the public directory
-  
+  const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads', 'admin'); // Save in the public directory
+
   try {
     // Connect to the database
     await connectToDatabase();
@@ -26,42 +27,37 @@ export async function POST(req: NextRequest) {
 
     // Parse the form data
     const formData = await req.formData();
-    console.log('Form Data:', formData);
-
+    
     const file = formData.get('profilePic') as File;
-    const id = formData.get('id') as string;
     const password = formData.get('password') as string;
     const name = formData.get('name') as string;
     const email = formData.get('email') as string;
 
     // Retrieve the admin user from the database
-    const user = await Admin.findById(id);
+    const user = await Admin.findOne({}) || new Admin();
 
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // update profile pic
     if (file) {
-      // Debugging the file details
-      console.log('File Details:', {
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        lastModified: file.lastModified,
-      });
+      // Generate a unique filename using timestamp and random string
+      const uniqueSuffix = Date.now() + '-' + crypto.randomBytes(6).toString('hex');
+      const fileExtension = path.extname(file.name);
+      const uniqueFileName = `${uniqueSuffix}${fileExtension}`;
 
       // Construct the file path within the public/uploads folder
-      const filePath = path.join(UPLOAD_DIR, file.name);
-      console.log('File Path:', filePath);
+      const filePath = path.join(UPLOAD_DIR, uniqueFileName);
 
       // Save the file to the server
       const fileBuffer = Buffer.from(await file.arrayBuffer());
       await fs.writeFile(filePath, fileBuffer);
 
       // Save the file path in the user document (relative to public)
-      user.image = `/uploads/${file.name}`; // Adjusted path to public folder
+      user.image = `/uploads/admin/${uniqueFileName}`; // Adjusted path to public folder
+
     }
+
 
     // update password
     if (password) {
@@ -79,7 +75,11 @@ export async function POST(req: NextRequest) {
       user.email = email;
     }
 
+    console.log(user);
+
     await user.save();
+
+
 
     return NextResponse.json({
       message: 'Profile updated successfully',
