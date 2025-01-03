@@ -4,12 +4,12 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import AuthLayout from '@/components/Layouts/AuthLayout';
+import Terms from "@/components/Checkboxes/Terms";
 
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
-import { signIn } from "next-auth/react";
 
 import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
 
@@ -32,6 +32,7 @@ const SignUp: React.FC = () => {
     "Christian"
   ];
 
+  const [selected, setselected] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
@@ -39,6 +40,12 @@ const SignUp: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setPending(true);
+
+    setError(null);
+
+    if(!selected) {
+      setError('Please accept the Terms and Condition!');
+    }
 
     const res = await fetch("/api/auth/signup", {
       method: "POST",
@@ -474,6 +481,14 @@ const SignUp: React.FC = () => {
                       </svg>
                     </span>
                   </div>
+                </div>
+
+                <div className="mb-5">
+                  <Terms
+                    selected={selected}
+                    setselected={setselected}
+                    label="I accept the terms and conditions"
+                  />
                 </div>
 
                 <div className="mb-5">
