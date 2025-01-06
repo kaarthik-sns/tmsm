@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import StatusFilter from "@/components/UserReqTable/Select/StatusFilter";
 import UpdateStatus from "@/components/UserReqTable/Select/UpdateStatus";
+import { toast } from "sonner";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation"; // For page navigation
@@ -12,7 +13,6 @@ const UserTable = () => {
     const [pages, setPages] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
     const [tableItems, setTableItems] = useState([]);
-    const router = useRouter(); // Initialize Next.js router
     const [triggerFetch, setTriggerFetch] = useState(false);
 
     const [formState, setFormState] = useState({
@@ -85,6 +85,7 @@ const UserTable = () => {
             setTableItems(data.data);
             setPages(data.pagination.totalPages);
         } catch (error) {
+            toast.error("Error fetching table items");
             console.error("Error fetching table items:", error);
         }
     };
@@ -122,10 +123,25 @@ const UserTable = () => {
 
             // Success: Optionally handle the response here
             const data = await response.json();
+            // toast.success("Status updated successfully");
+
+            toast.success('Status updated successfully', {
+                cancel: {
+                    label: 'Close',
+                    onClick: () => console.log('Close'),
+                },
+            });
+
             console.log("Status updated successfully", data);
 
         } catch (error) {
             // Failure: revert to the previous status
+            toast.error("Error updating status", {
+                cancel: {
+                    label: 'Close',
+                    onClick: () => console.log('Close'),
+                },
+            });
             console.error("Error updating status:", error);
 
             setTableItems((prev) =>
@@ -154,16 +170,7 @@ const UserTable = () => {
 
     return (
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">
-            <div className="items-start justify-between md:flex">
-                <div className="mt-3 md:mt-0">
-                    <Link
-                        href="/admin/users/useradd"
-                        className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
-                    >
-                        Add member
-                    </Link>
-                </div>
-            </div>
+
             <div className="mt-12 shadow-sm border rounded-lg overflow-x-auto">
 
                 <form onSubmit={handleSubmit}>
