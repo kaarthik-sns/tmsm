@@ -6,7 +6,7 @@ import connectToDatabase from "@/lib/mongodb";
 import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-const handler = NextAuth({
+export const authOptions = {
     session: {
         strategy: "jwt",
     },
@@ -106,5 +106,8 @@ const handler = NextAuth({
 
     },
     secret: process.env.NEXTAUTH_SECRET,
-});
+};
+
+const handler = NextAuth(authOptions);
+
 export { handler as GET, handler as POST };
