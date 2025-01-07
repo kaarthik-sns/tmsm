@@ -85,13 +85,27 @@ const FaqElements = () => {
       if (!res.ok) {
         throw new Error("Failed to update FAQ data.");
       }
+    
+       toast.success('FAQ updated successfully!', {
+          className: "sonner-toast-success",
+          cancel: {
+            label: 'Close',
+            onClick: () => console.log('Close'),
+          },
+        });
 
       // Redirect to the FAQ list page after successful update
-      toast.success("FAQ updated successfully!");
 
     } catch (err) {
       setError(err.message || "An unknown error occurred.");
-      toast.error("Failed to update FAQ.");
+          
+      toast.error('Failed to update FAQ', {
+        className: "sonner-toast-error",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
     }
   };
 

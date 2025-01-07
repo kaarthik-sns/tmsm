@@ -333,4 +333,16 @@ li::marker {
     top: 54px;
     padding: 6px;
 }
-
+h2#swal2-title {
+    font-size: 16px;
+}
+div#swal2-html-container {
+    font-size: 16px;
+}
+button.swal2-confirm.swal2-styled.swal2-default-outline {
+    background: #fff2d7 !important;
+    color: #653D27;
+}
+button.swal2-cancel.swal2-styled.swal2-default-outline {
+    background: #ff0000 !important;
+}
