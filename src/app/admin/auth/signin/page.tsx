@@ -30,7 +30,13 @@ const SignIn: React.FC = () => {
       is_admin: true
     });
     if (res?.ok) {
-      toast.success("login successful");
+      toast.success("login successful", {
+        className: "sonner-toast-success",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        }
+      });
       router.push("/admin/dashboard");
     } else if (res?.status === 401) {
       setError("Invalid Credentials");
