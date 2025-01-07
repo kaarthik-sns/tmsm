@@ -125,7 +125,7 @@ const UserTable = () => {
             const data = await response.json();
             // toast.success("Status updated successfully");
 
-            toast.success('Status updated successfully', {
+            toast.success('Status updated successfully!', {
                 cancel: {
                     label: 'Close',
                     onClick: () => console.log('Close'),
@@ -136,7 +136,7 @@ const UserTable = () => {
 
         } catch (error) {
             // Failure: revert to the previous status
-            toast.error("Error updating status", {
+            toast.error("Status failed to update", {
                 cancel: {
                     label: 'Close',
                     onClick: () => console.log('Close'),

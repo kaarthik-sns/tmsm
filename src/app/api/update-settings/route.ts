@@ -6,13 +6,6 @@ import path from 'path';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '10mb', // Adjust the size limit as needed
-    },
-  },
-};
 
 export async function POST(req: NextRequest) {
 
