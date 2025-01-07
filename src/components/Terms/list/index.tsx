@@ -4,7 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 
 const TermTable = () => {
-    const [currentPage, setCurrentPage] = useState(1);
+
     const [tableItems, setTableItems] = useState([]);
     const router = useRouter();
 
@@ -14,18 +14,19 @@ const TermTable = () => {
 
     useEffect(() => {
         fetchTableItems();
-    }, [currentPage]);
+    });
 
     const fetchTableItems = async () => {
         try {
             const response = await axios.get("/api/terms/list", {
                 params: {
-                    page: currentPage,
+                    page: 1,
                     description: formState.description,
                 },
             });
+
             setTableItems(response.data.data || []);
-            setPages(response.data.pagination?.totalPages || 0);
+           
         } catch (error) {
             console.error("Error fetching table items:", error);
         }
@@ -43,15 +44,15 @@ const TermTable = () => {
                     tableItems.map((item, idx) => (
 
                         <div key={idx}>
-                         <div className="mt-3 md:mt-0">
-                            <button onClick={() => handleEdit(item._id)}
-                                className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
-                            >
-                                Edit Terms & Conditions
-                            </button>
+                            <div className="mt-3 md:mt-0">
+                                <button onClick={() => handleEdit(item._id)}
+                                    className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
+                                >
+                                    Edit Terms & Conditions
+                                </button>
+                            </div>
+
                         </div>
-                           
-                       </div>
                     ))
                 ) : (
                     <p className="text-center py-4"></p>
