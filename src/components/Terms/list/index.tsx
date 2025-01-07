@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Breadcrumb from "@/components/Breadcrumbs/FaqBreadcrumb";
 
 const TermTable = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -37,6 +38,8 @@ const TermTable = () => {
     };
 
     return (
+        <>
+        <Breadcrumb pageName="List Terms & Conditions" />
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">
             <div className="">
                 {tableItems.length > 0 ? (
@@ -82,6 +85,7 @@ const TermTable = () => {
             </div>
 
         </div>
+        </>
     );
 };
 

@@ -200,7 +200,13 @@ const FormElements = () => {
     // If there are validation errors, show error messages and stop submission
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors); // Assume `setError` updates the UI to display error messages
-      toast.error("Please fix the highlighted errors.");
+      toast.error('Please fix the highlighted errors.', {
+        className: "sonner-toast-error",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
       return;
     }
 
@@ -233,8 +239,13 @@ const FormElements = () => {
       }
 
       const data = await res.json();
-      toast.success("User Added successfully!");
-
+      toast.success('User Added successfully!', {
+        className: "sonner-toast-success",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
       // Reset the form
       setFormData({}); // Clear form data
       setProfilePic(null); // Reset profile picture
@@ -245,7 +256,13 @@ const FormElements = () => {
       setHoroscope(null);
     } catch (err) {
       setError(err.message);
-      toast.error("Failed to Add User");
+      toast.error('Failed to update User', {
+        className: "sonner-toast-error",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
     }
   };
 

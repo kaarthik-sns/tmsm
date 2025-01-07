@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation"; // For page navigation
-
+import Breadcrumb from "@/components/Breadcrumbs/FaqBreadcrumb";
 
 
 const FaqTable = () => {
@@ -97,6 +97,9 @@ const FaqTable = () => {
 
 
     return (
+        <>        
+        <Breadcrumb pageName="List Faq" />
+
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">
             <div className="items-start justify-between md:flex">
                 <div className="mt-3 md:mt-0">
@@ -261,6 +264,7 @@ const FaqTable = () => {
 )}
 
         </div >
+        </>
     );
 };
 

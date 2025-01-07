@@ -34,7 +34,13 @@ const FaqElements = () => {
   
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
-      toast.error("Please fix the highlighted errors.");
+      toast.error('Please fix the highlighted errors.', {
+        className: "sonner-toast-error",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
       return;
     }
   
@@ -59,14 +65,28 @@ const FaqElements = () => {
       }
   
       const data = await res.json();
-      toast.success("FAQ added successfully!");
+
+      toast.success('FAQ added successfully!', {
+        className: "sonner-toast-success",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
+
   
       setFormData({
         title: "",
         description: "",
       });
     } catch (err: any) {
-      toast.error(err.message || "Failed to add FAQ.");
+      toast.error('Failed to add FAQ.', {
+        className: "sonner-toast-error",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
     }
   };
   
