@@ -321,3 +321,16 @@ li::marker {
     fill: #fff !important;
 }
 
+.sonner-toast-success {
+    background-color: #28a745 !important;  /* Change this to your desired color */
+    color: white;   
+    top: 54px;
+    padding: 6px;             /* Text color */
+}
+.sonner-toast-error {
+    background-color: #ff0000 !important;
+    color: white;
+    top: 54px;
+    padding: 6px;
+}
+

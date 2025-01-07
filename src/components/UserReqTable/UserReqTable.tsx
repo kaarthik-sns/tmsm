@@ -263,6 +263,7 @@ const UserTable = () => {
                                     </td>
 
                                     <td className="px-6 py-4 whitespace-nowrap">
+                                        
                                         <UpdateStatus
                                             value={item.status}
                                             onChange={(newStatus) => handleStatusUpdate(item._id, newStatus)}
