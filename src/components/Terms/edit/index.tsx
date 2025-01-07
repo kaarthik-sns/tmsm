@@ -64,7 +64,9 @@ console.log(termId);
 
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
-      toast.error("Please fix the highlighted errors.");
+      toast.error("Failed to update!", {
+        className: "sonner-toast-error", // Custom class
+      });
       return;
     }
 
@@ -83,11 +85,15 @@ console.log(termId);
       }
 
       // Redirect to the FAQ list page after successful update
-      toast.success("Terms & conditions updated successfully!");
-
+      toast.success("Terms & conditions updated successfully!", {
+        className: "sonner-toast-success", // Custom class
+      })
     } catch (err) {
       setError(err.message || "An unknown error occurred.");
-      toast.error("Failed to update FAQ.");
+
+      toast.error("Failed to update!", {
+        className: "sonner-toast-error", // Custom class
+      })
     }
   };
 

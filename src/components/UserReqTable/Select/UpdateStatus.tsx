@@ -12,13 +12,8 @@ const UpdateStatus: React.FC<UpdateStatusProps> = ({ value, onChange }) => {
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     onChange(e.target.value); // Pass the updated value back to the parent component
   };
-
   return (
-    <div>
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white dark-text">
-        Status
-      </label>
-
+    <div className="w-64 md:w-64">
       <div className="relative z-20 bg-transparent dark:bg-form-input">
         <select
           value={value}
