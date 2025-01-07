@@ -8,7 +8,7 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import CheckboxTwo from "@/components/Checkboxes/CheckboxTwo";
 import { toast } from "sonner";
 import { TriangleAlert } from "lucide-react";
-
+import React from "react";
 
 const Profile = () => {
 

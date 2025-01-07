@@ -1,41 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation"; // Updated import for query parameter extraction
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
-import SelectGroupCaste from "@/components/SelectGroup/SelectGroupCaste";
-import SelectGroupSubCaste from "@/components/SelectGroup/SelectGroupSubCaste ";
-import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
-import { toast } from "sonner";
-import { TriangleAlert } from "lucide-react";
+import Breadcrumb from "@/components/Breadcrumbs/UserBreadcrumb";
 import NextImage from "next/image"; // Rename the import to avoid conflict
 
 const FormElements = () => {
   const searchParams = useSearchParams();
   const userId = searchParams.get("userId");
-  const [profilePic, setProfilePic] = useState<File | null>(null);
-  const [photo1, setPhoto1] = useState<File | null>(null);
-  const [photo2, setPhoto2] = useState<File | null>(null);
-  const [photo3, setPhoto3] = useState<File | null>(null);
-  const [photo4, setPhoto4] = useState<File | null>(null);
-  const [horoscope, setHoroscope] = useState<File | null>(null);
-
-  // Array for religions
-  const religions = [
-    "Hindu",
-    "Muslim",
-    "Christian"
-  ];
-
-  // Array for castes
-  const castes = [
-    "Mudaliyar"
-  ];
-
-  // Array for Subcastes
-  const subcastes = [
-    "Mudaliyar"
-  ];
 
   const [formData, setFormData] = useState({
     name: "",
@@ -82,10 +53,15 @@ const FormElements = () => {
     horoscope: ""
   });
 
-  const formData_upload = new FormData();
+  const handlePreview = () => {
+    if (formData.horoscope) {
+      // Open the file in a new tab
+      window.open(formData.horoscope, "_blank");
+    } else {
+      alert("No file uploaded to preview!");
+    }
+  };
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (userId) {
@@ -117,85 +93,25 @@ const FormElements = () => {
     }
   }, [userId]);
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
 
-    if (files && files.length > 0) {
-      // Handle file input
-      const file = files[0];
-
-      if (name == 'profile_photo') setProfilePic(file);
-      if (name == 'photo1') setPhoto1(file);
-      if (name == 'photo2') setPhoto2(file);
-      if (name == 'photo3') setPhoto3(file);
-      if (name == 'photo4') setPhoto4(file);
-      if (name == 'horoscope') setHoroscope(file);
-
-      const fileURL = URL.createObjectURL(file);
-      setFormData((prevData) => ({ ...prevData, [name]: fileURL }));
-    } else {
-      // Handle regular input fields
-      setFormData((prevData) => ({ ...prevData, [name]: value }));
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return ""; // Return an empty string if the date is invalid
     }
+  
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = date.toLocaleString("en-US", { month: "short" });
+    const year = date.getFullYear();
+  
+    return `${day}-${month}-${year}`; // Example: "02-May-2025"
   };
+  
 
-  const handlePreview = () => {
-    if (formData.horoscope) {
-      // Open the file in a new tab
-      window.open(formData.horoscope, "_blank");
-    } else {
-      alert("No file uploaded to preview!");
-    }
-  };
-
-  // Handle form submission to update user data
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-
-    // Loop through the form state and append each value to FormData
-    for (const [key, value] of Object.entries(formData)) {
-      const excludedKeys = ['profile_photo', 'photo1', 'photo2', 'photo3', 'photo4', 'horoscope'];
-      if (!excludedKeys.includes(key)) {
-        formData_upload.append(key, value);
-      }
-    }
-
-    if (profilePic) formData_upload.append("profile_photo", profilePic);
-    if (photo1) formData_upload.append("photo1", photo1);
-    if (photo2) formData_upload.append("photo2", photo2);
-    if (photo3) formData_upload.append("photo3", photo3);
-    if (photo4) formData_upload.append("photo2", photo4);
-    if (horoscope) formData_upload.append("horoscope", horoscope);
-
-    console.log(formData_upload);
-
-    try {
-      const res = await fetch("/api/update-user", {
-        method: "POST",
-        body: formData_upload
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to update user data.");
-      }
-
-      const data = await res.json();
-      toast.success("User updated successfully!");
-    } catch (err) {
-      setError(err.message);
-      toast.error("Failed to update User");
-    }
-  };
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
 
   return (
     <>
       <Breadcrumb pageName="View User" />
-      <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
           <div className="flex flex-col gap-9">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -207,7 +123,7 @@ const FormElements = () => {
               <div className="p-6.5">
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Profile Picture <span className="text-meta-1">*</span>
+                    Profile Picture
                   </label>
                   <div className="flex items-center space-x-4">
                     <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
@@ -265,7 +181,7 @@ const FormElements = () => {
                 </div>
                 <div>
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Date Of Birth : {formData.birthdate}
+                    Date Of Birth :  {formData.birthdate ? formatDate(formData.birthdate) : ""}
                   </label>
                  
                 </div>
@@ -357,104 +273,6 @@ const FormElements = () => {
                 </div>
               </div>
             </div>
-
-
-            {/* <!-- Photo upload start --> */}
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="font-medium dark-text dark:text-white">
-                  Extra Photos
-                </h3>
-              </div>
-              
-              <div className="flex flex-col gap-5.5 p-6.5">
-              <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-               {formData.photo1 && (
-                  <div className="w-full xl:w-1/2">
-                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Picture
-                    </label>
-                    <div className="flex items-center space-x-4">
-                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                        <NextImage
-                          src={formData.photo1 || ""}
-                          alt="Profile Preview"
-                          width={64}
-                          height={64}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                    </div>
-                   </div>
-                  </div>
-                  )}
-                   {formData.photo2 && (
-                  <div className="w-full xl:w-1/2">
-                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Picture2
-                    </label>
-                    <div className="flex items-center space-x-4">
-                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                        <NextImage
-                          src={formData.photo2 || ""}
-                          alt="Profile Preview"
-                          width={64}
-                          height={64}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                    </div>
-                   </div>
-                  </div>
-                   )}
-                   {formData.photo2 && (
-                  <div className="w-full xl:w-1/2">
-                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Picture3
-                    </label>
-                    <div className="flex items-center space-x-4">
-                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                        <NextImage
-                          src={formData.photo3 || ""}
-                          alt="Profile Preview"
-                          width={64}
-                          height={64}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                    </div>
-                   </div>
-                  </div>
-                   )}
-                   {formData.photo4 && (
-                  <div className="w-full xl:w-1/2">
-                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Picture4
-                    </label>
-                    <div className="flex items-center space-x-4">
-                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                        <NextImage
-                          src={formData.photo4 || ""}
-                          alt="Profile Preview"
-                          width={64}
-                          height={64}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                    </div>
-                   </div>
-                  </div>
-                   )}
-                </div>
-              </div>
-            </div>
-            {/* <!-- Photo upload end--> */}
-
-
           </div>
 
 
@@ -570,10 +388,107 @@ const FormElements = () => {
                 </div>
               </div>
             </div>
+            {/* <!-- Partner Preference end --> */}
+
+
+            {/* <!-- Photo upload start --> */}
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                <h3 className="font-medium dark-text dark:text-white">
+                  Additional Picture
+                </h3>
+              </div>
+              
+              <div className="flex flex-col gap-5.5 p-6.5">
+              <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+               {formData.photo1 && (
+                  <div className="w-full xl:w-1/2">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Picture
+                    </label>
+                    <div className="flex items-center space-x-4">
+                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
+                        <NextImage
+                          src={formData.photo1 || ""}
+                          alt="Profile Preview"
+                          width={64}
+                          height={64}
+                          quality={100}
+                          unoptimized={true}
+                          className="w-full h-full object-cover"
+                        />
+                    </div>
+                   </div>
+                  </div>
+                  )}
+                   {formData.photo2 && (
+                  <div className="w-full xl:w-1/2">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Picture2
+                    </label>
+                    <div className="flex items-center space-x-4">
+                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
+                        <NextImage
+                          src={formData.photo2 || ""}
+                          alt="Profile Preview"
+                          width={64}
+                          height={64}
+                          quality={100}
+                          unoptimized={true}
+                          className="w-full h-full object-cover"
+                        />
+                    </div>
+                   </div>
+                  </div>
+                   )}
+                   {formData.photo2 && (
+                  <div className="w-full xl:w-1/2">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Picture3
+                    </label>
+                    <div className="flex items-center space-x-4">
+                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
+                        <NextImage
+                          src={formData.photo3 || ""}
+                          alt="Profile Preview"
+                          width={64}
+                          height={64}
+                          quality={100}
+                          unoptimized={true}
+                          className="w-full h-full object-cover"
+                        />
+                    </div>
+                   </div>
+                  </div>
+                   )}
+                   {formData.photo4 && (
+                  <div className="w-full xl:w-1/2">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Picture4
+                    </label>
+                    <div className="flex items-center space-x-4">
+                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
+                        <NextImage
+                          src={formData.photo4 || ""}
+                          alt="Profile Preview"
+                          width={64}
+                          height={64}
+                          quality={100}
+                          unoptimized={true}
+                          className="w-full h-full object-cover"
+                        />
+                    </div>
+                   </div>
+                  </div>
+                   )}
+                </div>
+              </div>
+            </div>
+            {/* <!-- Photo upload end--> */}
+
+
           </div>
         </div>
-        {error && <p className="mt-4 text-red-500">{error}</p>}
-      </form>
     </>
   );
 };

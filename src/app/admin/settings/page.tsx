@@ -5,6 +5,12 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { TriangleAlert } from "lucide-react";
+export const metadata: Metadata = {
+  title: "Settings - TMSM",
+  description:
+    "",
+};
+
 
 const Settings = () => {
 

@@ -290,3 +290,27 @@ input[type="search"]::-webkit-search-cancel-button {
     --tw-bg-opacity: 1;
     background-color: #6f9c5d;
 }
+.list-text {
+    color: #653D27;
+    background: #ebebeb;
+}
+.text-custom:hover {
+    color: #ffffff;
+    background: #ff0000;
+    border-color: #ff0000;
+}
+.fill-current {
+    fill: #653d27
+}
+.red-color {
+    color: #ffffff;
+    font-weight: 800;
+    background: red;
+    padding: 5px;
+    border-radius: 50%;
+    top: -12px;
+    right: -6px;
+}
+.red-color:hover {
+    background:#fff2d7;
+}
