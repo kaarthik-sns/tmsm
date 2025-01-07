@@ -8,7 +8,7 @@ import Breadcrumb from "@/components/Breadcrumbs/FaqBreadcrumb";
 
 const FaqTable = () => {
 
-    const [pages, setPages] = useState("");
+    const [pages, setPages] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
     const [tableItems, setTableItems] = useState([]);
     const [modalData, setModalData] = useState(null); // State for modal data
@@ -132,7 +132,7 @@ const FaqTable = () => {
                             tableItems.map((item, idx) => (
                                 <tr key={idx} className="odd:bg-gray-50 even:bg-white">
 
-                                    <td className="px-6 py-4 whitespace-nowrap">#</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{idx + 1}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{item.title}</td>
                                     <td className="text-right px-6 whitespace-nowrap">
                                         <div className="flex items-center space-x-3.5">
