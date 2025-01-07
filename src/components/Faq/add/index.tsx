@@ -34,7 +34,13 @@ const FaqElements = () => {
   
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
-      toast.error("Please fix the highlighted errors.");
+      toast.error('Please fix the highlighted errors.', {
+        className: "sonner-toast-error",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
       return;
     }
   
@@ -59,14 +65,28 @@ const FaqElements = () => {
       }
   
       const data = await res.json();
-      toast.success("FAQ added successfully!");
+
+      toast.success('FAQ added successfully!', {
+        className: "sonner-toast-success",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
+
   
       setFormData({
         title: "",
         description: "",
       });
     } catch (err: any) {
-      toast.error(err.message || "Failed to add FAQ.");
+      toast.error('Failed to add FAQ.', {
+        className: "sonner-toast-error",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
     }
   };
   
@@ -75,7 +95,7 @@ const FaqElements = () => {
     <>
       <Breadcrumb pageName="Add FAQ" />
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-9 sm:grid-cols-1">
           <div className="flex flex-col gap-9">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="p-6.5">
@@ -122,7 +142,7 @@ const FaqElements = () => {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 gap-9 sm:grid-cols-2 mt-4.5">
+        <div className="grid grid-cols-1 gap-9 sm:grid-cols-1 mt-4.5">
         <div className="text-right">
             <button
               type="submit"

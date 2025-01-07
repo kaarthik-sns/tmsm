@@ -85,13 +85,27 @@ const FaqElements = () => {
       if (!res.ok) {
         throw new Error("Failed to update FAQ data.");
       }
+    
+       toast.success('FAQ updated successfully!', {
+          className: "sonner-toast-success",
+          cancel: {
+            label: 'Close',
+            onClick: () => console.log('Close'),
+          },
+        });
 
       // Redirect to the FAQ list page after successful update
-      toast.success("FAQ updated successfully!");
 
     } catch (err) {
       setError(err.message || "An unknown error occurred.");
-      toast.error("Failed to update FAQ.");
+          
+      toast.error('Failed to update FAQ', {
+        className: "sonner-toast-error",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
     }
   };
 
@@ -105,7 +119,7 @@ const FaqElements = () => {
       <Breadcrumb pageName="Edit FAQ" />
       {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-9 sm:grid-cols-1">
           <div className="flex flex-col gap-9">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
 
@@ -153,7 +167,7 @@ const FaqElements = () => {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 gap-9 sm:grid-cols-2 mt-4.5">
+        <div className="grid grid-cols-1 gap-9 sm:grid-cols-1 mt-4.5">
           <div className="text-right">
             <button
               type="submit"

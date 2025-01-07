@@ -86,6 +86,7 @@ const UserTable = () => {
             setPages(data.pagination.totalPages);
         } catch (error) {
             toast.error("Error fetching table items");
+            
             console.error("Error fetching table items:", error);
         }
     };
@@ -126,6 +127,7 @@ const UserTable = () => {
             // toast.success("Status updated successfully");
 
             toast.success('Status updated successfully!', {
+                className: "sonner-toast-success",
                 cancel: {
                     label: 'Close',
                     onClick: () => console.log('Close'),
@@ -137,6 +139,7 @@ const UserTable = () => {
         } catch (error) {
             // Failure: revert to the previous status
             toast.error("Status failed to update", {
+                className: "sonner-toast-error",
                 cancel: {
                     label: 'Close',
                     onClick: () => console.log('Close'),

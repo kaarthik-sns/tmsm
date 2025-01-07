@@ -195,7 +195,14 @@ const FormElements = () => {
     // If there are validation errors, show error messages and stop submission
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors); // Assume `setError` updates the UI to display error messages
-      toast.error("Please fix the highlighted errors.");
+      toast.error('Please fix the highlighted errors.', {
+        className: "sonner-toast-error",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
+      
       return;
     }
 
@@ -213,10 +220,22 @@ const FormElements = () => {
       }
 
       const data = await res.json();
-      toast.success("User updated successfully!");
+      toast.success('User updated successfully!', {
+        className: "sonner-toast-success",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
     } catch (err) {
       setError(err.message);
-      toast.error("Failed to update User");
+      toast.error('Failed to update User', {
+        className: "sonner-toast-error",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
     }
   };
 

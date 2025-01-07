@@ -105,7 +105,7 @@ const DropdownUser = () => {
             <li>
               <Link
                 href="/admin/profile"
-                className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+                className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out lg:text-base dark-texts"
               >
                 <svg
                   className="fill-current"
@@ -131,7 +131,7 @@ const DropdownUser = () => {
             <li>
               <Link
                 href="/admin/settings"
-                className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+                className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out lg:text-base dark-texts"
               >
                 <svg
                   className="fill-current"
@@ -156,7 +156,7 @@ const DropdownUser = () => {
           </ul>
           {session?.user.is_admin ? (
             session?.user.name ? (
-              <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base" onClick={() => signOut()}>   <svg
+              <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out lg:text-base dark-texts"  onClick={() => signOut()}>   <svg
                 className="fill-current"
                 width="22"
                 height="22"
@@ -185,7 +185,7 @@ const DropdownUser = () => {
                 </>
               )}
 
-              {session?.user.name && <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base" onClick={() => signOut()}>
+              {session?.user.name && <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out dark-texts lg:text-base" onClick={() => signOut()}>
                 <svg
                   className="fill-current"
                   width="22"
