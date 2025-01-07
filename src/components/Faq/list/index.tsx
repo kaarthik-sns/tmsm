@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation"; // For page navigation
-import Breadcrumb from "@/components/Breadcrumbs/FaqBreadcrumb";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 
 
 const FaqTable = () => {

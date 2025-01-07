@@ -5,7 +5,7 @@ import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
 export const metadata: Metadata = {
-  title: "List Faq - TMSM",
+  title: "Terms & Conditions - TMSM",
   description:
     "",
 };

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import Breadcrumb from "@/components/Breadcrumbs/FaqBreadcrumb";
+import Breadcrumb from "@/components/Breadcrumbs/TermBreadcrumb";
 
 const TermTable = () => {
 
@@ -13,10 +13,7 @@ const TermTable = () => {
         description: "",
     });
 
-    useEffect(() => {
-        fetchTableItems();
-    });
-
+   
     const fetchTableItems = async () => {
         try {
             const response = await axios.get("/api/terms/list", {
@@ -33,6 +30,7 @@ const TermTable = () => {
         }
     };
 
+    fetchTableItems();
 
     const handleEdit = (TermId) => {
         router.push(`/admin/cms/terms_conditions/edit?termId=${TermId}`);
@@ -40,7 +38,7 @@ const TermTable = () => {
 
     return (
         <>
-        <Breadcrumb pageName="List Terms & Conditions" />
+        <Breadcrumb pageName="Terms & Conditions" />
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">
             <div className="">
                 {tableItems.length > 0 ? (
