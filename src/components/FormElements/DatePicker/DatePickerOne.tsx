@@ -42,8 +42,8 @@ const DatePickerOne = ({
 
   return (
     <div className="mb-4.5">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Date Picker
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white dark-text">
+      Date Of Birth
       </label>
       <div className="relative">
         <input

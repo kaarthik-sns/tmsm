@@ -9,6 +9,7 @@ const UserSchema = new Schema({
   is_active: { type: Boolean, default: true }, // account active or not status
   is_verify: { type: Boolean, default: false }, // email verified or not status
   is_approve: { type: Boolean, default: false }, // admin approved or not status
+  is_delete: { type: Boolean, default: false }, // admin approved or not status
   email_code: {
     type: String,
     default: function () {
@@ -42,6 +43,8 @@ const UserSchema = new Schema({
   gothram: { type: String, required: false },
   profile_photo: { type: String, required: false },
   horoscope: { type: String, required: false },
+  reference1: { type: String, required: false },
+  reference2: { type: String, required: false },
 
   father_name: { type: String, required: false },
   father_phonenumber: { type: String, required: false },
