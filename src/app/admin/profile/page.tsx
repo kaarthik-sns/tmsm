@@ -116,6 +116,7 @@ const Profile = () => {
 
       if (response.ok) {
         toast.success('Profile updated successfully!', {
+          className: "sonner-toast-success",
           cancel: {
             label: 'Close',
             onClick: () => console.log('Close'),
@@ -123,6 +124,7 @@ const Profile = () => {
         });
       } else {
         toast.error('Failed to update profile', {
+          className: "sonner-toast-error",
           cancel: {
             label: 'Close',
             onClick: () => console.log('Close'),
@@ -132,6 +134,7 @@ const Profile = () => {
     } catch (error) {
       console.error("Error updating profile:", error);
       toast.error('Failed to update profile', {
+        className: "sonner-toast-error",
         cancel: {
           label: 'Close',
           onClick: () => console.log('Close'),

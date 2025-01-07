@@ -111,7 +111,8 @@ const Settings = () => {
 
       if (response.ok) {
 
-        toast.success('Settings updated successfully', {
+        toast.success('Settings updated successfully!', {
+          className: "sonner-toast-success",
           cancel: {
             label: 'Close',
             onClick: () => console.log('Close'),
@@ -124,7 +125,8 @@ const Settings = () => {
       }
     } catch (err) {
 
-      toast.error('An error occurred while submitting the form.', {
+      toast.error('Settings failed to update!', {
+        className: "sonner-toast-error",
         cancel: {
           label: 'Close',
           onClick: () => console.log('Close'),
