@@ -11,13 +11,6 @@ import { verification } from '@/lib/template/verification';
 import { welcome } from '@/lib/template/welcome';
 import { welcome_admin } from '@/lib/template/welcome_admin';
 
-export const config = {
-    api: {
-        bodyParser: {
-            sizeLimit: '10mb', // Adjust the size limit as needed
-        },
-    }
-};
 
 export async function POST(request: NextRequest) {
 
