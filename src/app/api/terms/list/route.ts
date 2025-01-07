@@ -1,0 +1,40 @@
+import { NextRequest, NextResponse } from 'next/server';
+import connectToDatabase from '@/lib/mongodb';
+import Faq from '@/models/Terms';
+
+export const GET = async (req: NextRequest) => {
+    try {
+        const { searchParams } = new URL(req.url);
+        const page = parseInt(searchParams.get('page') || '1', 10);
+        const pageSize = 10;
+        const skip = (page - 1) * pageSize;
+
+        // Connect to the database
+        await connectToDatabase();
+
+        // Build the query object
+        const query: any = {};
+
+        query.is_delete = { $ne: true };
+
+        // Fetch filtered and paginated users from the database
+        const faqs = await Faq.find(query).skip(skip).limit(pageSize);
+
+        // Count total documents for the query
+        const totalfaqs = await Faq.countDocuments(query);
+
+        // Prepare the response with pagination meta
+        return NextResponse.json({
+            data: faqs,
+            pagination: {
+                currentPage: page,
+                pageSize,
+                totalfaqs,
+                totalPages: Math.ceil(totalfaqs / pageSize),
+            },
+        });
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+    }
+};

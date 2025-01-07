@@ -1,25 +1,18 @@
 'use client';
 import { useEffect, useState } from "react"
 import axios from "axios";
-import SwitcherFour from "@/components/Switchers/SwitcherFour";
-import { BsPencilSquare } from "react-icons/bs";
-import { BsFillTrash3Fill } from "react-icons/bs";
-import { AiFillEye } from "react-icons/ai";
-import SelectGroupTwo from "@/components/SelectGroup/SelectGroupTwo";
-import SelectGroupOne from "@/components/SelectGroup/SelectGroupOne";
 import Link from "next/link";
 import { useRouter } from "next/navigation"; // For page navigation
-import NextImage from "next/image"; // Rename the import to avoid conflict
 
 
 
-const UserTable = () => {
+const FaqTable = () => {
 
     const [pages, setPages] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [tableItems, setTableItems] = useState([]);
-    const [switchStates, setSwitchStates] = useState<boolean[]>([]);
-    const [switchStates2, setSwitchStates2] = useState<boolean[]>([]);
+    const [modalData, setModalData] = useState(null); // State for modal data
+    const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
     const router = useRouter(); // Initialize Next.js router
 
     const [formState, setFormState] = useState({
@@ -33,52 +26,24 @@ const UserTable = () => {
         fetchTableItems();
     }, [currentPage]);
 
-    useEffect(() => {
-        if (tableItems.length > 0) {
-            setSwitchStates(tableItems.map((item) => item.is_active));
-            setSwitchStates2(tableItems.map((item) => item.is_approve));
-
-        }
-    }, [tableItems]);
-
-    const handleInputChange = (field, value) => {
-        setFormState((prev) => ({ ...prev, [field]: value }));
+    const handleView = (faqItem) => {
+        setModalData(faqItem); // Set the data for the modal
+        setIsModalOpen(true);  // Open the modal
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        if (currentPage !== 1) {
-            setCurrentPage(1); // Reset page to 1; useEffect will trigger fetchTableItems
-        } else {
-            fetchTableItems(); // Directly fetch items if already on page 1
-        }
+    const closeModal = () => {
+        setIsModalOpen(false); // Close the modal
+        setModalData(null);    // Clear modal data
     };
-
-    // Handle form reset
-    const handleReset = () => {
-        setFormState({
-            name: "",
-            email: "",
-            selectOne: "",
-            selectTwo: "",
-        });
-        if (currentPage !== 1) {
-            setCurrentPage(1); // Reset page to 1; useEffect will trigger fetchTableItems
-        } else {
-            fetchTableItems(); // Directly fetch items if already on page 1
-        }
-    };
-
     // Fetch table items from API
     const fetchTableItems = async () => {
         try {
-            const response = await axios.get("/api/user-list", {
+            const response = await axios.get("/api/faq/list", {
                 params: {
                     page: currentPage,
-                    name: formState.name,
-                    email: formState.email,
-                    is_active: formState.selectOne,
-                    is_approve: formState.selectTwo,
+                    title: formState.title,
+                    description: formState.description,
+
                 },
             });
 
@@ -90,61 +55,30 @@ const UserTable = () => {
             console.error("Error fetching table items:", error);
         }
     };
-    const handleDelete = async (userId) => {
+    const handleDelete = async (faqId) => {
         const confirmation = confirm("Are you sure you want to delete this user?");
         if (!confirmation) return;
 
         try {
-            const response = await axios.get(`/api/delete-user?userId=${userId}`, {
+            const response = await axios.get(`/api/faq/delete-faq?faqId=${faqId}`, {
             });
 
             if (response.status === 200) {
-                alert("User deleted successfully.");
+                alert("Faq deleted successfully.");
                 fetchTableItems();
             } else {
-                alert(`Failed to delete user: ${response.data.message || "Unknown error"}`);
+                alert(`Failed to delete Faq: ${response.data.message || "Unknown error"}`);
             }
         } catch (error) {
-            console.error("Error deleting user:", error);
-            alert(error.response?.data?.message || "An error occurred while deleting the user. Please try again.");
+            console.error("Error deleting Faq:", error);
+            alert(error.response?.data?.message || "An error occurred while deleting the Faq. Please try again.");
         }
     };
 
 
-    const handleToggle = async (index: number, key: "is_active" | "is_approve") => {
-        const updatedValue = !tableItems[index][key];
-
-        // Optimistically update the UI
-        setTableItems((prevItems) =>
-            prevItems.map((item, idx) =>
-                idx === index ? { ...item, [key]: updatedValue } : item
-            )
-        );
-
-        try {
-            // Call the API to update the status
-            const response = await axios.patch(`/api/update-user-status`, {
-                id: tableItems[index]._id, // Assuming each item has a unique `id`
-                [key]: updatedValue,
-            });
-
-            if (response.status !== 200) {
-                throw new Error("Failed to update status");
-            }
-        } catch (error) {
-            console.error("Error updating status:", error);
-
-            // Revert the optimistic UI update if the API call fails
-            setTableItems((prevItems) =>
-                prevItems.map((item, idx) =>
-                    idx === index ? { ...item, [key]: !updatedValue } : item
-                )
-            );
-        }
-    };
-    const handleEdit = (userId) => {
-        // Navigate to the edit page with the user ID as a query parameter
-        router.push(`/admin/users/useredit?userId=${userId}`);
+    const handleEdit = (faqId) => {
+        // Navigate to the edit page with the Faq ID as a query parameter
+        router.push(`/admin/cms/faq/edit?faqId=${faqId}`);
     };
 
     // Handle Previous Page click
@@ -167,89 +101,20 @@ const UserTable = () => {
             <div className="items-start justify-between md:flex">
                 <div className="mt-3 md:mt-0">
                     <Link
-                        href="/admin/users/useradd"
+                        href="/admin/cms/faq/add"
                         className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
                     >
-                        Add member
+                        Add Faq
                     </Link>
                 </div>
             </div>
             <div className="mt-12 shadow-sm border rounded-lg overflow-x-auto">
-
-                <form onSubmit={handleSubmit}>
-                    <div className="flex flex-wrap items-center gap-5.5 p-6.5">
-                        <div className="w-full md:w-auto">
-                            <label className="mb-3 block text-sm font-medium text-black dark:text-white dark-text">
-                                Name
-                            </label>
-                            <input
-                                type="text"
-                                placeholder="Enter Name"
-                                value={formState.name}
-                                onChange={(e) => handleInputChange("name", e.target.value)}
-                                className="w-full md:w-64 rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary md:text-sm"
-                            />
-                        </div>
-
-                        <div className="w-full md:w-auto">
-                            <label className="mb-3 block text-sm font-medium text-black dark:text-white dark-text">
-                                Email
-                            </label>
-                            <input
-                                type="text"
-                                placeholder="Enter Email"
-                                value={formState.email}
-                                onChange={(e) => handleInputChange("email", e.target.value)}
-                                className="w-full md:w-64 rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary md:text-sm"
-                            />
-                        </div>
-
-                        <div className="w-full md:w-auto">
-                            <SelectGroupTwo
-                                value={formState.selectOne}
-                                onChange={(value) => handleInputChange("selectOne", value)}
-                            />
-                        </div>
-
-                        <div className="w-full md:w-auto">
-                            <SelectGroupOne
-                                value={formState.selectTwo}
-                                onChange={(value) => handleInputChange("selectTwo", value)}
-                            />
-                        </div>
-
-                        <div className="w-full md:w-auto flex justify-between gap-4 mt-5 md:mt-5">
-                            <button
-                                className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
-                                type="submit"
-                            >
-                                Search
-                            </button>
-
-                            <button
-                                className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
-                                type="button"
-                                onClick={handleReset}
-                            >
-                                Reset
-                            </button>
-                        </div>
-                    </div>
-                </form>
-
-
-
-
 
                 <table className="w-full table-auto text-md text-left">
                     <thead className="text-gray-600 font-medium border-b">
                         <tr>
                             <th className="py-3 px-6 dark-text">#</th>
                             <th className="py-3 px-6 dark-text">Name</th>
-                            <th className="py-3 px-6 dark-text">Email</th>
-                            <th className="py-3 px-6 dark-text">Phone Number</th>
-                            <th className="py-3 px-6 dark-text">User Status</th>
-                            <th className="py-3 px-6 dark-text">Acccount Status</th>
                             <th className="py-3 px-6">Action</th>
                         </tr>
                     </thead>
@@ -263,38 +128,9 @@ const UserTable = () => {
                         ) : (
                             tableItems.map((item, idx) => (
                                 <tr key={idx} className="odd:bg-gray-50 even:bg-white">
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="flex items-center space-x-4">
-                                            <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200">
-                                                {item.profile_photo && (
-                                                    <NextImage
-                                                        src={item.profile_photo || ""}
-                                                        alt="Profile Preview"
-                                                        width={16}
-                                                        height={16}
-                                                        quality={100}
-                                                        unoptimized={true}
-                                                        className="w-full h-full object-cover"
-                                                    />
-                                                )}
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">{item.name}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap">{item.email}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap">{item.phonenumber}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <SwitcherFour
-                                            isEnabled={switchStates[idx]}
-                                            onToggle={() => handleToggle(idx, "is_active")}
-                                        />
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <SwitcherFour
-                                            isEnabled={switchStates2[idx]}
-                                            onToggle={() => handleToggle(idx, "is_approve")}
-                                        />
-                                    </td>
+
+                                    <td className="px-6 py-4 whitespace-nowrap">#</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{item.title}</td>
                                     <td className="text-right px-6 whitespace-nowrap">
                                         <div className="flex items-center space-x-3.5">
                                             <button
@@ -315,12 +151,9 @@ const UserTable = () => {
                                             </button>
 
 
-                                            <Link
-                                                href={{
-                                                    pathname: "/admin/users/userview",
-                                                    query: { userId: item._id },
-                                                }}
-                                                className="inline-block px-4 py-2 text-white duration-150 font-medium  md:text-sm dark-text"
+                                            <button
+                                                onClick={() => handleView(item)}
+                                                className="text-blue-600 hover:underline"
                                             >
                                                 <svg
                                                     className="fill-current"
@@ -339,9 +172,8 @@ const UserTable = () => {
                                                         fill=""
                                                     />
                                                 </svg>
-                                            </Link>
+                                            </button>
 
-                                            {(!switchStates[idx] || !switchStates2[idx]) && (
                                                 <button
                                                     onClick={() => handleDelete(item._id)}
                                                     className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
@@ -375,7 +207,6 @@ const UserTable = () => {
 
                                                 </button>
 
-                                            )}
                                         </div>
                                     </td>
                                 </tr>
@@ -398,8 +229,39 @@ const UserTable = () => {
                     </a>
                 </div>
             </div>
+            {/* Modal */}
+            {isModalOpen && modalData && (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
+            {/* Close Button */}
+            <button
+                onClick={closeModal}
+                className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 red-color "
+                aria-label="Close"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-6 h-6"
+                >
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+            </button>
+
+            <h2 className="text-xl font-bold mb-4">{modalData.title}</h2>
+            <p>{modalData.description}</p>
+        </div>
+    </div>
+)}
+
         </div >
     );
 };
 
-export default UserTable;
+export default FaqTable;
