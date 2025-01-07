@@ -34,6 +34,7 @@ const Settings = () => {
     smtp_password: "",
     smtp_port: "",
     smtp_host: "",
+    smtp_secure : "",
   });
 
   useEffect(() => {
@@ -692,6 +693,25 @@ const Settings = () => {
                       placeholder="Enter Port"
                       onChange={handleChange}
                       value={formData.smtp_port || ""}
+
+                    />
+                  </div>
+
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="smtp_secure"
+                    >
+                      Secure
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="smtp_secure"
+                      id="smtp_secure"
+                      placeholder="Enter Port"
+                      onChange={handleChange}
+                      value={formData.smtp_secure || ""}
 
                     />
                   </div>
