@@ -8,7 +8,7 @@ import { signOut } from "next-auth/react";
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { data: session } = useSession();
-  const [profile, setProfile] = useState("/images/user/user-01.png");
+  const [profile, setProfile] = useState("");
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -27,7 +27,7 @@ const DropdownUser = () => {
 
         if (res.ok) {
           const data = await res.json();
-
+          console.log(data.data.image)
           setProfile(data.data.image);
 
         } else {
@@ -39,7 +39,7 @@ const DropdownUser = () => {
     };
 
     fetchUserData();
-  }, [session]);
+  }, [session?.user?.id]);
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -66,15 +66,17 @@ const DropdownUser = () => {
             }}
             alt="User"
           /> */}
-          <Image
-            src={profile}
-            alt="Profile"
-            width={64}
-            height={64}
-            quality={100}
-            unoptimized={true}
-            className="w-full h-full object-cover"
-          />
+          {profile && (
+            <Image
+              src={profile}
+              alt="Profile"
+              width={64}
+              height={64}
+              quality={100}
+              unoptimized={true}
+              className="w-full h-full object-cover"
+            />
+          )}
         </span>
 
         <svg
