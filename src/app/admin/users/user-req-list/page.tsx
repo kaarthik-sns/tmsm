@@ -5,7 +5,7 @@ import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
 export const metadata: Metadata = {
-  title: "List User Requests - TMSM",
+  title: "Profile Request List - TMSM",
   description:
     "",
 };
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const TablesPage = () => {
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="List Users Requests" />
+      <Breadcrumb pageName="Profile Request List" />
 
       <div className="flex flex-col gap-10">
         <UserReqTable />

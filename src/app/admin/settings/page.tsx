@@ -5,13 +5,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { TriangleAlert } from "lucide-react";
-import { Metadata } from "next";
 
-
-// export const metadata: Metadata = {
-//   title: "Settings - TMSM",
-//   description: "",
-// };
 
 
 const Settings = () => {
@@ -42,7 +36,7 @@ const Settings = () => {
     smtp_password: "",
     smtp_port: "",
     smtp_host: "",
-    smtp_secure : "",
+    smtp_secure: "",
   });
 
   useEffect(() => {
@@ -116,13 +110,27 @@ const Settings = () => {
       });
 
       if (response.ok) {
-        const result = await response.json();
+
+        toast.success('Settings updated successfully', {
+          cancel: {
+            label: 'Close',
+            onClick: () => console.log('Close'),
+          },
+        });
+
       } else {
         const error = await response.json();
         setError(`Error: ${error.message}`);
       }
     } catch (err) {
-      setError('An error occurred while submitting the form.');
+
+      toast.error('An error occurred while submitting the form.', {
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
+
       console.error(err);
     }
   };
@@ -735,7 +743,7 @@ const Settings = () => {
               Submit
             </button>
 
-            </div>
+          </div>
 
         </form>
       </div>

@@ -91,7 +91,7 @@ const Profile = () => {
     if (password) formData.append("password", password);
 
     console.log(formData);
-    
+
     try {
       const response = await fetch("/api/update-admin", {
         method: "POST",
@@ -99,13 +99,28 @@ const Profile = () => {
       });
 
       if (response.ok) {
-        toast.success("Profile updated successfully!");
+        toast.success('Profile updated successfully!', {
+          cancel: {
+            label: 'Close',
+            onClick: () => console.log('Close'),
+          },
+        });
       } else {
-        toast.error("Failed to update profile");
+        toast.error('Failed to update profile', {
+          cancel: {
+            label: 'Close',
+            onClick: () => console.log('Close'),
+          },
+        });
       }
     } catch (error) {
       console.error("Error updating profile:", error);
-      toast.error("An error occurred");
+      toast.error('Failed to update profile', {
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
     }
   };
 
@@ -209,11 +224,11 @@ const Profile = () => {
                 </>
               )}
 
-              <div className="text-right">  
+              <div className="text-right">
                 <button
                   type="submit"
                   className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
-                  >
+                >
                   Update Profile
                 </button>
               </div>
