@@ -163,7 +163,7 @@ const Settings = () => {
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="organisation_name"
                       >
-                        Organisation Name
+                        Organization Name
                       </label>
                       <div className="relative">
                         <span className="absolute left-4.5 top-4">
@@ -227,7 +227,7 @@ const Settings = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="organisation_email_id"
                     >
-                      Organisation Email ID
+                      Organization Email ID
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
