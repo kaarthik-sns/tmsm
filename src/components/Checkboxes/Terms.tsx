@@ -1,10 +1,10 @@
-const CheckboxTwo = ({
-  changePassword,
-  setchangePassword,
+const Terms = ({
+  selected,
+  setselected,
   label,
 }: {
-  changePassword: boolean;
-  setchangePassword: (checked: boolean) => void;
+  selected: boolean;
+  setselected: (checked: boolean) => void;
   label: string;
 }) => (
   <div>
@@ -17,14 +17,14 @@ const CheckboxTwo = ({
           type="checkbox"
           id="checkboxLabelTwo"
           className="sr-only"
-          checked={changePassword}
-          onChange={() => setchangePassword(!changePassword)}
+          checked={selected}
+          onChange={() => setselected(!selected)}
         />
         <div
-          className={`mr-4 flex h-5 w-5 items-center justify-center rounded border ${changePassword && "border-primary bg-gray dark:bg-transparent"
+          className={`mr-4 flex h-5 w-5 items-center justify-center rounded border ${selected && "border-primary bg-gray dark:bg-transparent"
             }`}
         >
-          <span className={`opacity-0 ${changePassword && "!opacity-100"}`}>
+          <span className={`opacity-0 ${selected && "!opacity-100"}`}>
             <svg
               width="11"
               height="8"
@@ -47,4 +47,4 @@ const CheckboxTwo = ({
   </div>
 );
 
-export default CheckboxTwo;
+export default Terms;

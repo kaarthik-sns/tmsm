@@ -6,7 +6,7 @@ import connectToDatabase from "@/lib/mongodb";
 import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-const handler = NextAuth({
+export const authOptions = {
     session: {
         strategy: "jwt",
     },
@@ -35,6 +35,10 @@ const handler = NextAuth({
 
                     if (!is_admin && !user.is_approve) {
                         throw new Error("Admin Not Approved Your Registration");
+                    }
+
+                    if (!is_admin && !user.is_active) {
+                        throw new Error("Your account has been deactivated");
                     }
 
                     const isValidPassword = await bcrypt.compare(
@@ -102,5 +106,8 @@ const handler = NextAuth({
 
     },
     secret: process.env.NEXTAUTH_SECRET,
-});
+};
+
+const handler = NextAuth(authOptions);
+
 export { handler as GET, handler as POST };
