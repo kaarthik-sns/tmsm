@@ -3,8 +3,8 @@
 import Link from "next/link";
 // import DarkModeSwitcher from "./DarkModeSwitcher";
 // import DropdownMessage from "./DropdownMessage";
-// import DropdownNotification from "./DropdownNotification";
-// import DropdownUser from "./DropdownUser";
+import DropdownNotification from "./DropdownNotification";
+import DropdownUser from "./DropdownUser";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
@@ -15,12 +15,12 @@ const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
-  
+
   const router = useRouter();
   const { data: session } = useSession();
-  
+
   return (
-    
+
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none bg-color-custom-top">
       <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
         <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
@@ -76,25 +76,9 @@ const Header = (props: {
         </div>
 
         <div className="flex items-center gap-3 2xsm:gap-7">
-          {session?.user.is_admin ? (
-            // Show only Login/Logout buttons for admins
-            session?.user.name ? (
-              <button className="btn-logout dark-text" onClick={() => signOut()}>Logout</button>
-            ) : (
-              <button className="btn-login dark-text" onClick={() => router.push("/admin/auth/signin")}>Login</button>
-            )
-          ) : (
-            // Show Login, Signup, and Logout buttons for non-admins
-            <>
-              {!session?.user.name && (
-                <>
-                  <button className="btn-login dark-text" onClick={() => router.push("/auth/signin")}>Login</button>
-                  <button className="btn-signup dark-text"onClick={() => router.push("/auth/signup")}>Signup</button>
-                </>
-              )}
-              {session?.user.name && <button className="btn-logout dark-text" onClick={() => signOut()}>Logout</button>}
-            </>
-          )}
+           <DropdownNotification />
+           {/* <!-- User Area --> */}
+           <DropdownUser />
         </div>
       </div>
     </header>

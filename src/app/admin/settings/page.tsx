@@ -1,37 +1,161 @@
+'use client'
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import Image from "next/image";
-import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import { useState, useEffect } from "react";
+import { toast } from "sonner";
+import { TriangleAlert } from "lucide-react";
+import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Settings - TMSM",
-  description:
-    "",
-};
+
+// export const metadata: Metadata = {
+//   title: "Settings - TMSM",
+//   description: "",
+// };
+
 
 const Settings = () => {
+
+  const [logo, setLogo] = useState<File | null>(null);
+  const [favicon, setFavicon] = useState<File | null>(null);
+  const [error, setError] = useState(null);
+  const formData_upload = new FormData();
+
+  const [formData, setFormData] = useState({
+    organisation_description: "",
+    organisation_name: "",
+    organisation_email_id: "",
+    admin_to_email_id: "",
+    admin_from_email_id: "",
+    phone_no: "",
+    address: "",
+    domain_url: "",
+    copyright: "",
+    logo: "",
+    favicon: "",
+    facebook: "",
+    twitter: "",
+    instagram: "",
+    youtube: "",
+
+    smtp_mail: "",
+    smtp_password: "",
+    smtp_port: "",
+    smtp_host: "",
+    smtp_secure : "",
+  });
+
+  useEffect(() => {
+
+    const fetchSettings = async () => {
+      try {
+        const response = await fetch("/api/get-settings-data", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data.");
+        }
+
+        const { data } = await response.json();
+        console.log(data);
+        setFormData(data);
+
+      } catch (err) {
+        console.error(err);
+        setError(err.message);
+      }
+    };
+
+    fetchSettings();
+
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+
+    if (files && files.length > 0) {
+      // Handle file input
+      const file = files[0];
+
+      if (name == 'logo') {
+        setLogo(file);
+      }
+
+      const fileURL = URL.createObjectURL(file);
+      setFormData((prevData) => ({ ...prevData, [name]: fileURL }));
+
+    } else {
+      // Handle regular input fields
+      setFormData((prevData) => ({ ...prevData, [name]: value }));
+    }
+  };
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setError(null);
+
+    for (const [key, value] of Object.entries(formData)) {
+      const excludedKeys = ['logo'];
+      if (!excludedKeys.includes(key)) {
+        formData_upload.append(key, value);
+      }
+    }
+
+    if (logo) formData_upload.append('logo', logo);
+
+    console.log(formData_upload);
+
+    try {
+      const response = await fetch('/api/update-settings', {
+        method: 'POST',
+        body: formData_upload,
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+      } else {
+        const error = await response.json();
+        setError(`Error: ${error.message}`);
+      }
+    } catch (err) {
+      setError('An error occurred while submitting the form.');
+      console.error(err);
+    }
+  };
+
   return (
     <DefaultLayout>
-      <div className="mx-auto max-w-270">
+      <div className="mx-auto">
         <Breadcrumb pageName="Settings" />
+        <form onSubmit={handleSubmit}>
+          <div className="grid grid-cols-5 gap-8">
 
-        <div className="grid grid-cols-5 gap-8">
-          <div className="col-span-5 xl:col-span-3">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Personal Information
-                </h3>
-              </div>
-              <div className="p-7">
-                <form action="#">
+            <div className="col-span-5 xl:col-span-3">
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
+                  <h3 className="font-medium text-black dark:text-white">
+                    Site Information
+                  </h3>
+                </div>
+                <div className="p-7">
+                  {!!error && (
+                    <div className="bg-red-100 md:bg-red-200 p-3 rounded-md flex items-center gap-x-2 text-sm text-red-600 mb-6">
+                      <TriangleAlert />
+                      <p>{error}</p>
+                    </div>
+                  )}
+
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                     <div className="w-full sm:w-1/2">
                       <label
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="fullName"
+                        htmlFor="organisation_name"
                       >
-                        Full Name
+                        Organisation Name
                       </label>
                       <div className="relative">
                         <span className="absolute left-4.5 top-4">
@@ -62,10 +186,11 @@ const Settings = () => {
                         <input
                           className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                           type="text"
-                          name="fullName"
-                          id="fullName"
-                          placeholder="Devid Jhon"
-                          defaultValue="Devid Jhon"
+                          id="organisation_name"
+                          name="organisation_name"
+                          value={formData.organisation_name || ""}
+                          onChange={handleChange}
+                          placeholder="Enter Organisation Name"
                         />
                       </div>
                     </div>
@@ -73,17 +198,18 @@ const Settings = () => {
                     <div className="w-full sm:w-1/2">
                       <label
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="phoneNumber"
+                        htmlFor="phone_no"
                       >
                         Phone Number
                       </label>
                       <input
                         className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        placeholder="+990 3343 7865"
-                        defaultValue="+990 3343 7865"
+                        name="phone_no"
+                        value={formData.phone_no || ""}
+                        onChange={handleChange}
+                        id="phone_no"
+                        placeholder="Enter Phone Number"
                       />
                     </div>
                   </div>
@@ -91,9 +217,9 @@ const Settings = () => {
                   <div className="mb-5.5">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="emailAddress"
+                      htmlFor="organisation_email_id"
                     >
-                      Email Address
+                      Organisation Email ID
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
@@ -124,10 +250,11 @@ const Settings = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="email"
-                        name="emailAddress"
-                        id="emailAddress"
-                        placeholder="devidjond45@gmail.com"
-                        defaultValue="devidjond45@gmail.com"
+                        name="organisation_email_id"
+                        id="organisation_email_id"
+                        placeholder="Enter Organisation Email ID"
+                        value={formData.organisation_email_id || ""}
+                        onChange={handleChange}
                       />
                     </div>
                   </div>
@@ -135,26 +262,210 @@ const Settings = () => {
                   <div className="mb-5.5">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="Username"
+                      htmlFor="admin_to_email_id"
                     >
-                      Username
+                      Admin To Email ID
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-4.5 top-4">
+                        <svg
+                          className="fill-current"
+                          width="20"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g opacity="0.8">
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M3.33301 4.16667C2.87658 4.16667 2.49967 4.54357 2.49967 5V15C2.49967 15.4564 2.87658 15.8333 3.33301 15.8333H16.6663C17.1228 15.8333 17.4997 15.4564 17.4997 15V5C17.4997 4.54357 17.1228 4.16667 16.6663 4.16667H3.33301ZM0.833008 5C0.833008 3.6231 1.9561 2.5 3.33301 2.5H16.6663C18.0432 2.5 19.1663 3.6231 19.1663 5V15C19.1663 16.3769 18.0432 17.5 16.6663 17.5H3.33301C1.9561 17.5 0.833008 16.3769 0.833008 15V5Z"
+                              fill=""
+                            />
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M0.983719 4.52215C1.24765 4.1451 1.76726 4.05341 2.1443 4.31734L9.99975 9.81615L17.8552 4.31734C18.2322 4.05341 18.7518 4.1451 19.0158 4.52215C19.2797 4.89919 19.188 5.4188 18.811 5.68272L10.4776 11.5161C10.1907 11.7169 9.80879 11.7169 9.52186 11.5161L1.18853 5.68272C0.811486 5.4188 0.719791 4.89919 0.983719 4.52215Z"
+                              fill=""
+                            />
+                          </g>
+                        </svg>
+                      </span>
+                      <input
+                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        type="email"
+                        name="admin_to_email_id"
+                        id="admin_to_email_id"
+                        placeholder="Enter Admin To Email ID"
+                        value={formData.admin_to_email_id || ""}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+
+
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="admin_from_email_id"
+                    >
+                      Admin From Email ID
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-4.5 top-4">
+                        <svg
+                          className="fill-current"
+                          width="20"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g opacity="0.8">
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M3.33301 4.16667C2.87658 4.16667 2.49967 4.54357 2.49967 5V15C2.49967 15.4564 2.87658 15.8333 3.33301 15.8333H16.6663C17.1228 15.8333 17.4997 15.4564 17.4997 15V5C17.4997 4.54357 17.1228 4.16667 16.6663 4.16667H3.33301ZM0.833008 5C0.833008 3.6231 1.9561 2.5 3.33301 2.5H16.6663C18.0432 2.5 19.1663 3.6231 19.1663 5V15C19.1663 16.3769 18.0432 17.5 16.6663 17.5H3.33301C1.9561 17.5 0.833008 16.3769 0.833008 15V5Z"
+                              fill=""
+                            />
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M0.983719 4.52215C1.24765 4.1451 1.76726 4.05341 2.1443 4.31734L9.99975 9.81615L17.8552 4.31734C18.2322 4.05341 18.7518 4.1451 19.0158 4.52215C19.2797 4.89919 19.188 5.4188 18.811 5.68272L10.4776 11.5161C10.1907 11.7169 9.80879 11.7169 9.52186 11.5161L1.18853 5.68272C0.811486 5.4188 0.719791 4.89919 0.983719 4.52215Z"
+                              fill=""
+                            />
+                          </g>
+                        </svg>
+                      </span>
+                      <input
+                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        type="email"
+                        name="admin_from_email_id"
+                        id="admin_from_email_id"
+                        placeholder="Enter Admin From Email ID"
+                        value={formData.admin_from_email_id || ""}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="domain_url"
+                    >
+                      Domain URL
                     </label>
                     <input
                       className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       type="text"
-                      name="Username"
-                      id="Username"
-                      placeholder="devidjhon24"
-                      defaultValue="devidjhon24"
+                      name="domain_url"
+                      id="domain_url"
+                      placeholder="Enter Domain URL"
+                      value={formData.domain_url || ""}
+                      onChange={handleChange}
                     />
                   </div>
 
                   <div className="mb-5.5">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="Username"
+                      htmlFor="copyright"
                     >
-                      BIO
+                      Copyright
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="copyright"
+                      id="copyright"
+                      placeholder="Enter Copyright"
+                      value={formData.copyright || ""}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="facebook"
+                    >
+                      Facebook
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="facebook"
+                      id="facebook"
+                      placeholder="Enter Facebook ID"
+                      value={formData.facebook || ""}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="twitter"
+                    >
+                      Twitter
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="twitter"
+                      id="twitter"
+                      placeholder="Enter Twitter ID"
+                      value={formData.twitter || ""}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="instagram"
+                    >
+                      Instagram
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="instagram"
+                      id="instagram"
+                      placeholder="Enter Instagram ID"
+                      value={formData.instagram || ""}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="youtube"
+                    >
+                      Youtube
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="youtube"
+                      id="youtube"
+                      placeholder="Enter Youtube ID"
+                      value={formData.youtube || ""}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="address"
+                    >
+                      Address
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
@@ -190,62 +501,44 @@ const Settings = () => {
 
                       <textarea
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        name="bio"
-                        id="bio"
+                        name="address"
+                        id="address"
                         rows={6}
-                        placeholder="Write your bio here"
-                        defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere fermentum urna, eu condimentum mauris tempus ut. Donec fermentum blandit aliquet."
+                        placeholder="Enter Address"
+                        value={formData.address || ""}
+                        onChange={handleChange}
                       ></textarea>
                     </div>
                   </div>
 
-                  <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="submit"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                      type="submit"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </form>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="col-span-5 xl:col-span-2">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Your Photo
-                </h3>
-              </div>
-              <div className="p-7">
-                <form action="#">
+            <div className="col-span-5 xl:col-span-2">
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark mb-3">
+                <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
+                  <h3 className="font-medium text-black dark:text-white">
+                    Your Logo
+                  </h3>
+                </div>
+                <div className="p-7">
+
                   <div className="mb-4 flex items-center gap-3">
                     <div className="h-14 w-14 rounded-full">
-                      <Image
-                        src={"/images/user/user-03.png"}
-                        width={55}
-                        height={55}
-                        alt="User"
-                      />
+                      {formData.logo && (
+                        <Image
+                          src={formData.logo}
+                          alt="Profile Preview"
+                          width={64}
+                          height={64}
+                          quality={100}
+                          unoptimized={true}
+                          className="w-full h-full object-cover"
+                        />)}
                     </div>
                     <div>
                       <span className="mb-1.5 text-black dark:text-white">
-                        Edit your photo
-                      </span>
-                      <span className="flex gap-2.5">
-                        <button className="text-sm hover:text-primary">
-                          Delete
-                        </button>
-                        <button className="text-sm hover:text-primary">
-                          Update
-                        </button>
+                        Edit Logo
                       </span>
                     </div>
                   </div>
@@ -257,6 +550,8 @@ const Settings = () => {
                     <input
                       type="file"
                       accept="image/*"
+                      name='logo'
+                      onChange={handleChange}
                       className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
                     />
                     <div className="flex flex-col items-center justify-center space-y-3">
@@ -296,26 +591,153 @@ const Settings = () => {
                       <p>(max, 800 X 800px)</p>
                     </div>
                   </div>
+                </div>
+              </div>
 
-                  <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="submit"
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
+                  <h3 className="font-medium text-black dark:text-white">
+                    SMTP Information
+                  </h3>
+                </div>
+                <div className="p-7">
+
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="smtp_mail"
                     >
-                      Cancel
-                    </button>
-                    <button
-                      className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                      type="submit"
-                    >
-                      Save
-                    </button>
+                      Email ID
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-4.5 top-4">
+                        <svg
+                          className="fill-current"
+                          width="20"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g opacity="0.8">
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M3.33301 4.16667C2.87658 4.16667 2.49967 4.54357 2.49967 5V15C2.49967 15.4564 2.87658 15.8333 3.33301 15.8333H16.6663C17.1228 15.8333 17.4997 15.4564 17.4997 15V5C17.4997 4.54357 17.1228 4.16667 16.6663 4.16667H3.33301ZM0.833008 5C0.833008 3.6231 1.9561 2.5 3.33301 2.5H16.6663C18.0432 2.5 19.1663 3.6231 19.1663 5V15C19.1663 16.3769 18.0432 17.5 16.6663 17.5H3.33301C1.9561 17.5 0.833008 16.3769 0.833008 15V5Z"
+                              fill=""
+                            />
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M0.983719 4.52215C1.24765 4.1451 1.76726 4.05341 2.1443 4.31734L9.99975 9.81615L17.8552 4.31734C18.2322 4.05341 18.7518 4.1451 19.0158 4.52215C19.2797 4.89919 19.188 5.4188 18.811 5.68272L10.4776 11.5161C10.1907 11.7169 9.80879 11.7169 9.52186 11.5161L1.18853 5.68272C0.811486 5.4188 0.719791 4.89919 0.983719 4.52215Z"
+                              fill=""
+                            />
+                          </g>
+                        </svg>
+                      </span>
+                      <input
+                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        type="email"
+                        name="smtp_mail"
+                        id="smtp_mail"
+                        placeholder="Enter Email ID"
+                        onChange={handleChange}
+                        value={formData.smtp_mail || ""}
+
+                      />
+                    </div>
                   </div>
-                </form>
+
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="smtp_password"
+                    >
+                      Password
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="smtp_password"
+                      id="smtp_password"
+                      placeholder="Enter Password"
+                      onChange={handleChange}
+                      value={formData.smtp_password || ""}
+
+                    />
+                  </div>
+
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="smtp_host"
+                    >
+                      Host
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="smtp_host"
+                      id="smtp_host"
+                      placeholder="Enter Host"
+                      onChange={handleChange}
+                      value={formData.smtp_host || ""}
+
+                    />
+                  </div>
+
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="smtp_port"
+                    >
+                      Port
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="smtp_port"
+                      id="smtp_port"
+                      placeholder="Enter Port"
+                      onChange={handleChange}
+                      value={formData.smtp_port || ""}
+
+                    />
+                  </div>
+
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="smtp_secure"
+                    >
+                      Secure
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="smtp_secure"
+                      id="smtp_secure"
+                      placeholder="Enter Port"
+                      onChange={handleChange}
+                      value={formData.smtp_secure || ""}
+
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+          <div className="text-right">
+            <button
+              type="submit"
+              className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
+            >
+              Submit
+            </button>
+
+            </div>
+
+        </form>
       </div>
     </DefaultLayout>
   );

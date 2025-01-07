@@ -44,6 +44,9 @@ const UserSchema = new Schema({
   profile_photo: { type: String, required: false },
   horoscope: { type: String, required: false },
 
+  reference1: { type: String, required: false },
+  reference2: { type: String, required: false },
+
   father_name: { type: String, required: false },
   father_phonenumber: { type: String, required: false },
   father_occupation: { type: String, required: false },

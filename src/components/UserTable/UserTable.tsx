@@ -9,6 +9,7 @@ import SelectGroupTwo from "@/components/SelectGroup/SelectGroupTwo";
 import SelectGroupOne from "@/components/SelectGroup/SelectGroupOne";
 import Link from "next/link";
 import { useRouter } from "next/navigation"; // For page navigation
+import NextImage from "next/image"; // Rename the import to avoid conflict
 
 
 
@@ -262,7 +263,23 @@ const UserTable = () => {
                         ) : (
                             tableItems.map((item, idx) => (
                                 <tr key={idx} className="odd:bg-gray-50 even:bg-white">
-                                    <td className="px-6 py-4 whitespace-nowrap">{idx + 1}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="flex items-center space-x-4">
+                                            <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200">
+                                                {item.profile_photo && (
+                                                    <NextImage
+                                                        src={item.profile_photo || ""}
+                                                        alt="Profile Preview"
+                                                        width={16}
+                                                        height={16}
+                                                        quality={100}
+                                                        unoptimized={true}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
+                                    </td>
                                     <td className="px-6 py-4 whitespace-nowrap">{item.name}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{item.email}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{item.phonenumber}</td>
@@ -325,10 +342,10 @@ const UserTable = () => {
                                             </Link>
 
                                             {(!switchStates[idx] || !switchStates2[idx]) && (
-                                                 <button
-                                                 onClick={() => handleDelete(item._id)}
-                                                 className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
-                                             >
+                                                <button
+                                                    onClick={() => handleDelete(item._id)}
+                                                    className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
+                                                >
 
                                                     <svg
                                                         className="fill-current"
