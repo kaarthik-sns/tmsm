@@ -72,9 +72,7 @@ const TermTable = () => {
                                         <h3 className="mb-3 bold">
                                             Terms & Conditions:
                                         </h3>
-                                        <div>
-                                            {item.description}
-                                        </div>
+                                        <div dangerouslySetInnerHTML={{ __html: item.description }} />
                                     </div>
                                 </div>
                             </div>
