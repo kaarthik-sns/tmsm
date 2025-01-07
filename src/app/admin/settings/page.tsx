@@ -5,11 +5,13 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { TriangleAlert } from "lucide-react";
-export const metadata: Metadata = {
-  title: "Settings - TMSM",
-  description:
-    "",
-};
+import { Metadata } from "next";
+
+
+// export const metadata: Metadata = {
+//   title: "Settings - TMSM",
+//   description: "",
+// };
 
 
 const Settings = () => {
@@ -127,7 +129,7 @@ const Settings = () => {
 
   return (
     <DefaultLayout>
-      <div className="mx-auto max-w-270">
+      <div className="mx-auto">
         <Breadcrumb pageName="Settings" />
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-5 gap-8">
@@ -724,24 +726,17 @@ const Settings = () => {
                 </div>
               </div>
             </div>
-
-
-
-            <button
-              type="button"
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:ring focus:ring-blue-300"
-            >
-              Cancel
-            </button>
-
+          </div>
+          <div className="text-right">
             <button
               type="submit"
-              className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
+              className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
             >
-              Update
+              Submit
             </button>
 
-          </div>
+            </div>
+
         </form>
       </div>
     </DefaultLayout>

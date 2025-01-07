@@ -111,7 +111,7 @@ const Profile = () => {
 
   return (
     <DefaultLayout>
-      <div className="mx-auto max-w-242.5">
+      <div className="mx-auto">
         <Breadcrumb pageName="Profile" />
 
         <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -124,7 +124,7 @@ const Profile = () => {
             )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
                   Profile Picture
                 </label>
                 <div className="flex items-center space-x-4">
@@ -146,13 +146,13 @@ const Profile = () => {
                     type="file"
                     accept="image/*"
                     onChange={handleFileChange}
-                    className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
                   Name
                 </label>
                 <input
@@ -164,7 +164,7 @@ const Profile = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
                   Email
                 </label>
                 <input
@@ -184,7 +184,7 @@ const Profile = () => {
               {changePassword && (
                 <>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
                       Password
                     </label>
                     <input
@@ -196,7 +196,7 @@ const Profile = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
                       Confirm Password
                     </label>
                     <input
@@ -209,13 +209,14 @@ const Profile = () => {
                 </>
               )}
 
-
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:ring focus:ring-blue-300"
-              >
-                Update Profile
-              </button>
+              <div className="text-right">  
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
+                  >
+                  Update Profile
+                </button>
+              </div>
             </form>
           </div>
         </div>
