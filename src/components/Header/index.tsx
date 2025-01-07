@@ -3,7 +3,7 @@
 import Link from "next/link";
 // import DarkModeSwitcher from "./DarkModeSwitcher";
 // import DropdownMessage from "./DropdownMessage";
-// import DropdownNotification from "./DropdownNotification";
+import DropdownNotification from "./DropdownNotification";
 import DropdownUser from "./DropdownUser";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
@@ -76,9 +76,9 @@ const Header = (props: {
         </div>
 
         <div className="flex items-center gap-3 2xsm:gap-7">
+           <DropdownNotification />
            {/* <!-- User Area --> */}
            <DropdownUser />
-        
         </div>
       </div>
     </header>
