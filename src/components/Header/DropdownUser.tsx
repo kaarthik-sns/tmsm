@@ -27,7 +27,6 @@ const DropdownUser = () => {
 
         if (res.ok) {
           const data = await res.json();
-          console.log(data.data.image)
           setProfile(data.data.image);
 
         } else {
