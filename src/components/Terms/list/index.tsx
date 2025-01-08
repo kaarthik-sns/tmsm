@@ -30,7 +30,9 @@ const TermTable = () => {
         }
     };
 
-    fetchTableItems();
+    useEffect(() => {
+        fetchTableItems();
+    }, [formState.description]);
 
     const handleEdit = (TermId) => {
         router.push(`/admin/cms/terms_conditions/edit?termId=${TermId}`);
