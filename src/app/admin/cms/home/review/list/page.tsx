@@ -1,4 +1,4 @@
-import Table from "@/components/Cms/Review/list";
+import Table from "@/components/Cms/Home/Review/list";
 
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";

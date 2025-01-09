@@ -1,10 +1,10 @@
 import React from "react";
-import Elements from "@/components/Cms/Home/Slider/edit";
+import Elements from "@/components/Cms/Home/Page/View";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
 export const metadata: Metadata = {
-  title: "Edit Faq - TMSM",
+  title: "View Homepage Contents - TMSM",
   description:
     "",
 };

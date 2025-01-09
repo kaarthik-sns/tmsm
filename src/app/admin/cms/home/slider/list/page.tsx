@@ -1,5 +1,4 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import Table from "@/components/Cms/HomePageSlider/list";
+import Table from "@/components/Cms/Home/Slider/list";
 
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";

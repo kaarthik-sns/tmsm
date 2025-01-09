@@ -7,7 +7,7 @@ import Image from "next/image";
 import Swal from 'sweetalert2';
 import { toast } from "sonner";
 
-const FaqTable = () => {
+const Table = () => {
 
     const [pages, setPages] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
@@ -32,7 +32,7 @@ const FaqTable = () => {
 
     const fetchTableItems = async () => {
         try {
-            const response = await fetch(`/api/cms/home/slider/list?page=${currentPage}`, {
+            const response = await fetch(`/api/cms/home/review/list?page=${currentPage}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -72,7 +72,7 @@ const FaqTable = () => {
         }
 
         try {
-            const response = await fetch(`/api/cms/home/slider`, {
+            const response = await fetch(`/api/cms/home/review`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -113,7 +113,7 @@ const FaqTable = () => {
 
 
     const handleEdit = (id) => {
-        router.push(`/admin/cms/home/slider/edit?id=${id}`);
+        router.push(`/admin/cms/home/review/edit?id=${id}`);
     };
 
     // Handle Previous Page click
@@ -136,7 +136,7 @@ const FaqTable = () => {
             <Breadcrumb
                 breadcrumbs={[
                     { name: "Dashboard", href: "/admin/dashboard" },
-                    { name: "List Slider" },
+                    { name: "List Review" },
                 ]}
             />
 
@@ -144,10 +144,10 @@ const FaqTable = () => {
                 <div className="items-start justify-between md:flex">
                     <div className="mt-3 md:mt-0">
                         <Link
-                            href="/admin/cms/home/slider/add"
+                            href="/admin/cms/home/review/add"
                             className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
                         >
-                            Add Slider
+                            Add review
                         </Link>
                     </div>
                 </div>
@@ -158,6 +158,7 @@ const FaqTable = () => {
                             <tr>
                                 <th className="py-3 px-6 dark-text">#</th>
                                 <th className="py-3 px-6 dark-text">Name</th>
+                                <th className="py-3 px-6 dark-text">Rating</th>
                                 <th className="py-3 px-6">Action</th>
                             </tr>
                         </thead>
@@ -173,7 +174,8 @@ const FaqTable = () => {
                                     <tr key={idx} className="odd:bg-gray-50 even:bg-white">
 
                                         <td className="px-6 py-4 whitespace-nowrap">{idx + 1}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap">{item.title}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap">{item.name}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap">{item.rating}</td>
                                         <td className="text-right px-6 whitespace-nowrap">
                                             <div className="flex items-center space-x-3.5">
                                                 <button
@@ -297,19 +299,9 @@ const FaqTable = () => {
                                 </svg>
                             </button>
 
-                            <h2 className="text-xl font-bold mb-4">{modalData.title}</h2>
-                            <p>{modalData.description}</p>
-                            <div className="w-20 h-20 overflow-hidden bg-gray-200">
-                                <Image
-                                    src={modalData.image}
-                                    alt="Profile Preview"
-                                    width={64}
-                                    height={64}
-                                    quality={100}
-                                    unoptimized={true}
-                                    className="w-full h-full object-cover"
-                                />
-                            </div>
+                            <p className="mb-4">{modalData.name}</p>
+                            <p className="mb-4">{modalData.rating}</p>
+                            <p className="mb-4">{modalData.description}</p>
                         </div>
                     </div>
                 )}
@@ -319,4 +311,4 @@ const FaqTable = () => {
     );
 };
 
-export default FaqTable;
+export default Table;

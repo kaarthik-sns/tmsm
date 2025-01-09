@@ -1,5 +1,5 @@
 import React from "react";
-import Elements from "@/components/Cms/Review/add";
+import Elements from "@/components/Cms/Home/Review/add";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 

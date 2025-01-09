@@ -1,19 +1,55 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumbs/BreadcrumbCustom";
 import { toast } from "sonner";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-const FaqElements = () => {
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    photo: ""
-  });
 
+const Elements = () => {
+
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+  const router = useRouter();
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [isLoading, setIsLoading] = useState(true);
   const [preview, setPreview] = useState("");
   const formData_upload = new FormData();
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    photo: "",
+  });
+
+  useEffect(() => {
+    if (id) {
+      const fetchUserData = async () => {
+        try {
+          const response = await fetch(`/api/cms/home/testimonial?id=${id}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch user data.");
+          }
+
+          const { data } = await response.json();
+          setFormData(data);
+          setPreview(data.image);
+
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      fetchUserData();
+    }
+  }, [id]);
+
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -38,8 +74,8 @@ const FaqElements = () => {
 
     const errors: Record<string, string> = {};
 
-    if (!formData.title.trim()) {
-      errors.title = "Title is required.";
+    if (!formData.name.trim()) {
+      errors.name = "Name is required.";
     }
 
     if (!preview.trim()) {
@@ -70,18 +106,20 @@ const FaqElements = () => {
 
     try {
 
-      const res = await fetch("/api/cms/home/slider", {
-        method: "POST",
+      const res = await fetch("/api/cms/home/testimonial", {
+        method: "PUT",
         body: formData_upload,
       });
 
       if (!res.ok) {
-        throw new Error("Failed to add FAQ.");
+        throw new Error("Failed to edit data.");
       }
 
       const data = await res.json();
 
-      toast.success('Data added successfully!', {
+      router.push(`/admin/cms/home/testimonial/list`);
+
+      toast.success('Data updated successfully!', {
         className: "sonner-toast-success",
         cancel: {
           label: 'Close',
@@ -89,16 +127,8 @@ const FaqElements = () => {
         },
       });
 
-      setFormData({
-        photo: "",
-        title: "",
-        description: "",
-      });
-
-      setPreview("");
-
     } catch (err: any) {
-      toast.error('Failed to add Data.', {
+      toast.error('Failed to update data.', {
         className: "sonner-toast-error",
         cancel: {
           label: 'Close',
@@ -109,14 +139,18 @@ const FaqElements = () => {
   };
 
 
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <>
-       <Breadcrumb
-                breadcrumbs={[
-                    { name: "List Slider", href: "/admin/cms/home/slider/list" },
-                    { name: "Add Slider" },
-                ]}
-            />
+      <Breadcrumb
+        breadcrumbs={[
+          { name: "List Testimonials", href: "/admin/cms/home/testimonial/list" },
+          { name: "Edit Testimonial" },
+        ]}
+      />
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-9 sm:grid-cols-1">
           <div className="flex flex-col gap-9">
@@ -161,21 +195,21 @@ const FaqElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark:text-white dark-text">
-                    Title <span className="mt-1 text-sm text-red-500">*</span>
+                  Name <span className="mt-1 text-sm text-red-500">*</span>
                   </label>
                   <input
                     type="text"
-                    name="title"
-                    value={formData.title}
+                    name="name"
+                    value={formData.name}
                     onChange={handleChange}
-                    placeholder="Enter title"
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.title
+                    placeholder="Enter name"
+                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.name
                       ? "border-red-500 focus:border-red-500"
                       : "border-stroke focus:border-primary"
                       } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
                   />
-                  {formErrors?.title && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.title}</p>
+                  {formErrors?.name && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.name}</p>
                   )}
                 </div>
 
@@ -218,4 +252,4 @@ const FaqElements = () => {
   );
 };
 
-export default FaqElements;
+export default Elements;

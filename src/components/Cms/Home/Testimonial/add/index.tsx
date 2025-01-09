@@ -4,7 +4,7 @@ import Breadcrumb from "@/components/Breadcrumbs/BreadcrumbCustom";
 import { toast } from "sonner";
 import Image from "next/image";
 
-const FaqElements = () => {
+const Elements = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -76,7 +76,7 @@ const FaqElements = () => {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to add FAQ.");
+        throw new Error("Failed to add Data.");
       }
 
       const data = await res.json();
@@ -218,4 +218,4 @@ const FaqElements = () => {
   );
 };
 
-export default FaqElements;
+export default Elements;

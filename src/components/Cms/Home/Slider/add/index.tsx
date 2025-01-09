@@ -1,55 +1,19 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import Breadcrumb from "@/components/Breadcrumbs/BreadcrumbCustom";
 import { toast } from "sonner";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-
 
 const Elements = () => {
-
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  const router = useRouter();
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-  const [isLoading, setIsLoading] = useState(true);
-  const [preview, setPreview] = useState("");
-  const formData_upload = new FormData();
   const [formData, setFormData] = useState({
-    name: "",
+    title: "",
     description: "",
-    photo: "",
+    photo: ""
   });
 
-  useEffect(() => {
-    if (id) {
-      const fetchUserData = async () => {
-        try {
-          const response = await fetch(`/api/cms/home/testimonial?id=${id}`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-          });
-
-          if (!response.ok) {
-            throw new Error("Failed to fetch user data.");
-          }
-
-          const { data } = await response.json();
-          setFormData(data);
-          setPreview(data.image);
-
-        } catch (err) {
-          console.error(err);
-        } finally {
-          setIsLoading(false);
-        }
-      };
-
-      fetchUserData();
-    }
-  }, [id]);
-
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [preview, setPreview] = useState("");
+  const formData_upload = new FormData();
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -74,8 +38,8 @@ const Elements = () => {
 
     const errors: Record<string, string> = {};
 
-    if (!formData.name.trim()) {
-      errors.name = "Name is required.";
+    if (!formData.title.trim()) {
+      errors.title = "Title is required.";
     }
 
     if (!preview.trim()) {
@@ -106,20 +70,18 @@ const Elements = () => {
 
     try {
 
-      const res = await fetch("/api/cms/home/testimonial", {
-        method: "PUT",
+      const res = await fetch("/api/cms/home/slider", {
+        method: "POST",
         body: formData_upload,
       });
 
       if (!res.ok) {
-        throw new Error("Failed to add FAQ.");
+        throw new Error("Failed to add Data.");
       }
 
       const data = await res.json();
 
-      router.push(`/admin/cms/home/testimonial/list`);
-
-      toast.success('Data updated successfully!', {
+      toast.success('Data added successfully!', {
         className: "sonner-toast-success",
         cancel: {
           label: 'Close',
@@ -127,8 +89,16 @@ const Elements = () => {
         },
       });
 
+      setFormData({
+        photo: "",
+        title: "",
+        description: "",
+      });
+
+      setPreview("");
+
     } catch (err: any) {
-      toast.error('Failed to update data.', {
+      toast.error('Failed to add Data.', {
         className: "sonner-toast-error",
         cancel: {
           label: 'Close',
@@ -139,18 +109,14 @@ const Elements = () => {
   };
 
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
   return (
     <>
-      <Breadcrumb
-        breadcrumbs={[
-          { name: "List Testimonials", href: "/admin/cms/home/testimonial/list" },
-          { name: "Edit Testimonial" },
-        ]}
-      />
+       <Breadcrumb
+                breadcrumbs={[
+                    { name: "List Slider", href: "/admin/cms/home/slider/list" },
+                    { name: "Add Slider" },
+                ]}
+            />
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-9 sm:grid-cols-1">
           <div className="flex flex-col gap-9">
@@ -195,21 +161,21 @@ const Elements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark:text-white dark-text">
-                  Name <span className="mt-1 text-sm text-red-500">*</span>
+                    Title <span className="mt-1 text-sm text-red-500">*</span>
                   </label>
                   <input
                     type="text"
-                    name="name"
-                    value={formData.name}
+                    name="title"
+                    value={formData.title}
                     onChange={handleChange}
-                    placeholder="Enter name"
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.name
+                    placeholder="Enter title"
+                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.title
                       ? "border-red-500 focus:border-red-500"
                       : "border-stroke focus:border-primary"
                       } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
                   />
-                  {formErrors?.name && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.name}</p>
+                  {formErrors?.title && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.title}</p>
                   )}
                 </div>
 

@@ -112,7 +112,7 @@ const Elements = () => {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to add FAQ.");
+        throw new Error("Failed to update Data.");
       }
 
       const data = await res.json();
