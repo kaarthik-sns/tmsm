@@ -2,10 +2,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import Breadcrumb from "@/components/Breadcrumbs/FaqBreadcrumb";
+import Breadcrumb from "@/components/Breadcrumbs/TermBreadcrumb";
 
 const TermTable = () => {
-    const [currentPage, setCurrentPage] = useState(1);
+
     const [tableItems, setTableItems] = useState([]);
     const router = useRouter();
 
@@ -13,25 +13,26 @@ const TermTable = () => {
         description: "",
     });
 
-    useEffect(() => {
-        fetchTableItems();
-    }, [currentPage]);
-
+   
     const fetchTableItems = async () => {
         try {
             const response = await axios.get("/api/terms/list", {
                 params: {
-                    page: currentPage,
+                    page: 1,
                     description: formState.description,
                 },
             });
+
             setTableItems(response.data.data || []);
-            setPages(response.data.pagination?.totalPages || 0);
+           
         } catch (error) {
             console.error("Error fetching table items:", error);
         }
     };
 
+    useEffect(() => {
+        fetchTableItems();
+    }, [formState.description]);
 
     const handleEdit = (TermId) => {
         router.push(`/admin/cms/terms_conditions/edit?termId=${TermId}`);
@@ -39,22 +40,22 @@ const TermTable = () => {
 
     return (
         <>
-        <Breadcrumb pageName="List Terms & Conditions" />
+        <Breadcrumb pageName="Terms & Conditions" />
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">
             <div className="">
                 {tableItems.length > 0 ? (
                     tableItems.map((item, idx) => (
 
                         <div key={idx}>
-                         <div className="mt-3 md:mt-0">
-                            <button onClick={() => handleEdit(item._id)}
-                                className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
-                            >
-                                Edit Terms & Conditions
-                            </button>
+                            <div className="mt-3 md:mt-0">
+                                <button onClick={() => handleEdit(item._id)}
+                                    className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
+                                >
+                                    Edit Terms & Conditions
+                                </button>
+                            </div>
+
                         </div>
-                           
-                       </div>
                     ))
                 ) : (
                     <p className="text-center py-4"></p>
@@ -71,9 +72,7 @@ const TermTable = () => {
                                         <h3 className="mb-3 bold">
                                             Terms & Conditions:
                                         </h3>
-                                        <div>
-                                            {item.description}
-                                        </div>
+                                        <div dangerouslySetInnerHTML={{ __html: item.description }} />
                                     </div>
                                 </div>
                             </div>

@@ -346,3 +346,10 @@ button.swal2-confirm.swal2-styled.swal2-default-outline {
 button.swal2-cancel.swal2-styled.swal2-default-outline {
     background: #ff0000 !important;
 }
+
+.dark-texts {
+    color: #653D27;
+}
+.dark-texts:hover {
+    color: #ff0000;
+}

@@ -12,6 +12,8 @@ const config: Config = {
   theme: {
     fontFamily: {
       satoshi: ["Satoshi", "sans-serif"],
+      noto: ["'Noto Serif Tamil'", "serif"],
+
     },
     screens: {
       "2xsm": "375px",

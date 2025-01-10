@@ -119,7 +119,7 @@ const FaqElements = () => {
       <Breadcrumb pageName="Edit FAQ" />
       {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-9 sm:grid-cols-1">
           <div className="flex flex-col gap-9">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
 
@@ -167,7 +167,7 @@ const FaqElements = () => {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 gap-9 sm:grid-cols-2 mt-4.5">
+        <div className="grid grid-cols-1 gap-9 sm:grid-cols-1 mt-4.5">
           <div className="text-right">
             <button
               type="submit"
