@@ -70,8 +70,6 @@ export async function PATCH(request: NextRequest) {
         // Check if a record exists
         const existingRecord = await Model.findOne({});
 
-        let updatedRecord;
-
         if (existingRecord) {
             // Update the existing record
             await Model.findOneAndUpdate({}, Fields, { new: true });
@@ -89,14 +87,12 @@ export async function PATCH(request: NextRequest) {
 
 
 // Handle GET requests: Fetch an entry by ID
-export async function GET(request: NextRequest) {
+export async function GET() {
     try {
-        const { searchParams } = new URL(request.url);
-        const id = searchParams.get('id');
-
+       
         await connectToDatabase();
 
-        const record = await Model.findById(id);
+        const record = await Model.findOne({});
 
         if (!record) {
             return NextResponse.json({ message: 'Record not found.' }, { status: 404 });

@@ -1,5 +1,5 @@
 'use client'
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "@/components/Breadcrumbs/BreadcrumbCustom";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -95,8 +95,8 @@ const Settings = () => {
 
     const fetchSettings = async () => {
       try {
-        const response = await fetch("/api/cms/page", {
-          method: "PATCH",
+        const response = await fetch("/api/cms/home/page", {
+          method: "GET",
         });
 
         if (!response.ok) {
@@ -270,7 +270,13 @@ const Settings = () => {
 
   return (
     <>
-      <Breadcrumb pageName="Home Page" />
+      <Breadcrumb
+                breadcrumbs={[
+                    { name: "Home Page", href: "/admin/cms/home/page/view" },
+                    { name: "Edit Home Page" },
+                ]}
+            />
+
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
 
