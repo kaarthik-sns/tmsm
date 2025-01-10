@@ -1,50 +1,52 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation"; // Updated import for query parameter extraction
 import Breadcrumb from "@/components/Breadcrumbs/UserBreadcrumb";
 import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
 import SelectGroupCaste from "@/components/SelectGroup/SelectGroupCaste";
-import SelectGroupSubCaste from "@/components/SelectGroup/SelectGroupSubCaste ";
 import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
 import { toast } from "sonner";
 import { TriangleAlert } from "lucide-react";
-import NextImage from "next/image"; // Rename the import to avoid conflict
+import NextImage from "next/image";
+import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
+import { useSearchParams } from "next/navigation";
 
 const FormElements = () => {
   const searchParams = useSearchParams();
   const userId = searchParams.get("userId");
   const [profilePic, setProfilePic] = useState<File | null>(null);
+  const [profileCreatorPic, setProfileCreatorPic] = useState<File | null>(null);
   const [photo1, setPhoto1] = useState<File | null>(null);
   const [photo2, setPhoto2] = useState<File | null>(null);
   const [photo3, setPhoto3] = useState<File | null>(null);
   const [photo4, setPhoto4] = useState<File | null>(null);
   const [horoscope, setHoroscope] = useState<File | null>(null);
+  const [error, setError] = useState(null);
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [profileCreator, setProfileCreator] = useState(false);
+  const formData_upload = new FormData();
+  const [isLoading, setIsLoading] = useState(true);
 
   // Array for religions
   const religions = [
     "Hindu",
   ];
+
   const freligions = [
     "Hindu",
     "Muslim",
     "Christian"
   ];
-
   // Array for castes
   const castes = [
     "Mudaliyar"
   ];
 
-  // Array for Subcastes
-  const subcastes = [
-    "Mudaliyar"
-  ];
 
   const [formData, setFormData] = useState({
     name: "",
     lastname: "",
     email: "",
-    phoneNumber: "",
+    phonenumber: "",
     religion: "",
     caste: "",
     subcaste: "",
@@ -82,13 +84,16 @@ const FormElements = () => {
     photo2: "",
     photo3: "",
     photo4: "",
-    horoscope: ""
+    horoscope: "",
+    maritalstatus: "",
+    profile_created_for: "",
+    profile_creator_name: "",
+    profile_creator_photo: "",
+    profile_creator_aadhar: "",
+    profile_creator_phonenumber: "",
+    lookingfor: "",
+    partner_pref_subcaste: ""
   });
-
-  const formData_upload = new FormData();
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (userId) {
@@ -105,8 +110,16 @@ const FormElements = () => {
           }
 
           const { data } = await response.json();
-          console.log(data);
+
           setFormData(data);
+          setProfileCreator(data.profile_created_for);
+          setProfilePic(data.profile_photo);
+          setPhoto1(data.photo1);
+          setPhoto2(data.photo2);
+          setPhoto3(data.photo3);
+          setPhoto4(data.photo4);
+          setProfileCreatorPic(data.profile_creator_photo);
+          setHoroscope(data.horoscope);
 
         } catch (err) {
           console.error(err);
@@ -132,15 +145,24 @@ const FormElements = () => {
       if (name == 'photo2') setPhoto2(file);
       if (name == 'photo3') setPhoto3(file);
       if (name == 'photo4') setPhoto4(file);
+      if (name == 'profile_creator_photo') setProfileCreatorPic(file);
       if (name == 'horoscope') setHoroscope(file);
 
       const fileURL = URL.createObjectURL(file);
       setFormData((prevData) => ({ ...prevData, [name]: fileURL }));
     } else {
+
+      if (name == 'profile_created_for' && value != 'myself') {
+        setProfileCreator(true);
+      } else if (name == 'profile_created_for' && value == 'myself') {
+        setProfileCreator(false);
+      }
+
       // Handle regular input fields
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
   };
+
 
   const handlePreview = () => {
     if (formData.horoscope) {
@@ -150,11 +172,7 @@ const FormElements = () => {
       alert("No file uploaded to preview!");
     }
   };
-  const [formErrors, setFormErrors] = useState({});
 
-
-
-  // Handle form submission to update user data
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -177,20 +195,48 @@ const FormElements = () => {
       errors.phonenumber = "A valid 10-digit phone number is required.";
     }
 
-    // Loop through the form state and append each value to FormData
-    for (const [key, value] of Object.entries(formData)) {
-      const excludedKeys = ['profile_photo', 'photo1', 'photo2', 'photo3', 'photo4', 'horoscope'];
-      if (!excludedKeys.includes(key)) {
-        formData_upload.append(key, value);
-      }
+    if (!formData.name || formData.name.trim() === "") {
+      errors.name = "First name is required.";
     }
 
-    if (profilePic) formData_upload.append("profile_photo", profilePic);
-    if (photo1) formData_upload.append("photo1", photo1);
-    if (photo2) formData_upload.append("photo2", photo2);
-    if (photo3) formData_upload.append("photo3", photo3);
-    if (photo4) formData_upload.append("photo2", photo4);
-    if (horoscope) formData_upload.append("horoscope", horoscope);
+    if (!formData.profile_photo || formData.profile_photo.trim() === "") {
+      errors.profile_photo = "Profile Photo is required.";
+    }
+
+    if (!formData.birthdate || formData.birthdate.trim() === "") {
+      errors.birthdate = "Date Of Birth is required.";
+    }
+
+    if (!formData.maritalstatus || formData.maritalstatus.trim() === "") {
+      errors.maritalstatus = "Marital Status is required.";
+    }
+
+    if (!formData.profile_created_for || formData.profile_created_for.trim() === "") {
+      errors.profile_created_for = "Profile created for is required.";
+    }
+
+    if (!formData.lookingfor || formData.lookingfor.trim() === "") {
+      errors.lookingfor = "Looking for is required.";
+    }
+
+    if (formData.profile_created_for != 'myself') {
+
+      if (!formData.profile_creator_name || formData.profile_creator_name.trim() === "") {
+        errors.profile_creator_name = "Name is required.";
+      }
+
+      if (!formData.profile_creator_photo || formData.profile_creator_photo.trim() === "") {
+        errors.profile_creator_photo = "Picture is required.";
+      }
+
+      if (!formData.profile_creator_aadhar || formData.profile_creator_aadhar.trim() === "") {
+        errors.profile_creator_aadhar = "Aadhar number is required.";
+      }
+
+      if (!formData.profile_creator_phonenumber || formData.profile_creator_phonenumber.trim() === "") {
+        errors.profile_creator_phonenumber = "Phone number is required.";
+      }
+    }
 
     // If there are validation errors, show error messages and stop submission
     if (Object.keys(errors).length > 0) {
@@ -202,31 +248,55 @@ const FormElements = () => {
           onClick: () => console.log('Close'),
         },
       });
-      
       return;
     }
 
     // Reset errors if validation passes
     setFormErrors({});
 
+    // Prepare the FormData for upload
+    for (const [key, value] of Object.entries(formData)) {
+      const excludedKeys = ["profile_photo", "photo1", "photo2", "photo3", "photo4", "horoscope", "profile_creator_photo"];
+      if (!excludedKeys.includes(key)) {
+        formData_upload.append(key, value);
+      }
+    }
+
+    if (profilePic) formData_upload.append("profile_photo", profilePic);
+    if (photo1) formData_upload.append("photo1", photo1);
+    if (photo2) formData_upload.append("photo2", photo2);
+    if (photo3) formData_upload.append("photo3", photo3);
+    if (photo4) formData_upload.append("photo4", photo4);
+    if (horoscope) formData_upload.append("horoscope", horoscope);
+    if (profileCreatorPic) formData_upload.append("profile_creator_photo", profileCreatorPic);
+
     try {
-      const res = await fetch("/api/update-user", {
+      const res = await fetch("/api/user", {
         method: "POST",
-        body: formData_upload
+        body: formData_upload,
       });
 
       if (!res.ok) {
-        throw new Error("Failed to update user data.");
+        throw new Error("Failed to Update user data.");
       }
 
-      const data = await res.json();
-      toast.success('User updated successfully!', {
+      toast.success('User updateed successfully!', {
         className: "sonner-toast-success",
         cancel: {
           label: 'Close',
           onClick: () => console.log('Close'),
         },
       });
+      // Reset the form
+      setFormData({}); // Clear form data
+      setProfilePic(null); // Reset profile picture
+      setPhoto1(null);
+      setPhoto2(null);
+      setPhoto3(null);
+      setPhoto4(null);
+      setHoroscope(null);
+      setProfileCreatorPic(null); // Reset profile picture
+
     } catch (err) {
       setError(err.message);
       toast.error('Failed to update User', {
@@ -239,6 +309,25 @@ const FormElements = () => {
     }
   };
 
+  const profileOptions = [
+    { label: 'MySelf', value: 'myself' },
+    { label: 'Daughter', value: 'daughter' },
+    { label: 'Son', value: 'son' },
+    { label: 'Others', value: 'others' },
+  ];
+
+  const maritalstatusOptions = [
+    { label: 'Never Married', value: 'nevermarried' },
+    { label: 'Widowed', value: 'widowed' },
+    { label: 'Divorced', value: 'divorced' },
+    { label: 'Awaiting Divorce', value: 'awaitingdivorce' },
+  ];
+
+  const lookingforOptions = [
+    { label: 'Bride', value: 'bride' },
+    { label: 'Groom', value: 'groom' },
+  ];
+
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -249,6 +338,135 @@ const FormElements = () => {
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
           <div className="flex flex-col gap-9">
+
+            {/* <!-- Reference start --> */}
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                <h3 className="font-medium dark-text dark:text-white">
+                  Profile Creator Details
+                </h3>
+              </div>
+              <div className="flex flex-col gap-5.5 p-6.5">
+
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Profile created for <span className="text-meta-1">*</span>
+                  </label>
+                  <RadioButtonGroup
+                    name="profile_created_for"
+                    options={profileOptions}
+                    selectedValue={formData.profile_created_for}
+                    onChange={handleChange}
+                  />
+                  {formErrors?.profile_created_for && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.profile_created_for}</p>
+                  )}
+                </div>
+
+                {profileCreator && (
+                  <>
+                    < div className="mb-4.5">
+                      <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                        Name <span className="text-meta-1">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="profile_creator_name"
+                        value={formData.profile_creator_name || ""}
+                        onChange={handleChange}
+                        placeholder="Enter Profile Creator Name"
+                        className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.profile_creator_name
+                          ? "border-red-500 focus:border-red-500"
+                          : "border-stroke focus:border-primary"
+                          } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                      />
+                      {formErrors?.profile_creator_name && (
+                        <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_name}</p>
+                      )}
+                    </div>
+
+
+                    <div className="mb-4.5">
+                      <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                        Picture <span className="text-meta-1">*</span>
+                      </label>
+                      <div className="flex items-center space-x-4">
+                        <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
+                          {formData.profile_creator_photo && (
+                            <NextImage
+                              src={formData.profile_creator_photo || ""}
+                              alt="Profile Creator Picture"
+                              width={64}
+                              height={64}
+                              quality={100}
+                              unoptimized={true}
+                              className={`w-full h-full object-cover ${formErrors?.profile_creator_photo
+                                ? "border-red-500 focus:border-red-500"
+                                : "border-stroke focus:border-primary"
+                                }`}
+                            />
+                          )}
+                        </div>
+                        <input
+                          type="file"
+                          name="profile_creator_photo"
+                          accept="image/*"
+                          onChange={handleChange}
+                          className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
+                        />
+                      </div>
+                      {formErrors?.profile_creator_photo && (
+                        <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_photo}</p>
+                      )}
+                    </div>
+
+
+                    <div className="mb-4.5">
+                      <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                        Aadhar Number <span className="text-meta-1">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="profile_creator_aadhar"
+                        value={formData.profile_creator_aadhar || ""}
+                        onChange={handleChange}
+                        placeholder="Enter your Aadhar Number"
+                        className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.profile_creator_aadhar
+                          ? "border-red-500 focus:border-red-500"
+                          : "border-stroke focus:border-primary"
+                          } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                      />
+                      {formErrors?.profile_creator_aadhar && (
+                        <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_aadhar}</p>
+                      )}
+                    </div>
+
+                    <div className="mb-4.5">
+                      <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                        Phone Number <span className="text-meta-1">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="profile_creator_phonenumber"
+                        value={formData.profile_creator_phonenumber || ""}
+                        onChange={handleChange}
+                        placeholder="Enter your phone number"
+                        className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.profile_creator_phonenumber
+                          ? "border-red-500 focus:border-red-500"
+                          : "border-stroke focus:border-primary"
+                          } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                      />
+                      {formErrors?.profile_creator_phonenumber && (
+                        <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_phonenumber}</p>
+                      )}
+                    </div>
+                  </>
+                )}
+
+              </div>
+            </div>
+
+            {/* <!-- Reference end--> */}
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                 <h3 className="font-medium dark-text dark:text-white">
@@ -270,7 +488,10 @@ const FormElements = () => {
                           height={64}
                           quality={100}
                           unoptimized={true}
-                          className="w-full h-full object-cover"
+                          className={`w-full h-full object-cover ${formErrors?.profile_photo
+                            ? "border-red-500 focus:border-red-500"
+                            : "border-stroke focus:border-primary"
+                            }`}
                         />
                       )}
                     </div>
@@ -282,6 +503,9 @@ const FormElements = () => {
                       className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
                     />
                   </div>
+                  {formErrors?.profile_photo && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.profile_photo}</p>
+                  )}
                 </div>
 
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
@@ -362,6 +586,36 @@ const FormElements = () => {
                   )}
                 </div>
 
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Marital Status <span className="text-meta-1">*</span>
+                  </label>
+                  <RadioButtonGroup
+                    name="maritalstatus"
+                    options={maritalstatusOptions}
+                    selectedValue={formData.maritalstatus}
+                    onChange={handleChange}
+                  />
+                  {formErrors?.maritalstatus && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.maritalstatus}</p>
+                  )}
+                </div>
+
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Looking For <span className="text-meta-1">*</span>
+                  </label>
+                  <RadioButtonGroup
+                    name="lookingfor"
+                    options={lookingforOptions}
+                    selectedValue={formData.lookingfor}
+                    onChange={handleChange}
+                  />
+                  {formErrors?.lookingfor && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.lookingfor}</p>
+                  )}
+                </div>
+
                 {/* Render SelectGroupReligion with dynamic castes */}
                 <div>
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
@@ -389,19 +643,20 @@ const FormElements = () => {
                     }
                   />
                 </div>
-                <div>
+
+                <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                     SubCaste
                   </label>
-                  <SelectGroupSubCaste
-                    subcastes={subcastes}
+                  <input
+                    type="text"
                     name="subcaste"
-                    selectedsubcaste={formData.subcaste}
-                    onsubcasteChange={(e) =>
-                      setFormData({ ...formData, subcaste: e.target.value })
-                    }
+                    value={formData.subcaste || ""}
+                    onChange={handleChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
+
                 <div>
                   <DatePickerOne
                     name="birthdate"
@@ -440,6 +695,9 @@ const FormElements = () => {
 
                     }}
                   />
+                  {formErrors?.birthdate && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.birthdate}</p>
+                  )}
                 </div>
 
                 <div className="mb-4.5">
@@ -455,6 +713,7 @@ const FormElements = () => {
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
+
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                     Place of birth
@@ -468,6 +727,7 @@ const FormElements = () => {
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
+
               </div>
             </div>
 
@@ -479,6 +739,7 @@ const FormElements = () => {
                 </h3>
               </div>
               <div className="flex flex-col gap-5.5 p-6.5">
+
                 <div>
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                     Education for Groom / Bride
@@ -595,6 +856,7 @@ const FormElements = () => {
 
               </div>
             </div>
+
             {/* <!-- horoscope upload start --> */}
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
@@ -615,22 +877,19 @@ const FormElements = () => {
                     onClick={handlePreview} style={{ width: "200px", padding: "8px 0" }}
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
                   >
-                    View
+                    Preview
                   </button>
-
                 )
                 }
               </div>
-
             </div>
             {/* <!-- horoscope upload end--> */}
-
 
             {/* <!-- Reference start --> */}
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                 <h3 className="font-medium dark-text dark:text-white">
-                  Reference
+                  Reference Details
                 </h3>
               </div>
               <div className="flex flex-col gap-5.5 p-6.5">
@@ -662,7 +921,6 @@ const FormElements = () => {
             </div>
 
             {/* <!-- Reference end--> */}
-
 
           </div>
 
@@ -842,7 +1100,7 @@ const FormElements = () => {
                     name="address"
                     value={formData.address || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-primary bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:text-white"
+                    className="w-full rounded-lg border-[1.5px] bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:text-white"
                   ></textarea>
                 </div>
 
@@ -888,7 +1146,6 @@ const FormElements = () => {
                     placeholder="Enter your age"
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
-                  {error && <p className="text-sm text-meta-1 mt-1">{error}</p>}
                 </div>
                 <div>
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
@@ -907,28 +1164,29 @@ const FormElements = () => {
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                     SubCaste
                   </label>
-                  <SelectGroupSubCaste
-                    subcastes={subcastes}
+                  <input
+                    type="text"
                     name="partner_pref_subcaste"
-                    selectedsubcaste={formData.subcaste}
-                    onsubcasteChange={(e) =>
-                      setFormData({ ...formData, subcaste: e.target.value })
-                    }
+                    value={formData.partner_pref_subcaste || ""}
+                    onChange={handleChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
               </div>
             </div>
+
             {/* <!-- Photo upload start --> */}
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                 <h3 className="font-medium dark-text dark:text-white">
-                  Additional Pictures
+                  Additional  Pictures
                 </h3>
               </div>
+
               <div className="flex flex-col gap-5.5 p-6.5">
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Photo1
+                    Picture1
                   </label>
                   <div className="flex items-center space-x-4">
                     <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
@@ -956,7 +1214,7 @@ const FormElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Photo2
+                    Picture2
                   </label>
                   <div className="flex items-center space-x-4">
                     <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
@@ -984,7 +1242,7 @@ const FormElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Photo3
+                    Picture3
                   </label>
                   <div className="flex items-center space-x-4">
                     <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
@@ -1013,7 +1271,7 @@ const FormElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Photo4
+                    Picture4
                   </label>
                   <div className="flex items-center space-x-4">
                     <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
@@ -1042,21 +1300,21 @@ const FormElements = () => {
             </div>
             {/* <!-- Photo upload end--> */}
 
-
             <div className="text-right">
-            <button
-              type="submit"
-              className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
-            >
-              Submit
-            </button>
+              <button
+                type="submit"
+                className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
+              >
+                Submit
+              </button>
 
             </div>
           </div>
-        </div>
 
+
+        </div>
         {error && <p className="mt-4 text-red-500">{error}</p>}
-      </form>
+      </form >
     </>
   );
 };

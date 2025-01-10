@@ -10,11 +10,12 @@ export async function GET(req: NextRequest) {
 
     // await connectToDatabase();
 
-    // User.deleteMany({
-    //     _id: { $nin: ["6763efb8ef4bb11532dfa1b8","676416e6ef4bb11532dfa37f"] }
+    // await User.deleteMany({
+    //     _id: { $nin: ["6763efb8ef4bb11532dfa1b8", "676416e6ef4bb11532dfa37f"] },
     // });
 
-    // return;
+    // return NextResponse.json('test');
+
 
     const sender = {
         name: 'TMSM',
