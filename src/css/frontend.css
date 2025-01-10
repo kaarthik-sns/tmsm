@@ -1,0 +1,208 @@
+/* styles/globals.css */
+
+
+
+body {
+    font-weight: 400;
+    font-family: 'Noto Sans';
+}
+
+
+/*Header */
+.header-bg {
+    background: #FFD16C url('/images/logo/Headbg.svg') no-repeat top center;
+    background-size: auto;
+    position: relative;
+    background-repeat: repeat-x;
+  }
+  
+  .header-bg:before {
+    content: ""; /* This is necessary to generate the pseudo-element */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/images/logo/Headbg.svg'); /* Image URL */
+    background-size: cover; /* Cover the area of the element */
+    background-position: top center; /* Adjust image position */
+    z-index: -1; /* Ensure it's behind other content */
+  }
+  
+.header-text a {
+    color:#323232;
+    font-size: 18px;
+    font-family: 'Noto Sans';
+    font-weight: 500;
+}
+.header-text a:hover {
+    color:#FF0000;
+}
+.header-text:active {
+    color:#FF0000;
+}
+
+.bg-button a {
+    font-weight: 900;
+    font-family: 'Noto Sans';
+}
+
+.pl-6 {
+    padding-left: 1.5rem;
+  }
+ .pr-6{
+    padding-right: 1.5rem;
+  }
+
+  /*Footer */
+  .dark-bg {
+    background: #323232;
+}
+  .footer-text a {
+    color:#fff;
+    font-size: 18px;
+    font-family: 'Noto Sans';
+    font-weight: 500;
+}
+.footer-p{
+    color:#fff;
+    font-size: 14px;
+    font-family: 'Noto Sans';
+    font-weight: 500;
+}
+
+.footer-text a:hover {
+    color:#FF0000;
+}
+
+/*slider */
+
+.bg-black {
+    --tw-bg-opacity: 1;
+    background-color: rgb(0 0 0);
+}
+
+.slider-text {
+    color: #fff;
+    font-size: 5vw;
+    font-family: 'Noto Sans';
+    font-weight: 700;
+    max-width: 42vw;
+    line-height: 5vw;
+}
+.slider-content {
+    font-size: 1.2vw;
+    color: #fff;
+    font-family: 'Noto Sans';
+    margin-top: 1rem;
+}
+.rounded-full.bg-black {
+    width: 30px;
+    background-color: #fff !important;
+}
+
+/*Fillter*/
+
+.ftext-custom {
+    color: #653D27;
+    background: #FFD16C;
+    border-color: #FFD16C;
+    font-weight: 800;
+    font-family: 'Noto Sans';
+}
+.fillter-text label{
+    font-size: 18px;
+    font-family: 'Noto Sans';
+    font-weight: 500;
+}
+.visibility{
+    visibility: hidden;
+}
+.mt-9{
+    margin-top: 2rem;
+  }
+/*Home About Section */
+
+.heading {
+    font-size: 40px;
+    font-family: 'Noto Sans';
+    font-weight: 700;
+    color: #333333;
+    line-height: 50px;
+}
+
+.description {
+    font-size: 20px;
+    font-family: 'Noto Sans';
+    font-weight: 500;
+    color: #333333;
+    line-height: 36px;
+    margin-bottom: 1em;
+    text-align: justify;
+}
+.h-21 {
+    height: 7rem;
+}
+.icon-text {
+    font-size: 18px;
+    font-weight: 800;
+    color: #333333;
+}
+
+.join-us {
+    background: #FFD16C;
+}
+.join-heading {
+    font-size: 35px;
+    font-family: 'Noto Sans';
+    font-weight: 500;
+    color: #333333;
+    line-height: 40px;
+}
+.bg-color{
+    background: #F8F8F8;
+    border: 1px solid #fff;
+    font-weight: 600;
+    font-family: 'Noto Sans';
+    color: #333;
+}
+
+.bg-color:hover{
+    border: 1px solid #fff;
+    background: transparent;
+}
+
+
+/*Responsive code*/
+
+@media (min-width: 1024px) {
+    .lg\:gap-8{
+        gap: 2rem;
+      }
+    }
+@media (min-width: 1536px) {
+    .container {
+        max-width: 1400px;
+    }
+}
+
+@media (min-width: 991px) {
+.slider-content {
+    margin-top: 1em;
+    margin-bottom: 2rem;
+}
+
+}
+@media (max-width: 991px) {
+    .slider-content {
+        font-size: 10px;
+        margin-top: 0rem;
+        margin-bottom: .5rem;
+    }
+ }
+ 
+ @media (max-width: 768px) {
+    .visibility{
+        visibility: initial;
+    }
+ }
