@@ -3,7 +3,6 @@ import connectToDatabase from '@/lib/mongodb';
 import Settings from '@/models/Settings';
 import { promises as fs } from 'fs';
 import path from 'path';
-import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 
 
@@ -20,7 +19,8 @@ export async function POST(req: NextRequest) {
 
     // Parse the form data
     const formData = await req.formData();
-    // console.log('Form Data:', formData);
+
+console.log(formData); 
 
     const logo = formData.get('logo') as File;
     // const favicon = formData.get('favicon') as File;
@@ -55,25 +55,26 @@ export async function POST(req: NextRequest) {
     }
 
     // Update the fields
-    settings.organisation_description = organisation_description || settings.organisation_description;
-    settings.organisation_name = organisation_name || settings.organisation_name;
-    settings.organisation_email_id = organisation_email_id || settings.organisation_email_id;
-    settings.admin_to_email_id = admin_to_email_id || settings.admin_to_email_id;
-    settings.admin_from_email_id = admin_from_email_id || settings.admin_from_email_id;
-    settings.phone_no = phone_no || settings.phone_no;
-    settings.address = address || settings.address;
-    settings.domain_url = domain_url || settings.domain_url;
-    settings.copyright = copyright || settings.copyright;
-    settings.facebook = facebook || settings.facebook;
-    settings.twitter = twitter || settings.twitter;
-    settings.instagram = instagram || settings.instagram;
-    settings.youtube = youtube || settings.youtube;
-    settings.smtp_mail = smtp_mail || settings.smtp_mail;
-    settings.smtp_password = smtp_password || settings.smtp_password;
-    settings.smtp_port = smtp_port || settings.smtp_port;
-    settings.smtp_host = smtp_host || settings.smtp_host;
-    settings.smtp_secure = smtp_secure || settings.smtp_secure;
-    settings.profile_req_limit = profile_req_limit || settings.profile_req_limit;
+    settings.organisation_description = organisation_description ?? "";
+    settings.organisation_name = organisation_name ?? "";
+    settings.organisation_email_id = organisation_email_id ?? "";
+    settings.admin_to_email_id = admin_to_email_id ?? "";
+    settings.admin_from_email_id = admin_from_email_id ?? "";
+    settings.phone_no = phone_no ?? "";
+    settings.address = address ?? "";
+    settings.domain_url = domain_url ?? "";
+    settings.copyright = copyright ?? "";
+    settings.facebook = facebook ?? "";
+    settings.twitter = twitter ?? "";
+    settings.instagram = instagram ?? "";
+    settings.youtube = youtube ?? "";
+    settings.smtp_mail = smtp_mail ?? "";
+    settings.smtp_password = smtp_password ?? "";
+    settings.smtp_port = smtp_port ?? "";
+    settings.smtp_host = smtp_host ?? "";
+    settings.smtp_secure = smtp_secure ?? "";
+    settings.profile_req_limit = profile_req_limit ?? "";
+
 
     // Update logo
     if (logo) {

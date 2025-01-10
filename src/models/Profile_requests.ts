@@ -23,6 +23,6 @@ RequestsSchema.statics.getByReceiverId = function (id: string) {
   return this.findOne({ receiver_id: id });
 }
 
-const ProfileRequests = models.ProfileRequests || model("ProfileRequests", RequestsSchema);
+const profile_requests = models.ProfileRequests || model("profile_requests", RequestsSchema);
 
-export default ProfileRequests;
+export default profile_requests;

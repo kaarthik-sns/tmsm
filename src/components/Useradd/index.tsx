@@ -16,6 +16,9 @@ const FormElements = () => {
   const [photo3, setPhoto3] = useState<File | null>(null);
   const [photo4, setPhoto4] = useState<File | null>(null);
   const [horoscope, setHoroscope] = useState<File | null>(null);
+  const [error, setError] = useState(null);
+  const [formErrors, setFormErrors] = useState({});
+  const formData_upload = new FormData();
 
   // Array for religions
   const religions = [
@@ -84,9 +87,6 @@ const FormElements = () => {
 
   });
 
-  const formData_upload = new FormData();
-
-  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -118,7 +118,6 @@ const FormElements = () => {
       alert("No file uploaded to preview!");
     }
   };
-  const [formErrors, setFormErrors] = useState({});
 
   const validatePassword = (password: string): string | null => {
     const minLength = 6;
@@ -173,29 +172,29 @@ const FormElements = () => {
       errors.password = passwordError;
     }
 
-      // Check for duplicate email
-  try {
-    const res = await fetch(`/api/check-email`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email: formData.email }),
-    });
+    // Check for duplicate email
+    try {
+      const res = await fetch(`/api/check-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: formData.email }),
+      });
 
-    if (!res.ok) {
-      throw new Error("Failed to check email.");
-    }
+      if (!res.ok) {
+        throw new Error("Failed to check email.");
+      }
 
-    const data = await res.json();
-    if (data.exists) {
-      errors.email = "This email is already registered.";
+      const data = await res.json();
+      if (data.exists) {
+        errors.email = "This email is already registered.";
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to validate email. Please try again.");
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    toast.error("Failed to validate email. Please try again.");
-    return;
-  }
 
     // If there are validation errors, show error messages and stop submission
     if (Object.keys(errors).length > 0) {
@@ -238,7 +237,6 @@ const FormElements = () => {
         throw new Error("Failed to add user data.");
       }
 
-      const data = await res.json();
       toast.success('User Added successfully!', {
         className: "sonner-toast-success",
         cancel: {
@@ -405,8 +403,8 @@ const FormElements = () => {
                     onChange={handleChange}
                     placeholder="Enter a strong password"
                     className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.password
-                        ? "border-red-500 focus:border-red-500"
-                        : "border-stroke focus:border-primary"
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-stroke focus:border-primary"
                       } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
                   />
                   {formErrors?.password && (
@@ -1095,14 +1093,14 @@ const FormElements = () => {
               </div>
             </div>
             {/* <!-- Photo upload end--> */}
-            
-          <div className="text-right">
-            <button
-              type="submit"
-              className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
-            >
-              Submit
-            </button>
+
+            <div className="text-right">
+              <button
+                type="submit"
+                className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
+              >
+                Submit
+              </button>
 
             </div>
           </div>

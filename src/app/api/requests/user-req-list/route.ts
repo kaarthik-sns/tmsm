@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/mongodb';
-import ProfileRequests from '@/models/ProfileRequests';
+import ProfileRequests from '@/models/Profile_requests';
 
 export async function POST(request: NextRequest) {
     try {

@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/mongodb';
-import ProfileRequests from '@/models/ProfileRequests';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { getServerSession } from 'next-auth';
+import ProfileRequests from '@/models/Profile_requests';
+
 
 export async function POST(request: NextRequest) {
 
