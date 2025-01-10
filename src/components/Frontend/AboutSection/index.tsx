@@ -32,7 +32,7 @@ const AboutUs = () => {
           <div className="flex flex-col md:flex-row items-center gap-8">
             {/* Image Section */}
             <div className="w-full md:w-1/2 py-12">
-              <div className="relative w-full h-[500px] md:h-[500px]  overflow-hidden border-4 border-0 ">
+              <div className="relative w-full h-[500px] md:h-[500px]  overflow-hidden border-0 ">
                 <Image
                   src="/images/about/about-couple.svg" // Replace with your image path
                   alt="Happy Couple"
@@ -87,7 +87,7 @@ const AboutUs = () => {
 
             {/* Image Section */}
             <div className="w-full md:w-1/2 py-12">
-              <div className="relative w-full h-[500px] md:h-[600px]  overflow-hidden border-4 border-0 ">
+              <div className="relative w-full h-[500px] md:h-[600px]  overflow-hidden border-0 ">
                 <Image
                   src="/images/about/couple.svg" // Replace with your image path
                   alt="Happy Couple"
