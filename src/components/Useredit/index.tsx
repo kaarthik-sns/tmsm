@@ -112,7 +112,11 @@ const FormElements = () => {
           const { data } = await response.json();
 
           setFormData(data);
-          setProfileCreator(data.profile_created_for);
+
+          if (data?.profile_created_for != 'myself') {
+            setProfileCreator(true);
+          }
+
           setProfilePic(data.profile_photo);
           setPhoto1(data.photo1);
           setPhoto2(data.photo2);

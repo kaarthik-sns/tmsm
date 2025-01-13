@@ -20,7 +20,16 @@ const UPLOAD_PIC_DIR = path.join(process.cwd(), 'public', 'uploads', 'photos'); 
 const UPLOAD_HORO_DIR = path.join(process.cwd(), 'public', 'uploads', 'horoscope'); // Save in the public directory
 
 const uploadFile = async (file: UploadedFile | undefined, uploadDir: string): Promise<string | null> => {
-    if (!file) return null;
+
+    // If the input is a string (file path), return it as is
+    if (typeof file === "string") {
+        return file;
+    }
+
+    // If no file is provided, return null
+    if (!file) {
+        return null;
+    }
 
     // Generate a unique filename
     const uniqueSuffix = `${Date.now()}-${crypto.randomBytes(6).toString("hex")}`;
@@ -120,12 +129,12 @@ export async function POST(request: NextRequest) {
         const profile_creator_photo = await uploadFile(file6, UPLOAD_PIC_DIR);
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        
+
         const sanitizeAndTrimFields = (fields: Record<string, any>): Record<string, any> => {
             const sanitizedFields: Record<string, any> = {}; // Explicitly define type
             for (const [key, value] of Object.entries(fields)) {
                 const valueType = typeof value; // Store the type in a variable
-        
+
                 if (valueType === 'string') {
                     // Check if the string value is `'null'` and replace it with an empty string
                     sanitizedFields[key] = value === 'null' ? '' : value.trim();
@@ -139,7 +148,7 @@ export async function POST(request: NextRequest) {
             }
             return sanitizedFields;
         };
-        
+
 
         // Usage
         const newUserFields = sanitizeAndTrimFields({
