@@ -1,27 +1,86 @@
 "use client";
 
 import Image from "next/image";
-
-const features = [
-  {
-    icon: "/images/about/community.svg", // Replace with your icon path
-    title: "Exclusive to the Mudaliyar Community ",
-  },
-  {
-    icon: "/images/about/profile.svg", // Replace with your icon path
-    title: "Verified and Trustworthy Profiles",
-  },
-  {
-    icon: "/images/about/privacy.svg", // Replace with your icon path
-    title: "Privacy and Security First",
-  },
-  {
-    icon: "/images/about/match.svg", // Replace with your icon path
-    title: "Matchmaking Options",
-  },
-];
+import { useEffect, useState } from 'react';
 
 const AboutUs = () => {
+
+  const [features, setFeatures] = useState([]);
+
+  const fetchTableItems = async () => {
+    try {
+      const response = await fetch('/api/cms/home/page', {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const data_array = data.data;
+
+      console.log(data_array);
+
+      const sec_one_title = data_array.sec_one_title;
+      const sec_one_desc = data_array.sec_one_desc;
+      const sec_one_img = data_array.sec_one_img;
+
+      const sec_two_title = data_array.sec_two_title;
+      const sec_two_desc = data_array.sec_two_desc;
+      const sec_two_img = data_array.sec_two_img;
+
+      const feature_one = data_array.feature_one;
+      const feature_one_img = data_array.feature_one_img;
+      const feature_two = data_array.feature_two;
+      const feature_two_img = data_array.feature_two_img;
+      const feature_three = data_array.feature_three;
+      const feature_three_img = data_array.feature_three_img;
+      const feature_four = data_array.feature_four;
+      const feature_four_img = data_array.feature_four_img;
+
+      const banner_title = data_array.banner_title;
+      const banner_btn_text = data_array.banner_btn_text;
+      const banner_btn_link = data_array.banner_btn_link;
+
+      const features_data = [
+        {
+          icon: "/images/about/community.svg", // Replace with your icon path
+          title: feature_one,
+        },
+        {
+          icon: "/images/about/profile.svg", // Replace with your icon path
+          title: feature_two,
+        },
+        {
+          icon: "/images/about/privacy.svg", // Replace with your icon path
+          title: feature_three,
+        },
+        {
+          icon: "/images/about/match.svg", // Replace with your icon path
+          title: feature_four,
+        }
+      ];
+
+      setFeatures(features_data);
+
+    } catch (error) {
+      console.error("Error fetching table items:", error);
+    }
+  };
+
+
+  useEffect(() => {
+    fetchTableItems();
+  }, []);
+
+  if (features.length === 0) {
+    return <div>Loading...</div>; // Show a loading state while slides are being fetched
+  }
+
   return (
     <>
       <section className="relative bg-[#FFD16C] py-12">
@@ -43,26 +102,26 @@ const AboutUs = () => {
             </div>
 
             {/* Text Section */}
-            <div className="w-full md:w-1/2 md:text-left py-12">
+            <div className="w-full md:w-1/2 md:text-left py-12 description">
               <h2 className="heading mb-6">About</h2>
-              <p className="description">
-                The Thondai Mandala Saiva Mudaliyar (TMSM) Matrimony is a matrimonial
-                platform specially dedicated to the Thondai Mandala Saiva Mudaliyar
-                community, which has its roots in Tamil Nadu. This community places
-                significant emphasis on cultural values, traditions, and shared heritage,
-                which is why many individuals and families prefer to seek matrimonial
-                alliances within the community.
-              </p>
-              <p className="description">
-                TMSM Matrimony services provide a platform where brides and grooms can
-                find partners with similar cultural backgrounds and values, ensuring
-                compatibility within family traditions. These services focus on verifying
-                profiles, maintaining data privacy, and providing tailored search options
-                for prospective brides and grooms within the Mudaliyar community.
-              </p>
-              <p className="description">
-                The Thondai Mandala Saiva Mudaliyar (TMSM) Matrimony is a matrimonial platform specially dedicated ot the Thondai Mandala Saiva Mudaliyar community. Which has its roots in Tamil Nadu. This community places significant emphasis on cultural values, traditions and shared heritage, which is why many individuals and families prefer to seek matrimonial alliances within the community.
-              </p>
+              {/* <p className="description"> */}
+              The Thondai Mandala Saiva Mudaliyar (TMSM) Matrimony is a matrimonial
+              platform specially dedicated to the Thondai Mandala Saiva Mudaliyar
+              community, which has its roots in Tamil Nadu. This community places
+              significant emphasis on cultural values, traditions, and shared heritage,
+              which is why many individuals and families prefer to seek matrimonial
+              alliances within the community.
+              {/* </p>
+              <p className="description"> */}
+              TMSM Matrimony services provide a platform where brides and grooms can
+              find partners with similar cultural backgrounds and values, ensuring
+              compatibility within family traditions. These services focus on verifying
+              profiles, maintaining data privacy, and providing tailored search options
+              for prospective brides and grooms within the Mudaliyar community.
+              {/* </p>
+              <p className="description"> */}
+              The Thondai Mandala Saiva Mudaliyar (TMSM) Matrimony is a matrimonial platform specially dedicated ot the Thondai Mandala Saiva Mudaliyar community. Which has its roots in Tamil Nadu. This community places significant emphasis on cultural values, traditions and shared heritage, which is why many individuals and families prefer to seek matrimonial alliances within the community.
+              {/* </p> */}
             </div>
           </div>
         </div>
