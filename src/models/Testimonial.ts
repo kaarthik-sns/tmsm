@@ -8,13 +8,6 @@ const TestimonialSchema = new Schema({
   image: { type: String, required: true }, // name as text for full-text search
 });
 
-
-// Get Testimonial by id
-TestimonialSchema.statics.getById = function (id: string) {
-  return this.findOne({ _id: id });
-}
-
-
 const Testimonial = models.testimonial || model("testimonial", TestimonialSchema);
 
 export default Testimonial;

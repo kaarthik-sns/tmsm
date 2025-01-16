@@ -242,7 +242,7 @@ const UserTable = () => {
                     <tbody className="text-gray-600 divide-y">
                         {tableItems.length === 0 ? (
                             <tr>
-                                <td colSpan="6" className="text-center px-6 py-4 whitespace-nowrap">
+                                <td colSpan={6} className="text-center px-6 py-4 whitespace-nowrap">
                                     No data found
                                 </td>
                             </tr>

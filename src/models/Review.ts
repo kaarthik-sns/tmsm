@@ -8,11 +8,6 @@ const ReviewSchema = new Schema({
   is_delete: { type: Boolean, default: false }, // admin approved or not status
 });
 
-// Get review by id
-ReviewSchema.statics.getById = function (id: string) {
-  return this.findOne({ _id: id });
-}
-
 const review = models.review || model("review", ReviewSchema);
 
 export default review;

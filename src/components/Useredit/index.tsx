@@ -51,7 +51,7 @@ const FormElements = () => {
     caste: "",
     subcaste: "",
     birthdate: "",
-    age: "",
+    age: 0,
     place_of_birth: "",
     education: "",
     complexion: "",
@@ -262,7 +262,11 @@ const FormElements = () => {
     for (const [key, value] of Object.entries(formData)) {
       const excludedKeys = ["profile_photo", "photo1", "photo2", "photo3", "photo4", "horoscope", "profile_creator_photo"];
       if (!excludedKeys.includes(key)) {
-        formData_upload.append(key, value);
+        if (typeof value === "number") {
+          formData_upload.append(key, value.toString());
+        } else {
+          formData_upload.append(key, value);
+        }
       }
     }
 
@@ -292,7 +296,7 @@ const FormElements = () => {
         },
       });
       // Reset the form
-      setFormData({}); // Clear form data
+
       setProfilePic(null); // Reset profile picture
       setPhoto1(null);
       setPhoto2(null);
@@ -663,7 +667,6 @@ const FormElements = () => {
 
                 <div>
                   <DatePickerOne
-                    name="birthdate"
                     dateFormat="d-m-Y" // Format for the date
                     placeholder="Select your birth date" // Placeholder for the date picker
                     value={formData.birthdate} // Pass the current value of birthDate from formData
@@ -1141,7 +1144,7 @@ const FormElements = () => {
                     onChange={(e) => {
                       const value = e.target.value;
                       setFormData({ ...formData, partner_pref_age: value });
-                      if (value < 18) {
+                      if (parseInt(value as string) < 18) {
                         setError("Age must be at least 18 years.");
                       } else {
                         setError("");

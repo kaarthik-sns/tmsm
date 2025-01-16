@@ -16,7 +16,7 @@ const handler = NextAuth({
             credentials: {
                 email: {},
                 password: {},
-                is_admin: {}, // Added is_admin as a credential field
+                is_admin: {},
             },
             async authorize(credentials) {
                 try {
@@ -59,7 +59,7 @@ const handler = NextAuth({
         }),
     ],
     pages: {
-        signOut: "/", // Redirect to the homepage on sign-out
+        signOut: "/",
     },
     callbacks: {
         async jwt({ token, user }) {
@@ -67,7 +67,7 @@ const handler = NextAuth({
                 token.id = user._id;
                 token.email = user.email;
                 token.name = user.name;
-                token.is_admin = user.is_admin; // Include is_admin in token
+                token.is_admin = user.is_admin;
             }
             return token;
         },
@@ -75,33 +75,33 @@ const handler = NextAuth({
             if (token) {
                 session.user = {
                     email: token.email,
-                    name: token.name, // Ensure name is included if available
-                    id: token.id, // Map token.id to session.user.id
-                    is_admin: token.is_admin, // Map is_admin to session
+                    name: token.name,
+                    id: token.id as string,
+                    is_admin: token.is_admin as boolean,
                 };
             }
             return session;
         },
         async signIn({ user }) {
-            console.log('User object:', user); // Debug: Check the user object
+
             await connectToDatabase();
 
             if (user?._id) {
                 try {
                     await Users_activity_log.create({
-                        user_id: user._id,  // Ensure user.id exists
+                        user_id: user._id,
                         desc: user.name + ' Logged In',
                         created_at: new Date()
                     });
                     console.log('User activity log created successfully.');
                 } catch (error) {
-                    console.error('Error creating user activity log:', error); // Debug: Log any errors
+                    console.error('Error creating user activity log:', error);
                 }
             } else {
                 console.error('No user ID found in user object');
             }
 
-            return true;  // Ensure the sign-in process is successful
+            return true;
         },
 
     },

@@ -8,7 +8,7 @@ export async function middleware(req) {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
     // Avoid infinite redirects by excluding `/admin/auth/signin` and other authenticated paths like `/admin/profile`
-    console.log('token:',token);
+    // console.log('token:',token);
 
     if (pathname === '/admin/forgot-password') {
         return NextResponse.next();

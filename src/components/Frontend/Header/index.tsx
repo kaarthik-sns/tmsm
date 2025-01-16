@@ -7,7 +7,7 @@ import "@/css/frontend.css";
 
 import Image from "next/image";
 
-import { 
+import {
   Navbar,
   Collapse,
   Typography,
@@ -26,7 +26,7 @@ interface NavItemPropsType {
 function NavItem({ label, href, className }: NavItemPropsType) {
   return (
     <Link href={href} className={className}>
-        {label}
+      {label}
     </Link>
   );
 }
@@ -38,17 +38,17 @@ function NavList() {
       <NavItem label="About" href="/about" />
       <NavItem label="Contact" href="/contact" />
       <div className="flex bg-white px-5 py-3 gap-5 rounded-full bg-button hidden lg:block">
-      <NavItem label="Login"  href="/login"  className="pr-5 border-r border-black"/>
-      <NavItem label="Register"  href="/register"  className="pl-5" />
+        <NavItem label="Login" href="/login" className="pr-5 border-r border-black" />
+        <NavItem label="Register" href="/register" className="pl-5" />
       </div>
-      <NavItem label="Login"  href="/login" className="block lg:hidden"/>
-      <NavItem label="Register"  href="/register"  className="block lg:hidden"/>
+      <NavItem label="Login" href="/login" className="block lg:hidden" />
+      <NavItem label="Register" href="/register" className="block lg:hidden" />
       <Image
-          width={30}
-          height={30}
-          src={"../../images/logo/globe.svg"}
-          alt="Logo"
-        />
+        width={30}
+        height={30}
+        src={"../../images/logo/globe.svg"}
+        alt="Logo"
+      />
     </ul>
   );
 }
@@ -67,35 +67,45 @@ export function NavbarWithSimpleLinks() {
   }, []);
 
   return (
-    <Navbar className="header-bg py-6 border-0" fullWidth>
+    <Navbar className="header-bg py-6 border-0"
+      fullWidth={true}
+      placeholder="" // If placeholder is required
+      onPointerEnterCapture={() => { }}
+      onPointerLeaveCapture={() => { }}>
       <div className="container mx-auto flex items-center justify-between mt-6">
-      <Link className="hidden flex-shrink-0 lg:block" href="/">
-      <Image
+        <Link className="hidden flex-shrink-0 lg:block" href="/">
+          <Image
             className="xl:w-[700px] lg:w-[400px] sm:w-[300px]"
             width={700}
             height={400}
-            src={"../../images/logo/flogo.svg"}
+            src={"../../images/logo/Flogo.svg"}
             alt="Logo"
           />
-      </Link>
+        </Link>
 
         <div className="hidden lg:block">
           <NavList />
         </div>
         <Link className="block flex-shrink-0 lg:hidden" href="/">
-            <Image
-              width={280}
-              height={300}
-              src={"../../images/logo/flogo.svg"}
-              alt="Logo"
-            />
-          </Link>
+          <Image
+            width={280}
+            height={300}
+            src={"../../images/logo/Flogo.svg"}
+            alt="Logo"
+          />
+        </Link>
         <IconButton
           size="sm"
+          title="Click to toggle"
           variant="text"
           color="blue-gray"
           onClick={handleOpen}
           className="ml-auto inline-block lg:hidden"
+          ripple={true}
+          fullWidth={false}
+          placeholder="" // If placeholder is required
+          onPointerEnterCapture={() => { }}
+          onPointerLeaveCapture={() => { }}
         >
           {open ? (
             <XMarkIcon className="h-5 w-5" strokeWidth={2} />

@@ -15,11 +15,22 @@ const FaqTable = () => {
     const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
     const router = useRouter(); // Initialize Next.js router
 
-    const [formState, setFormState] = useState({
+    interface FormState {
+        name: string;
+        email: string;
+        selectOne: string;
+        selectTwo: string;
+        title: string; // Add title property
+        description: string; // Add description property
+    }
+
+    const [formState, setFormState] = useState<FormState>({
         name: "",
         email: "",
         selectOne: "",
         selectTwo: "",
+        title: "",
+        description: ""
     });
 
     useEffect(() => {
@@ -97,85 +108,85 @@ const FaqTable = () => {
 
 
     return (
-        <>        
-        <Breadcrumb pageName="List Faq" />
+        <>
+            <Breadcrumb pageName="List Faq" />
 
-        <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">
-            <div className="items-start justify-between md:flex">
-                <div className="mt-3 md:mt-0">
-                    <Link
-                        href="/admin/cms/faq/add"
-                        className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
-                    >
-                        Add Faq
-                    </Link>
+            <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">
+                <div className="items-start justify-between md:flex">
+                    <div className="mt-3 md:mt-0">
+                        <Link
+                            href="/admin/cms/faq/add"
+                            className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
+                        >
+                            Add Faq
+                        </Link>
+                    </div>
                 </div>
-            </div>
-            <div className="mt-12 shadow-sm border rounded-lg overflow-x-auto">
+                <div className="mt-12 shadow-sm border rounded-lg overflow-x-auto">
 
-                <table className="w-full table-auto text-md text-left">
-                    <thead className="text-gray-600 font-medium border-b">
-                        <tr>
-                            <th className="py-3 px-6 dark-text">#</th>
-                            <th className="py-3 px-6 dark-text">Name</th>
-                            <th className="py-3 px-6">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody className="text-gray-600 divide-y">
-                        {tableItems.length === 0 ? (
+                    <table className="w-full table-auto text-md text-left">
+                        <thead className="text-gray-600 font-medium border-b">
                             <tr>
-                                <td colSpan="6" className="text-center px-6 py-4 whitespace-nowrap">
-                                    No data found
-                                </td>
+                                <th className="py-3 px-6 dark-text">#</th>
+                                <th className="py-3 px-6 dark-text">Name</th>
+                                <th className="py-3 px-6">Action</th>
                             </tr>
-                        ) : (
-                            tableItems.map((item, idx) => (
-                                <tr key={idx} className="odd:bg-gray-50 even:bg-white">
+                        </thead>
+                        <tbody className="text-gray-600 divide-y">
+                            {tableItems.length === 0 ? (
+                                <tr>
+                                    <td colSpan={6} className="text-center px-6 py-4 whitespace-nowrap">
+                                        No data found
+                                    </td>
+                                </tr>
+                            ) : (
+                                tableItems.map((item, idx) => (
+                                    <tr key={idx} className="odd:bg-gray-50 even:bg-white">
 
-                                    <td className="px-6 py-4 whitespace-nowrap">{idx + 1}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap">{item.title}</td>
-                                    <td className="text-right px-6 whitespace-nowrap">
-                                        <div className="flex items-center space-x-3.5">
-                                            <button
-                                                onClick={() => handleEdit(item._id)}
+                                        <td className="px-6 py-4 whitespace-nowrap">{idx + 1}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap">{item.title}</td>
+                                        <td className="text-right px-6 whitespace-nowrap">
+                                            <div className="flex items-center space-x-3.5">
+                                                <button
+                                                    onClick={() => handleEdit(item._id)}
 
-                                                className="py-2 px-3 font-medium  hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg "
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 24 24"
-                                                    fill="currentColor"
-                                                    className="w-6 h-6"
+                                                    className="py-2 px-3 font-medium  hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg "
                                                 >
-                                                    <path d="M4 20h4l10-10-4-4L4 16v4zm15.656-15.656a2 2 0 010 2.828l-1.828 1.828-4-4 1.828-1.828a2 2 0 012.828 0l1.172 1.172z" />
-                                                </svg>
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 24 24"
+                                                        fill="currentColor"
+                                                        className="w-6 h-6"
+                                                    >
+                                                        <path d="M4 20h4l10-10-4-4L4 16v4zm15.656-15.656a2 2 0 010 2.828l-1.828 1.828-4-4 1.828-1.828a2 2 0 012.828 0l1.172 1.172z" />
+                                                    </svg>
 
 
-                                            </button>
+                                                </button>
 
 
-                                            <button
-                                                onClick={() => handleView(item)}
-                                                className="text-blue-600 hover:underline"
-                                            >
-                                                <svg
-                                                    className="fill-current"
-                                                    width="18"
-                                                    height="18"
-                                                    viewBox="0 0 18 18"
-                                                    fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg"
+                                                <button
+                                                    onClick={() => handleView(item)}
+                                                    className="text-blue-600 hover:underline"
                                                 >
-                                                    <path
-                                                        d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
-                                                        fill=""
-                                                    />
-                                                    <path
-                                                        d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
-                                                        fill=""
-                                                    />
-                                                </svg>
-                                            </button>
+                                                    <svg
+                                                        className="fill-current"
+                                                        width="18"
+                                                        height="18"
+                                                        viewBox="0 0 18 18"
+                                                        fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                        <path
+                                                            d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
+                                                            fill=""
+                                                        />
+                                                        <path
+                                                            d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
+                                                            fill=""
+                                                        />
+                                                    </svg>
+                                                </button>
 
                                                 <button
                                                     onClick={() => handleDelete(item._id)}
@@ -210,60 +221,60 @@ const FaqTable = () => {
 
                                                 </button>
 
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))
-                        )}
-                    </tbody>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
 
-                </table>
-            </div>
-            <div className="max-w-screen-xl mx-auto mt-12 px-4 text-gray-600 md:px-8">
-                <div className="flex items-center justify-between text-sm text-gray-600 font-medium">
-                    <a href="#" onClick={handlePrevious} className="px-4 py-2 border rounded-lg duration-150 hover:bg-gray-50 dark-text">
-                        Previous
-                    </a>
-                    <div className="dark-text">
-                        Page {currentPage} of {pages}
-                    </div>
-                    <a href="#" onClick={handleNext} className="px-4 py-2 border rounded-lg duration-150 hover:bg-gray-50 dark-text">
-                        Next
-                    </a>
+                    </table>
                 </div>
-            </div>
-            {/* Modal */}
-            {isModalOpen && modalData && (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
-            {/* Close Button */}
-            <button
-                onClick={closeModal}
-                className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 red-color "
-                aria-label="Close"
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="w-6 h-6"
-                >
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
-            </button>
+                <div className="max-w-screen-xl mx-auto mt-12 px-4 text-gray-600 md:px-8">
+                    <div className="flex items-center justify-between text-sm text-gray-600 font-medium">
+                        <a href="#" onClick={handlePrevious} className="px-4 py-2 border rounded-lg duration-150 hover:bg-gray-50 dark-text">
+                            Previous
+                        </a>
+                        <div className="dark-text">
+                            Page {currentPage} of {pages}
+                        </div>
+                        <a href="#" onClick={handleNext} className="px-4 py-2 border rounded-lg duration-150 hover:bg-gray-50 dark-text">
+                            Next
+                        </a>
+                    </div>
+                </div>
+                {/* Modal */}
+                {isModalOpen && modalData && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
+                            {/* Close Button */}
+                            <button
+                                onClick={closeModal}
+                                className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 red-color "
+                                aria-label="Close"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="w-6 h-6"
+                                >
+                                    <line x1="18" y1="6" x2="6" y2="18" />
+                                    <line x1="6" y1="6" x2="18" y2="18" />
+                                </svg>
+                            </button>
 
-            <h2 className="text-xl font-bold mb-4">{modalData.title}</h2>
-            <p>{modalData.description}</p>
-        </div>
-    </div>
-)}
+                            <h2 className="text-xl font-bold mb-4">{modalData.title}</h2>
+                            <p>{modalData.description}</p>
+                        </div>
+                    </div>
+                )}
 
-        </div >
+            </div >
         </>
     );
 };

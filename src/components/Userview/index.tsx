@@ -13,7 +13,7 @@ const FormElements = () => {
     name: "",
     lastname: "",
     email: "",
-    phoneNumber: "",
+    phonenumber: "",
     religion: "",
     caste: "",
     subcaste: "",
@@ -91,7 +91,6 @@ const FormElements = () => {
 
         } catch (err) {
           console.error(err);
-          setError(err.message);
         } finally {
           setIsLoading(false);
         }

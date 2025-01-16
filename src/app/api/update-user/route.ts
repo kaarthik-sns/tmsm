@@ -183,13 +183,6 @@ export async function POST(request: NextRequest) {
         // update profile pic
         if (file5) {
 
-            console.log('File Details:', {
-                name: file.name,
-                size: file.size,
-                type: file.type,
-                lastModified: file.lastModified,
-            });
-
             // Generate a unique filename using timestamp and random string
             const uniqueSuffix = Date.now() + '-' + crypto.randomBytes(6).toString('hex');
             const fileExtension = path.extname(file5.name);

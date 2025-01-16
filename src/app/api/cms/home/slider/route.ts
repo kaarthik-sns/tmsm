@@ -110,7 +110,7 @@ export async function PATCH(req: NextRequest) {
     try {
         // Find user by email_code
         await connectToDatabase();
-        const dataModel = await Model.getById(id);
+        const dataModel = await Model.findById(id);
 
         if (!dataModel) {
             return NextResponse.json({ message: 'Data not found' }, { status: 400 });

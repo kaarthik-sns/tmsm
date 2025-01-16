@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
 
-const changePassword: React.FC = () => {
+const ChangePassword: React.FC = () => {
 
     const [pending, setPending] = useState(false);
     const [error, setError] = useState(null);
@@ -201,4 +201,4 @@ const changePassword: React.FC = () => {
     );
 };
 
-export default changePassword;
+export default ChangePassword;

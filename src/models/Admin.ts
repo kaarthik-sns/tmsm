@@ -13,11 +13,6 @@ AdminSchema.statics.getByName = function (name: string) {
   return this.findOne({ name });
 };
 
-// Get Admin by id
-AdminSchema.statics.getById = function (id: string) {
-  return this.findOne({ _id: id });
-}
-
 // Get Admin by email
 AdminSchema.statics.getByEmail = function (email: string) {
   return this.findOne({ email });

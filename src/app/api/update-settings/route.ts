@@ -20,8 +20,6 @@ export async function POST(req: NextRequest) {
     // Parse the form data
     const formData = await req.formData();
 
-console.log(formData); 
-
     const logo = formData.get('logo') as File;
     // const favicon = formData.get('favicon') as File;
     const profile_req_limit = formData.get('profile_req_limit') as string;

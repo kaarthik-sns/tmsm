@@ -37,5 +37,7 @@ export async function GET(req: NextRequest) {
         receipients,
         subject: 'TMSM - verification!',
         message: htmlBody
-    })
+    });
+
+    return NextResponse.json('test');
 }

@@ -13,12 +13,6 @@ SliderSchema.statics.getByTitle = function (title: string) {
   return this.findOne({ title });
 };
 
-// Get Slider by id
-SliderSchema.statics.getById = function (id: string) {
-  return this.findOne({ _id: id });
-}
-
-
 const Slider = models.home_page_slider || model("home_page_slider", SliderSchema);
 
 export default Slider;

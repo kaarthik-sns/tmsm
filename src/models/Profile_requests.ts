@@ -8,10 +8,6 @@ const RequestsSchema = new Schema({
   updated_at: { type: Date, default: Date.now }
 }, { collection: "requests" });
 
-// Get Requests by id
-RequestsSchema.statics.getById = function (id: string) {
-  return this.findOne({ _id: id });
-}
 
 // Get Requests by sender id
 RequestsSchema.statics.getBySenderId = function (id: string) {

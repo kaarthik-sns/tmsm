@@ -15,7 +15,11 @@ export async function POST(request: NextRequest) {
 
         const query: any = {};
 
-        const filters = {};
+        interface Filters {
+            status?: string;
+        }
+
+        const filters: Filters = {}; // Declare 'filters' with the correct type
 
         const nameFilter = {
             $or: [

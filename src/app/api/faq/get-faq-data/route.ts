@@ -11,10 +11,10 @@ export const POST = async (req: NextRequest) => {
         // Connect to the database
         await connectToDatabase();
 
-        var faq = await Faq.getById(id);
+        var faq = await Faq.findById(id);
 
         if (is_admin) {
-            faq = await Admin.getById(id);
+            faq = await Admin.findById(id);
         }
 
         // Prepare the response with pagination meta

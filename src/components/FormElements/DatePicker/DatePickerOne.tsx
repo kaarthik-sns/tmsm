@@ -17,8 +17,8 @@ const DatePickerOne = ({
       today.getDate()
     );
 
-    const flatpickrInstance = flatpickr(".form-datepicker", {
-      mode,
+    const flatpickrInstance = flatpickr(document.querySelectorAll(".form-datepicker"), {
+      mode: "single",
       static: true,
       monthSelectorType: "static",
       dateFormat,
@@ -36,14 +36,16 @@ const DatePickerOne = ({
     });
 
     return () => {
-      flatpickrInstance.destroy(); // Clean up instance on unmount
+      flatpickrInstance.forEach((instance) => {
+        instance.destroy(); // Clean up each instance
+      });// Clean up instance on unmount
     };
   }, [dateFormat, mode, value]);
 
   return (
     <div className="mb-4.5">
       <label className="mb-3 block text-sm font-medium text-black dark:text-white dark-text">
-      Date Of Birth <span className="text-meta-1">*</span>
+        Date Of Birth <span className="text-meta-1">*</span>
       </label>
       <div className="relative">
         <input

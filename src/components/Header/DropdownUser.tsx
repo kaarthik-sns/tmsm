@@ -4,12 +4,14 @@ import Image from "next/image";
 import ClickOutside from "@/components/ClickOutside";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { data: session } = useSession();
   const [profile, setProfile] = useState("");
-
+  const router = useRouter();
+  
   useEffect(() => {
     const fetchUserData = async () => {
 

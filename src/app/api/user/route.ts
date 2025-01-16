@@ -107,13 +107,13 @@ export async function POST(request: NextRequest) {
     const profile_creator_phonenumber = (formData.get('profile_creator_phonenumber') as string) ?? '';
     const lookingfor = (formData.get('lookingfor') as string) ?? '';
 
-    const file = (formData.get('profile_photo') as File) ?? '';
-    const file1 = (formData.get('photo1') as File) ?? '';
-    const file2 = (formData.get('photo2') as File) ?? '';
-    const file3 = (formData.get('photo3') as File) ?? '';
-    const file4 = (formData.get('photo4') as File) ?? '';
-    const file5 = (formData.get('horoscope') as File) ?? '';
-    const file6 = (formData.get('profile_creator_photo') as File) ?? '';
+    const file = formData.get('profile_photo') as File | null;
+    const file1 = formData.get('photo1') as File | null;
+    const file2 = formData.get('photo2') as File | null;
+    const file3 = formData.get('photo3') as File | null;
+    const file4 = formData.get('photo4') as File | null;
+    const file5 = formData.get('horoscope') as File | null;
+    const file6 = formData.get('profile_creator_photo') as File | null;
 
     try {
         await connectToDatabase();

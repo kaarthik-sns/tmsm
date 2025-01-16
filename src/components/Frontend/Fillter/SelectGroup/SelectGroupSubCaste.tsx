@@ -1,13 +1,14 @@
 "use client";
 import React from "react";
 
-const SelectGroupSubCaste = ({ subcastes, selectedsubcaste, onsubcasteChange }) => {
+const SelectGroupSubCaste = ({ subcastes, name, selectedsubcaste, onsubcasteChange }) => {
   return (
     <div className="mb-4.5">
       <div className="relative z-20 bg-transparent dark:bg-form-input">
         <select
           value={selectedsubcaste || ""}
           onChange={onsubcasteChange}
+          name={name}
           className="relative z-20 md:w-64  w-full appearance-none rounded border border-stroke bg-white px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
         >
         

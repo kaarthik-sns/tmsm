@@ -86,11 +86,6 @@ UserSchema.statics.getByName = function (name: string) {
   return this.findOne({ name });
 };
 
-// Get user by id
-UserSchema.statics.getById = function (id: string) {
-  return this.findOne({ _id: id });
-}
-
 // Get user by email
 UserSchema.statics.getByEmail = function (email: string) {
   return this.findOne({ email });

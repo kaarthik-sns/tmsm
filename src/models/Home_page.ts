@@ -30,11 +30,6 @@ HomePage.statics.getByTitle = function (title: string) {
   return this.findOne({ title });
 };
 
-// Get Slider by id
-HomePage.statics.getById = function (id: string) {
-  return this.findOne({ _id: id });
-}
-
 
 const Slider = models.home_page || model("home_page", HomePage);
 
