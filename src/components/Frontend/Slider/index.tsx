@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 const Slider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [slides1, setSlides] = useState([]);
+  const [slides, setSlides] = useState([]);
 
   const fetchTableItems = async () => {
     try {
@@ -23,7 +23,7 @@ const Slider = () => {
       const data = await response.json();
       const data_array = data.data;
 
-     const fetchedSlides = data_array.map((item, idx) => ({
+      const fetchedSlides = data_array.map((item, idx) => ({
         image: (
           <Image
             src={item.image} // Assuming item.image contains the image URL
@@ -34,7 +34,7 @@ const Slider = () => {
           />
         ),
         title: <div className="slider-text">{item.title}</div>, // Assuming item.title contains the text
-        content: <div className="slider-content">{item.content}</div>, // Assuming item.content contains the text
+        content: <div className="slider-content">{item.description}</div>, // Assuming item.content contains the text
       }));
 
       setSlides(fetchedSlides);
@@ -48,31 +48,13 @@ const Slider = () => {
     fetchTableItems();
   }, []);
 
-  const slides = [
-    {
-      image: <Image src="/images/slider/slider.svg" alt="Slide 1" width={800} height={400} className="w-full h-full object-contain" />,
-      title: <div className="slider-text">The Love of Your Life is Waiting</div>,
-      content: <div className="slider-content">Find Them with Thondai Mandala Saiva Mudaliyar!</div>,
-
-    },
-    {
-      image: <Image src="/images/slider/slider2.svg" alt="Slide 2" width={800} height={400} className="w-full h-full object-contain" />,
-      title: <div className="slider-text">Love is the key to everything.</div>,
-      content: <div className="slider-content">Find Them with Thondai Mandala Saiva Mudaliyar!</div>,
-    },
-    {
-      image: <Image src="/images/slider/slider.svg" alt="Slide 3" width={800} height={400} className="w-full h-full object-contain" />,
-      title: <div className="slider-text">Love will find its way to you</div>,
-      content: <div className="slider-content">TFind Them with Thondai Mandala Saiva Mudaliyar!</div>,
-    },
-  ];
 
   if (slides.length === 0) {
     return <div>Loading...</div>; // Show a loading state while slides are being fetched
   }
 
   return (
-    
+
     <div className="relative mx-auto">
       {/* Slider Image and Content */}
       <div className="relative">

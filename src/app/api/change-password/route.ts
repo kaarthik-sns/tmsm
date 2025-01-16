@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
 
         var user = await User.getById(id);
 
-        if (is_admin) {
+        if (is_admin != 'false') {
             user = await Admin.getById(id);
         }
 

@@ -5,50 +5,53 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
+import { useEffect, useState } from 'react';
 
 const TwoRowTwoColumnSlider = () => {
-  const couples = [
-    {
-      name: "Surya & Vaishnavi",
-      image: "/images/couple/couple1.svg",
-      description:
-        "recently tied the knot, their love story brought to life by TMSM Matrimonial’s personalized matchmaking services. Arun, an architect, and Anjali, an interior designer, bonded over shared dreams and values, leading to a deep connection.",
-    },
-    {
-      name: "Siva & Meenakshi",
-      image: "/images/couple/couple2.svg",
-      description:
-      "recently tied the knot, their love story brought to life by TMSM Matrimonial’s personalized matchmaking services. Arun, an architect, and Anjali, an interior designer, bonded over shared dreams and values, leading to a deep connection.",
-    },
-    {
-      name: "Arun & Anjali",
-      image: "/images/couple/couple3.svg",
-      description:
-      "recently tied the knot, their love story brought to life by TMSM Matrimonial’s personalized matchmaking services. Arun, an architect, and Anjali, an interior designer, bonded over shared dreams and values, leading to a deep connection.",
-    },
-    {
-      name: "Naveen & Priya",
-      image: "/images/couple/couple4.svg",
-      description:
-      "recently tied the knot, their love story brought to life by TMSM Matrimonial’s personalized matchmaking services. Arun, an architect, and Anjali, an interior designer, bonded over shared dreams and values, leading to a deep connection.",
-    },
-    {
-      name: "Ajay & Anju",
-      image: "/images/couple/couple1.svg",
-      description:
-      "recently tied the knot, their love story brought to life by TMSM Matrimonial’s personalized matchmaking services. Arun, an architect, and Anjali, an interior designer, bonded over shared dreams and values, leading to a deep connection.",
-    },
-    {
-      name: "Rahul & Divya",
-      image: "/images/couple/couple2.svg",
-      description:
-      "recently tied the knot, their love story brought to life by TMSM Matrimonial’s personalized matchmaking services. Arun, an architect, and Anjali, an interior designer, bonded over shared dreams and values, leading to a deep connection.",
-    },
-  ];
+
+  const [couples, setCouples] = useState([]);
+
+  const fetchTableItems = async () => {
+    try {
+      const response = await fetch('/api/cms/home/testimonial/list?page=1', {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const data_array = data.data;
+
+      const fetchedSlides = data_array.map((item, idx) => ({
+        image: item.image,
+        name: item.name, // Assuming item.title contains the text
+        description: item.description, // Assuming item.content contains the text
+      }));
+
+      setCouples(fetchedSlides);
+
+    } catch (error) {
+      console.error("Error fetching table items:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTableItems();
+  }, []);
+
+
+  if (couples.length === 0) {
+    return <div>Loading...</div>; // Show a loading state while slides are being fetched
+  }
 
   return (
     <section className="relative bg-[#F8F8F8] py-12">
-              <div className="absolute top-0 w-full h-screen bg-contain bg-no-repeat bg-[url('/images/couple/bg-couple.svg')]"></div>
+      <div className="absolute top-0 w-full h-screen bg-contain bg-no-repeat bg-[url('/images/couple/bg-couple.svg')]"></div>
 
       <div className="container mx-auto py-12">
         <h2 className="text-center mb-8 heading">Recently Married</h2>
@@ -58,7 +61,7 @@ const TwoRowTwoColumnSlider = () => {
           navigation
           spaceBetween={30}
           slidesPerView={2} // Show 2 columns
-          
+
           grid={{
             rows: 1, // Two rows
           }}

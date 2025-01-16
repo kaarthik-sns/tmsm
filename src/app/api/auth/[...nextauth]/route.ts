@@ -30,7 +30,7 @@ const handler = NextAuth({
                         : await User.findOne({ email: credentials?.email });
 
                     if (!user) {
-                        throw new Error("User not found");
+                        throw new Error("User not found, Please Check your Email");
                     }
 
                     if (!is_admin && !user.is_approve) {

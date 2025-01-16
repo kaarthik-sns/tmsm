@@ -5,34 +5,44 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
+import { useEffect, useState } from 'react';
 
 const TestimonialsSlider = () => {
-  const testimonials = [
-    {
-      name: "Priya",
-      feedback:
-        "TMSM Matrimony made finding my perfect match a seamless experience. Their verified profiles and secure platform gave my family and me peace of mind throughout the process. I found someone who truly understands and shares my values, traditions, and heritage. Thank you for bringing us together!",
-      rating: 4,
-    },
-    {
-      name: "Arun",
-      feedback:
-        "I had always hoped to find a partner who appreciated our cultural roots and traditions as much as I do. TMSM Matrimony exceeded my expectations with their tailored search options and dedicated community focus. My life partner and I couldn’t have asked for a better way to connect!",
-      rating: 4,
-    },
-    {
-      name: "Meenakshi",
-      feedback:
-        "What sets TMSM Matrimony apart is its commitment to authenticity and community values. The detailed profiles and personalized support helped me find someone who is not just my life partner but also a perfect fit for our family. Highly recommended for anyone in the Mudaliyar community!",
-      rating: 5,
-    },
-    {
-      name: "Sudar",
-      feedback:
-        "What sets TMSM Matrimony apart is its commitment to authenticity and community values. The detailed profiles and personalized support helped me find someone who is not just my life partner but also a perfect fit for our family. Highly recommended for anyone in the Mudaliyar community!",
-      rating: 5,
-    },
-  ];
+
+  const [testimonials, setReview] = useState([]);
+
+  const fetchTableItems = async () => {
+    try {
+      const response = await fetch('/api/cms/home/review/list?page=1', {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const data_array = data.data;
+
+      const fetchedSlides = data_array.map((item, idx) => ({
+        name: item.name,
+        rating: item.rating,
+        feedback: item.description
+      }));
+
+      setReview(fetchedSlides);
+
+    } catch (error) {
+      console.error("Error fetching table items:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTableItems();
+  }, []);
 
   const renderStars = (rating) => {
     const stars = [];
@@ -45,6 +55,10 @@ const TestimonialsSlider = () => {
     }
     return stars;
   };
+
+  if (testimonials.length === 0) {
+    return <div>Loading...</div>; // Show a loading state while slides are being fetched
+  }
 
   return (
     <section className="relative bg-[#F2F2F2] py-12">

@@ -4,19 +4,10 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import AuthLayout from '@/components/Layouts/AuthLayout';
-
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
-import { exit } from "process";
-import { Metadata } from "next";
-
-// export const metadata: Metadata = {
-//   title: "Forgot Passsword - TMSM",
-//   description:
-//     "",
-// };
 
 const ForgotPassword: React.FC = () => {
 
@@ -38,21 +29,18 @@ const ForgotPassword: React.FC = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     });
+
     const data = await res.json();
-    exit;
+
     if (res.ok) {
       setPending(false);
       toast.success(data.message);
       router.push("/admin/auth/signin");
-    } else if (res.status === 400) {
-      setError(data.message);
-      setPending(false);
-    } else if (res.status === 500) {
+    } else {
       setError(data.message);
       setPending(false);
     }
   };
-
 
 
   return (
@@ -60,7 +48,7 @@ const ForgotPassword: React.FC = () => {
 
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center bg-color-custom">
-        <div className="hidden w-full xl:block xl:w-1/2">
+          <div className="hidden w-full xl:block xl:w-1/2">
             <div className="px-26 py-17.5 text-center">
               <Link className="mb-5.5 inline-block" href="/">
                 <Image

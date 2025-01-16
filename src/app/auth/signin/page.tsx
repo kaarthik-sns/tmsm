@@ -33,7 +33,15 @@ const SignIn: React.FC = () => {
     });
 
     if (res?.ok) {
-      toast.success("login successful");
+
+      toast.success('Login successful!', {
+        className: "sonner-toast-success",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
+
       router.push("/");
     } else if (res?.error) {
       setError(res.error);
