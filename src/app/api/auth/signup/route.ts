@@ -11,7 +11,7 @@ import { welcome_admin } from '@/lib/template/welcome_admin';
 export async function POST(request: Request) {
     const { name, lastname, email, password, confirmPassword, phonenumber, religion } = await request.json();
 
-    // const testData = [];
+    const testData = [];
 
     const isValidEmail = (email: string) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -51,7 +51,7 @@ export async function POST(request: Request) {
         });
 
 
-        // for (let i = 0; i < 1000; i++) {
+        // for (let i = 0; i < 20; i++) {
         //     testData.push({
         //         name: `Test User ${i + 1}`,
         //         email: `testuser${i + 1}@example.com`,
@@ -59,6 +59,7 @@ export async function POST(request: Request) {
         //         is_active: true,
         //         is_verify: true,
         //         is_approve: true,
+        //         is_delete:false,
         //         created_at: new Date(),
         //         email_code: '',
         //         updated_at: new Date(),
