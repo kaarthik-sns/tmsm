@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import { useEffect, useState } from 'react';
+import Loader from "@/components/common/Loader";
+// import ClipLoader from "react-spinners/ClipLoader";
 
 const AboutUs = () => {
 
@@ -79,7 +81,8 @@ const AboutUs = () => {
   }, []);
 
   if (features.length === 0) {
-    return <div>Loading...</div>; // Show a loading state while slides are being fetched
+    return <Loader />
+    // return <ClipLoader color="#3498db" loading={true} size={40} />;
   }
 
   return (
@@ -94,7 +97,7 @@ const AboutUs = () => {
             <div className="w-full md:w-1/2 py-12">
               <div className="relative w-full rounded-full h-[500px] md:h-[500px]  overflow-hidden border-0 ">
                 <Image
-                  src={sec_one_img} 
+                  src={sec_one_img}
                   alt="Happy Couple"
                   layout="fill"
                   objectFit="contain"

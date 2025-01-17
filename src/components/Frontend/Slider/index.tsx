@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Loader from "@/components/common/Loader";
 
 const Slider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -50,7 +51,7 @@ const Slider = () => {
 
 
   if (slides.length === 0) {
-    return <div>Loading...</div>; // Show a loading state while slides are being fetched
+    return <Loader />
   }
 
   return (

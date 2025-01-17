@@ -6,6 +6,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 import { useEffect, useState } from 'react';
+import Loader from "@/components/common/Loader";
 
 const TestimonialsSlider = () => {
 
@@ -57,7 +58,7 @@ const TestimonialsSlider = () => {
   };
 
   if (testimonials.length === 0) {
-    return <div>Loading...</div>; // Show a loading state while slides are being fetched
+    return <Loader />
   }
 
   return (
