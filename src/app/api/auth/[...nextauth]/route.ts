@@ -9,6 +9,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 const handler = NextAuth({
     session: {
         strategy: "jwt",
+        maxAge: 60 * 60, // Session expires after 10 minutes of inactivity (600 seconds)
+        updateAge: 5 * 60, // Session refreshes after every 5 minutes of activity (300 seconds)
     },
     providers: [
         CredentialsProvider({
