@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { TriangleAlert } from "lucide-react";
 import NextImage from "next/image";
 import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const FormElements = () => {
   const searchParams = useSearchParams();
@@ -26,6 +26,8 @@ const FormElements = () => {
   const formData_upload = new FormData();
   const [isLoading, setIsLoading] = useState(true);
 
+  const router = useRouter();
+
   // Array for religions
   const religions = [
     "Hindu",
@@ -40,7 +42,6 @@ const FormElements = () => {
   const castes = [
     "Mudaliyar"
   ];
-
 
   const [formData, setFormData] = useState({
     name: "",
@@ -295,7 +296,10 @@ const FormElements = () => {
           onClick: () => console.log('Close'),
         },
       });
-      // Reset the form
+
+      // Redirect
+      router.push(`/admin/users/userlist`);
+
 
       setProfilePic(null); // Reset profile picture
       setPhoto1(null);

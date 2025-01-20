@@ -36,9 +36,7 @@ const DatePickerOne = ({
     });
 
     return () => {
-      flatpickrInstance.forEach((instance) => {
-        instance.destroy(); // Clean up each instance
-      });// Clean up instance on unmount
+      flatpickrInstance.destroy();
     };
   }, [dateFormat, mode, value]);
 

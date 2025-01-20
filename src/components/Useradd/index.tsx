@@ -1,14 +1,15 @@
 "use client";
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 import Breadcrumb from "@/components/Breadcrumbs/UserBreadcrumb";
 import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
 import SelectGroupCaste from "@/components/SelectGroup/SelectGroupCaste";
-import SelectGroupSubCaste from "@/components/SelectGroup/SelectGroupSubCaste ";
 import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
 import { toast } from "sonner";
 import { TriangleAlert } from "lucide-react";
 import NextImage from "next/image";
 import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
+import { useRouter } from "next/navigation";
 
 const FormElements = () => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
@@ -22,6 +23,9 @@ const FormElements = () => {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [profileCreator, setProfileCreator] = useState(false);
   const formData_upload = new FormData();
+
+  const router = useRouter();
+
 
   // Array for religions
   const religions = [
@@ -314,7 +318,9 @@ const FormElements = () => {
           onClick: () => console.log('Close'),
         },
       });
-      // Reset the form
+
+      // Redirect
+      router.push(`/admin/users/userlist`);
 
       setProfilePic(null); // Reset profile picture
       setPhoto1(null);

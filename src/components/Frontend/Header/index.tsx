@@ -38,11 +38,13 @@ function NavList() {
       <NavItem label="About" href="/about" />
       <NavItem label="Contact" href="/contact" />
       <div className="flex bg-white px-5 py-3 gap-5 rounded-full bg-button hidden lg:block">
+
         <NavItem label="Login" href="/frontend/login" className="pr-5 border-r border-black" />
         <NavItem label="Register" href="/frontend/register" className="pl-5" />
       </div>
       <NavItem label="Login" href="/frontend/login" className="block lg:hidden" />
       <NavItem label="Register" href="/frontend/register" className="block lg:hidden" />
+
       <Image
         width={30}
         height={30}
@@ -73,7 +75,9 @@ export function NavbarWithSimpleLinks() {
       onPointerEnterCapture={() => { }}
       onPointerLeaveCapture={() => { }}>
       <div className="container mx-auto flex items-center justify-between mt-6">
+
         <Link className="hidden flex-shrink-0 lg:block" href="/frontend/">
+
           <Image
             className="xl:w-[700px] lg:w-[400px] sm:w-[300px]"
             width={700}
@@ -86,7 +90,9 @@ export function NavbarWithSimpleLinks() {
         <div className="hidden lg:block">
           <NavList />
         </div>
+
         <Link className="block flex-shrink-0 lg:hidden" href="/frontend/">
+
           <Image
             width={280}
             height={300}
