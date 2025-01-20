@@ -1,22 +1,19 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import React from "react";
-import Link from "next/link";
-import Image from "next/image";
 import AuthLayout from '@/components/Layouts/AuthLayout';
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
 
-const changePassword: React.FC = () => {
+const ChangePassword: React.FC = () => {
 
     const [pending, setPending] = useState(false);
     const [error, setError] = useState(null);
     const router = useRouter();
     const searchParams = useSearchParams();
-    const email = searchParams.get('email');
     const is_admin = searchParams.get('is_admin');
     const id = searchParams.get('id');
 
@@ -24,12 +21,45 @@ const changePassword: React.FC = () => {
         password: "",
         confirmPassword: "",
         is_admin: is_admin,
-        id:id
+        id: id
     });
+
+    const validatePassword = (password: string): string | null => {
+        const minLength = 6;
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+        if (password.length < minLength) {
+            return "Password must be at least 6 characters long.";
+        }
+        if (!hasUpperCase) {
+            return "Password must contain at least one uppercase letter.";
+        }
+        if (!hasLowerCase) {
+            return "Password must contain at least one lowercase letter.";
+        }
+        if (!hasNumber) {
+            return "Password must contain at least one number.";
+        }
+        if (!hasSpecialChar) {
+            return "Password must contain at least one special character.";
+        }
+        return null; // Valid password
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setPending(true);
+
+        const passwordError = validatePassword(form.password || "");
+
+        if (passwordError) {
+            setError(passwordError);
+            setPending(false);
+            return;
+        }
 
         const res = await fetch("/api/change-password", {
             method: "POST",
@@ -41,16 +71,18 @@ const changePassword: React.FC = () => {
         if (res.ok) {
 
             setPending(false);
-            toast.success(data.message);
-            data.is_admin ? router.push("/admin/auth/signin") : router.push("/auth/signin");
-            
-        } else if (res.status === 400) {
-            setError(data.message);
-            setPending(false);
-        } else if (res.status === 500) {
-            setError(data.message);
-            setPending(false);
-        } else if (res.status === 404) {
+
+            toast.success(data.message, {
+                className: "sonner-toast-success",
+                cancel: {
+                    label: 'Close',
+                    onClick: () => console.log('Close'),
+                },
+            });
+
+            (data.is_admin == 'true') ? router.push("/admin/auth/signin") : router.push("/auth/signin");
+
+        } else {
             setError(data.message);
             setPending(false);
         }
@@ -169,4 +201,4 @@ const changePassword: React.FC = () => {
     );
 };
 
-export default changePassword;
+export default ChangePassword;

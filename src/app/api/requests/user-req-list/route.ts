@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/mongodb';
-import ProfileRequests from '@/models/ProfileRequests';
+import ProfileRequests from '@/models/Profile_requests';
 
 export async function POST(request: NextRequest) {
     try {
@@ -15,7 +15,11 @@ export async function POST(request: NextRequest) {
 
         const query: any = {};
 
-        const filters = {};
+        interface Filters {
+            status?: string;
+        }
+
+        const filters: Filters = {}; // Declare 'filters' with the correct type
 
         const nameFilter = {
             $or: [

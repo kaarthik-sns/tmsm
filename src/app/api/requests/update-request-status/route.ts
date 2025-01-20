@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import ProfileRequests from '@/models/ProfileRequests';
+import ProfileRequests from '@/models/Profile_requests';
 import connectToDatabase from '@/lib/mongodb';
 
 export async function PATCH(req: NextRequest) {

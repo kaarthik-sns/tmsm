@@ -8,8 +8,6 @@ import CheckboxTwo from "@/components/Checkboxes/CheckboxTwo";
 import { toast } from "sonner";
 import { TriangleAlert } from "lucide-react";
 import React from "react";
-import Swal from 'sweetalert2';
-
 
 
 const AdminProfile = () => {
@@ -76,27 +74,6 @@ const AdminProfile = () => {
     if (changePassword && password !== confirmPassword) {
       setError("Passwords don't match");
       return;
-    }
-
-    // // Ask for confirmation before submitting
-    // const confirmed = window.confirm("Are you sure you want to update your profile?");
-    // if (!confirmed) {
-    //   return; // Stop submission if user cancels
-    // }
-
-    const result = await Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you want to update your profile?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, update it!',
-      cancelButtonText: 'Cancel',
-    });
-
-    if (!result.isConfirmed) {
-      return; // Stop submission if the user cancels
     }
 
     const formData = new FormData();

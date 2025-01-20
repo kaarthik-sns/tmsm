@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     try {
         // Find user by email_code
         await connectToDatabase();
-        const user = await User.getById(userId);
+        const user = await User.findById(userId);
 
         if (!user) {
             return NextResponse.json({ message: 'User not found' }, { status: 400 });

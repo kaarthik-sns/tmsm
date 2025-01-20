@@ -173,6 +173,48 @@ body {
 }
 
 
+
+/*Recently Married*/
+
+.heading-text {
+    font-size: 20px;
+    font-family: 'Noto Sans';
+    font-weight: 700;
+    color: #333333;
+}
+.heading-description {
+    font-size: 15px;
+    font-family: 'Noto Sans';
+    font-weight: 500;
+    color: #333333;
+    line-height: 25px;
+    margin-bottom: 1em;
+    text-align: justify;
+}
+.slider-padding {
+    padding: 3rem;
+}
+.slider-paddings {
+    padding: 1rem;
+}
+:root {
+    --swiper-navigation-size: 28px;
+}
+.swiper-button-prev, .swiper-button-next {
+    color: #686767;
+    height: 30px;
+
+}
+.text-yellow {
+    color: #F8A401;
+    font-size: 18px;
+}
+.sub-heading {
+    font-size: 20px;
+    font-family: 'Noto Sans';
+    font-weight: 700;
+    color: #333333; 
+}
 /*Responsive code*/
 
 @media (min-width: 1024px) {

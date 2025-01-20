@@ -15,7 +15,7 @@ import NextImage from "next/image"; // Rename the import to avoid conflict
 
 const UserTable = () => {
 
-    const [pages, setPages] = useState("");
+    const [pages, setPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [tableItems, setTableItems] = useState([]);
     const [switchStates, setSwitchStates] = useState<boolean[]>([]);
@@ -256,7 +256,7 @@ const UserTable = () => {
                     <tbody className="text-gray-600 divide-y">
                         {tableItems.length === 0 ? (
                             <tr>
-                                <td colSpan="6" className="text-center px-6 py-4 whitespace-nowrap">
+                                <td colSpan={6} className="text-center px-6 py-4 whitespace-nowrap">
                                     No data found
                                 </td>
                             </tr>

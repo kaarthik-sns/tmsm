@@ -1,13 +1,14 @@
 "use client";
 import React from "react";
 
-const SelectAge = ({ selectedAge, onAgeChange }) => {
+const SelectAge = ({ name, selectedAge, onAgeChange }) => {
   return (
     <div className="mb-4.5">
       <div className="relative z-20 bg-transparent dark:bg-form-input">
         <select
           value={selectedAge || ""}
           onChange={onAgeChange}
+          name={name}
           className="relative z-20 md:w-32  w-full  appearance-none rounded border border-stroke bg-white px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
         >
           {/* Generate age options from 18 to 50 */}

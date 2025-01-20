@@ -22,7 +22,6 @@ const UserSchema = new Schema({
   created_by: { type: String, required: false }, // admin or user
   updated_by: { type: String, required: false }, // admin or user
 
-  profile_created_for: { type: String, required: false },
   marital_status: { type: String, required: false },
   religion: { type: String, required: false },
   caste: { type: String, required: false },
@@ -72,17 +71,20 @@ const UserSchema = new Schema({
   partner_pref_caste: { type: String, required: false },
   partner_pref_subCaste: { type: String, required: false },
 
+  profile_creator_photo: { type: String, required: false },
+  maritalstatus: { type: String, required: false },
+  profile_created_for: { type: String, required: false },
+  profile_creator_aadhar: { type: String, required: false },
+  profile_creator_name: { type: String, required: false },
+  profile_creator_phonenumber: { type: String, required: false },
+  lookingfor: { type: String, required: false }
+
 });
 
 // Get user by name
 UserSchema.statics.getByName = function (name: string) {
   return this.findOne({ name });
 };
-
-// Get user by id
-UserSchema.statics.getById = function (id: string) {
-  return this.findOne({ _id: id });
-}
 
 // Get user by email
 UserSchema.statics.getByEmail = function (email: string) {

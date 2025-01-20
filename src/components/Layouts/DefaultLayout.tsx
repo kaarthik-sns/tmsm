@@ -2,38 +2,26 @@
 import React, { useState, ReactNode } from "react";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
-import classNames from 'classnames';
 
 export default function DefaultLayout({
   children,
-  isSignupPage = false, // Default to false if not provided
 }: {
   children: React.ReactNode;
-  isSignupPage?: boolean; // Optional prop to determine if it's the signup page
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <>
       {/* <!-- ===== Page Wrapper Start ===== --> */}
       <div className="flex">
-        {/* Conditionally render Sidebar */}
-        {!isSignupPage && (
-          <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        )}
+        {/* <!-- ===== Sidebar Start ===== --> */}
+        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        {/* <!-- ===== Sidebar End ===== --> */}
 
         {/* <!-- ===== Content Area Start ===== --> */}
-
-        <div
-          className={classNames('relative flex flex-1 flex-col ', {
-            'lg:ml-72.5': !isSignupPage,
-            '': isSignupPage,
-          })}
-        >
-          {/* <div className="relative flex flex-1 flex-col lg:ml-72.5"> */}
-          {/* Conditionally render Header */}
-          {!isSignupPage && (
-            <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-          )}
+        <div className="relative flex flex-1 flex-col lg:ml-72.5">
+          {/* <!-- ===== Header Start ===== --> */}
+          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          {/* <!-- ===== Header End ===== --> */}
 
           {/* <!-- ===== Main Content Start ===== --> */}
           <main>

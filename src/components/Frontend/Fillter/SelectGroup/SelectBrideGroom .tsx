@@ -1,13 +1,14 @@
 "use client";
 import React from "react";
 
-const SelectBrideGroom = ({ selectedBrideGroom, onBrideGroomChange }) => {
+const SelectBrideGroom = ({ selectedBrideGroom, name, onBrideGroomChange }) => {
   return (
     <div className="mb-4.5">
       <div className="relative z-20 bg-transparent dark:bg-form-input">
         <select
           value={selectedBrideGroom || ""}
           onChange={onBrideGroomChange}
+          name={name}
           className="relative z-20 md:w-32  w-full appearance-none rounded border border-stroke bg-white px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
         >
           <option value="Bride" className="text-body dark:text-bodydark">

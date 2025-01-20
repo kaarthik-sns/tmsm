@@ -8,6 +8,7 @@ export async function middleware(req) {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
     // Avoid infinite redirects by excluding `/admin/auth/signin` and other authenticated paths like `/admin/profile`
+    // console.log('token:',token);
 
     if (pathname === '/admin/forgot-password') {
         return NextResponse.next();
@@ -18,12 +19,17 @@ export async function middleware(req) {
         return NextResponse.redirect(url);
     }
 
-    if (pathname === '/admin/auth/signin' && token) {
+    if (pathname === '/admin/auth/signin' && token && token.is_admin) {
         url.pathname = '/admin/dashboard';
         return NextResponse.redirect(url);
     }
 
-    console.log('pathname:',pathname);
+    if (pathname.startsWith('/admin') && pathname !== '/admin/auth/signin'  && token && !token.is_admin) {
+        url.pathname = '/admin/auth/signin';
+        return NextResponse.redirect(url);
+    }
+
+    // console.log('pathname:',pathname);
     // console.log('token:',token);
 
     if (pathname === '/auth/signin' && token) {

@@ -10,7 +10,7 @@ export const POST = async (req: NextRequest) => {
         // Connect to the database
         await connectToDatabase();
 
-        var Term = await Terms.getById(id);
+        var Term = await Terms.findById(id);
 
         // Prepare the response with pagination meta
         return NextResponse.json({

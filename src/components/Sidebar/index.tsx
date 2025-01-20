@@ -76,7 +76,7 @@ const menuGroups = [
           { label: "Add Users", route: "/admin/users/useradd" },
         ],
       },
-      
+
       {
         icon: (
           <svg
@@ -95,7 +95,7 @@ const menuGroups = [
         ),
         label: "Profile Request",
         route: "/admin/users/user-req-list",
-      }, 
+      },
       {
         icon: (
           <svg
@@ -137,10 +137,12 @@ const menuGroups = [
         children: [
           { label: "Faq", route: "/admin/cms/faq/list" },
           { label: "Terms", route: "/admin/cms/terms_conditions/list" },
+          { label: "Home Page", route: "/admin/cms/home/page/view" },
+          { label: "Home Page Slider", route: "/admin/cms/home/slider/list" },
+          { label: "Testimonials", route: "/admin/cms/home/testimonial/list" },
+          { label: "Review", route: "/admin/cms/home/review/list" },
         ],
       },
-
-
     ],
   },
   {

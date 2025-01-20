@@ -15,10 +15,10 @@ export async function POST(request: NextRequest) {
 
         await connectToDatabase();
 
-        var user = await User.getById(id);
+        var user = await User.findById(id);
 
-        if (is_admin) {
-            user = await Admin.getById(id);
+        if (is_admin != 'false') {
+            user = await Admin.findById(id);
         }
 
         if (!user) {
