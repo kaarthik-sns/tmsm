@@ -54,13 +54,15 @@ export async function PATCH(request: NextRequest) {
         ];
 
         for (const field of imageFields) {
-            const file = formData.get(field.key);
 
+            const file = formData.get(field.key) as File;
+      
             if (typeof file === 'string') {
                 // If the file is a string, return it directly
                 Fields[field.pathKey] = file;
             } else if (file instanceof File) {
                 // Handle the file upload
+
                 const uniqueSuffix = Date.now() + '-' + crypto.randomBytes(6).toString('hex');
                 const fileExtension = path.extname(file.name);
                 const uniqueFileName = `${uniqueSuffix}${fileExtension}`;

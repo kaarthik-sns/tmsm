@@ -142,7 +142,6 @@ const menuGroups = [
           { label: "Testimonials", route: "/admin/cms/home/testimonial/list" },
           { label: "Review", route: "/admin/cms/home/review/list" },
           { label: "About Us", route: "/admin/cms/about/view" },
-
         ],
       },
     ],

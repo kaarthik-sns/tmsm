@@ -107,17 +107,12 @@ const Settings = () => {
 
         setFormData(data);
 
-        console.log(data);
-        
         setSecOneImg(data.sec_one_img);
         setSecTwoImg(data.sec_two_img);
         setFeatureOneImg(data.feature_one_img);
         setFeatureTwoImg(data.feature_two_img);
         setFeatureThreeImg(data.feature_three_img);
         setFeatureFourImg(data.feature_four_img);
-
-
-      
 
       } catch (err) {
         console.error(err);
@@ -248,7 +243,6 @@ const Settings = () => {
       });
 
       if (response.ok) {
-
         toast.success('Home page updated successfully!', {
           className: "sonner-toast-success",
           cancel: {
@@ -262,7 +256,7 @@ const Settings = () => {
         setError(`Error: ${error.message}`);
       }
     } catch (err) {
-
+      
       toast.error('Home page failed to update!', {
         className: "sonner-toast-error",
         cancel: {

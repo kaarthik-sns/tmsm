@@ -30,6 +30,7 @@ HomePage.statics.getByTitle = function (title: string) {
   return this.findOne({ title });
 };
 
+
 const Home = models.home_page || model("home_page", HomePage);
 
 export default Home;

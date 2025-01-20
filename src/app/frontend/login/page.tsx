@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import FrontendLayouts from "@/components/Layouts/Frontendlayout";
+import Login from "@/components/Frontend/Login";
 import Slider from "@/components/Frontend/Slider";
 import Fillter from "@/components/Frontend/Fillter";
 import AboutSection from "@/components/Frontend/AboutSection";
@@ -17,15 +18,9 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <>
      <FrontendLayouts>
-      <Slider />
-      <Fillter />
-      <AboutSection />
-      <Recentlymarried />
-      <Testimonial />
-     </FrontendLayouts>
-    </>
+      <Login />
+      </FrontendLayouts>
   );
 }
 

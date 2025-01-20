@@ -23,7 +23,9 @@ const FormElements = () => {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [profileCreator, setProfileCreator] = useState(false);
   const formData_upload = new FormData();
+
   const router = useRouter();
+
 
   // Array for religions
   const religions = [

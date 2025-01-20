@@ -25,6 +25,7 @@ const FormElements = () => {
   const [profileCreator, setProfileCreator] = useState(false);
   const formData_upload = new FormData();
   const [isLoading, setIsLoading] = useState(true);
+
   const router = useRouter();
 
   // Array for religions
@@ -37,7 +38,6 @@ const FormElements = () => {
     "Muslim",
     "Christian"
   ];
-
   // Array for castes
   const castes = [
     "Mudaliyar"
@@ -299,6 +299,7 @@ const FormElements = () => {
 
       // Redirect
       router.push(`/admin/users/userlist`);
+
 
       setProfilePic(null); // Reset profile picture
       setPhoto1(null);
