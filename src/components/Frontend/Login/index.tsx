@@ -59,7 +59,7 @@ const SignIn: React.FC = () => {
       <div className="flex items-center w-100">
             <div className="w-full p-4">
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Sign In
+                Login
               </h2>
               {!!error && (
                 <div className="bg-red-100 md:bg-red-200 p-3 rounded-md flex items-center gap-x-2 text-sm text-red-600 mb-6">
