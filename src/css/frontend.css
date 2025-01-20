@@ -256,6 +256,10 @@ input:-internal-autofill-selected {
     margin-bottom: 2rem;
 }
 
+.member-search-form {
+    padding: 10px;
+ }
+
 }
 @media (max-width: 991px) {
     .slider-content {
@@ -270,3 +274,4 @@ input:-internal-autofill-selected {
         visibility: initial;
     }
  }
+

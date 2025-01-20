@@ -1,0 +1,161 @@
+main {
+    background: #ffffff;
+}
+.member-container .title {
+    color: #333;
+    font-family: "Playfair Display";
+    font-size: 40px;
+    font-weight: 700;
+    line-height: normal;
+}
+.member-container .title span{
+    color: #D13333;
+}
+.member-container .member-title {
+    color: #323232;
+    text-align: justify;
+    font-family: 'Noto Sans';
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 30px;
+}
+.member-btn {
+    color: #323232;
+    text-align: center;
+    font-family: "Noto Sans";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 30px; 
+    border-radius: 5px;
+    background: #FFD16C;
+    padding: 13px 36px;
+}
+
+.member-container .member-info p span{
+    font-family: "Noto Sans";
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 30px;
+}
+.member-container .value {
+    color: rgba(0, 0, 0, 0.50);
+}
+
+.member-container .page-number {
+    border-radius: 50px;
+    background: #323232;
+    padding: 10px 50px;
+}
+
+.member-container .page-number a{
+    font-family: "Noto Sans";
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 30px;
+    margin-left: 1.25rem !important;
+    margin-right: 1.25rem !important;
+}
+
+.active-page-number {
+    height: 34px;
+    width: 34px;
+    background-color: #FFD16C;
+    color: #323232;
+}
+
+.active-page-number {
+    height: 34px;
+    width: 34px;
+    background-color: #FFD16C;
+    color: #323232;
+}
+.member-container .page-number a:last-child {
+    margin-right: 0px !important;
+}
+.member-container .page-number a:first-child {
+    margin-left: 0px !important;
+}
+
+
+.pagination-div {
+    padding-top: 72px;
+    padding-bottom: 64px;
+}
+.prev-btn {
+    height: 48px;
+    width: 48px;
+    margin-right: 1.16rem;
+    background: #323232;
+}
+
+.next-btn {
+    height: 48px;
+    width: 48px;
+    margin-left: 1.16rem;
+    background: #323232;
+}
+.inner-page-top-banner{
+    position: relative;
+    width: 100%;
+    margin: 0;
+    height: 500px;
+ }
+ .inner-banner-info{
+    position: relative;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+ }
+ .in-banner-bg{
+    width: 100%;
+    height: 100%;
+ }
+ .inner-banner-info{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    top: 0; 
+    background: rgba(216, 140, 74, 0.60);
+ }
+ .top-title h2{ 
+    color: #FFF;
+    text-align: center;
+    font-family: "Playfair Display";
+    font-weight: 600;
+ }
+
+
+ @media only screen and (min-width: 768px) {
+    .inner-page-top-banner{
+        height: 34.72vw;
+    }
+    .top-title h2{
+        font-size: 5.56vw;
+        line-height: 6.82vw; 
+    }
+   
+}
+@media only screen and (min-width: 1600px) {
+    .inner-page-top-banner{
+        height: 500px;
+    }
+    .top-title h2{
+        font-size: 80px;
+        line-height: 98.16px; 
+    }
+
+}
+
+@media (max-width: 767px) {
+    .inner-page-top-banner{
+        height: 200px;
+    }
+    .top-title h2{
+        font-size: 40px;
+        line-height: 40px;
+    }
+}

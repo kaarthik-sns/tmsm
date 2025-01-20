@@ -11,6 +11,9 @@ const SelectBrideGroom = ({ selectedBrideGroom, name, onBrideGroomChange }) => {
           name={name}
           className="relative z-20 md:w-32  w-full appearance-none rounded border border-stroke bg-white px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
         >
+          <option value="" className="text-body dark:text-bodydark">
+            Select
+          </option>
           <option value="Bride" className="text-body dark:text-bodydark">
             Bride
           </option>

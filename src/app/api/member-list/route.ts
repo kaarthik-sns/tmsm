@@ -21,24 +21,24 @@ export const GET = async (req: NextRequest) => {
         // Build the query object
         const query: any = {};
 
-        // if (caste) {
-        //     query.caste = { $regex: caste, $options: 'i' }; // Case-insensitive regex search
-        // }
+        if (caste) {
+            query.caste = { $regex: caste, $options: 'i' }; // Case-insensitive regex search
+        }
 
-        // if (subcaste) {
-        //     query.subcaste = { $regex: subcaste, $options: 'i' }; // Case-insensitive regex search
-        // }
+        if (subcaste) {
+            query.subcaste = { $regex: subcaste, $options: 'i' }; // Case-insensitive regex search
+        }
 
-        // if (lookingfor != '') {
-        //     query.lookingfor = lookingfor;
-        // }
+        if (lookingfor) {
+            query.lookingfor = { $regex: lookingfor, $options: 'i' }; // Case-insensitive regex search
+        }
 
-        // if (fromage && toage) {
-        //     query.age = { $gte: parseInt(fromage, 10), $lte: parseInt(toage, 10) };
-        // }
+        if (fromage && toage) {
+            query.age = { $gte: parseInt(fromage, 10), $lte: parseInt(toage, 10) };
+        }
 
-        // query.is_delete = false;
-        // query.is_approve = true;
+        query.is_delete = false;
+        query.is_approve = true;
 
         // Fetch filtered and paginated users from the database
         const users = await User.find(query).skip(skip).limit(pageSize);

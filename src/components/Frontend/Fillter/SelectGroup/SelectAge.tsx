@@ -12,6 +12,13 @@ const SelectAge = ({ name, selectedAge, onAgeChange }) => {
           className="relative z-20 md:w-32  w-full  appearance-none rounded border border-stroke bg-white px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
         >
           {/* Generate age options from 18 to 50 */}
+          <option
+            key=''
+            value=''
+            className="text-body dark:text-bodydark "
+          >
+            Select
+          </option>
           {Array.from({ length: 33 }, (_, i) => 18 + i).map((age) => (
             <option
               key={age}
