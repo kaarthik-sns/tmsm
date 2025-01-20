@@ -1,10 +1,9 @@
 import { Metadata } from "next";
 import FrontendLayouts from "@/components/Layouts/Frontendlayout";
-import Slider from "@/components/Frontend/Slider";
-import Fillter from "@/components/Frontend/Fillter";
-import AboutSection from "@/components/Frontend/AboutSection";
-import Recentlymarried from "@/components/Frontend/Recentlymarried";
-import Testimonial from "@/components/Frontend/Testimonial";
+import Innerbanner from "@/components/Frontend/InnerPageBanner/about-innerbanner";
+import AboutInfo from "@/components/Frontend/AboutInfo/about-info";
+import AboutOurStory from "@/components/Frontend/AboutOurStory/about-our-story";
+import AboutWeOffer from "@/components/Frontend/AboutWeOffer/about-we-offer";
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -19,11 +18,10 @@ export default function Home() {
   return (
     <>
      <FrontendLayouts>
-      <Slider />
-      <Fillter />
-      <AboutSection />
-      <Recentlymarried />
-      <Testimonial />
+      <Innerbanner/>
+      <AboutInfo/>
+      <AboutOurStory/>
+      <AboutWeOffer/>    
      </FrontendLayouts>
     </>
   );
