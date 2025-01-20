@@ -217,6 +217,12 @@ body {
 }
 
 /*login */
+.headertext  {
+    color: #323232;
+    font-size: 18px;
+    font-family: 'Noto Sans';
+    font-weight: 900;
+}
 
 .text-button {
     color: #fff;
@@ -237,6 +243,12 @@ input:-internal-autofill-selected {
     background-color: light-dark(rgb(255, 255, 255), rgba(255, 255, 255, 0.4)) !important;
     color: fieldtext !important;
 }
+
+.border-stroke {
+    --tw-border-opacity: 1;
+    border-color: rgb(169 169 169);
+}
+
 
 /*Responsive code*/
 @media (min-width: 1024px) {

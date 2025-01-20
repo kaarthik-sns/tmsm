@@ -6,52 +6,76 @@ import "@/css/style.css";
 import "@/css/frontend.css";
 
 import Image from "next/image";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 import {
   Navbar,
   Collapse,
-  Typography,
-  Button,
   IconButton,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 interface NavItemPropsType {
   label: string;
-  href: string;
-  className?: string; // Make className optional
-
+  href?: string;
+  className?: string;
+  onClick?: () => void;
 }
 
-function NavItem({ label, href, className }: NavItemPropsType) {
-  return (
+function NavItem({ label, href, className, onClick }: NavItemPropsType) {
+  return href ? (
     <Link href={href} className={className}>
       {label}
     </Link>
+  ) : (
+    <button onClick={onClick} className={className}>
+      {label}
+    </button>
   );
 }
 
 function NavList() {
-  return (
-    <ul className="mb-4 mt-2 pl-2 flex flex-col gap-3 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-8 header-text">
-      <NavItem label="Home" href="/frontend" />
-      <NavItem label="About" href="/about" />
-      <NavItem label="Contact" href="/contact" />
-      <div className="flex bg-white px-5 py-3 gap-5 rounded-full bg-button hidden lg:block">
+  const { data: session } = useSession(); // Get session data
 
-        <NavItem label="Login" href="/frontend/login" className="pr-5 border-r border-black" />
-        <NavItem label="Register" href="/frontend/register" className="pl-5" />
-      </div>
+  return (
+<ul className="mb-4 mt-2 pl-2 flex flex-col gap-3 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-8 header-text">
+  <NavItem label="Home" href="/frontend" />
+  <NavItem label="About" href="/about" />
+  <NavItem label="Contact" href="/contact" />
+
+  {/* Desktop Navigation */}
+  <div className="flex bg-white px-5 py-3 gap-5 rounded-full bg-button hidden lg:block header-text">
+    {session ? (
+      <>
+        {/* <NavItem label="Logout" onClick={() => signOut()} className="pr-5 border-r border-black headertext" />
+        <NavItem label="Dashboard" href="/frontend/dashboard" className="pr-5 headertext" /> */}
+        <NavItem label="Logout" onClick={() => signOut()} className="pr-5 border-r border-black headertext" />
+        <NavItem label="Dashboard" href="/frontend/dashboard" className="pl-5 headertext" />
+      </>
+    ) : (
+      <>
+        <NavItem label="Login" href="/frontend/login" className="pr-5 border-r border-black headertext" />
+        <NavItem label="Register" href="/frontend/register" className="pl-5 headertext" />
+      </>
+    )}
+  </div>
+
+  {/* Mobile Navigation */}
+  {session ? (
+    <>
+      <NavItem label="Logout" onClick={() => signOut()} className="block lg:hidden" />
+      <NavItem label="Dashboard" href="/frontend/dashboard" className="block lg:hidden" />
+    </>
+  ) : (
+    <>
       <NavItem label="Login" href="/frontend/login" className="block lg:hidden" />
       <NavItem label="Register" href="/frontend/register" className="block lg:hidden" />
+    </>
+  )}
 
-      <Image
-        width={30}
-        height={30}
-        src={"../../images/logo/globe.svg"}
-        alt="Logo"
-      />
-    </ul>
+  <Image width={30} height={30} src={"/images/logo/globe.svg"} alt="Logo" />
+</ul>
+
   );
 }
 
@@ -74,15 +98,13 @@ export function NavbarWithSimpleLinks() {
       placeholder="" // If placeholder is required
       onPointerEnterCapture={() => { }}
       onPointerLeaveCapture={() => { }}>
-      <div className="container mx-auto flex items-center justify-between mt-6">
-
+              <div className="container mx-auto flex items-center justify-between mt-6">
         <Link className="hidden flex-shrink-0 lg:block" href="/frontend/">
-
           <Image
             className="xl:w-[700px] lg:w-[400px] sm:w-[300px]"
             width={700}
             height={400}
-            src={"../../images/logo/Flogo.svg"}
+            src={"/images/logo/Flogo.svg"}
             alt="Logo"
           />
         </Link>
@@ -92,14 +114,9 @@ export function NavbarWithSimpleLinks() {
         </div>
 
         <Link className="block flex-shrink-0 lg:hidden" href="/frontend/">
-
-          <Image
-            width={280}
-            height={300}
-            src={"../../images/logo/Flogo.svg"}
-            alt="Logo"
-          />
+          <Image width={280} height={300} src={"/images/logo/Flogo.svg"} alt="Logo" />
         </Link>
+
         <IconButton
           size="sm"
           title="Click to toggle"
@@ -107,19 +124,11 @@ export function NavbarWithSimpleLinks() {
           color="blue-gray"
           onClick={handleOpen}
           className="ml-auto inline-block lg:hidden"
-          ripple={true}
-          fullWidth={false}
-          placeholder="" // If placeholder is required
-          onPointerEnterCapture={() => { }}
-          onPointerLeaveCapture={() => { }}
         >
-          {open ? (
-            <XMarkIcon className="h-5 w-5" strokeWidth={2} />
-          ) : (
-            <Bars3Icon className="h-5 w-5" strokeWidth={2} />
-          )}
+          {open ? <XMarkIcon className="h-5 w-5" strokeWidth={2} /> : <Bars3Icon className="h-5 w-5" strokeWidth={2} />}
         </IconButton>
       </div>
+
       <Collapse open={open}>
         <div className="mt-2 rounded-xl bg-white py-2">
           <NavList />

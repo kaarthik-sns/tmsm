@@ -137,7 +137,8 @@ export async function POST(request: Request) {
         console.log("welcome email:", result);
         console.log("Verification email:", result2);
 
-        return NextResponse.json({ message: "Registration successful" }, { status: 201 });
+        return NextResponse.json({ message: "Registration is successful" }, { status: 201 });
+        
 
     } catch (error) {
         console.log(error)

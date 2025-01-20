@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
 
-import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligionfront";
+import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
 
 
 const SignUp: React.FC = () => {
@@ -56,8 +56,14 @@ const SignUp: React.FC = () => {
 
     if (res.ok) {
       setPending(false);
-      toast.success(data.message);
-      router.push("/auth/signin");
+        toast.success(data.message, {
+        className: "sonner-toast-success",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
+      router.push("/frontend/login");
     } else if (res.status === 400) {
       setError(data.message);
       setPending(false);
@@ -104,7 +110,7 @@ const SignUp: React.FC = () => {
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
                       required
                       placeholder="First name"
-                      className="w-full border-b border-gray-500 bg-transparent py-2 focus:outline-none"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
                     <span className="absolute right-4 top-4">
@@ -140,7 +146,7 @@ const SignUp: React.FC = () => {
                       onChange={(e) => setForm({ ...form, lastname: e.target.value })}
                       required
                       placeholder="Last name"
-                      className="w-full border-b border-gray-500 bg-transparent py-2 focus:outline-none"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
                     <span className="absolute right-4 top-4">
@@ -176,7 +182,7 @@ const SignUp: React.FC = () => {
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
                       required
                       placeholder="Email ID"
-                      className="w-full border-b border-gray-500 bg-transparent py-2 focus:outline-none"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
                     <span className="absolute right-4 top-4">
@@ -209,7 +215,7 @@ const SignUp: React.FC = () => {
                       onChange={(e) => setForm({ ...form, phonenumber: e.target.value })}
                       required
                       placeholder="Phone number"
-                      className="w-full border-b border-gray-500 bg-transparent py-2 focus:outline-none"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
                     <span className="absolute right-4 top-4">
@@ -251,7 +257,7 @@ const SignUp: React.FC = () => {
                       onChange={(e) => setForm({ ...form, password: e.target.value })}
                       required
                       placeholder="Password"
-                      className="w-full border-b border-gray-500 bg-transparent py-2 focus:outline-none"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
                     <span className="absolute right-4 top-4">
@@ -287,7 +293,7 @@ const SignUp: React.FC = () => {
                       onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
                       required
                       placeholder="Re-enter your password"
-                      className="w-full border-b border-gray-500 bg-transparent py-2 focus:outline-none"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
                     <span className="absolute right-4 top-4">

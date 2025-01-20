@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-const SelectGroupReligionfront = ({ religions, name, selectedReligion, onReligionChange }) => {
+const SelectGroupReligion = ({ religions, name, selectedReligion, onReligionChange }) => {
   return (
     <div className="mb-4.5">
       <div className="relative z-20 bg-transparent dark:bg-form-input">
@@ -9,8 +9,8 @@ const SelectGroupReligionfront = ({ religions, name, selectedReligion, onReligio
           value={selectedReligion || ""}
           onChange={onReligionChange}
           name={name}
-          className="w-full border-b border-gray-500 bg-transparent py-2 focus:outline-none"
-          >
+          className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+        >
           <option value="" disabled className="text-body dark:text-bodydark">
             Select Religion
           </option>
@@ -25,7 +25,7 @@ const SelectGroupReligionfront = ({ religions, name, selectedReligion, onReligio
           ))}
         </select>
 
-        {/* <span className="absolute right-4 top-1/2 z-30 -translate-y-1/2">
+        <span className="absolute right-4 top-1/2 z-30 -translate-y-1/2">
           <svg
             className="fill-current"
             width="24"
@@ -43,10 +43,10 @@ const SelectGroupReligionfront = ({ religions, name, selectedReligion, onReligio
               ></path>
             </g>
           </svg>
-        </span> */}
+        </span>
       </div>
     </div>
   );
 };
 
-export default SelectGroupReligionfront;
+export default SelectGroupReligion;

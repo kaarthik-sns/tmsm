@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 import Image from "next/image";
 
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 
@@ -13,11 +13,21 @@ import { TriangleAlert } from "lucide-react";
 
 const SignIn: React.FC = () => {
 
+  const { data: session } = useSession();  // Get session data
+  
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [pending, setPending] = useState(false);
   const router = useRouter();
   const [error, setError] = useState("");
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (session) {
+      router.replace("/frontend");
+    }
+  }, [session, router]);
+
 
   const handleSubmit = async (e: React.FormEvent) => {
 
@@ -33,7 +43,7 @@ const SignIn: React.FC = () => {
 
     if (res?.ok) {
 
-      toast.success('Login successful!', {
+      toast.success('Login Successful!', {
         className: "sonner-toast-success",
         cancel: {
           label: 'Close',
@@ -77,7 +87,7 @@ const SignIn: React.FC = () => {
                       onChange={(e) => setEmail(e.target.value)}
                       required
                       placeholder="E-mail id"
-                      className="w-full border-b border-gray-500 bg-transparent py-2 focus:outline-none"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       autoComplete="off"
                       />
 
@@ -110,7 +120,7 @@ const SignIn: React.FC = () => {
                       required
                       type="password"
                       placeholder="Password"
-                      className="w-full border-b border-gray-500 bg-transparent py-2 focus:outline-none"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       autoComplete="off"
 
                     />
