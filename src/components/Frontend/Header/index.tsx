@@ -73,7 +73,7 @@ export function NavbarWithSimpleLinks() {
       onPointerEnterCapture={() => { }}
       onPointerLeaveCapture={() => { }}>
       <div className="container mx-auto flex items-center justify-between mt-6">
-        <Link className="hidden flex-shrink-0 lg:block" href="/">
+        <Link className="hidden flex-shrink-0 lg:block" href="/frontend/">
           <Image
             className="xl:w-[700px] lg:w-[400px] sm:w-[300px]"
             width={700}
@@ -86,7 +86,7 @@ export function NavbarWithSimpleLinks() {
         <div className="hidden lg:block">
           <NavList />
         </div>
-        <Link className="block flex-shrink-0 lg:hidden" href="/">
+        <Link className="block flex-shrink-0 lg:hidden" href="/frontend/">
           <Image
             width={280}
             height={300}
