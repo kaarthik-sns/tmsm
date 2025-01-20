@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
         user.email_code = ''; // Optionally clear the email_code after verification
         await user.save();
 
-        return NextResponse.json({ message: 'Your email has been successfully verified' });
+        return NextResponse.json({ message: 'Your email has been successfully verified!' });
     } catch (error) {
         console.error(error);
         return NextResponse.json({ message: 'An error occurred while processing your request' }, { status: 500 });
