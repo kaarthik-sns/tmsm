@@ -141,6 +141,7 @@ const menuGroups = [
           { label: "Home Page Slider", route: "/admin/cms/home/slider/list" },
           { label: "Testimonials", route: "/admin/cms/home/testimonial/list" },
           { label: "Review", route: "/admin/cms/home/review/list" },
+          { label: "About Us", route: "/admin/cms/about/view" },
         ],
       },
     ],

@@ -2,15 +2,11 @@
 import { useEffect, useState } from "react"
 import axios from "axios";
 import SwitcherFour from "@/components/Switchers/SwitcherFour";
-import { BsPencilSquare } from "react-icons/bs";
-import { BsFillTrash3Fill } from "react-icons/bs";
-import { AiFillEye } from "react-icons/ai";
 import SelectGroupTwo from "@/components/SelectGroup/SelectGroupTwo";
 import SelectGroupOne from "@/components/SelectGroup/SelectGroupOne";
 import Link from "next/link";
 import { useRouter } from "next/navigation"; // For page navigation
 import NextImage from "next/image"; // Rename the import to avoid conflict
-
 
 
 const UserTable = () => {

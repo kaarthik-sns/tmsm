@@ -56,15 +56,21 @@ const SignUp: React.FC = () => {
 
     if (res.ok) {
       setPending(false);
+      
       toast.success(data.message);
+      toast.success(data.message, {
+        className: "sonner-toast-success",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        }
+      });
+
       router.push("/auth/signin");
-    } else if (res.status === 400) {
+    } else {
       setError(data.message);
       setPending(false);
-    } else if (res.status === 500) {
-      setError(data.message);
-      setPending(false);
-    }
+    } 
   };
 
   const handleReligionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
