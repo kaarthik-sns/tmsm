@@ -215,6 +215,28 @@ body {
     font-weight: 700;
     color: #333333; 
 }
+
+/*login */
+
+.text-button {
+    color: #fff;
+    background: #D13333;
+    border-color: #D13333;
+}
+
+.text-button:hover {
+    color: #ffffff;
+    background: #ff0000;
+    border-color: #ff0000;
+}
+.text-dark:hover {
+    color: #d13333;
+}
+input:-internal-autofill-selected {
+
+    background-color: light-dark(rgb(255, 255, 255), rgba(255, 255, 255, 0.4)) !important;
+    color: fieldtext !important;
+}
 /*Responsive code*/
 
 @media (min-width: 1024px) {
