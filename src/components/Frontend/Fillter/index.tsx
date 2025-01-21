@@ -43,7 +43,7 @@ const FilterForm = ({ onFilterChange }) => {
 
   return (
     <div className="dark-bg">
-      <div className="container mx-auto flex items-center fillter-text justify-center">
+      <div className="container mx-auto flex items-center fillter-text justify-center p-10">
         <form onSubmit={handleSubmit}>
           <div className="flex flex-wrap items-center gap-9 p-6.5 member-search-form">
             <div className="w-full md:w-auto">

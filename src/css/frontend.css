@@ -14,65 +14,79 @@ body {
     background-size: auto;
     position: relative;
     background-repeat: repeat-x;
-  }
-  
-  .header-bg:before {
-    content: ""; /* This is necessary to generate the pseudo-element */
+}
+
+.header-bg:before {
+    content: "";
+    /* This is necessary to generate the pseudo-element */
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url('/images/logo/Headbg.svg'); /* Image URL */
-    background-size: cover; /* Cover the area of the element */
-    background-position: top center; /* Adjust image position */
-    z-index: -1; /* Ensure it's behind other content */
-  }
-  
-.header-text a {
-    color:#323232;
-    font-size: 18px;
-    font-family: 'Noto Sans';
-    font-weight: 500;
-}
-.header-text a:hover {
-    color:#FF0000;
-}
-.header-text:active {
-    color:#FF0000;
+    background-image: url('/images/logo/Headbg.svg');
+    /* Image URL */
+    background-size: cover;
+    /* Cover the area of the element */
+    background-position: top center;
+    /* Adjust image position */
+    z-index: -1;
+    /* Ensure it's behind other content */
 }
 
-.bg-button a {
+.bg-button a,
+.bg-button button {
     font-weight: 900;
     font-family: 'Noto Sans';
 }
 
+.header-text a,
+.header-text button {
+    color: #323232;
+    font-size: 18px;
+    font-family: 'Noto Sans';
+}
+
+.header-text a:hover {
+    color: #D13333;
+}
+
+.header-text:active {
+    color: #D13333;
+}
+
 .pl-6 {
     padding-left: 1.5rem;
-  }
- .pr-6{
-    padding-right: 1.5rem;
-  }
+}
 
-  /*Footer */
-  .dark-bg {
+.pr-6 {
+    padding-right: 1.5rem;
+}
+.active-menu {
+    color: #D13333 !important; /* Change text color */
+}
+
+/*Footer */
+.dark-bg {
     background: #323232;
 }
-  .footer-text a {
-    color:#fff;
+
+.footer-text a {
+    color: #fff;
     font-size: 18px;
     font-family: 'Noto Sans';
     font-weight: 500;
 }
-.footer-p{
-    color:#fff;
+
+.footer-p {
+    color: #fff;
     font-size: 14px;
     font-family: 'Noto Sans';
     font-weight: 500;
 }
 
 .footer-text a:hover {
-    color:#FF0000;
+    color: #D13333;
 }
 
 /*slider */
@@ -85,17 +99,19 @@ body {
 .slider-text {
     color: #fff;
     font-size: 5vw;
-    font-family: 'Noto Sans';
+    font-family: "Playfair Display";
     font-weight: 700;
     max-width: 42vw;
     line-height: 5vw;
 }
+
 .slider-content {
     font-size: 1.2vw;
     color: #fff;
     font-family: 'Noto Sans';
     margin-top: 1rem;
 }
+
 .rounded-full.bg-black {
     width: 30px;
     background-color: #fff !important;
@@ -106,32 +122,40 @@ body {
 .ftext-custom {
     color: #653D27;
     background: #FFD16C;
-    border-color: #FFD16C;
+    border: 1px solid #FFD16C;
     font-weight: 800;
     font-family: 'Noto Sans';
 }
-.fillter-text label{
+.ftext-custom:hover {
+    color: #ffd16c;
+    background: #af2c2c;
+    border: 1px solid #ffd16c;
+}
+.fillter-text label {
     font-size: 18px;
     font-family: 'Noto Sans';
     font-weight: 500;
 }
-.visibility{
+
+.visibility {
     visibility: hidden;
 }
-.mt-9{
+
+.mt-9 {
     margin-top: 2rem;
-  }
+}
+
 /*Home About Section */
 
 .heading {
-    font-size: 40px;
-    font-family: 'Noto Sans';
+    font-size: 50px;
+    font-family: "Playfair Display";
     font-weight: 700;
     color: #333333;
-    line-height: 50px;
+    line-height: 60px;
 }
 
-.description {
+/* .description {
     font-size: 20px;
     font-family: 'Noto Sans';
     font-weight: 500;
@@ -139,10 +163,20 @@ body {
     line-height: 36px;
     margin-bottom: 1em;
     text-align: justify;
+} */
+.description p {
+    font-size: 20px;
+    font-family: 'Noto Sans';
+    font-weight: 500;
+    color: #333333;
+    line-height: 36px;
+    text-align: justify;
 }
+
 .h-21 {
     height: 7rem;
 }
+
 .icon-text {
     font-size: 18px;
     font-weight: 800;
@@ -152,14 +186,16 @@ body {
 .join-us {
     background: #FFD16C;
 }
+
 .join-heading {
     font-size: 35px;
-    font-family: 'Noto Sans';
+    font-family: "Playfair Display";
     font-weight: 500;
     color: #333333;
     line-height: 40px;
 }
-.bg-color{
+
+.bg-color {
     background: #F8F8F8;
     border: 1px solid #fff;
     font-weight: 600;
@@ -167,7 +203,7 @@ body {
     color: #333;
 }
 
-.bg-color:hover{
+.bg-color:hover {
     border: 1px solid #fff;
     background: transparent;
 }
@@ -182,6 +218,7 @@ body {
     font-weight: 700;
     color: #333333;
 }
+
 .heading-description {
     font-size: 15px;
     font-family: 'Noto Sans';
@@ -191,33 +228,40 @@ body {
     margin-bottom: 1em;
     text-align: justify;
 }
+
 .slider-padding {
     padding: 3rem;
 }
+
 .slider-paddings {
     padding: 1rem;
 }
+
 :root {
     --swiper-navigation-size: 28px;
 }
-.swiper-button-prev, .swiper-button-next {
+
+.swiper-button-prev,
+.swiper-button-next {
     color: #686767;
     height: 30px;
 
 }
+
 .text-yellow {
     color: #F8A401;
     font-size: 18px;
 }
+
 .sub-heading {
     font-size: 20px;
     font-family: 'Noto Sans';
     font-weight: 700;
-    color: #333333; 
+    color: #333333;
 }
 
 /*login */
-.headertext  {
+.headertext {
     color: #323232;
     font-size: 18px;
     font-family: 'Noto Sans';
@@ -232,12 +276,14 @@ body {
 
 .text-button:hover {
     color: #ffffff;
-    background: #ff0000;
-    border-color: #ff0000;
+    background: #D13333;
+    border-color: #D13333;
 }
+
 .text-dark:hover {
     color: #d13333;
 }
+
 input:-internal-autofill-selected {
 
     background-color: light-dark(rgb(255, 255, 255), rgba(255, 255, 255, 0.4)) !important;
@@ -252,10 +298,11 @@ input:-internal-autofill-selected {
 
 /*Responsive code*/
 @media (min-width: 1024px) {
-    .lg\:gap-8{
+    .lg\:gap-8 {
         gap: 2rem;
-      }
     }
+}
+
 @media (min-width: 1536px) {
     .container {
         max-width: 1400px;
@@ -263,91 +310,98 @@ input:-internal-autofill-selected {
 }
 
 @media (min-width: 991px) {
-.slider-content {
-    margin-top: 1em;
-    margin-bottom: 2rem;
+    .slider-content {
+        margin-top: 1em;
+        margin-bottom: 2rem;
+    }
+
+    .member-search-form {
+        padding: 10px;
+    }
+
 }
 
-.member-search-form {
-    padding: 10px;
- }
-
-}
 @media (max-width: 991px) {
     .slider-content {
         font-size: 10px;
         margin-top: 0rem;
         margin-bottom: .5rem;
     }
- }
- 
- @media (max-width: 768px) {
-    .visibility{
+}
+
+@media (max-width: 768px) {
+    .visibility {
         visibility: initial;
     }
- }
+}
 
 
- .inner-page-top-banner{
+.inner-page-top-banner {
     position: relative;
     width: 100%;
     margin: 0;
     height: 500px;
- }
- .inner-banner-info{
+}
+
+.inner-banner-info {
     position: relative;
     margin: 0;
     display: flex;
     flex-wrap: wrap;
- }
- .in-banner-bg{
+}
+
+.in-banner-bg {
     width: 100%;
     height: 100%;
- }
- .inner-banner-info{
+}
+
+.inner-banner-info {
     position: absolute;
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
-    align-items: center; 
-    top: 0; 
-    background: rgba(216, 140, 74, 0.60);
- }
+    align-items: center;
+    top: 0;
+    background-color: rgb(0 0 0 / 40%);
+}
 
- .top-title{    
+.top-title {
     display: flex;
     justify-content: center;
     align-items: center;
 
- }
- .top-title h2{
+}
+
+.top-title h2 {
     color: #FFF;
     text-align: center;
     font-family: "Playfair Display";
     font-size: 80px;
     font-weight: 600;
-    line-height: 98.16px; 
- }
+    line-height: 98.16px;
+}
 
- .about-info-con{
+.about-info-con {
     display: block;
     width: 100%;
     position: relative;
     padding: 80px 0;
     background: #fff;
- }
- .about-left-media {
+}
+
+.about-left-media {
     width: 100%;
     height: 100%;
- }
- .media-relative img {
-    position: relative!important;
+}
+
+.media-relative img {
+    position: relative !important;
     /* width: auto!important;
     height: auto!important; */
- }
+}
 
-.about-con-desc{
+.about-con-desc {
     position: relative;
     width: 100%;
     border-radius: 10px;
@@ -355,7 +409,8 @@ input:-internal-autofill-selected {
     height: 100%;
     padding: 50px;
 }
-.about-con-desc h3{
+
+.about-con-desc h3 {
     color: #D13333;
     font-family: "Playfair Display";
     font-size: 35px;
@@ -364,17 +419,17 @@ input:-internal-autofill-selected {
     margin: 0 0 24px;
 }
 
-.about-con-desc p{
+.about-con-desc p {
     color: #000;
     text-align: justify;
     font-family: 'Noto Sans';
     font-size: 18px;
     font-weight: 300;
-    line-height: 30px; 
+    line-height: 30px;
     margin: 0 0 30px;
 }
- 
-.about-our-story{
+
+.about-our-story {
     margin: 0;
     padding: 80px 0;
     background: #FFD16C;
@@ -382,7 +437,7 @@ input:-internal-autofill-selected {
     width: 100%;
 }
 
-.story-right-desc h3{
+.story-right-desc h3 {
     color: #D13333;
     font-family: "Playfair Display";
     font-size: 35px;
@@ -390,29 +445,32 @@ input:-internal-autofill-selected {
     line-height: normal;
     margin: 0 0 24px;
 }
-.story-right-desc p{
+
+.story-right-desc p {
     color: #000;
     text-align: justify;
     font-family: 'Noto Sans';
     font-size: 18px;
     font-weight: 300;
     line-height: 30px;
-    margin:0 0 15px;
+    margin: 0 0 15px;
 }
 
-.about-we-offer{
+.about-we-offer {
     position: relative;
     width: 100%;
     background: #fff;
     display: block;
     margin: 0;
-    padding:80px 0;
+    padding: 80px 0;
 }
-.we-offer-title{
+
+.we-offer-title {
     position: relative;
     width: 100%;
 }
-.we-offer-title h3{
+
+.we-offer-title h3 {
     color: #333;
     font-family: "Playfair Display";
     font-size: 35px;
@@ -421,14 +479,15 @@ input:-internal-autofill-selected {
     margin: 0 0 30px;
 }
 
-.offer-list-itmes{
+.offer-list-itmes {
     position: relative;
     background: #323232;
     border-radius: 10px;
     padding: 24px;
     height: 100%;
 }
-.offer-icon{
+
+.offer-icon {
     width: 64px;
     height: 64px;
     border-radius: 50%;
@@ -439,15 +498,17 @@ input:-internal-autofill-selected {
     margin: 0 0 20px;
 
 }
-.offer-icon img{
+
+.offer-icon img {
     max-width: 100%;
-    width: auto!important;
-    height: auto!important;
+    width: auto !important;
+    height: auto !important;
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%);
 }
-.offer-list-itmes h4{
+
+.offer-list-itmes h4 {
     color: #FFF;
     font-family: "Playfair Display";
     font-size: 22px;
@@ -455,138 +516,193 @@ input:-internal-autofill-selected {
     line-height: normal;
     margin: 0 0 15px;
 }
-.offer-list-itmes p{
+
+.offer-list-itmes p {
     color: #FFF;
     text-align: justify;
-    font-family:'Noto Sans';
+    font-family: 'Noto Sans';
     font-size: 18px;
     font-weight: 300;
     line-height: 24px;
     margin: 0;
 }
 
+/*profile */
+.profilecolor {
+    background: #AF2C2C;
+}
+.bg-light {
+    background: #FFF7E7;
+}
+.conatct-bio p {
+    margin-top: 1em;
+}
+.profile-heading {
+    font-size: 25px;
+    color: #93411B;
+    font-family: "Playfair Display";
+    font-weight: 700;
+}
+.contact-bio p strong {
+    font-weight: 400;
+    color: #000;
+    margin-bottom: 1em;
+}
+.border-color {
+    border-color: #af2c2c;
+    border-bottom-width: 1px;
+}
 
- @media only screen and (min-width: 768px) {
-    .inner-page-top-banner{
+.conatct-bio svg {
+    fill: #FFD16C;
+}
+
+@media only screen and (min-width: 768px) {
+    .inner-page-top-banner {
         height: 34.72vw;
     }
-    .top-title h2{
+
+    .top-title h2 {
         font-size: 5.56vw;
-        line-height: 6.82vw; 
+        line-height: 6.82vw;
     }
-    .about-info-con{
+
+    .about-info-con {
         padding: 5.56vw 0;
-     }  
-    .about-con-desc{
+    }
+
+    .about-con-desc {
         padding: 3.47vw;
     }
-    .about-con-desc h3{
+
+    .about-con-desc h3 {
         font-size: 2.43vw;
         margin: 0 0 1.67vw;
-    }    
-    .about-con-desc p{
+    }
+
+    .about-con-desc p {
         font-size: 1.25vw;
-        line-height: 2.08vw; 
+        line-height: 2.08vw;
         margin: 0 0 2.08vw;
     }
 
-    .about-our-story{       
-        padding: 5.556vw 0;      
-    }    
-    .story-right-desc h3{       
-        font-size: 2.43vw;        
-        margin: 0 0 1.67vw;
-    }
-    .story-right-desc p{      
-        font-size: 1.25vw;      
-        line-height: 2.08vw;
-        margin:0 0 1.04vw;
+    .about-our-story {
+        padding: 5.556vw 0;
     }
 
-    .about-we-offer{
-        padding:5.56vw 0;
-       }  
-       .we-offer-title h3{
-           font-size: 2.43vw;
-           margin: 0 0 2.08vw;
-       }    
-       .offer-list-itmes{     
-           padding: 1.67vw;
-       }
-       .offer-icon{
-           width: 4.44vw;
-           height: 4.44vw;        
-           margin: 0 0 1.39vw;    
-       } 
-       .offer-list-itmes h4{
-           font-size: 1.53vw;
-           margin: 0 0 1.04vw;
-       }
-       .offer-list-itmes p{       
-           font-size: 1.25vw;        
-           line-height: 1.67vw;
-       }
+    .story-right-desc h3 {
+        font-size: 2.43vw;
+        margin: 0 0 1.67vw;
+    }
+
+    .story-right-desc p {
+        font-size: 1.25vw;
+        line-height: 2.08vw;
+        margin: 0 0 1.04vw;
+    }
+
+    .about-we-offer {
+        padding: 5.56vw 0;
+    }
+
+    .we-offer-title h3 {
+        font-size: 2.43vw;
+        margin: 0 0 2.08vw;
+    }
+
+    .offer-list-itmes {
+        padding: 1.67vw;
+    }
+
+    .offer-icon {
+        width: 4.44vw;
+        height: 4.44vw;
+        margin: 0 0 1.39vw;
+    }
+
+    .offer-list-itmes h4 {
+        font-size: 1.53vw;
+        margin: 0 0 1.04vw;
+    }
+
+    .offer-list-itmes p {
+        font-size: 1.25vw;
+        line-height: 1.67vw;
+    }
 
 
 }
+
 @media only screen and (min-width: 1600px) {
-    .inner-page-top-banner{
+    .inner-page-top-banner {
         height: 500px;
     }
-    .top-title h2{
+
+    .top-title h2 {
         font-size: 80px;
-        line-height: 98.16px; 
+        line-height: 98.16px;
     }
 
-    .about-info-con{
+    .about-info-con {
         padding: 80px 0;
-     }  
-    .about-con-desc{
+    }
+
+    .about-con-desc {
         padding: 50px;
     }
-    .about-con-desc h3{
+
+    .about-con-desc h3 {
         font-size: 35px;
         margin: 0 0 24px;
-    }    
-    .about-con-desc p{
+    }
+
+    .about-con-desc p {
         font-size: 18px;
-        line-height: 30px; 
+        line-height: 30px;
         margin: 0 0 30px;
     }
 
-    .about-our-story{       
-        padding: 80px 0;      
-    }    
-    .story-right-desc h3{       
-        font-size: 35px;        
+    .about-our-story {
+        padding: 80px 0;
+    }
+
+    .story-right-desc h3 {
+        font-size: 35px;
         margin: 0 0 24px;
     }
-    .story-right-desc p{      
-        font-size: 18px;      
+
+    .story-right-desc p {
+        font-size: 18px;
         line-height: 30px;
-        margin:0 0 15px;
+        margin: 0 0 15px;
     }
-    .about-we-offer{
-     padding:80px 0;
-    }  
-    .we-offer-title h3{
+
+    .about-we-offer {
+        padding: 80px 0;
+    }
+
+    .we-offer-title h3 {
         font-size: 35px;
         margin: 0 0 30px;
-    }    
-    .offer-list-itmes{     
+    }
+
+    .offer-list-itmes {
         padding: 24px;
     }
-    .offer-icon{
+
+    .offer-icon {
         width: 64px;
-        height: 64px;        
-        margin: 0 0 20px;    
-    } 
-    .offer-list-itmes h4{
+        height: 64px;
+        margin: 0 0 20px;
+    }
+
+    .offer-list-itmes h4 {
         font-size: 22px;
         margin: 0 0 15px;
     }
-    .offer-list-itmes p{       
-        font-size: 18px;        
+
+    .offer-list-itmes p {
+        font-size: 18px;
         line-height: 24px;
     }
 
@@ -594,33 +710,40 @@ input:-internal-autofill-selected {
 }
 
 @media (max-width: 767px) {
-    .inner-page-top-banner{
+    .inner-page-top-banner {
         height: 200px;
     }
-    .top-title h2{
+
+    .top-title h2 {
         font-size: 40px;
         line-height: 40px;
     }
-    .about-left-media{
-        margin-bottom: 30px;
-    }
-    .about-info-con{
-        padding: 40px 0;
-    }
-    .about-con-desc{
-        padding: 30px;
-    }
-    .story-left-media{
+
+    .about-left-media {
         margin-bottom: 30px;
     }
 
-    .about-we-offer{
-        padding: 50px 0;
+    .about-info-con {
+        padding: 40px 0;
     }
-    .list-offer-info{
+
+    .about-con-desc {
+        padding: 30px;
+    }
+
+    .story-left-media {
         margin-bottom: 30px;
     }
-    .list-offer-info:last-child{
+
+    .about-we-offer {
+        padding: 50px 0;
+    }
+
+    .list-offer-info {
+        margin-bottom: 30px;
+    }
+
+    .list-offer-info:last-child {
         margin-bottom: 0;
     }
 
