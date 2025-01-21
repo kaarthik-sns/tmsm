@@ -10,7 +10,7 @@ export function FooterWithCustomDesign() {
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-[50%_30%_20%] gap-y-8 md:gap-x-8 md:text-left pl-2 pr-2 footer-text">
         {/* Left Column - Logo and Description */}
         <div className="">
-        <Link className="hidden flex-shrink-0 lg:block" href="/frontend/">
+        <Link className="flex-shrink-0 lg:block" href="/frontend/">
           <Image
             src="/images/logo/Footer-logo.svg" // Replace with your logo path
             width={400}
