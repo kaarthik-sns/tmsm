@@ -7,7 +7,7 @@ import SelectGroupSubCaste from "@/components/Frontend/Fillter/SelectGroup/Selec
 import SelectAge from "@/components/Frontend/Fillter/SelectGroup/SelectAge"; // Remove the extra space here
 import SelectBrideGroom  from "@/components/Frontend/Fillter/SelectGroup/SelectBrideGroom "; // Remove the extra space here
 
-const FilterForm = () => {
+const FilterForm = ({ onFilterChange }) => {
   const [formData, setFormData] = useState({
     lookingfor: "",
     fromage: "",
@@ -38,14 +38,14 @@ const FilterForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add submit logic here
+     onFilterChange(formData); // Pass form data to the parent component.
   };
 
   return (
     <div className="dark-bg">
       <div className="container mx-auto flex items-center fillter-text justify-center">
         <form onSubmit={handleSubmit}>
-          <div className="flex flex-wrap items-center gap-9 p-6.5">
+          <div className="flex flex-wrap items-center gap-9 p-6.5 member-search-form">
             <div className="w-full md:w-auto">
                 <label className="mb-3 block text-sm font-medium text-white">
                   Looking For

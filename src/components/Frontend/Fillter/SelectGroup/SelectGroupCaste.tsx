@@ -11,6 +11,11 @@ const SelectGroupCaste = ({ castes, name, selectedcaste, oncasteChange }) => {
           name={name}
           className="relative z-20 md:w-64  w-full  appearance-none rounded border border-stroke bg-white px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
         >
+           <option
+            key=''
+            value=''
+            className="text-body dark:text-bodydark "
+          >Select</option>
           {castes.map((caste, index) => (
             <option
               key={index}
