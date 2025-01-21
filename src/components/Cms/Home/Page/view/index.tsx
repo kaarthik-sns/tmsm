@@ -2,72 +2,12 @@
 import Breadcrumb from "@/components/Breadcrumbs/BreadcrumbCustom";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { toast } from "sonner";
-import { TriangleAlert } from "lucide-react";
 import "react-quill/dist/quill.snow.css";
-import dynamic from "next/dynamic";
 import Link from "next/link";
-
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const Settings = () => {
 
-  const [sec_one_img, setSecOneImg] = useState<File | null>(null);
-  const [sec_two_img, setSecTwoImg] = useState<File | null>(null);
-  const [feature_one_img, setFeatureOneImg] = useState<File | null>(null);
-  const [feature_two_img, setFeatureTwoImg] = useState<File | null>(null);
-  const [feature_three_img, setFeatureThreeImg] = useState<File | null>(null);
-  const [feature_four_img, setFeatureFourImg] = useState<File | null>(null);
-
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-  const errors: Record<string, string> = {};
-
-  const [error, setError] = useState(null);
-  const formData_upload = new FormData();
   const [isLoading, setIsLoading] = useState(true);
-
-  const toolbarOptions = [
-    // Text formatting options
-    ["bold", "italic", "underline", "strike"], // Bold, italic, underline, strikethrough
-    ["blockquote", "code-block"], // Blockquote, code block
-
-    // Embeds
-    ["link", "image", "video", "formula"], // Link, image, video, formula
-
-    // Headers
-    [{ header: 1 }, { header: 2 }], // Header 1 and 2
-    [{ header: [1, 2, 3, 4, 5, 6, false] }], // Headers 1-6 and normal text
-
-    // Lists
-    [{ list: "ordered" }, { list: "bullet" }, { list: "check" }], // Ordered, bullet, and checklist
-
-    // Scripts
-    [{ script: "sub" }, { script: "super" }], // Subscript, superscript
-
-    // Indentation
-    [{ indent: "-1" }, { indent: "+1" }], // Outdent, indent
-
-    // Text direction
-    [{ direction: "rtl" }], // Right-to-left
-
-    // Font size
-    [{ size: ["small", false, "large", "huge"] }], // Font size options
-
-    // Text color and background color
-    [{ color: [] }, { background: [] }], // Text color, background color
-
-    // Font family
-    [{ font: [] }], // Font family dropdown
-
-    // Text alignment
-    [{ align: [] }], // Text alignment options
-
-    // Inline formulas
-    ["formula"], // Formula support for inline math
-
-    // Clean formatting
-    ["clean"], // Remove formatting button
-  ];
 
   const [formData, setFormData] = useState({
     sec_one_title: '',
@@ -110,7 +50,6 @@ const Settings = () => {
 
       } catch (err) {
         console.error(err);
-        setError(err.message);
       } finally {
         setIsLoading(false);
       }
@@ -120,163 +59,18 @@ const Settings = () => {
 
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-
-    if (files && files.length > 0) {
-      // Handle file input
-      const file = files[0];
-
-      if (name == 'sec_one_img') {
-        setSecOneImg(file);
-      }
-      if (name == 'sec_two_img') {
-        setSecTwoImg(file);
-      }
-      if (name == 'feature_one_img') {
-        setFeatureOneImg(file);
-      }
-      if (name == 'feature_two_img') {
-        setFeatureTwoImg(file);
-      }
-      if (name == 'feature_three_img') {
-        setFeatureThreeImg(file);
-      }
-      if (name == 'feature_four_img') {
-        setFeatureFourImg(file);
-      }
-
-      const fileURL = URL.createObjectURL(file);
-      setFormData((prevData) => ({ ...prevData, [name]: fileURL }));
-
-    } else {
-      // Handle regular input fields
-      setFormData((prevData) => ({ ...prevData, [name]: value }));
-    }
-  };
-
-  const validateForm = () => {
-
-    const fieldsToValidate = [
-      { key: "sec_one_title", message: "Title is required." },
-      { key: "sec_one_desc", message: "Description is required." },
-      { key: "sec_one_img", message: "Image is required." },
-      { key: "sec_two_title", message: "Title is required." },
-      { key: "sec_two_desc", message: "Description is required." },
-      { key: "sec_two_img", message: "Image is required." },
-      { key: "feature_one", message: "Title One is required." },
-      { key: "feature_one_img", message: "Image is required." },
-      { key: "feature_two", message: "Title Two is required." },
-      { key: "feature_two_img", message: "Image is required." },
-      { key: "feature_three", message: "Title Three is required." },
-      { key: "feature_three_img", message: "Image is required." },
-      { key: "feature_four", message: "Title Four is required." },
-      { key: "feature_four_img", message: "Image is required." },
-      { key: "banner_title", message: "Title is required." },
-      { key: "banner_btn_text", message: "Button Text is required." },
-      { key: "banner_btn_link", message: "Button Link is required." },
-    ];
-
-    for (const { key, message } of fieldsToValidate) {
-      if (!formData[key]?.trim()) {
-        errors[key] = message;
-      }
-    }
-
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      toast.error("Please fix the highlighted errors.", {
-        className: "sonner-toast-error",
-        cancel: {
-          label: "Close",
-          onClick: () => console.log("Close"),
-        },
-      });
-      return false;
-    }
-
-    setFormErrors({});
-    return true;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    setError(null);
-
-    if (!validateForm()) return;
-
-    for (const [key, value] of Object.entries(formData)) {
-
-      const excludedKeys = [
-        'sec_one_img',
-        'sec_two_img',
-        'feature_one_img',
-        'feature_two_img',
-        'feature_three_img',
-        'feature_four_img'
-      ];
-
-      if (!excludedKeys.includes(key)) {
-        formData_upload.append(key, value);
-      }
-    }
-
-    if (sec_one_img) formData_upload.append('sec_one_img', sec_one_img);
-    if (sec_two_img) formData_upload.append('sec_two_img', sec_two_img);
-    if (feature_one_img) formData_upload.append('feature_one_img', feature_one_img);
-    if (feature_two_img) formData_upload.append('feature_two_img', feature_two_img);
-    if (feature_three_img) formData_upload.append('feature_three_img', feature_three_img);
-    if (feature_four_img) formData_upload.append('feature_four_img', feature_four_img);
-
-
-    try {
-      const response = await fetch('/api/cms/home/page', {
-        method: 'PATCH',
-        body: formData_upload,
-      });
-
-      if (response.ok) {
-
-        toast.success('Settings updated successfully!', {
-          className: "sonner-toast-success",
-          cancel: {
-            label: 'Close',
-            onClick: () => console.log('Close'),
-          },
-        });
-
-      } else {
-        const error = await response.json();
-        setError(`Error: ${error.message}`);
-      }
-    } catch (err) {
-
-      toast.error('Settings failed to update!', {
-        className: "sonner-toast-error",
-        cancel: {
-          label: 'Close',
-          onClick: () => console.log('Close'),
-        },
-      });
-
-      console.error(err);
-    }
-  };
-
-
   if (isLoading) {
     return <p>Loading...</p>;
   }
 
   return (
     <>
-       <Breadcrumb
-                breadcrumbs={[
-                    { name: "Dashboard", href: "/admin/dashboard" },
-                    { name: "Home Page" },
-                ]}
-            />
+      <Breadcrumb
+        breadcrumbs={[
+          { name: "Dashboard", href: "/admin/dashboard" },
+          { name: "Home Page" },
+        ]}
+      />
 
       <div className="items-start justify-between md:flex">
         <div className="mt-3 md:mt-0 mb-3">

@@ -3,7 +3,6 @@ import Breadcrumb from "@/components/Breadcrumbs/BreadcrumbCustom";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { TriangleAlert } from "lucide-react";
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 

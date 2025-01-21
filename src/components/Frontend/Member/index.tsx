@@ -70,14 +70,14 @@ const PaginatedUsers = ({ filters }) => {
 
       </div>
       <>
-        <div className='grid grid-cols-1 gap-7.5 sm:grid-cols-2 xl:grid-cols-2 '>
+        <div className='grid grid-cols-1 gap-7.5 sm:grid-cols-1 xl:grid-cols-2 '>
           {users.map((user: any) => (
             <div className="rounded-sm px-6 py-5" key={user._id}>
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="">
                   <div className='h-25 w-25 mb-3'>
 
-                    <img src={user.profile_photo ? user.profile_photo : '/images/about/couple.svg'} alt="Profile Picture" className="rounded-full w-full h-full object-cover" />
+                    <img src={user.profile_photo ? user.profile_photo : '/uploads/photos/1736513579879-03b4dbf6fad6.jpg'} alt="Profile Picture" className="rounded-full w-full h-full object-cover" />
 
                   </div>
                   <h4 className="member-title">
