@@ -54,13 +54,13 @@ function NavList() {
       <div className="flex bg-white px-5 py-3 gap-5 rounded-full bg-button hidden lg:block header-text">
         {session ? (
           <>
-            <NavItem label="Logout" onClick={() => signOut()} className="pr-5 border-r border-black headertext" />
-            <NavItem label="Dashboard" href="/frontend/dashboard" className="pl-5 headertext" />
+            <NavItem label="Dashboard" href="/frontend/dashboard" className="pr-5 headertext border-r border-black" />
+            <NavItem label="Logout" onClick={() => signOut()} className="pl-5  headertext" />
           </>
         ) : (
           <>
-            <NavItem label="Login" href="/frontend/login" className="pr-5 border-r border-black headertext" />
-            <NavItem label="Register" href="/frontend/register" className="pl-5 headertext" />
+            <NavItem label="Register" href="/frontend/register" className="pr-5 headertext border-r border-black headertext" />
+            <NavItem label="Login" href="/frontend/login" className="pl-5" />
           </>
         )}
       </div>
@@ -68,13 +68,13 @@ function NavList() {
       {/* Mobile Navigation */}
       {session ? (
         <>
-          <NavItem label="Logout" onClick={() => signOut()} className="block lg:hidden" />
           <NavItem label="Dashboard" href="/frontend/dashboard" className="block lg:hidden" />
+          <NavItem label="Logout" onClick={() => signOut()} className="block lg:hidden" />
         </>
       ) : (
         <>
-          <NavItem label="Login" href="/frontend/login" className="block lg:hidden" />
           <NavItem label="Register" href="/frontend/register" className="block lg:hidden" />
+          <NavItem label="Login" href="/frontend/login" className="block lg:hidden" />
         </>
       )}
 
