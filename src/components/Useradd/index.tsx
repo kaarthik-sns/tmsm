@@ -126,13 +126,18 @@ const FormElements = () => {
     }
   };
 
-
   const handlePreview = () => {
     if (formData.horoscope) {
       // Open the file in a new tab
       window.open(formData.horoscope, "_blank");
     } else {
-      alert("No file uploaded to preview!");
+      toast.error('No file uploaded to preview!', {
+        className: "sonner-toast-success",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
     }
   };
 

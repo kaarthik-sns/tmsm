@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation"; // Updated import for query parameter extraction
 import Breadcrumb from "@/components/Breadcrumbs/UserBreadcrumb";
 import NextImage from "next/image"; // Rename the import to avoid conflict
+import { toast } from "sonner";
+
 
 const FormElements = () => {
   const searchParams = useSearchParams();
@@ -67,7 +69,13 @@ const FormElements = () => {
       // Open the file in a new tab
       window.open(formData.horoscope, "_blank");
     } else {
-      alert("No file uploaded to preview!");
+      toast.error('No file uploaded to preview!', {
+        className: "sonner-toast-success",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
     }
   };
 

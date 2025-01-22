@@ -7,6 +7,7 @@ import SelectGroupOne from "@/components/SelectGroup/SelectGroupOne";
 import Link from "next/link";
 import { useRouter } from "next/navigation"; // For page navigation
 import NextImage from "next/image"; // Rename the import to avoid conflict
+import { toast } from "sonner";
 
 
 const UserTable = () => {
@@ -95,14 +96,36 @@ const UserTable = () => {
             });
 
             if (response.status === 200) {
-                alert("User deleted successfully.");
+
+                toast.success('User deleted successfully!', {
+                    className: "sonner-toast-success",
+                    cancel: {
+                        label: 'Close',
+                        onClick: () => console.log('Close'),
+                    },
+                });
+
                 fetchTableItems();
             } else {
-                alert(`Failed to delete user: ${response.data.message || "Unknown error"}`);
+
+                toast.error('Failed to delete user!', {
+                    className: "sonner-toast-success",
+                    cancel: {
+                        label: 'Close',
+                        onClick: () => console.log('Close'),
+                    },
+                });
+
             }
         } catch (error) {
             console.error("Error deleting user:", error);
-            alert(error.response?.data?.message || "An error occurred while deleting the user. Please try again.");
+            toast.error(error.response?.data?.message || "An error occurred while deleting the user. Please try again.", {
+                className: "sonner-toast-success",
+                cancel: {
+                    label: 'Close',
+                    onClick: () => console.log('Close'),
+                },
+            });
         }
     };
 
