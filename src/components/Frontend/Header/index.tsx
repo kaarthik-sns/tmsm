@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
+import GTranslateWidget from '@/components/GTranslateWidget/widget';
 
 import {
   Navbar,
@@ -78,7 +79,17 @@ function NavList() {
         </>
       )}
 
-      <Image width={30} height={30} src={"/images/logo/globe.svg"} alt="Logo" />
+       <div className="translator-div flex items-center space-x-2">
+        <div>
+          <Image
+            width={30}
+            height={30}
+            src={"../../images/logo/globe.svg"}
+            alt="Logo"
+          />
+        </div>
+        {/* <GTranslateWidget /> */}
+      </div>
     </ul>
   );
 }

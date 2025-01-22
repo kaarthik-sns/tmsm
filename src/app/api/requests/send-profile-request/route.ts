@@ -5,13 +5,6 @@ import ProfileRequests from '@/models/Profile_requests';
 
 export async function POST(request: NextRequest) {
 
-
-  const formatToUTCWithOffset = (date: Date) => {
-    const isoString = date.toISOString(); // Convert to ISO string
-    return isoString.replace('Z', '+00:00'); // Replace 'Z' with '+00:00'
-  };
-
-
   try {
 
     // Connect to the database
@@ -58,8 +51,7 @@ export async function POST(request: NextRequest) {
       const newNotification = new ProfileRequests({
         sender_id,
         receiver_id,
-        status: status || 'pending', // Default to 'pending' if no status provided
-        created_at: formatToUTCWithOffset(new Date())
+        status: status || 'pending' // Default to 'pending' if no status provided
       });
 
       await newNotification.save();

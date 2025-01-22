@@ -101,6 +101,8 @@ export async function POST(request: NextRequest) {
             }
         ]);
 
+console.log(ProfileRequest);
+
         const totalRequests = await ProfileRequests.countDocuments(query);
 
         // Prepare the response with pagination meta
