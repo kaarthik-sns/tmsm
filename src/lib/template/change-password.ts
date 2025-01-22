@@ -53,7 +53,7 @@ export const changePassword = `<!DOCTYPE html>
         <p>If the button doesn't work, copy and paste the following link into your browser:</p>
         <p>{{forgotPasswordLink}}</p>
         <div class="footer">
-            <p>© 2024 tmsm.com. All rights reserved.</p>
+            <p>© 2025 tmsm.com. All rights reserved.</p>
         </div>
     </div>
 </body>

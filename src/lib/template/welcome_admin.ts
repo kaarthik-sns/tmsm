@@ -51,7 +51,7 @@ export const welcome_admin = `<!DOCTYPE html>
         </ul>
         <p>Please take the necessary actions if required.</p>
         <div class="footer">
-            <p>© 2024 TMSM.com. All rights reserved.</p>
+            <p>© 2025 TMSM.com. All rights reserved.</p>
         </div>
     </div>
 </body>

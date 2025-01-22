@@ -1,5 +1,3 @@
-'use client';  
-
 import { useState } from 'react';
 import Head from 'next/head'; 
 import FrontendLayouts from "@/components/Layouts/Frontendlayout";
@@ -11,13 +9,8 @@ import 'slick-carousel/slick/slick-theme.css';
 import '@/css/member.css';
 
 export default function Home() {
-  const [searchText, setSearchText] = useState('');
-  const [filters, setFilters] = useState({ lookingfor: '', fromage: '', toage: '', caste: '', subcaste: '' });
 
-  const handleFilterChange = (newFilters) => {
-    setFilters(newFilters); // Update filters when the form changes
-  };
-
+ 
   return (
     <>
       <Head>
@@ -27,8 +20,7 @@ export default function Home() {
 
       <FrontendLayouts>
         <InnerBanner />
-        <Fillter onFilterChange={handleFilterChange} />
-        <Member filters={filters} />
+        <Member/>
       </FrontendLayouts>
     </>
   );
