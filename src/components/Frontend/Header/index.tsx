@@ -1,12 +1,13 @@
-'use client';
+"use client";
 
 import React from "react";
 import Link from "next/link";
 import "@/css/style.css";
 import "@/css/frontend.css";
+import { usePathname } from "next/navigation";
 
 import Image from "next/image";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import GTranslateWidget from '@/components/GTranslateWidget/widget';
 
 import {
@@ -24,8 +25,14 @@ interface NavItemPropsType {
 }
 
 function NavItem({ label, href, className, onClick }: NavItemPropsType) {
+  const pathname = usePathname();
+  const isActive = href === pathname;
+
   return href ? (
-    <Link href={href} className={className}>
+    <Link
+      href={href}
+      className={`${className} ${isActive ? "active-menu" : ""}`} 
+    >
       {label}
     </Link>
   ) : (
@@ -36,20 +43,18 @@ function NavItem({ label, href, className, onClick }: NavItemPropsType) {
 }
 
 function NavList() {
-  const { data: session } = useSession(); // Get session data
+  const { data: session } = useSession();
 
   return (
     <ul className="mb-4 mt-2 pl-2 flex flex-col gap-3 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-8 header-text">
       <NavItem label="Home" href="/frontend" />
-      <NavItem label="About" href="/about" />
-      <NavItem label="Contact" href="/contact" />
+      <NavItem label="About" href="/frontend/about" />
+      <NavItem label="Contact" href="/frontend/contact" />
 
       {/* Desktop Navigation */}
       <div className="flex bg-white px-5 py-3 gap-5 rounded-full bg-button hidden lg:block header-text">
         {session ? (
           <>
-            {/* <NavItem label="Logout" onClick={() => signOut()} className="pr-5 border-r border-black headertext" />
-        <NavItem label="Dashboard" href="/frontend/dashboard" className="pr-5 headertext" /> */}
             <NavItem label="Logout" onClick={() => signOut()} className="pr-5 border-r border-black headertext" />
             <NavItem label="Dashboard" href="/frontend/dashboard" className="pl-5 headertext" />
           </>
@@ -74,7 +79,7 @@ function NavList() {
         </>
       )}
 
-      <div className="translator-div flex items-center space-x-2">
+       <div className="translator-div flex items-center space-x-2">
         <div>
           <Image
             width={30}
@@ -86,7 +91,6 @@ function NavList() {
         {/* <GTranslateWidget /> */}
       </div>
     </ul>
-
   );
 }
 
@@ -106,10 +110,8 @@ export function NavbarWithSimpleLinks() {
   return (
     <Navbar className="header-bg py-6 border-0"
       fullWidth={true}
-      placeholder="" // If placeholder is required
-      // onPointerEnterCapture={() => { }}
-      // onPointerLeaveCapture={() => { }}
       >
+
       <div className="container mx-auto flex items-center justify-between mt-6">
         <Link className="hidden flex-shrink-0 lg:block" href="/frontend/">
           <Image

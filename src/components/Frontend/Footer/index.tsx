@@ -10,6 +10,7 @@ export function FooterWithCustomDesign() {
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-[50%_30%_20%] gap-y-8 md:gap-x-8 md:text-left pl-2 pr-2 footer-text">
         {/* Left Column - Logo and Description */}
         <div className="">
+        <Link className="flex-shrink-0 lg:block" href="/frontend/">
           <Image
             src="/images/logo/Footer-logo.svg" // Replace with your logo path
             width={400}
@@ -17,6 +18,7 @@ export function FooterWithCustomDesign() {
             alt="TMSM Logo"
             className="mx-auto md:mx-0"
           />
+          </Link>
           <div className="flex justify-center md:justify-start space-x-4 mt-4 items-center">
             <div className="flex justify-center md:justify-start space-x-4">
               <Link href="#">
@@ -57,22 +59,22 @@ export function FooterWithCustomDesign() {
         <div>
           <ul className="space-y-4">
             <li >
-              <Link href="/" className="hover:text-white">
+              <Link href="/frontend" className="hover:text-white">
                 Home
               </Link>
             </li>
             <li>
-              <Link href="/about" className="hover:text-white">
+              <Link href="/frontend/about" className="hover:text-white">
                 About
               </Link>
             </li>
             <li>
-              <Link href="/terms" className="hover:text-white">
+              <Link href="/frontend/terms" className="hover:text-white">
                 Terms and Conditions
               </Link>
             </li>
             <li>
-              <Link href="/privacy-policy" className="hover:text-white">
+              <Link href="/frontend/privacy-policy" className="hover:text-white">
                 Privacy Policy
               </Link>
             </li>
@@ -83,22 +85,22 @@ export function FooterWithCustomDesign() {
         <div>
           <ul className="space-y-4">
             <li>
-              <Link href="/faq" className="text-gray-400 hover:text-white">
+              <Link href="/frontend/faq" className="text-gray-400 hover:text-white">
                 FAQ
               </Link>
             </li>
             <li>
-              <Link href="/guidelines" className="text-gray-400 hover:text-white">
+              <Link href="/frontend/guidelines" className="text-gray-400 hover:text-white">
                 General Guidelines
               </Link>
             </li>
             <li>
-              <Link href="/sitemap" className="text-gray-400 hover:text-white">
+              <Link href="/frontend/sitemap" className="text-gray-400 hover:text-white">
                 Sitemap
               </Link>
             </li>
             <li>
-              <Link href="/contact" className="text-gray-400 hover:text-white">
+              <Link href="/frontend/contact" className="text-gray-400 hover:text-white">
                 Contact
               </Link>
             </li>
