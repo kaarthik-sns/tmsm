@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import SelectAge from "@/components/Frontend/Fillter/SelectGroup/SelectAge"; // Remove the extra space here
-import SelectBrideGroom from "@/components/Frontend/Fillter/SelectGroup/SelectBrideGroom "; // Remove the extra space here
+import SelectBrideGroom from "@/components/Frontend/Fillter/SelectGroup/SelectBrideGroom"; // Remove the extra space here
 import { useRouter } from "next/navigation";
 
 const FilterForm = () => {
@@ -56,10 +56,26 @@ const FilterForm = () => {
     setFormData({ ...formData, lookingfor: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    const query = new URLSearchParams(formData).toString();
-    router.push(`/frontend/member?${query}`);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  
+    const queryParams = new URLSearchParams();
+  
+    // Only add non-empty values to the query
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value.trim()) {
+        queryParams.append(key, value);
+      }
+    });
+  
+    // Redirect only if there are valid query parameters
+    if (queryParams.toString()) {
+      router.push(`/frontend/member?${queryParams.toString()}`);
+    } else {
+      router.push(`/frontend/member`); // Fallback if no parameters exist
+    }
   };
+  
 
   return (
     <div className="dark-bg">

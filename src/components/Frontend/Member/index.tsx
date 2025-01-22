@@ -65,10 +65,10 @@ const PaginatedUsers = () => {
   };
 
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    fetchUsers(currentPage, filters);
-  }, [currentPage, filters]);
+  //   fetchUsers(currentPage, filters);
+  // }, [currentPage, filters]);
 
 
   // Handle page navigation
