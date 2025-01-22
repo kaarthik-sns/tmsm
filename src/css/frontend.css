@@ -388,7 +388,7 @@ input:-internal-autofill-selected {
     cursor: pointer;
 }
 
-span.textdark {
+.textdark {
     color: #000000;
     font-family: 'Noto Sans';
 }
