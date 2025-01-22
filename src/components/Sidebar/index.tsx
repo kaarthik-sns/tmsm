@@ -144,6 +144,27 @@ const menuGroups = [
           { label: "About Us", route: "/admin/cms/about/view" },
         ],
       },
+      {
+        icon: (
+          <svg
+            className="fill-current duration-300 ease-in-out"
+            width="18"
+            height="18"
+            viewBox="0 0 18 18"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M16 2H2C1.44772 2 1 2.44772 1 3V15C1 15.5523 1.44772 16 2 16H16C16.5523 16 17 15.5523 17 15V3C17 2.44772 16.5523 2 16 2ZM3 3H15V6.8L9 9.6L3 6.8V3ZM3 12.4L9 9.6L15 12.4V12H3V12.4Z"
+              fill=""
+            />
+          </svg>
+
+        ),
+        label: "Contact US",
+        route: "/admin/contact-us",
+      },
+
     ],
   },
   {
