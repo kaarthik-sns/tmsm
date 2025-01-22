@@ -8,6 +8,7 @@ const ContactUs = new Schema({
     message: { type: String, required: false },
     is_delete: { type: Boolean, default: false },
     created_at: { type: Date, default: Date.now },
+    updated_at: { type: Date, default: Date.now },
 }, { collection: "contact_us" });
 
 const Contact = models.contact_us || model("contact_us", ContactUs);
