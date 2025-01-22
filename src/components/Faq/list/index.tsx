@@ -4,6 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation"; // For page navigation
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import { toast } from "sonner";
 
 
 const FaqTable = () => {
@@ -75,14 +76,34 @@ const FaqTable = () => {
             });
 
             if (response.status === 200) {
-                alert("Faq deleted successfully.");
+
+                toast.success('Faq deleted successfully!', {
+                    className: "sonner-toast-success",
+                    cancel: {
+                        label: 'Close',
+                        onClick: () => console.log('Close'),
+                    },
+                });
+
                 fetchTableItems();
             } else {
-                alert(`Failed to delete Faq: ${response.data.message || "Unknown error"}`);
+                toast.error('Failed to delete Faq!', {
+                    className: "sonner-toast-success",
+                    cancel: {
+                        label: 'Close',
+                        onClick: () => console.log('Close'),
+                    },
+                });
             }
         } catch (error) {
             console.error("Error deleting Faq:", error);
-            alert(error.response?.data?.message || "An error occurred while deleting the Faq. Please try again.");
+            toast.error(error.response?.data?.message || "An error occurred while deleting the Faq. Please try again.", {
+                className: "sonner-toast-success",
+                cancel: {
+                    label: 'Close',
+                    onClick: () => console.log('Close'),
+                },
+            });
         }
     };
 

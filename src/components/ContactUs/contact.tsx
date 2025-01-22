@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import axios from "axios";
+import { toast } from "sonner";
 
 const UserTable = () => {
 
@@ -76,14 +77,35 @@ const UserTable = () => {
             });
 
             if (response.status === 200) {
-                alert("data deleted successfully.");
+
+                toast.success('Data deleted successfully!', {
+                    className: "sonner-toast-success",
+                    cancel: {
+                        label: 'Close',
+                        onClick: () => console.log('Close'),
+                    },
+                });
+
+
                 fetchUsers(currentPage);
             } else {
-                alert(`Failed to delete data: ${response.data.message || "Unknown error"}`);
+                toast.error('Failed to delete data!', {
+                    className: "sonner-toast-success",
+                    cancel: {
+                        label: 'Close',
+                        onClick: () => console.log('Close'),
+                    },
+                });
             }
         } catch (error) {
             console.error("Error deleting data:", error);
-            alert(error.response?.data?.message || "An error occurred while deleting the user. Please try again.");
+            toast.error(error.response?.data?.message || "An error occurred while deleting the user. Please try again.", {
+                className: "sonner-toast-success",
+                cancel: {
+                    label: 'Close',
+                    onClick: () => console.log('Close'),
+                },
+            });
         }
     };
 
