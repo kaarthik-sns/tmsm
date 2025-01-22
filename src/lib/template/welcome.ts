@@ -47,12 +47,12 @@ export const welcome = `<!DOCTYPE html>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome, Kaarthik!</h1>
+        <h1>Welcome, {{user_name}}!</h1>
         <p>Thank you for joining TMSM, the trusted matrimony platform. We are thrilled to have you as a part of our community!</p>
         
         <p>We wish you all the best in your journey to find your perfect match.</p>
         <div class="footer">
-            <p>© 2024 TMSM.com. All rights reserved.</p>
+            <p>© 2025 TMSM.com. All rights reserved.</p>
         </div>
     </div>
 </body>

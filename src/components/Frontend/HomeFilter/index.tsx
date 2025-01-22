@@ -3,8 +3,11 @@
 import React, { useState } from "react";
 import SelectAge from "@/components/Frontend/Fillter/SelectGroup/SelectAge"; // Remove the extra space here
 import SelectBrideGroom from "@/components/Frontend/Fillter/SelectGroup/SelectBrideGroom "; // Remove the extra space here
+import { useRouter } from "next/navigation";
 
-const FilterForm = ({ onFilterChange }) => {
+const FilterForm = () => {
+
+  const router = useRouter();
   const [formData, setFormData] = useState({
     lookingfor: "",
     fromage: "",
@@ -54,8 +57,8 @@ const FilterForm = ({ onFilterChange }) => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    onFilterChange(formData); // Pass form data to the parent component.
+    const query = new URLSearchParams(formData).toString();
+    router.push(`/frontend/member?${query}`);
   };
 
   return (

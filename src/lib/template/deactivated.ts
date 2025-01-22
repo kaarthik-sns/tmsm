@@ -43,7 +43,7 @@ export const verification = `<!DOCTYPE html>
         <p>If you have any feedback about your experience, please feel free to share it with us. We strive to improve and provide a better experience for our users.</p>
         <p>Thank you for being a part of TMSM. We wish you all the best in your future endeavors.</p>
         <div class="footer">
-            <p>© 2024 TMSM.com. All rights reserved.</p>
+            <p>© 2025 TMSM.com. All rights reserved.</p>
         </div>
     </div>
 </body>

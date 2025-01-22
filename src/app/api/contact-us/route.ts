@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Contact from '@/models/Contact'; // Adjust this path based on your project structure
 import connectToDatabase from '@/lib/mongodb';
+import { contactFormMailToAdmin } from '@/lib/template/contact-us';
+import * as Handlebars from 'handlebars';
+import { sendEmail } from "@/utils/mail.util"
 
 
 // Handle GET request to list all contacts
@@ -75,6 +78,32 @@ export async function POST(req) {
             phone,
             message,
         });
+
+        const sender = {
+            name: 'TMSM',
+            address: 'no-reply@tmsm.com'
+        }
+
+        const template = Handlebars.compile(contactFormMailToAdmin);
+        const htmlBody = template({
+            name: name,
+            email: email,
+            interested_in: interested_in,
+            phone: phone,
+            message: message,
+        });
+
+        const receipients = [{
+            name: 'admin',
+            address: 'kaarthikr@searchnscore.com'
+        }]
+
+        const result3 = await sendEmail({
+            sender,
+            receipients: receipients,
+            subject: 'TMSM - New User Registration!',
+            message: htmlBody
+        })
 
         // Save the new contact document
         await newContact.save();
