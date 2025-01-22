@@ -66,7 +66,7 @@ const SignUp: React.FC = () => {
         }
       });
 
-      router.push("/auth/signin");
+      router.push("/frontend/login");
     } else {
       setError(data.message);
       setPending(false);

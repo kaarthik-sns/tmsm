@@ -43,7 +43,7 @@ const ForgotPassword: React.FC = () => {
         },
       });
       
-      router.push("/auth/signin");
+      router.push("/frontend/login");
     } else {
       setError(data.message);
       setPending(false);
@@ -135,7 +135,7 @@ const ForgotPassword: React.FC = () => {
                 <div className="mt-6 text-center">
                   <p>
                     {" "}
-                    <Link href="/admin/auth/signin" className="text-primary dark-text">
+                    <Link href="/frontend/login" className="text-primary dark-text">
                       Back to Sign in
                     </Link>
                   </p>
