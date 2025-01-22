@@ -6,8 +6,8 @@ export const GET = async (req: NextRequest) => {
     try {
         const { searchParams } = new URL(req.url);
         const page = parseInt(searchParams.get('page') || '1', 10);
-        const name = searchParams.get('name') || '';
-        const email = searchParams.get('email') || '';
+        const name = (searchParams.get('name') || '').trim();
+        const email = (searchParams.get('email') || '').trim();
         const is_active = searchParams.get('is_active') || '';
         const is_approve = searchParams.get('is_approve') || '';
         const pageSize = 10;
@@ -38,7 +38,8 @@ export const GET = async (req: NextRequest) => {
         query.is_delete = { $ne: true };
 
         // Fetch filtered and paginated users from the database
-        const users = await User.find(query).skip(skip).limit(pageSize);
+        const users = await User.find(query).sort({ created_at: -1 }).skip(skip).limit(pageSize);
+        
 
         // Count total documents for the query
         const totalUsers = await User.countDocuments(query);
