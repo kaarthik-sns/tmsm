@@ -5,9 +5,6 @@ import StatusFilter from "@/components/UserReqTable/Select/StatusFilter";
 import UpdateStatus from "@/components/UserReqTable/Select/UpdateStatus";
 import { toast } from "sonner";
 
-import Link from "next/link";
-import { useRouter } from "next/navigation"; // For page navigation
-
 const UserTable = () => {
 
     const [pages, setPages] = useState(1);
@@ -74,8 +71,8 @@ const UserTable = () => {
                 },
                 body: JSON.stringify({
                     page: currentPage,
-                    name: formState.name,
-                    email: formState.email,
+                    name: formState.name.trim(),
+                    email: formState.email.trim(),
                     status: formState.selectOne,
                 }),
             });
