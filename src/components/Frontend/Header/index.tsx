@@ -44,8 +44,6 @@ function NavItem({ label, href, className, onClick }: NavItemPropsType) {
 
 function NavList() {
   const { data: session } = useSession();
-  console.log(session);
-
   return (
     <ul className="mb-4 mt-2 pl-2 flex flex-col gap-3 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-8 header-text">
       <NavItem label="Home" href="/frontend" />
