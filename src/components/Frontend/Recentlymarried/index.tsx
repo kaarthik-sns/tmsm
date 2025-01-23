@@ -83,20 +83,20 @@ const TwoRowTwoColumnSlider = () => {
         >
           {couples.map((couple, index) => (
             <SwiperSlide key={index}>
-              <div className="flex items-center gap-6  p-6 ">
-                {/* Image */}
-                <img
-                  src={couple.image}
-                  alt={couple.name}
-                  className="w-60 h-60 rounded-full object-cover"
-                />
-                {/* Content */}
-                <div>
-                  <h3 className="heading-text mb-2">{couple.name}</h3>
-                  <p className="heading-description">{couple.description}</p>
-                </div>
+            <div className="flex flex-col md:flex-row items-center gap-6 p-6">
+              {/* Image - Centered Above on Mobile */}
+              <img
+                src={couple.image}
+                alt={couple.name}
+                className="w-40 h-40 md:w-60 md:h-60 rounded-full object-cover"
+              />
+              {/* Content - Below Image on Mobile, Side by Side on Desktop */}
+              <div className="text-center md:text-left">
+                <h3 className="heading-text mb-2">{couple.name}</h3>
+                <p className="heading-description">{couple.description}</p>
               </div>
-            </SwiperSlide>
+            </div>
+          </SwiperSlide>
           ))}
         </Swiper>
       </div>

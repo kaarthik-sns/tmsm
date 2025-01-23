@@ -1,10 +1,13 @@
-'use client';
+"use client";
 
-import React, { useState } from "react";
-import SelectAge from "@/components/Frontend/Fillter/SelectGroup/SelectAge"; // Remove the extra space here
-import SelectBrideGroom from "@/components/Frontend/Fillter/SelectGroup/SelectBrideGroom "; // Remove the extra space here
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation"; // Import useSearchParams
+import SelectAge from "@/components/Frontend/Fillter/SelectGroup/SelectAge";
+import SelectBrideGroom from "@/components/Frontend/Fillter/SelectGroup/SelectBrideGroom";
 
 const FilterForm = ({ onFilterChange }) => {
+  const searchParams = useSearchParams(); // Get URL query parameters
+
   const [formData, setFormData] = useState({
     lookingfor: "",
     fromage: "",
@@ -12,36 +15,19 @@ const FilterForm = ({ onFilterChange }) => {
     subcaste: "",
   });
 
-  const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
+  // ✅ Populate form fields from URL parameters when component mounts
+  useEffect(() => {
+    setFormData({
+      lookingfor: searchParams.get("lookingfor") || "",
+      fromage: searchParams.get("fromage") || "",
+      toage: searchParams.get("toage") || "",
+      subcaste: searchParams.get("subcaste") || "",
+    });
+  }, [searchParams]); // Runs whenever searchParams change
 
-  // Example data array of subcastes
-  const subcastes = ['Brahmin', 'Rajput', 'Jat', 'Kayastha', 'Yadav', 'Gupta', 'Vaishya'];
-
-  // Handle input change and filter suggestions
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setFormData({ ...formData, subcaste: value });
-
-    if (value.length > 0) {
-      // Filter the suggestions based on the user's input
-      const filtered = subcastes.filter((subcaste) =>
-        subcaste.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredSuggestions(filtered);
-    } else {
-      setFilteredSuggestions([]); // Clear suggestions if input is empty
-    }
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  // Handle suggestion click
-  const handleSuggestionClick = (suggestion: string) => {
-    setFormData({ ...formData, subcaste: suggestion });
-    setFilteredSuggestions([]); // Clear suggestions after selection
-  };
-
-  // Array for Subcastes
-  // const subcastes = ["Mudaliyar"];
-
 
   const handleAgeChange = (e) => {
     setFormData({ ...formData, fromage: e.target.value });
@@ -52,17 +38,16 @@ const FilterForm = ({ onFilterChange }) => {
   const handleBrideGroomChange = (e) => {
     setFormData({ ...formData, lookingfor: e.target.value });
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    onFilterChange(formData); // Pass form data to the parent component.
+    onFilterChange(formData); // Pass form data to the parent component
   };
 
   return (
     <div className="dark-bg">
-      <div className="container mx-auto flex items-center fillter-text justify-center p-10">
+      <div className="container mx-auto flex items-center justify-center p-10">
         <form onSubmit={handleSubmit}>
-          <div className="flex flex-wrap items-center gap-9 p-6.5 member-search-form">
+        <div className="flex flex-wrap items-center gap-9 p-6.5 member-search-form">
             <div className="w-full md:w-auto">
               <label className="mb-3 block text-sm font-medium text-white">
                 Looking For
@@ -110,19 +95,6 @@ const FilterForm = ({ onFilterChange }) => {
                   onChange={handleInputChange}
                   className="relative z-20 md:w-64 w-full appearance-none rounded border border-stroke bg-white px-5 py-3 outline-none transition dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                 />
-                {filteredSuggestions.length > 0 && formData.subcaste.length > 0 && (
-                  <ul className="absolute w-full bg-white border shadow-md z-30 max-h-60 overflow-y-auto">
-                    {filteredSuggestions.map((suggestion, index) => (
-                      <li
-                        key={index}
-                        onClick={() => handleSuggestionClick(suggestion)}
-                        className="px-4 py-2 cursor-pointer hover:bg-gray-200"
-                      >
-                        {suggestion}
-                      </li>
-                    ))}
-                  </ul>
-                )}
               </div>
             </div>
 
@@ -135,12 +107,11 @@ const FilterForm = ({ onFilterChange }) => {
                 Search
               </button>
             </div>
+            
           </div>
         </form>
       </div>
     </div>
-
-
   );
 };
 

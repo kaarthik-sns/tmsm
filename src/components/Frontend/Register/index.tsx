@@ -86,10 +86,10 @@ const SignUp: React.FC = () => {
 
   return (
 
-      <div className="flex h-screen bg-[#fbeed5]">
+      <div className="flex bg-[#fbeed5]">
         {/* Left Section - Login Form */}
-        <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-10">
-        <div className="flex items-center w-100">
+        <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-6 md:p-10">
+        <div className="flex items-center md:w-100">
             <div className="w-full p-4">
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2 heading-title">
                 Register

@@ -45,13 +45,13 @@ const RequestStatus = () => {
 
           {/* Search Filter with Alignment */}
           <div className="flex items-center space-x-2">
-            {/* <span className="textdark">Search Profile</span> */}
+            {/* Search Input (below buttons on mobile) */}
             <input
               type="text"
               placeholder="Search by name..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="border px-4 py-2 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-brown"
+              className="border px-4 py-2 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-brown w-full sm:w-auto"
             />
           </div>
         </div>
@@ -148,7 +148,7 @@ const ProfileModal = ({ profile, onClose }) => (
     <div className="bg-white p-4 sm:p-6 rounded-lg max-w-sm sm:max-w-md w-full relative">
       <button
         onClick={onClose}
-        className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
+        className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 red-color "
         aria-label="Close"
       >
         <svg
@@ -159,7 +159,7 @@ const ProfileModal = ({ profile, onClose }) => (
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="w-5 h-5 sm:w-6 sm:h-6"
+          className="w-6 h-6"
         >
           <line x1="18" y1="6" x2="6" y2="18" />
           <line x1="6" y1="6" x2="18" y2="18" />

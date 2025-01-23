@@ -7,7 +7,7 @@ const SelectBrideGroom = ({ selectedBrideGroom, name, onBrideGroomChange }) => {
       <div className="relative z-20 bg-transparent dark:bg-form-input">
         <select
           value={selectedBrideGroom || ""}
-          onChange={onBrideGroomChange}
+          onChange={onBrideGroomChange} 
           name={name}
           className="relative z-20 md:w-32  w-full appearance-none rounded border border-stroke bg-white px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
         >

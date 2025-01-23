@@ -45,6 +45,7 @@ body {
     color: #323232;
     font-size: 18px;
     font-family: 'Noto Sans';
+    text-align: left;
 }
 
 .header-text a:hover {
@@ -1153,6 +1154,7 @@ input:-internal-autofill-selected {
     .list-offer-info:last-child {
         margin-bottom: 0;
     }
+
     .contact-info-con{
         padding: 50px 0;
     }
@@ -1183,5 +1185,15 @@ input:-internal-autofill-selected {
     }
     .con-list-of-data p{
         font-size: 18px;
+
+    .heading {
+        font-size: 30px;
+    }
+    .join-heading {
+        font-size: 25px;
+    }
+    .slider-padding {
+        padding: 1rem;
+
     }
 }
