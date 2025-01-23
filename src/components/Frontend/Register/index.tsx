@@ -108,7 +108,6 @@ const SignUp: React.FC = () => {
                       disabled={pending}
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      required
                       placeholder="First name"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -144,7 +143,6 @@ const SignUp: React.FC = () => {
                       disabled={pending}
                       value={form.lastname}
                       onChange={(e) => setForm({ ...form, lastname: e.target.value })}
-                      required
                       placeholder="Last name"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -180,7 +178,6 @@ const SignUp: React.FC = () => {
                       disabled={pending}
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      required
                       placeholder="Email ID"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -213,7 +210,6 @@ const SignUp: React.FC = () => {
                       disabled={pending}
                       value={form.phonenumber}
                       onChange={(e) => setForm({ ...form, phonenumber: e.target.value })}
-                      required
                       placeholder="Phone number"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -255,7 +251,6 @@ const SignUp: React.FC = () => {
                       disabled={pending}
                       value={form.password}
                       onChange={(e) => setForm({ ...form, password: e.target.value })}
-                      required
                       placeholder="Password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -291,7 +286,6 @@ const SignUp: React.FC = () => {
                       disabled={pending}
                       value={form.confirmPassword}
                       onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
-                      required
                       placeholder="Re-enter your password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
