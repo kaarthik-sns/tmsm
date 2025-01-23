@@ -275,7 +275,7 @@ const Table = () => {
                 {/* Modal */}
                 {isModalOpen && modalData && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
+                        <div className="bg-white p-8 rounded-lg shadow-lg max-w-3xl w-full relative">
                             {/* Close Button */}
                             <button
                                 onClick={closeModal}
@@ -296,20 +296,19 @@ const Table = () => {
                                     <line x1="6" y1="6" x2="18" y2="18" />
                                 </svg>
                             </button>
-
-                            <h2 className="text-xl font-bold mb-4">{modalData.title}</h2>
-                            <p>{modalData.description}</p>
-                            <div className="w-20 h-20 overflow-hidden bg-gray-200">
-                                <Image
-                                    src={modalData.image}
-                                    alt="Profile Preview"
-                                    width={64}
-                                    height={64}
-                                    quality={100}
-                                    unoptimized={true}
-                                    className="w-full h-full object-cover"
-                                />
-                            </div>
+                                <p className="mb-4 cms-heading text-xl font-semibold">{modalData.title}</p>
+                                <p className="mb-4 cms-description text-sm text-gray-600">{modalData.description}</p>
+                                <div className="overflow-hidden flex items-center  mx-auto mb-4">
+                                    <Image
+                                        src={modalData.image}
+                                        alt="Profile Preview"
+                                        width={400}
+                                        height={200}
+                                        quality={100}
+                                        unoptimized={true}
+                                        className="object-cover"
+                                    />
+                                </div>
                         </div>
                     </div>
                 )}

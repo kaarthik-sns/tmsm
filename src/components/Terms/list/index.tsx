@@ -69,10 +69,7 @@ const TermTable = () => {
                             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                                 <div className="p-6.5">
                                     <div className="mb-4.5">
-                                        <h3 className="mb-3 bold">
-                                            Terms & Conditions:
-                                        </h3>
-                                        <div dangerouslySetInnerHTML={{ __html: item.description }} />
+                                        <div dangerouslySetInnerHTML={{ __html: item.description }} className="cms-heading" />
                                     </div>
                                 </div>
                             </div>

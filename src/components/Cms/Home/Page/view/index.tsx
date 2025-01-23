@@ -89,7 +89,7 @@ const Settings = () => {
           {/* About Section */}
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium dark-text dark:text-white">About Section</h3>
+              <h3 className="font-medium dark-text dark:text-white">About</h3>
             </div>
             <div className="p-6.5">
 
@@ -108,19 +108,13 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="mb-4.5 flex-1">
-                  <label className="block text-sm font-medium text-gray-700 dark-text">
-                    Title
-                  </label>
-                  <p className="text-sm dark:text-white">{formData.sec_one_title || "N/A"}</p>
+                  <p className="text-sm dark:text-white  cms-heading">{formData.sec_one_title || "N/A"}</p>
                 </div>
               </div>
 
               <div className="mb-4.5">
-                <label className="block text-sm font-medium text-gray-700 dark-text">
-                  Description
-                </label>
                 <div
-                  className="text-sm dark:text-white"
+                  className="text-sm dark:text-white  cms-description "
                   dangerouslySetInnerHTML={{ __html: formData.sec_one_desc || "N/A" }}
                 />
               </div>
@@ -131,30 +125,28 @@ const Settings = () => {
           {/* Banner Section */}
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium dark-text dark:text-white">Banner Section</h3>
+              <h3 className="font-medium dark-text dark:text-white">Join us</h3>
             </div>
             <div className="p-6.5">
 
               <div className="mb-4.5">
-                <label className="block text-sm font-medium text-gray-700 dark-text">
-                  Title
-                </label>
-                <p className="text-sm dark:text-white">{formData.banner_title || "N/A"}</p>
+                <p className="text-sm dark:text-white cms-description">{formData.banner_title || "N/A"}</p>
               </div>
 
               <div className="mb-4.5">
-                <label className="block text-sm font-medium text-gray-700 dark-text">
-                  Button Title
-                </label>
-                <p className="text-sm dark:text-white">{formData.banner_btn_text || "N/A"}</p>
+                <p className="text-sm dark:text-white">
+                  <a
+                    href={formData.banner_btn_link || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:underline"
+
+                  >
+                    {formData.banner_btn_text || "N/A"}
+                  </a>
+                </p>
               </div>
 
-              <div className="mb-4.5">
-                <label className="block text-sm font-medium text-gray-700 dark-text">
-                  Button Link
-                </label>
-                <p className="text-sm dark:text-white">{formData.banner_btn_link || "N/A"}</p>
-              </div>
 
             </div>
           </div>
@@ -166,7 +158,7 @@ const Settings = () => {
           {/* Why Choose Us Section */}
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium dark-text dark:text-white">Why Choose Us Section</h3>
+              <h3 className="font-medium dark-text dark:text-white">Why Choose Us</h3>
             </div>
             <div className="p-6.5">
 
@@ -186,20 +178,14 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="mb-4.5 flex-1">
-                  <label className="block text-sm font-medium text-gray-700 dark-text">
-                    Title
-                  </label>
-                  <p className="text-sm dark:text-white">{formData.sec_two_title || "N/A"}</p>
+                  <p className="text-sm dark:text-white cms-heading">{formData.sec_two_title || "N/A"}</p>
                 </div>
               </div>
 
 
               <div className="mb-4.5">
-                <label className="block text-sm font-medium text-gray-700 dark-text">
-                  Description
-                </label>
                 <div
-                  className="text-sm dark:text-white"
+                  className="text-sm dark:text-white cms-description"
                   dangerouslySetInnerHTML={{ __html: formData.sec_two_desc || "N/A" }}
                 />
               </div>
@@ -222,10 +208,7 @@ const Settings = () => {
 
                 {/* Title Section */}
                 <div className="mb-4.5 flex-1">
-                  <label className="block text-sm font-medium text-gray-700 dark-text">
-                    Title
-                  </label>
-                  <p className="text-sm dark:text-white">{formData.feature_one || "N/A"}</p>
+                  <p className="text-sm dark:text-white cms-description">{formData.feature_one || "N/A"}</p>
                 </div>
               </div>
 
@@ -247,10 +230,7 @@ const Settings = () => {
                 </div>
 
                 <div className="mb-4.5 flex-1">
-                  <label className="block text-sm font-medium text-gray-700 dark-text">
-                    Title
-                  </label>
-                  <p className="text-sm dark:text-white">{formData.feature_two || "N/A"}</p>
+                  <p className="text-sm dark:text-white cms-description">{formData.feature_two || "N/A"}</p>
                 </div>
               </div>
 
@@ -270,10 +250,7 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="mb-4.5 flex-1">
-                  <label className="block text-sm font-medium text-gray-700 dark-text">
-                    Title
-                  </label>
-                  <p className="text-sm dark:text-white">{formData.feature_three || "N/A"}</p>
+                  <p className="text-sm dark:text-white cms-description">{formData.feature_three || "N/A"}</p>
                 </div>
               </div>
 
@@ -293,10 +270,7 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="mb-4.5 flex-1">
-                  <label className="block text-sm font-medium text-gray-700 dark-text">
-                    Title
-                  </label>
-                  <p className="text-sm dark:text-white">{formData.feature_four || "N/A"}</p>
+                  <p className="text-sm dark:text-white cms-description" >{formData.feature_four || "N/A"}</p>
                 </div>
               </div>
 

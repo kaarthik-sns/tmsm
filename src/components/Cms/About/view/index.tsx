@@ -99,7 +99,7 @@ const Settings = () => {
 
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium dark-text dark:text-white">
-                Banner Section
+                Banner
               </h3>
             </div>
 
@@ -121,10 +121,7 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="mb-4.5 flex-1">
-                  <label className="block text-sm font-medium text-gray-700 dark-text">
-                    Title
-                  </label>
-                  <p className="text-sm dark:text-white">{formData.sec_two_title || "N/A"}</p>
+                  <p className="text-sm dark:text-white cms-heading">{formData.sec_two_title || "N/A"}</p>
                 </div>
               </div>
 
@@ -158,19 +155,13 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="mb-4.5">
-                  <label className="block text-sm font-medium dark-text dark:text-white">
-                    Title
-                  </label>
-                  <p className="text-sm dark:text-white">{formData.feature_one || ""}</p>
+                  <p className="text-sm dark:text-white cms-description">{formData.feature_one || ""}</p>
                 </div>
               </div>
 
 
               <div className="mb-4.5">
-                <label className="block text-sm font-medium dark-text dark:text-white">
-                  Description
-                </label>
-                <p className="text-sm dark:text-white">{formData.feature_one_desc || ""}</p>
+                <p className="text-sm dark:text-white cms-description">{formData.feature_one_desc || ""}</p>
               </div>
 
               <div className="mb-4.5 flex items-center space-x-4">
@@ -189,18 +180,12 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="mb-4.5">
-                  <label className="block text-sm font-medium dark-text dark:text-white">
-                    Title
-                  </label>
-                  <p className="text-sm dark:text-white">{formData.feature_two || ""}</p>
+                  <p className="text-sm dark:text-white cms-description">{formData.feature_two || ""}</p>
                 </div>
               </div>
 
               <div className="mb-4.5">
-                <label className="block text-sm font-medium dark-text dark:text-white">
-                  Description
-                </label>
-                <p className="text-sm dark:text-white">{formData.feature_two_desc || ""}</p>
+                <p className="text-sm dark:text-white cms-description">{formData.feature_two_desc || ""}</p>
               </div>
 
               <div className="mb-4.5 flex items-center space-x-4">
@@ -218,18 +203,12 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="mb-4.5">
-                  <label className="block text-sm font-medium dark-text dark:text-white">
-                    Title
-                  </label>
-                  <p className="text-sm dark:text-white">{formData.feature_three || ""}</p>
+                  <p className="text-sm dark:text-white cms-description">{formData.feature_three || ""}</p>
                 </div>
               </div>
 
               <div className="mb-4.5">
-                <label className="block text-sm font-medium dark-text dark:text-white">
-                  Description
-                </label>
-                <p className="text-sm dark:text-white">{formData.feature_three_desc || ""}</p>
+                <p className="text-sm dark:text-white cms-description">{formData.feature_three_desc || ""}</p>
               </div>
 
               <div className="mb-4.5 flex items-center space-x-4">
@@ -248,19 +227,13 @@ const Settings = () => {
                 </div>
 
                 <div className="mb-4.5">
-                  <label className="block text-sm font-medium dark-text dark:text-white">
-                    Title
-                  </label>
-                  <p className="text-sm dark:text-white">{formData.feature_four || ""}</p>
+                  <p className="text-sm dark:text-white cms-description">{formData.feature_four || ""}</p>
                 </div>
               </div>
 
 
               <div className="mb-4.5">
-                <label className="block text-sm font-medium dark-text dark:text-white">
-                  Description
-                </label>
-                <p className="text-sm dark:text-white">{formData.feature_four_desc || ""}</p>
+                <p className="text-sm dark:text-white cms-description">{formData.feature_four_desc || ""}</p>
               </div>
 
             </div>
@@ -278,7 +251,7 @@ const Settings = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium dark-text dark:text-white">
-                About Us Section
+                About Us
               </h3>
             </div>
             <div className="p-6.5">
@@ -298,19 +271,13 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="mb-4.5">
-                  <label className="block text-sm font-medium dark-text dark:text-white">
-                    Title
-                  </label>
-                  <p className="text-sm dark:text-white">{formData.sec_one_title || ""}</p>
+                  <p className="text-sm dark:text-white  cms-heading ">{formData.sec_one_title || ""}</p>
                 </div>
               </div>
 
               <div className="mb-4.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Description
-                </label>
                 <div
-                  className="text-sm dark:text-white"
+                  className="text-sm dark:text-white cms-description"
                   dangerouslySetInnerHTML={{ __html: formData.sec_one_desc || "N/A" }}
                 />
               </div>
@@ -323,8 +290,8 @@ const Settings = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
 
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium dark-text dark:text-white">
-                Our Story Section
+              <h3 className="font-medium dark-text dark:text-white  ">
+                Our Story
               </h3>
             </div>
             <div className="p-6.5">
@@ -344,19 +311,13 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="mb-4.5">
-                  <label className="block text-sm font-medium dark-text dark:text-white">
-                    Title
-                  </label>
-                  <p className="text-sm dark:text-white">{formData.sec_two_title || ""}</p>
+                  <p className="text-sm dark:text-white  cms-heading ">{formData.sec_two_title || ""}</p>
                 </div>
               </div>
 
               <div className="mb-4.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Description
-                </label>
                 <div
-                  className="text-sm dark:text-white"
+                  className="text-sm dark:text-white cms-description"
                   dangerouslySetInnerHTML={{ __html: formData.sec_two_desc || "N/A" }}
                 />
               </div>
@@ -367,14 +328,14 @@ const Settings = () => {
 
 
 
-          <div className="text-right">
+          {/* <div className="text-right">
             <button
               type="submit"
               className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
             >
               Submit
             </button>
-          </div>
+          </div> */}
 
         </div>
 

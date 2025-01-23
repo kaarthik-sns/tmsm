@@ -135,13 +135,13 @@ const menuGroups = [
         label: "CMS",
         route: "#",
         children: [
+          { label: "Home ", route: "/admin/cms/home/page/view" },
+          { label: "Slider", route: "/admin/cms/home/slider/list" },
+          { label: "About Us", route: "/admin/cms/about/view" },
+          { label: "Testimonials", route: "/admin/cms/home/testimonial/list" },
           { label: "Faq", route: "/admin/cms/faq/list" },
           { label: "Terms", route: "/admin/cms/terms_conditions/list" },
-          { label: "Home Page", route: "/admin/cms/home/page/view" },
-          { label: "Home Page Slider", route: "/admin/cms/home/slider/list" },
-          { label: "Testimonials", route: "/admin/cms/home/testimonial/list" },
           { label: "Review", route: "/admin/cms/home/review/list" },
-          { label: "About Us", route: "/admin/cms/about/view" },
         ],
       },
       {
