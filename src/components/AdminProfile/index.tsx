@@ -140,7 +140,7 @@ const AdminProfile = () => {
                   Profile Picture
                 </label>
                 <div className="flex items-center space-x-4">
-                  <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
+                  <div className="flex-shrink-0 w-24 h-24 rounded-full overflow-hidden bg-gray-200">
                     {preview && (
                       <Image
                         src={preview}
@@ -158,7 +158,7 @@ const AdminProfile = () => {
                     type="file"
                     accept="image/*"
                     onChange={handleFileChange}
-                    className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
+                    className="block flex-1 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
                   />
                 </div>
               </div>

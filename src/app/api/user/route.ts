@@ -156,7 +156,6 @@ export async function POST(request: NextRequest) {
             lastname,
             email,
             phonenumber,
-            password: hashedPassword,
             religion,
             caste,
             subcaste,
@@ -213,6 +212,9 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ message: 'User details have been successfully updated.' });
 
         } else {
+
+            newUserFields.password = hashedPassword;
+
             const newUser = await User.create(newUserFields);
 
             const verificationLink = `${process.env.BASE_URL}/verify-email?code=${newUser.email_code}`;

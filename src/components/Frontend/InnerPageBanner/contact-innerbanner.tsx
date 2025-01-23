@@ -7,13 +7,13 @@ const features = [
   
 ];
 
-const InnerBanner = () => {
+const ContactInnerBanner = () => {
   return (
     <>
     <section className="inner-page-top-banner">
     <div className="relative in-banner-bg">
         <Image
-                  src="/images/about/about-bg.webp" 
+                  src="/images/contact/contact-us.webp" 
                   alt="Happy Couple"
                   layout="fill"
                 />
@@ -21,9 +21,7 @@ const InnerBanner = () => {
     
         <div className="inner-banner-info">        
                 <div className="top-title">
-          <h2>About Us</h2>       
-        
-      
+          <h2>Contact Us</h2>  
       </div>
     </div>
     </section>
@@ -31,4 +29,4 @@ const InnerBanner = () => {
   );
 };
 
-export default InnerBanner;
+export default ContactInnerBanner;

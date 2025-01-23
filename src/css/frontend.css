@@ -511,7 +511,7 @@ input:-internal-autofill-selected {
 .about-con-desc h3 {
     color: #D13333;
     font-family: "Playfair Display";
-    font-size: 35px;
+    font-size: 50px;
     font-weight: 700;
     line-height: normal;
     margin: 0 0 24px;
@@ -538,7 +538,7 @@ input:-internal-autofill-selected {
 .story-right-desc h3 {
     color: #D13333;
     font-family: "Playfair Display";
-    font-size: 35px;
+    font-size: 50px;
     font-weight: 700;
     line-height: normal;
     margin: 0 0 24px;
@@ -571,7 +571,7 @@ input:-internal-autofill-selected {
 .we-offer-title h3 {
     color: #333;
     font-family: "Playfair Display";
-    font-size: 35px;
+    font-size: 50px;
     font-weight: 700;
     line-height: normal;
     margin: 0 0 30px;
@@ -609,7 +609,7 @@ input:-internal-autofill-selected {
 .offer-list-itmes h4 {
     color: #FFF;
     font-family: "Playfair Display";
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
     line-height: normal;
     margin: 0 0 15px;
@@ -660,6 +660,190 @@ input:-internal-autofill-selected {
     fill: #FFD16C;
 }
 
+/**contact page**/
+.contact-info-con {
+    margin: 0;
+    padding: 80px 0;
+    width: 100%;
+    background-color: #fff;
+    position: relative;
+}
+
+.con-top-title {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.con-top-title h3 {
+    color: #D13333;
+    font-family: "Playfair Display";
+    font-size: 50px;
+    font-weight: 700;
+    line-height: normal;
+    margin: 0 0 30px;
+}
+
+.con-message {
+    display: block;
+    position: relative;
+}
+
+.con-message h4 {
+    color: #323232;
+    font-family: 'Noto Sans';
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 30px;
+    margin: 0 0 16px;
+}
+
+.con-message p {
+    color: rgba(0, 0, 0, 0.50);
+    text-align: justify;
+    font-family: 'Noto Sans';
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 30px;
+    margin: 0 0 16px;
+}
+
+.con-data-forms form .row {
+    margin: 0 -15px;
+}
+
+.con-list-info {
+    padding: 0 15px;
+    margin: 0 0 20px;
+}
+
+.con-list-info input[type="text"] {
+    border-bottom: 1px solid rgba(33, 28, 28, 0.70);
+    padding: 18px 10px;
+}
+
+.con-list-info input[type="email"] {
+    border-bottom: 1px solid rgba(33, 28, 28, 0.70);
+    padding: 18px 10px;
+}
+
+.con-list-info textarea {
+    border-bottom: 1px solid rgba(33, 28, 28, 0.70);
+    padding: 18px 10px;
+}
+
+.cta-submit {
+    border-radius: 50px;
+    background: #FFD16C;
+    color: #323232;
+    text-align: center;
+    font-family: 'Noto Sans';
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 30px;
+    margin: 40px 0px 0;
+    padding: 13px 54px;
+    border: 0;
+    float: right
+}
+
+.right-contact-info {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    position: relative;
+}
+
+.con-form-line-info {
+    position: relative;
+}
+
+.con-form-line-info::after {
+    content: " ";
+    position: absolute;
+    background: rgba(0, 0, 0, 0.30);
+    width: 1px;
+    height: 100%;
+    top: 0;
+    right: 0px;
+}
+
+.con-list-of-data {
+    display: block;
+    position: relative;
+    margin: 0 0 30px;
+}
+
+.con-list-of-data h4 {
+    color: #323232;
+    font-family: 'Noto Sans';
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 30px;
+    margin: 0 0 16px;
+}
+
+.con-list-of-data p {
+    color: rgba(0, 0, 0, 0.50);
+    font-family: 'Noto Sans';
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 30px;
+    margin: 0 0 16px;
+}
+
+.call-info {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.call-info .icon-info {
+    margin-right: 10px;
+}
+
+.call-info img {
+    max-width: 100%;
+    position: relative;
+    width: 32px;
+}
+
+.social-media-info {
+    display: block;
+    margin: 25px 0 0;
+    padding: 0;
+}
+
+.social-media-info li {
+    list-style-type: none;
+    margin: 0 20px 0 0;
+    padding: 0;
+    display: inline-block;
+}
+
+.social-media-info li a {
+    cursor: pointer;
+}
+
+.social-media-info li a img {
+    max-width: 100%;
+    width: 40px;
+}
+
+.info-link-data {
+    border-radius: 50px;
+    background: #FFF2D7;
+    color: #D13333;
+    text-align: justify;
+    font-family: 'Noto Sans';
+    font-size: 16px;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0;
+    padding: 10px 35px;
+    text-decoration: none;
+}
+
 @media only screen and (min-width: 768px) {
     .inner-page-top-banner {
         height: 34.72vw;
@@ -679,7 +863,7 @@ input:-internal-autofill-selected {
     }
 
     .about-con-desc h3 {
-        font-size: 2.43vw;
+        font-size: 3.47vw;
         margin: 0 0 1.67vw;
     }
 
@@ -694,7 +878,7 @@ input:-internal-autofill-selected {
     }
 
     .story-right-desc h3 {
-        font-size: 2.43vw;
+        font-size: 3.47vw;
         margin: 0 0 1.67vw;
     }
 
@@ -709,7 +893,7 @@ input:-internal-autofill-selected {
     }
 
     .we-offer-title h3 {
-        font-size: 2.43vw;
+        font-size: 3.47vw;
         margin: 0 0 2.08vw;
     }
 
@@ -724,7 +908,7 @@ input:-internal-autofill-selected {
     }
 
     .offer-list-itmes h4 {
-        font-size: 1.53vw;
+        font-size: 1.39vw;
         margin: 0 0 1.04vw;
     }
 
@@ -733,6 +917,96 @@ input:-internal-autofill-selected {
         line-height: 1.67vw;
     }
 
+    /**/
+    .contact-info-con {
+        padding: 5.56vw 0;
+    }
+
+    .con-top-title h3 {
+        font-size: 3.47vw;
+        margin: 0 0 2.08vw;
+    }
+
+    .con-message h4 {
+        font-size: 1.67vw;
+        line-height: 2.08vw;
+        margin: 0 0 1.11vw;
+    }
+
+    .con-message p {
+        font-size: 1.25vw;
+        line-height: 2.08vw;
+        margin: 0 0 1.11vw;
+    }
+
+    .con-data-forms form .row {
+        margin: 0 -1.04vw;
+    }
+
+    .con-list-info {
+        padding: 0 1.04vw;
+        margin: 0 0 1.39vw;
+    }
+
+    .con-list-info input[type="text"] {
+        padding: 1.25vw 0.69vw;
+    }
+
+    .con-list-info input[type="email"] {
+        padding: 1.25vw 0.69vw;
+    }
+
+    .con-list-info textarea {
+        padding: 1.25vw 0.69vw;
+    }
+
+    .cta-submit {
+        font-size: 1.25vw;
+        line-height: 2.08vw;
+        margin: 2.78vw 0 0;
+        padding: 0.9vw 3.75vw;
+    }
+
+    .con-list-of-data {
+        margin: 0 0 2.08vw;
+    }
+
+    .con-list-of-data h4 {
+        font-size: 1.67vw;
+        line-height: 2.08vw;
+        margin: 0 0 1.11vw;
+    }
+
+    .con-list-of-data p {
+        font-size: 1.25vw;
+        line-height: 2.08vw;
+        margin: 0 0 1.11vw;
+    }
+
+    .call-info .icon-info {
+        margin-right: 0.69vw;
+    }
+
+    .call-info img {
+        width: 2.22vw;
+    }
+
+    .social-media-info {
+        margin: 1.74vw 0 0;
+    }
+
+    .social-media-info li {
+        margin: 0 1.39vw 0 0;
+    }
+
+    .info-link-data {
+        font-size: 1.11vw;
+        padding: 0.69vw 2.43vw;
+    }
+
+    .social-media-info li a img {
+        width: 2.78vw;
+    }
 
 }
 
@@ -755,7 +1029,7 @@ input:-internal-autofill-selected {
     }
 
     .about-con-desc h3 {
-        font-size: 35px;
+        font-size: 50px;
         margin: 0 0 24px;
     }
 
@@ -770,7 +1044,7 @@ input:-internal-autofill-selected {
     }
 
     .story-right-desc h3 {
-        font-size: 35px;
+        font-size: 50px;
         margin: 0 0 24px;
     }
 
@@ -785,7 +1059,7 @@ input:-internal-autofill-selected {
     }
 
     .we-offer-title h3 {
-        font-size: 35px;
+        font-size: 50px;
         margin: 0 0 30px;
     }
 
@@ -800,13 +1074,104 @@ input:-internal-autofill-selected {
     }
 
     .offer-list-itmes h4 {
-        font-size: 22px;
+        font-size: 20px;
         margin: 0 0 15px;
     }
 
     .offer-list-itmes p {
         font-size: 18px;
         line-height: 24px;
+    }
+
+    /**/
+    .contact-info-con {
+        padding: 80px 0;
+    }
+
+    .con-top-title h3 {
+        font-size: 50px;
+        margin: 0 0 30px;
+    }
+
+    .con-message h4 {
+        font-size: 24px;
+        line-height: 30px;
+        margin: 0 0 16px;
+    }
+
+    .con-message p {
+        font-size: 18px;
+        line-height: 30px;
+        margin: 0 0 16px;
+    }
+
+    .con-data-forms form .row {
+        margin: 0 -15px;
+    }
+
+    .con-list-info {
+        padding: 0 15px;
+        margin: 0 0 20px;
+    }
+
+    .call-info img {
+        width: 32px;
+    }
+
+    .con-list-info input[type="text"] {
+        padding: 18px 10px;
+    }
+
+    .con-list-info input[type="email"] {
+        padding: 18px 10px;
+    }
+
+    .con-list-info textarea {
+        padding: 18px 10px;
+    }
+
+    .cta-submit {
+        font-size: 18px;
+        line-height: 30px;
+        margin: 40px 0px 0;
+        padding: 13px 54px;
+    }
+
+    .con-list-of-data {
+        margin: 0 0 30px;
+    }
+
+    .con-list-of-data h4 {
+        font-size: 24px;
+        line-height: 30px;
+        margin: 0 0 16px;
+    }
+
+    .con-list-of-data p {
+        font-size: 18px;
+        line-height: 30px;
+        margin: 0 0 16px;
+    }
+
+    .call-info .icon-info {
+        margin-right: 10px;
+    }
+
+    .social-media-info {
+        margin: 25px 0 0;
+    }
+
+    .social-media-info li {
+        margin: 0 20px 0 0;
+    }
+
+    .info-link-data {
+        font-size: 16px;
+        padding: 10px 35px;
+    }
+
+    .social-media-info li a img {
+        width: 40px;
     }
 
 
@@ -849,13 +1214,56 @@ input:-internal-autofill-selected {
     .list-offer-info:last-child {
         margin-bottom: 0;
     }
-    .heading {
+
+    .contact-info-con {
+        padding: 50px 0;
+    }
+
+    .con-top-title h3 {
         font-size: 30px;
+        margin-bottom: 20px;
     }
-    .join-heading {
-        font-size: 25px;
+
+    .con-message h4 {
+        font-size: 20px;
     }
-    .slider-padding {
-        padding: 1rem;
+
+    .con-form-line-info {
+        margin-bottom: 30px;
+    }
+
+    .con-form-line-info::after {
+        width: 100%;
+        height: 1px;
+        right: 0;
+        top: auto;
+        bottom: 0;
+        left: 0;
+    }
+
+    .cta-submit {
+        margin: 30px 0;
+    }
+
+    .con-list-of-data h4 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .con-list-of-data p {
+        font-size: 18px;
+
+        .heading {
+            font-size: 30px;
+        }
+
+        .join-heading {
+            font-size: 25px;
+        }
+
+        .slider-padding {
+            padding: 1rem;
+
+        }
     }
 }

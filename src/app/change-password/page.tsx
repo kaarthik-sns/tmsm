@@ -80,7 +80,7 @@ const ChangePassword: React.FC = () => {
                 },
             });
 
-            (data.is_admin == 'true') ? router.push("/admin/auth/signin") : router.push("/auth/signin");
+            (data.is_admin == 'true') ? router.push("/admin/auth/signin") : router.push("/frontend/login");
 
         } else {
             setError(data.message);
