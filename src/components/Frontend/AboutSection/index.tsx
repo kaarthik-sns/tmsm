@@ -1,88 +1,37 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from 'react';
 import Loader from "@/components/common/Loader";
-// import ClipLoader from "react-spinners/ClipLoader";
 
-const AboutUs = () => {
+const AboutUs = (data) => {
 
-  const [features, setFeatures] = useState([]);
-  const [sec_one_title, setSeconetitle] = useState('');
-  const [sec_one_desc, setSecOneDesc] = useState('');
-  const [sec_one_img, setSecOneImg] = useState('');
+  const homeData = data.data;
 
-  const [sec_two_title, setSecTwoTitle] = useState('');
-  const [sec_two_desc, setSecTwoDesc] = useState('');
-  const [sec_two_img, setSecTwoImg] = useState('');
-
-  const [banner_title, setBannerTitle] = useState('');
-  const [banner_btn_text, setBannerBtnText] = useState('');
-  const [banner_btn_link, setBannerBtnLink] = useState('');
-
-
-  const fetchTableItems = async () => {
-    try {
-      const response = await fetch('/api/cms/home/page', {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      const data_array = data.data;
-
-      setSeconetitle(data_array.sec_one_title);
-      setSecOneDesc(data_array.sec_one_desc);
-      setSecOneImg(data_array.sec_one_img);
-
-      setSecTwoTitle(data_array.sec_two_title);
-      setSecTwoDesc(data_array.sec_two_desc);
-      setSecTwoImg(data_array.sec_two_img);
-
-      setBannerTitle(data_array.banner_title);
-      setBannerBtnText(data_array.banner_btn_text);
-      setBannerBtnLink(data_array.banner_btn_link);
-
-      const features_data = [
-        {
-          icon: data_array.feature_one_img,
-          title: data_array.feature_one,
-        },
-        {
-          icon: data_array.feature_two_img,
-          title: data_array.feature_two,
-        },
-        {
-          icon: data_array.feature_three_img,
-          title: data_array.feature_three,
-        },
-        {
-          icon: data_array.feature_four_img,
-          title: data_array.feature_four,
-        }
-      ];
-
-      setFeatures(features_data);
-
-    } catch (error) {
-      console.error("Error fetching table items:", error);
+  const features = [
+    {
+      icon: homeData.feature_one_img,
+      title: homeData.feature_one,
+    },
+    {
+      icon: homeData.feature_two_img,
+      title: homeData.feature_two,
+    },
+    {
+      icon: homeData.feature_three_img,
+      title: homeData.feature_three,
+    },
+    {
+      icon: homeData.feature_four_img,
+      title: homeData.feature_four,
     }
-  };
-
-
-  useEffect(() => {
-    fetchTableItems();
-  }, []);
+  ];
 
   if (features.length === 0) {
     return <Loader />
-    // return <ClipLoader color="#3498db" loading={true} size={40} />;
+  }
+
+  if (features.length === 0) {
+    return <Loader />
   }
 
   return (
@@ -97,7 +46,7 @@ const AboutUs = () => {
             <div className="w-full md:w-1/2 py-6 md:py-12">
               <div className="relative w-full rounded-full h-[300px] md:h-[500px] overflow-hidden border-0">
                 <Image
-                  src={sec_one_img}
+                  src={homeData.sec_one_img}
                   alt="Happy Couple"
                   layout="fill"
                   objectFit="contain"
@@ -107,8 +56,8 @@ const AboutUs = () => {
 
             {/* Text Section */}
             <div className="w-full md:w-1/2 md:text-left py-6 md:py-12 description">
-              <h2 className="heading mb-4 md:mb-6">{sec_one_title}</h2>
-              <div dangerouslySetInnerHTML={{ __html: sec_one_desc }} />
+              <h2 className="heading mb-4 md:mb-6">{homeData.sec_one_title}</h2>
+              <div dangerouslySetInnerHTML={{ __html: homeData.sec_one_desc }} />
             </div>
           </div>
         </div>
@@ -122,14 +71,14 @@ const AboutUs = () => {
           <div className="flex flex-col-reverse md:flex-row items-center gap-4 md:gap-8">
             {/* Text Section */}
             <div className="w-full md:w-1/2 md:text-left py-6 md:py-12 description">
-              <h2 className="heading mb-4 md:mb-6">{sec_two_title}</h2>
-              <div dangerouslySetInnerHTML={{ __html: sec_two_desc }} />
+              <h2 className="heading mb-4 md:mb-6">{homeData.sec_two_title}</h2>
+              <div dangerouslySetInnerHTML={{ __html: homeData.sec_two_desc }} />
             </div>
             {/* Image Section */}
             <div className="w-full md:w-1/2 py-6 md:py-12">
               <div className="relative w-full h-[300px] md:h-[600px] overflow-hidden border-0">
                 <Image
-                  src="/images/about/couple.svg"
+                  src={homeData.sec_two_img}
                   alt="Happy Couple"
                   layout="fill"
                   objectFit="contain"
@@ -164,14 +113,14 @@ const AboutUs = () => {
             {/* Text Section */}
             <div className="w-full sm:w-3/4 text-center sm:text-left mb-4 sm:mb-0">
               <h2 className="join-heading">
-                {banner_title}
+                {homeData.banner_title}
               </h2>
             </div>
 
             {/* Button Section */}
             <div className="w-full sm:w-1/2 text-center sm:text-right">
               <button className="px-6 py-3 rounded-full bg-color">
-                {banner_btn_text}
+                {homeData.banner_btn_text}
               </button>
             </div>
           </div>
