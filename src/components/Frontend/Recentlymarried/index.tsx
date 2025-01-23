@@ -5,46 +5,17 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
-import { useEffect, useState } from 'react';
 import Loader from "@/components/common/Loader";
 
-const TwoRowTwoColumnSlider = () => {
+const TwoRowTwoColumnSlider = (data) => {
 
-  const [couples, setCouples] = useState([]);
+  const data_array = data.data;
 
-  const fetchTableItems = async () => {
-    try {
-      const response = await fetch('/api/cms/home/testimonial/list?page=1', {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      const data_array = data.data;
-
-      const fetchedSlides = data_array.map((item, idx) => ({
-        image: item.image,
-        name: item.name, // Assuming item.title contains the text
-        description: item.description, // Assuming item.content contains the text
-      }));
-
-      setCouples(fetchedSlides);
-
-    } catch (error) {
-      console.error("Error fetching table items:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchTableItems();
-  }, []);
-
+  const couples = data_array.map((item, idx) => ({
+    image: item.image,
+    name: item.name, // Assuming item.title contains the text
+    description: item.description, // Assuming item.content contains the text
+  }));
 
   if (couples.length === 0) {
     return <Loader />
