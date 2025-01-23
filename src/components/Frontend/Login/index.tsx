@@ -11,20 +11,12 @@ import { TriangleAlert } from "lucide-react";
 
 const SignIn: React.FC = () => {
 
-  const { data: session } = useSession();  // Get session data
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [pending, setPending] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");  // Added success message state
   const router = useRouter();
   const [error, setError] = useState("");
-
-  // Redirect if already logged in
-  useEffect(() => {
-    if (session) {
-      router.replace("/frontend");
-    }
-  }, [session, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

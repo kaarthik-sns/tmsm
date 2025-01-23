@@ -9,37 +9,44 @@ export async function middleware(req) {
 
     // Rewrite `/` to serve content from `/frontend` but keep `/` in the browser's address bar
     if (pathname === '/') {
+        console.log('in-1')
         return NextResponse.rewrite(new URL('/frontend', req.url));
     }
 
     // Allow access to forgot-password page
     if (pathname === '/admin/forgot-password') {
+        console.log('in-2')
         return NextResponse.next();
     }
 
     // Redirect unauthenticated admin users to signin page
     if (pathname.startsWith('/admin') && pathname !== '/admin/auth/signin' && !token) {
+        console.log('in-3')
         url.pathname = '/admin/auth/signin';
         return NextResponse.redirect(url);
     }
 
     // Redirect authenticated admin users from signin to dashboard
     if (pathname === '/admin/auth/signin' && token && token.is_admin) {
+        console.log('in-4')
         url.pathname = '/admin/dashboard';
         return NextResponse.redirect(url);
     }
 
     // Restrict non-admin users from accessing admin routes
     if (pathname.startsWith('/admin') && pathname !== '/admin/auth/signin' && token && !token.is_admin) {
+        console.log('in-5')
         url.pathname = '/admin/auth/signin';
         return NextResponse.redirect(url);
     }
 
     // Redirect authenticated users from signin to homepage
-    if (pathname === '/auth/signin' && token) {
-        url.pathname = '/';
+    if (pathname === '/frontend/login' && token && !token.is_admin) {
+        console.log('in-6')
+        url.pathname = '/frontend';
         return NextResponse.redirect(url);
     }
+
 
     // Create a NextResponse instance to modify headers
     const res = NextResponse.next();
@@ -53,10 +60,10 @@ export async function middleware(req) {
         'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
     );
 
-    return res;
+    // return res;
 }
 
 // Apply middleware to relevant paths
 export const config = {
-    matcher: ['/', '/api/:path*', '/admin/:path*'], // Apply to root, API routes, and admin routes
+    matcher: ['/', '/api/:path*', '/admin/:path*','/frontend/:path*'], // Apply to root, API routes, and admin routes
 };
