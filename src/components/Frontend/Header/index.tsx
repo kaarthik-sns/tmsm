@@ -114,10 +114,8 @@ export function NavbarWithSimpleLinks() {
 
       <div className="container mx-auto flex items-center justify-between mt-6">
         <Link className="hidden flex-shrink-0 lg:block" href="/frontend/">
-          <Image
+          <img
             className="xl:w-[700px] lg:w-[400px] sm:w-[300px]"
-            width={700}
-            height={400}
             src={"/images/logo/Flogo.svg"}
             alt="Logo"
           />

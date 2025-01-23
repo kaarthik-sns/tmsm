@@ -8,18 +8,19 @@ export function FooterWithCustomDesign() {
   return (
     <footer className="dark-bg text-white py-8">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-[50%_30%_20%] gap-y-8 md:gap-x-8 md:text-left pl-2 pr-2 footer-text">
+        
         {/* Left Column - Logo and Description */}
-        <div className="">
-        <Link className="flex-shrink-0 lg:block" href="/frontend/">
-          <Image
-            src="/images/logo/Footer-logo.svg" // Replace with your logo path
-            width={400}
-            height={50}
-            alt="TMSM Logo"
-            className="mx-auto md:mx-0"
-          />
+        <div className="flex flex-col items-center md:items-start">
+          <Link className="flex-shrink-0 lg:block" href="/frontend/">
+            <Image
+              src="/images/logo/Footer-logo.svg" // Replace with your logo path
+              width={400}
+              height={50}
+              alt="TMSM Logo"
+              className="mx-auto md:mx-0"
+            />
           </Link>
-          <div className="flex justify-center md:justify-start space-x-4 mt-4 items-center">
+          <div className="flex justify-center md:justify-start space-x-4 mt-4 items-center  md:block  hidden">
             <div className="flex justify-center md:justify-start space-x-4">
               <Link href="#">
                 <Image
@@ -46,19 +47,18 @@ export function FooterWithCustomDesign() {
                 />
               </Link>
             </div>
-            <div className="">
-              <p className="footer-p">
-                &copy; {new Date().getFullYear()} TMSMMatrimony.com. All rights reserved.
-              </p>
-            </div>
           </div>
-
+          <div className="mt-4 text-center md:text-left md:block  hidden">
+            <p className="footer-p">
+              &copy; {new Date().getFullYear()} TMSMMatrimony.com. All rights reserved.
+            </p>
+          </div>
         </div>
 
         {/* Middle Column - Links */}
-        <div>
+        <div className="text-center md:text-left">
           <ul className="space-y-4">
-            <li >
+            <li>
               <Link href="/frontend" className="hover:text-white">
                 Home
               </Link>
@@ -82,7 +82,7 @@ export function FooterWithCustomDesign() {
         </div>
 
         {/* Right Column - Links */}
-        <div>
+        <div className="text-center md:text-left">
           <ul className="space-y-4">
             <li>
               <Link href="/frontend/faq" className="text-gray-400 hover:text-white">
@@ -105,6 +105,41 @@ export function FooterWithCustomDesign() {
               </Link>
             </li>
           </ul>
+        </div>
+      </div>
+
+      {/* Footer Bottom - Social Icons and Copyright */}
+      <div className="flex flex-col items-center md:items-start justify-center mt-8 md:mt-0 md:hidden block">
+        <div className="flex space-x-4 mb-4">
+          <Link href="#">
+            <Image
+              src="/images/icon/twitter.svg"
+              width={18}
+              height={15}
+              alt="Twitter"
+            />
+          </Link>
+          <Link href="#">
+            <Image
+              src="/images/icon/facebook.svg"
+              width={18}
+              height={15}
+              alt="Facebook"
+            />
+          </Link>
+          <Link href="#">
+            <Image
+              src="/images/icon/insta.svg"
+              width={18}
+              height={15}
+              alt="Instagram"
+            />
+          </Link>
+        </div>
+        <div className="text-center">
+          <p className="footer-p">
+            &copy; {new Date().getFullYear()} TMSMMatrimony.com. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

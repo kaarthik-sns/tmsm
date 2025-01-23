@@ -45,13 +45,13 @@ const RequestStatus = () => {
 
           {/* Search Filter with Alignment */}
           <div className="flex items-center space-x-2">
-            {/* <span className="textdark">Search Profile</span> */}
+            {/* Search Input (below buttons on mobile) */}
             <input
               type="text"
               placeholder="Search by name..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="border px-4 py-2 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-brown"
+              className="border px-4 py-2 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-brown w-full sm:w-auto"
             />
           </div>
         </div>

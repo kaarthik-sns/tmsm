@@ -58,16 +58,16 @@ const FilterForm = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+
     const queryParams = new URLSearchParams();
-  
+
     // Only add non-empty values to the query
     Object.entries(formData).forEach(([key, value]) => {
       if (value.trim()) {
         queryParams.append(key, value);
       }
     });
-  
+
     // Redirect only if there are valid query parameters
     if (queryParams.toString()) {
       router.push(`/frontend/member?${queryParams.toString()}`);
@@ -75,13 +75,13 @@ const FilterForm = () => {
       router.push(`/frontend/member`); // Fallback if no parameters exist
     }
   };
-  
+
 
   return (
     <div className="dark-bg">
-      <div className="container mx-auto flex items-center fillter-text justify-center p-10">
+      <div className="container mx-auto flex items-center fillter-text justify-center px-4 py-6 md:p-10">
         <form onSubmit={handleSubmit}>
-          <div className="flex flex-wrap items-center gap-9 p-6.5 member-search-form">
+          <div className="flex flex-wrap items-center gap-4 md:gap-9 p-4 md:p-6.5 member-search-form">
             <div className="w-full md:w-auto">
               <label className="mb-3 block text-sm font-medium text-white">
                 Looking For
