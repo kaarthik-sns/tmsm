@@ -120,6 +120,11 @@ const AboutUs = () => {
       <section className="relative bg-[#F8F8F8] py-6 md:py-12">
         <div className="container mx-auto px-6">
           <div className="flex flex-col-reverse md:flex-row items-center gap-4 md:gap-8">
+            {/* Text Section */}
+            <div className="w-full md:w-1/2 md:text-left py-6 md:py-12 description">
+              <h2 className="heading mb-4 md:mb-6">{sec_two_title}</h2>
+              <div dangerouslySetInnerHTML={{ __html: sec_two_desc }} />
+            </div>
             {/* Image Section */}
             <div className="w-full md:w-1/2 py-6 md:py-12">
               <div className="relative w-full h-[300px] md:h-[600px] overflow-hidden border-0">
@@ -132,15 +137,11 @@ const AboutUs = () => {
               </div>
             </div>
 
-            {/* Text Section */}
-            <div className="w-full md:w-1/2 md:text-left py-6 md:py-12 description">
-              <h2 className="heading mb-4 md:mb-6">{sec_two_title}</h2>
-              <div dangerouslySetInnerHTML={{ __html: sec_two_desc }} />
-            </div>
+
           </div>
         </div>
-                {/* icon Layout */}
-                <div className="container mx-auto">
+        {/* icon Layout */}
+        <div className="container mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center sm:text-left">
             {features.map((feature, index) => (
               <div key={index} className="flex flex-col items-center sm:flex-row gap-4">
@@ -158,14 +159,17 @@ const AboutUs = () => {
 
 
       <section className="join-us py-8">
-        <div className="container mx-auto ">
-          <div className="flex justify-between items-center">
-            <div className="w-3/4">
+        <div className="container mx-auto">
+          <div className="flex flex-col sm:flex-row justify-between items-center">
+            {/* Text Section */}
+            <div className="w-full sm:w-3/4 text-center sm:text-left mb-4 sm:mb-0">
               <h2 className="join-heading">
                 {banner_title}
               </h2>
             </div>
-            <div className="w-1/2 text-right">
+
+            {/* Button Section */}
+            <div className="w-full sm:w-1/2 text-center sm:text-right">
               <button className="px-6 py-3 rounded-full bg-color">
                 {banner_btn_text}
               </button>
@@ -173,6 +177,7 @@ const AboutUs = () => {
           </div>
         </div>
       </section>
+
     </>
   );
 };

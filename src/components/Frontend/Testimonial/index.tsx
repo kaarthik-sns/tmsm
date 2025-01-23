@@ -64,7 +64,9 @@ const TestimonialsSlider = () => {
   return (
     <section className="relative bg-[#F2F2F2] py-12">
       <div className="container mx-auto py-8">
-        <h2 className="text-left mb-4 heading">Our Clients Say!</h2>
+        <h2 className="text-center sm:text-left mb-4 heading">
+          Our Clients Say!
+        </h2>
         <Swiper
           className="slider-paddings"
           modules={[Navigation]}

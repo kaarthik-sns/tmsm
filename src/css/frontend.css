@@ -849,5 +849,13 @@ input:-internal-autofill-selected {
     .list-offer-info:last-child {
         margin-bottom: 0;
     }
-
+    .heading {
+        font-size: 30px;
+    }
+    .join-heading {
+        font-size: 25px;
+    }
+    .slider-padding {
+        padding: 1rem;
+    }
 }
