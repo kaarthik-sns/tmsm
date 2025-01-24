@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 const RequestStatus = () => {
-  const [activeTab, setActiveTab] = useState("received");
+  const [activeTab, setActiveTab] = useState("profile");
   const myId = 2;
   const [selectedProfile, setSelectedProfile] = useState(null); // State for selected profile
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
@@ -34,17 +34,18 @@ const RequestStatus = () => {
     <div className="bg-light min-h-screen flex justify-center py-10 px-4">
       <div className="container max-w-4xl p-6">
         {/* Header Section */}
-        <h1 className="text-lg sm:text-xl font-semibold mb-4 text-gray-700">Request Status</h1>
+        <h1 className="text-lg sm:text-xl font-semibold mb-4 text-gray-700">My Account</h1>
 
         {/* Tabs Section */}
         <div className="flex justify-between items-center mb-4">
           <div className="flex space-x-2 sm:space-x-4">
-            <button className={`px-4 py-2 rounded-full ${activeTab === "received" ? "bg-dash-button-active" : "bg-dash-button"}`} onClick={() => setActiveTab("received")}>Received</button>
-            <button className={`px-4 py-2 rounded-full ${activeTab === "sent" ? "bg-dash-button-active" : "bg-dash-button"}`} onClick={() => setActiveTab("sent")}>Sent</button>
+            <button className={`px-4 py-2 rounded-full ${activeTab === "profile" ? "bg-dash-button-active" : "bg-dash-button"}`} onClick={() => setActiveTab("profile")}>My Profile</button>
+            <button className={`px-4 py-2 rounded-full ${activeTab === "received" ? "bg-dash-button-active" : "bg-dash-button"}`} onClick={() => setActiveTab("received")}>Received Request</button>
+            <button className={`px-4 py-2 rounded-full ${activeTab === "sent" ? "bg-dash-button-active" : "bg-dash-button"}`} onClick={() => setActiveTab("sent")}>Sent Request</button>
           </div>
 
           {/* Search Filter with Alignment */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2"> 
             {/* Search Input (below buttons on mobile) */}
             <input
               type="text"

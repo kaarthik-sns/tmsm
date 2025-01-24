@@ -233,7 +233,7 @@ const UserTable = () => {
                                 {/* Previous Button */}
                                 <li>
                                     <a
-                                        className={`flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white prev-btn ${currentPage === 1 ? 'pointer-events-none opacity-50' : ''
+                                        className={`flex h-8 w-8 items-center justify-center rounded-full bg-arrow text-white prev-btn ${currentPage === 1 ? 'pointer-events-none opacity-50' : ''
                                             }`}
                                         href="#"
                                         onClick={(e) => {
@@ -243,7 +243,7 @@ const UserTable = () => {
                                         aria-label="Previous Page"
                                     >
                                         <svg
-                                            className="fill-white"
+                                            className="fill-black"
                                             width="8"
                                             height="16"
                                             viewBox="0 0 8 16"
@@ -277,7 +277,7 @@ const UserTable = () => {
                                 {/* Next Button */}
                                 <li>
                                     <a
-                                        className={`flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white next-btn ${currentPage === totalPages ? 'pointer-events-none opacity-50' : ''
+                                        className={`flex h-8 w-8 items-center justify-center rounded-full bg-arrow text-white next-btn ${currentPage === totalPages ? 'pointer-events-none opacity-50' : ''
                                             }`}
                                         href="#"
                                         onClick={(e) => {
@@ -287,7 +287,7 @@ const UserTable = () => {
                                         aria-label="Next Page"
                                     >
                                         <svg
-                                            className="fill-white"
+                                            className="fill-black"
                                             width="8"
                                             height="16"
                                             viewBox="0 0 8 16"

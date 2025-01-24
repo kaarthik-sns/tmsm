@@ -6,6 +6,8 @@ import Breadcrumb from "@/components/Breadcrumbs/BreadcrumbCustom";
 import Image from "next/image";
 import Swal from 'sweetalert2';
 import { toast } from "sonner";
+import { renderStars } from "../star/review";
+
 
 const Table = () => {
 
@@ -175,7 +177,7 @@ const Table = () => {
 
                                         <td className="px-6 py-4 whitespace-nowrap">{idx + 1}</td>
                                         <td className="px-6 py-4 whitespace-nowrap">{item.name}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap">{item.rating}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap"> {renderStars(item.rating)}</td>
                                         <td className="text-right px-6 whitespace-nowrap">
                                             <div className="flex items-center space-x-3.5">
                                                 <button
@@ -277,7 +279,7 @@ const Table = () => {
                 {/* Modal */}
                 {isModalOpen && modalData && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
+                        <div className="bg-white p-8 rounded-lg shadow-lg max-w-3xl w-full relative">
                             {/* Close Button */}
                             <button
                                 onClick={closeModal}
@@ -299,9 +301,14 @@ const Table = () => {
                                 </svg>
                             </button>
 
-                            <p className="mb-4">{modalData.name}</p>
-                            <p className="mb-4">{modalData.rating}</p>
-                            <p className="mb-4">{modalData.description}</p>
+                            <p className="mb-4 cms-heading text-xl font-semibold">{modalData.name}</p>
+                            <p className="mb-4 cms-description text-sm text-gray-600">{modalData.description}</p>
+                            <p className="mb-4">
+                                <span className="inline-flex">
+                                    {renderStars(modalData.rating)}
+                                </span>
+                            </p>
+
                         </div>
                     </div>
                 )}

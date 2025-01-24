@@ -275,11 +275,11 @@ const Table = () => {
                 {/* Modal */}
                 {isModalOpen && modalData && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
+                        <div className="bg-white p-8 rounded-lg shadow-lg max-w-3xl w-full relative">
                             {/* Close Button */}
                             <button
                                 onClick={closeModal}
-                                className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 red-color "
+                                className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 red-color"
                                 aria-label="Close"
                             >
                                 <svg
@@ -296,22 +296,25 @@ const Table = () => {
                                     <line x1="6" y1="6" x2="18" y2="18" />
                                 </svg>
                             </button>
-                            <p className="mb-4">{modalData.name}</p>
-                            <p className="mb-4" >{modalData.description}</p>
-                            <div className="w-20 h-20 overflow-hidden bg-gray-200">
-                                <Image
-                                    src={modalData.image}
-                                    alt="Profile Preview"
-                                    width={64}
-                                    height={64}
-                                    quality={100}
-                                    unoptimized={true}
-                                    className="w-full h-full object-cover"
-                                />
+                            <div className="text-center">
+                                <p className="mb-4 cms-heading text-xl font-semibold">{modalData.name}</p>
+                                <p className="mb-4 cms-description text-sm text-gray-600">{modalData.description}</p>
+                                <div className="w-40 h-40 overflow-hidden flex items-center justify-center mx-auto mb-4">
+                                    <Image
+                                        src={modalData.image}
+                                        alt="Profile Preview"
+                                        width={120}
+                                        height={120}
+                                        quality={100}
+                                        unoptimized={true}
+                                        className="object-cover"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
                 )}
+
 
             </div >
         </>

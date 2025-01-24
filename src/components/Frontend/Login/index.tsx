@@ -1,40 +1,84 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
 import { TriangleAlert } from "lucide-react";
 
 const SignIn: React.FC = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [pending, setPending] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");  // Added success message state
-  const router = useRouter();
+  const [successMessage, setSuccessMessage] = useState("");
   const [error, setError] = useState("");
+
+
+  // Validation states
+  const [emailError, setEmailError] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (session) {
+      router.replace("/frontend");
+    }
+  }, [session, router]);
+
+  // Email validation function
+  const validateEmail = (email: string) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  // Password validation function
+  const validatePassword = (password: string) => {
+    return password.length >= 6;
+  };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Reset previous errors
+    setEmailError("");
+    setPasswordError("");
+    setError("");
+
+    // Validate fields
+    let valid = true;
+
+    if (!validateEmail(email)) {
+      setEmailError("Email cannot be empty.");
+      valid = false;
+    }
+
+    if (!validatePassword(password)) {
+      setPasswordError("Password must be at least 6 characters.");
+      valid = false;
+    }
+
+    if (!valid) return;
+
     setPending(true);
-    setSuccessMessage(""); // Clear previous messages
+    setSuccessMessage("");
 
     const res = await signIn("credentials", {
       redirect: false,
       email,
       password,
-      is_admin: false
+      is_admin: false,
     });
 
     if (res?.ok) {
       setSuccessMessage("Login successful! Redirecting...");
       setTimeout(() => {
         router.push("/frontend");
-      }, 10000);
+      }, 1000);
     } else if (res?.error) {
       setError(res.error);
       setPending(false);
@@ -47,7 +91,7 @@ const SignIn: React.FC = () => {
     <div className="flex bg-[#fbeed5]">
       {/* Left Section - Login Form */}
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-6 md:p-10">
-        <div className="flex items-center  md:w-100">
+        <div className="flex items-center md:w-100">
           <div className="w-full p-4">
             <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2 heading-title">
               Login
@@ -69,6 +113,7 @@ const SignIn: React.FC = () => {
             )}
 
             <form onSubmit={handleSubmit}>
+              {/* Email Input */}
               <div className="mb-4">
                 <div className="relative">
                   <input
@@ -76,37 +121,43 @@ const SignIn: React.FC = () => {
                     disabled={pending}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    required
                     placeholder="E-mail id"
-                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className={`w-full rounded-lg border ${
+                      emailError ? "border-red-500" : "border-stroke"
+                    } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
                     autoComplete="off"
                   />
                 </div>
+                {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
               </div>
 
+              {/* Password Input */}
               <div className="mb-6">
                 <div className="relative">
                   <input
                     disabled={pending}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    required
                     type="password"
                     placeholder="Password"
-                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className={`w-full rounded-lg border ${
+                      passwordError ? "border-red-500" : "border-stroke"
+                    } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
                     autoComplete="off"
                   />
                 </div>
+                {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
               </div>
 
               <div className="mb-6 text-right">
                 <p>
-                  <Link href="/forgot-password" className="text-dark">
+                  <Link href="/frontend/forgot-password" className="text-dark">
                     Forgot Password?{" "}
                   </Link>
                 </p>
               </div>
 
+              {/* Submit Button */}
               <div className="mb-5">
                 <input
                   type="submit"

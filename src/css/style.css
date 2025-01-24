@@ -353,3 +353,50 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 .dark-texts:hover {
     color: #ff0000;
 }
+
+.cms-heading {
+    font-size: 25px;
+    font-weight: 600;
+    font-family: 'Noto Sans';
+    text-align: left;
+    text-transform: capitalize;
+    color: #000;
+    line-height: 35px;
+}
+.cms-description {
+    font-family: 'Noto Sans';
+    font-weight: 300;
+    text-transform: capitalize;
+    text-align: left;
+    font-size: 15px;
+    color: #653D27;
+    line-height: 35px;
+}
+
+.cms-heading  h2{
+    font-size: 25px;
+    font-weight: 600;
+    font-family: 'Noto Sans';
+    text-align: left;
+    text-transform: capitalize;
+    color: #000;
+    line-height: 35px;
+}
+.cms-heading  p{
+    font-family: 'Noto Sans';
+    font-weight: 300;
+    text-transform: capitalize;
+    text-align: left;
+    font-size: 15px;
+    color: #653D27;
+    line-height: 35px;
+    margin-top: 1em;
+
+}
+.cms-heading  p br{
+    display: none;
+}
+
+.bg-arrow {
+    background: #f8f0df;
+}

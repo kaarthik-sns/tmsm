@@ -291,7 +291,7 @@ const Settings = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                 <h3 className="font-medium dark-text dark:text-white">
-                  About Section
+                  About
                 </h3>
               </div>
               <div className="p-6.5">
@@ -382,7 +382,7 @@ const Settings = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                 <h3 className="font-medium dark-text dark:text-white">
-                  Banner Section
+                  Join us
                 </h3>
               </div>
               <div className="p-6.5">
@@ -457,7 +457,7 @@ const Settings = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                 <h3 className="font-medium dark-text dark:text-white">
-                  Why Choose Us Section
+                  Why Choose Us
                 </h3>
               </div>
               <div className="p-6.5">
