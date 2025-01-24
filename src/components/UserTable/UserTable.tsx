@@ -266,7 +266,7 @@ const UserTable = () => {
                             <th className="py-3 px-6 dark-text">Phone Number</th>
                             <th className="py-3 px-6 dark-text">User Status</th>
                             <th className="py-3 px-6 dark-text">Acccount Status</th>
-                            <th className="py-3 px-6">Action</th>
+                            <th className="py-3 px-6 dark-text">Action</th>
                         </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y">

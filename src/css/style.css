@@ -400,3 +400,7 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 .bg-arrow {
     background: #f8f0df;
 }
+
+th.py-3.px-6.dark-text {
+    font-size: 12px;
+}

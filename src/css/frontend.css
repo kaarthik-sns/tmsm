@@ -394,6 +394,13 @@ input:-internal-autofill-selected {
     font-family: 'Noto Sans';
 }
 
+.bg-edit {
+    background: #ffd16c;
+    color: #653d27;
+    font-weight: 700;
+    font-family: 'Noto Sans';
+}
+
 /*Responsive code*/
 @media (min-width: 1024px) {
     .lg\:gap-8 {
@@ -1265,5 +1272,8 @@ input:-internal-autofill-selected {
             padding: 1rem;
 
         }
+    }
+    .profile-heading {
+        font-size: 20px;
     }
 }

@@ -31,7 +31,7 @@ function NavItem({ label, href, className, onClick }: NavItemPropsType) {
   return href ? (
     <Link
       href={href}
-      className={`${className} ${isActive ? "active-menu" : ""}`} 
+      className={`${className} ${isActive ? "active-menu" : ""}`}
     >
       {label}
     </Link>
@@ -78,7 +78,7 @@ function NavList() {
         </>
       )}
 
-       <div className="translator-div flex items-center space-x-2">
+      {/* <div className="translator-div flex items-center space-x-2">
         <div>
           <Image
             width={30}
@@ -87,8 +87,8 @@ function NavList() {
             alt="Logo"
           />
         </div>
-        {/* <GTranslateWidget /> */}
-      </div>
+        {<GTranslateWidget />}
+      </div> */}
     </ul>
   );
 }
@@ -109,7 +109,7 @@ export function NavbarWithSimpleLinks() {
   return (
     <Navbar className="header-bg py-6 border-0"
       fullWidth={true}
-      >
+    >
 
       <div className="container mx-auto flex items-center justify-between mt-6">
         <Link className="hidden flex-shrink-0 lg:block" href="/frontend/">

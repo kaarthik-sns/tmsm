@@ -137,17 +137,17 @@ const menuGroups = [
         children: [
           { label: "Home ", route: "/admin/cms/home/page/view" },
           { label: "Slider", route: "/admin/cms/home/slider/list" },
-          { label: "About Us", route: "/admin/cms/about/view" },
           { label: "Testimonials", route: "/admin/cms/home/testimonial/list" },
+          { label: "About", route: "/admin/cms/about/view" },
           { label: "Faq", route: "/admin/cms/faq/list" },
           { label: "Terms", route: "/admin/cms/terms_conditions/list" },
-          { label: "Review", route: "/admin/cms/home/review/list" },
+          { label: "Reviews", route: "/admin/cms/home/review/list" },
         ],
       },
       {
         icon: (
           <svg
-            className="fill-current duration-300 ease-in-out"
+            className="fill-current"
             width="18"
             height="18"
             viewBox="0 0 18 18"
@@ -161,7 +161,7 @@ const menuGroups = [
           </svg>
 
         ),
-        label: "Contact US",
+        label: "Contact",
         route: "/admin/contact-us",
       },
 
