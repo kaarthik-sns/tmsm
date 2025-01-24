@@ -260,7 +260,7 @@ const UserTable = () => {
                                         {Array.from({ length: totalPages }, (_, index) => (
                                             <a
                                                 key={index}
-                                                className={`flex items-center justify-center rounded-full text-black mr-5 ml-5 ${currentPage === index + 1 ? 'bg-yellow dark-text active-page-number' : ''
+                                                className={`flex items-center justify-center rounded-full text-black mr-5 ml-5 ${currentPage === index + 1 ? 'dark-text-active dark-text active-page-number' : ''
                                                     }`}
                                                 href="#"
                                                 onClick={(e) => {
