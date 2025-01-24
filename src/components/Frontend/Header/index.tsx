@@ -44,7 +44,6 @@ function NavItem({ label, href, className, onClick }: NavItemPropsType) {
 
 function NavList() {
   const { data: session } = useSession();
-
   return (
     <ul className="mb-4 mt-2 pl-2 flex flex-col gap-3 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-8 header-text">
       <NavItem label="Home" href="/frontend" />
@@ -53,7 +52,7 @@ function NavList() {
 
       {/* Desktop Navigation */}
       <div className="flex bg-white px-5 py-3 gap-5 rounded-full bg-button hidden lg:block header-text">
-        {session ? (
+      {session && !session.user.is_admin ? (
           <>
             <NavItem label="Dashboard" href="/frontend/dashboard" className="pr-5 headertext border-r border-black" />
             <NavItem label="Logout" onClick={() => signOut()} className="pl-5  headertext" />

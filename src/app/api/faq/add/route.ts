@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
         await connectToDatabase();
 
         const formData = await request.formData();
-        console.log(formData);
+ 
         // Extract only the title and description fields
         const title = (formData.get('title') as string) ?? '';
         const description = (formData.get('description') as string) ?? '';
