@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from "react";
-import SelectAge from "@/components/Frontend/Fillter/SelectGroup/SelectAge"; // Remove the extra space here
-import SelectBrideGroom from "@/components/Frontend/Fillter/SelectGroup/SelectBrideGroom"; // Remove the extra space here
+import SelectAge from "@/components/Frontend/HomeFilter/SelectGroup/SelectAge"; // Remove the extra space here
+import SelectBrideGroom from "@/components/Frontend/HomeFilter/SelectGroup/SelectBrideGroom"; // Remove the extra space here
 import { useRouter } from "next/navigation";
 
 const FilterForm = () => {
@@ -13,6 +13,7 @@ const FilterForm = () => {
     fromage: "",
     toage: "",
     subcaste: "",
+    homefilter: true
   });
 
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
@@ -63,11 +64,9 @@ const FilterForm = () => {
 
     // Only add non-empty values to the query
     Object.entries(formData).forEach(([key, value]) => {
-      if (value.trim()) {
-        queryParams.append(key, value);
-      }
+      queryParams.append(key, String(value)); // Convert value to string
     });
-
+    
     // Redirect only if there are valid query parameters
     if (queryParams.toString()) {
       router.push(`/frontend/member?${queryParams.toString()}`);

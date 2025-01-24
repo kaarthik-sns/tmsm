@@ -1,36 +1,46 @@
 'use client'
 import { useState, useEffect } from 'react';
-import Fillter from "@/components/Frontend/Fillter";
 import { useRouter, useSearchParams } from "next/navigation";
+import SelectAge from "@/components/Frontend/HomeFilter/SelectGroup/SelectAge";
+import SelectBrideGroom from "@/components/Frontend/HomeFilter/SelectGroup/SelectBrideGroom";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 
 const PaginatedUsers = () => {
+
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  
-  const [filters, setFilters] = useState({ lookingfor: '', fromage: '', toage: '', subcaste: '' });
-  const router = useRouter();
 
+  const router = useRouter();
+  const { data: session } = useSession();
   const searchParams = useSearchParams();
 
-  const [homefilters, setHomeFilters] = useState({
+  const [homeFilterPage, setHomeFilterPage] = useState(false);
+
+  const [filters, setFilters] = useState({
     lookingfor: searchParams.get("lookingfor") || "",
     fromage: searchParams.get("fromage") || "",
     toage: searchParams.get("toage") || "",
     subcaste: searchParams.get("subcaste") || "",
+    homefilter: searchParams.get("homefilter") || "",
   });
 
 
   useEffect(() => {
-    fetchUsers(1, homefilters);
-    // router.replace("/frontend/member", undefined);
-  }, [homefilters]);
+    if (filters.homefilter != '' && !homeFilterPage) {
+      fetchUsers(1, filters);
+      setHomeFilterPage(true);
+    }
 
-  const handleFilterChange = (newFilters) => {
-    setFilters(newFilters); // Update filters when the form changes
-  };
+  }, [homeFilterPage]);
+
+  // fetch data on paginate
+  useEffect(() => {
+    fetchUsers(currentPage, filters);
+  }, [currentPage]);
 
 
   // Fetch users from the API
@@ -48,7 +58,10 @@ const PaginatedUsers = () => {
 
       const res = await fetch(`/api/member-list?${query}`);
       const data = await res.json();
-      console.log("data-----", String(page));
+
+      console.log(data);
+      
+
       if (res.ok) {
         setUsers(data.data);
         setCurrentPage(data.pagination.currentPage);
@@ -65,12 +78,6 @@ const PaginatedUsers = () => {
   };
 
 
-  // useEffect(() => {
-
-  //   fetchUsers(currentPage, filters);
-  // }, [currentPage, filters]);
-
-
   // Handle page navigation
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -82,9 +89,145 @@ const PaginatedUsers = () => {
     }
   };
 
+  const handleInputChange = (e) => {
+    setFilters({ ...filters, [e.target.name]: e.target.value });
+  };
+
+  const handleAgeChange = (e) => {
+    setFilters({ ...filters, fromage: e.target.value });
+  };
+  const handleAgeChangesto = (e) => {
+    setFilters({ ...filters, toage: e.target.value });
+  };
+  const handleBrideGroomChange = (e) => {
+    setFilters({ ...filters, lookingfor: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    router.replace('/frontend/member', undefined);
+    fetchUsers(1, filters);
+  };
+
+
+  const handleRequestClick = async (id) => {
+
+    const userId = session.user.id;
+
+    try {
+      const formBody = new URLSearchParams({
+        sender_id: userId,
+        receiver_id: id,
+      });
+
+      const res = await fetch("/api/requests/send-profile-request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formBody.toString(),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to add FAQ.");
+      }
+
+      const data = await res.json();
+
+      toast.success('FAQ added successfully!', {
+        className: "sonner-toast-success",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
+
+
+    } catch (err: any) {
+      toast.error('Failed to add FAQ.', {
+        className: "sonner-toast-error",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
+    }
+
+
+  };
+
   return (
     <>
-      <Fillter onFilterChange={handleFilterChange} />
+
+      <div className="dark-bg">
+        <div className="container mx-auto flex items-center justify-center p-10">
+          <form onSubmit={handleSubmit}>
+            <div className="flex flex-wrap items-center gap-9 p-6.5 member-search-form">
+              <div className="w-full md:w-auto">
+                <label className="mb-3 block text-sm font-medium text-white">
+                  Looking For
+                </label>
+                <SelectBrideGroom
+                  name="lookingfor"
+                  selectedBrideGroom={filters.lookingfor}
+                  onBrideGroomChange={handleBrideGroomChange}
+                />
+              </div>
+
+              <div className="w-full md:w-auto">
+                <label className="mb-3 block text-sm font-medium text-white">
+                  Age
+                </label>
+                <SelectAge
+                  name="fromage"
+                  selectedAge={filters.fromage}
+                  onAgeChange={handleAgeChange}
+                />
+              </div>
+              <div className="hidden w-full md:w-auto md:mt-4 md:block">
+                <label className="mb-3 block text-sm font-medium text-white">
+                  To
+                </label>
+              </div>
+              <div className="w-full md:w-auto">
+                <label className="mb-3 block text-sm font-medium text-white visibility">
+                  To
+                </label>
+                <SelectAge
+                  name="toage"
+                  selectedAge={filters.toage}
+                  onAgeChange={handleAgeChangesto}
+                />
+              </div>
+
+              <div className="w-full md:w-auto relative">
+                <label className="mb-3 block text-sm font-medium text-white">SubCaste</label>
+                <div className="mb-4.5">
+                  <input
+                    type="text"
+                    name="subcaste"
+                    value={filters.subcaste}
+                    onChange={handleInputChange}
+                    className="relative z-20 md:w-64 w-full appearance-none rounded border border-stroke bg-white px-5 py-3 outline-none transition dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                </div>
+              </div>
+
+
+              <div className="w-full md:w-auto flex justify-between gap-4 mt-5 md:mt-5">
+                <button
+                  className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom"
+                  type="submit"
+                >
+                  Search
+                </button>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+
       <div className="container mx-auto px-6 py-12 member-container">
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="title">
@@ -100,7 +243,7 @@ const PaginatedUsers = () => {
                   <div className="">
                     <div className='h-25 w-25 mb-3'>
 
-                      <img src={user.profile_photo ? user.profile_photo : '/uploads/photos/1736513579879-03b4dbf6fad6.jpg'} alt="Profile Picture" className="rounded-full w-full h-full object-cover" />
+                      <img src={user.profile_photo ? user.profile_photo : '/uploads/photos/1735885953505-c97500831022.webp'} alt="Profile Picture" className="rounded-full w-full h-full object-cover" />
 
                     </div>
                     <h4 className="member-title">
@@ -108,9 +251,13 @@ const PaginatedUsers = () => {
                     </h4>
                   </div>
                   <div>
-                    <a href="#" className="block w-full rounded-md bg-primary text-center text-white transition hover:bg-opacity-90 member-btn">
-                      View Details
-                    </a>
+                    <button
+                      key={user._id}
+                      onClick={() => handleRequestClick(user._id)}
+                      className="block w-full rounded-md text-center text-white transition hover:bg-opacity-90 member-btn"
+                    >
+                      Send Request
+                    </button>
 
                   </div>
                 </div>
@@ -167,7 +314,7 @@ const PaginatedUsers = () => {
                     {/* Previous Button */}
                     <li>
                       <a
-                        className={`flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white prev-btn ${currentPage === 1 ? 'pointer-events-none opacity-50' : ''
+                        className={`flex h-8 w-8 items-center justify-center rounded-full text-white prev-btn ${currentPage === 1 ? 'pointer-events-none opacity-50' : ''
                           }`}
                         href="#"
                         onClick={(e) => {
@@ -211,7 +358,7 @@ const PaginatedUsers = () => {
                     {/* Next Button */}
                     <li>
                       <a
-                        className={`flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white next-btn ${currentPage === totalPages ? 'pointer-events-none opacity-50' : ''
+                        className={`flex h-8 w-8 items-center justify-center rounded-full text-white next-btn ${currentPage === totalPages ? 'pointer-events-none opacity-50' : ''
                           }`}
                         href="#"
                         onClick={(e) => {

@@ -17,6 +17,7 @@ const SignIn: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [error, setError] = useState("");
 
+
   // Validation states
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
@@ -38,6 +39,7 @@ const SignIn: React.FC = () => {
   const validatePassword = (password: string) => {
     return password.length >= 6;
   };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
