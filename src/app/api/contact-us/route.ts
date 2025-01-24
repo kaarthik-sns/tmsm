@@ -79,11 +79,6 @@ export async function POST(req) {
             message,
         });
 
-        const sender = {
-            name: 'TMSM',
-            address: 'no-reply@tmsm.com'
-        }
-
         const template = Handlebars.compile(contactFormMailToAdmin);
         const htmlBody = template({
             name: name,
@@ -99,9 +94,8 @@ export async function POST(req) {
         }]
 
         const result3 = await sendEmail({
-            sender,
             receipients: receipients,
-            subject: 'TMSM - New User Registration!',
+            subject: 'TMSM - New Contact Form Submission',
             message: htmlBody
         })
 

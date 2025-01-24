@@ -16,14 +16,8 @@ export async function GET(req: NextRequest) {
 
     // return NextResponse.json('test');
 
-
-    const sender = {
-        name: 'TMSM',
-        address: 'no-reply@tmsm.com'
-    }
-
     const receipients = [{
-        name: 'kaarthik',
+        name: 'admin',
         address: 'kaarthikr@searchnscore.com'
     }]
 
@@ -33,7 +27,6 @@ export async function GET(req: NextRequest) {
     });
 
     const result = await sendEmail({
-        sender,
         receipients,
         subject: 'TMSM - verification!',
         message: htmlBody

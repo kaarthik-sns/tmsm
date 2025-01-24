@@ -219,11 +219,6 @@ export async function POST(request: NextRequest) {
 
             const verificationLink = `${process.env.BASE_URL}/verify-email?code=${newUser.email_code}`;
 
-            const sender = {
-                name: 'TMSM',
-                address: 'no-reply@tmsm.com'
-            }
-
             const receipients = [{
                 name: name,
                 address: email
@@ -235,7 +230,6 @@ export async function POST(request: NextRequest) {
             });
 
             const result = await sendEmail({
-                sender,
                 receipients,
                 subject: 'TMSM - Welcome mail!',
                 message: htmlBody
@@ -248,7 +242,6 @@ export async function POST(request: NextRequest) {
             });
 
             const result2 = await sendEmail({
-                sender,
                 receipients,
                 subject: 'TMSM - Verification mail!',
                 message: htmlBody2
@@ -267,7 +260,6 @@ export async function POST(request: NextRequest) {
             }]
 
             const result3 = await sendEmail({
-                sender,
                 receipients: receipients2,
                 subject: 'TMSM - New User Registration!',
                 message: htmlBody3
