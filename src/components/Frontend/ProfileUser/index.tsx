@@ -357,7 +357,7 @@ const UserProfile = () => {
         <div className="bg-light text-white py-8">
           <div className="container mx-auto flex flex-col items-center">
             <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-9 sm:grid-cols-2 mt-5">
                 <div className="flex flex-col gap-9">
 
                   {/* <!-- Reference start --> */}

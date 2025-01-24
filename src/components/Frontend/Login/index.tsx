@@ -73,7 +73,7 @@ const SignIn: React.FC = () => {
     });
 
     if (res?.ok) {
-      setSuccessMessage("Login successful! Redirecting...");
+      setSuccessMessage("Login Successful! Redirecting...");
       setTimeout(() => {
         router.push("/frontend");
       }, 1000);
