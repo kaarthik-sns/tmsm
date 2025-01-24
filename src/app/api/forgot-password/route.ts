@@ -42,11 +42,6 @@ export async function POST(request: Request) {
 
         const forgotPasswordLink = `${process.env.BASE_URL}/change-password?id=${userId}&is_admin=${is_admin}`;
 
-        const sender = {
-            name: 'TMSM',
-            address: 'no-reply@tmsm.com'
-        }
-
         const receipients = [{
             name: name,
             address: email
@@ -58,7 +53,6 @@ export async function POST(request: Request) {
         });
 
         const result = await sendEmail({
-            sender,
             receipients,
             subject: 'TMSM - Forgot Password!',
             message: htmlBody

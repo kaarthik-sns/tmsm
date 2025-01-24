@@ -53,6 +53,7 @@ export const contactFormMailToAdmin = `
 <body>
     <div class="container">
         <h1>Contact Form Submission</h1>
+        <p>Hello Admin,</p>
         <p>You have received a new message from the contact form:</p>
         <div class="details">
             <p><span class="highlight">Name:</span> {{name}}</p>

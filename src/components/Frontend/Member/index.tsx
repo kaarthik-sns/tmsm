@@ -8,7 +8,13 @@ import { toast } from "sonner";
 
 const PaginatedUsers = () => {
 
+  type RequestData = {
+    receiver_id: string;
+    [key: string]: any;
+  };
+
   const [users, setUsers] = useState([]);
+  const [reqData, setReqData] = useState<Record<string, RequestData>>({});
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
@@ -59,10 +65,22 @@ const PaginatedUsers = () => {
       const res = await fetch(`/api/member-list?${query}`);
       const data = await res.json();
 
-      console.log(data);
-      
 
       if (res.ok) {
+
+        const req_data = data.req_data;
+
+        if (session && !session.user.is_admin) {
+
+          const indexedByReceiverId: Record<string, RequestData> = req_data.reduce((acc, item) => {
+            acc[item.receiver_id] = item;
+            return acc;
+          }, {});
+
+          setReqData(indexedByReceiverId);
+
+        }
+
         setUsers(data.data);
         setCurrentPage(data.pagination.currentPage);
         setTotalPages(data.pagination.totalPages);
@@ -109,6 +127,10 @@ const PaginatedUsers = () => {
     fetchUsers(1, filters);
   };
 
+  const handleViewDetails = (e) => {
+    alert('view');
+  };
+
 
   const handleRequestClick = async (id) => {
 
@@ -133,6 +155,7 @@ const PaginatedUsers = () => {
       }
 
       const data = await res.json();
+      fetchUsers(currentPage, filters);
 
       toast.success('FAQ added successfully!', {
         className: "sonner-toast-success",
@@ -251,13 +274,84 @@ const PaginatedUsers = () => {
                     </h4>
                   </div>
                   <div>
+
+
+
+                    {/* {
+                      reqData[user._id] ? (
+                        // If the user._id exists in reqData, show "Request Sent"
+                        <button
+                          key={user._id}
+                          className="block w-full rounded-md text-center text-white bg-gray-500 cursor-not-allowed transition member-btn"
+                          disabled
+                        >
+                          Request Sent
+                        </button>
+                      ) : (
+                        // Else, show "Send Request" button
+                        <button
+                          key={user._id}
+                          onClick={() => handleRequestClick(user._id)}
+                          className="block w-full rounded-md text-center text-white transition hover:bg-opacity-90 member-btn"
+                        >
+                          Send Request
+                        </button>
+                      )
+                    } */}
+
+                    {
+                      reqData[user._id] ? (
+                        reqData[user._id].status == "accepted" ? (
+                          // If status is "accepted", show "View Details" button
+                          <button
+                            key={user._id}
+                            onClick={() => handleViewDetails(user._id)} // Define handleViewDetails function
+                            className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom"
+                          >
+                            View Details
+                          </button>
+                        ) : reqData[user._id].status === "rejected" ? (
+                          // If status is "rejected", show "Rejected" disabled button
+                          <button
+                            key={user._id}
+                            className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom cursor-not-allowed"
+                            disabled
+                          >
+                            Rejected
+                          </button>
+                        ) : (
+                          // If user._id exists but status is not "accepted", show "Request Sent" button
+                          <button
+                            key={user._id}
+                            className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom cursor-not-allowed"
+                            disabled
+                          >
+                            Request Sent
+                          </button>
+                        )
+                      ) : (
+                        // Else, show "Send Request" button
+                        <button
+                          key={user._id}
+                          onClick={() => handleRequestClick(user._id)} // Define handleRequestClick function
+                          className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom"
+                        >
+                          Send Request
+                        </button>
+                      )
+                    }
+
+
+
+
+                    {/* 
                     <button
                       key={user._id}
                       onClick={() => handleRequestClick(user._id)}
                       className="block w-full rounded-md text-center text-white transition hover:bg-opacity-90 member-btn"
                     >
                       Send Request
-                    </button>
+                    </button> */}
 
                   </div>
                 </div>

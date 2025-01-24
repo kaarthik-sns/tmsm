@@ -7,17 +7,29 @@ import 'slick-carousel/slick/slick-theme.css';
 
 
 export const metadata: Metadata = {
-  title:"Contact us - TMSM",
+  title: "Contact us - TMSM",
   description: "",
 };
 
-export default function Home() {
+
+export default async function Home() {
+
+  const response = await fetch(`${process.env.BASE_URL}/api/get-settings-data`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    cache: "no-store",
+  });
+
+  const data = await response.json();
+
   return (
     <>
-     <FrontendLayouts>
-      <Innerbanner/>
-      <Contact/>
-     </FrontendLayouts>
+      <FrontendLayouts>
+        <Innerbanner />
+        <Contact data={data.data} />
+      </FrontendLayouts>
     </>
   );
 }
