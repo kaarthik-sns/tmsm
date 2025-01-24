@@ -304,7 +304,7 @@ const UserProfile = () => {
       });
 
       // Redirect
-      router.push(`/admin/users/userlist`);
+      router.push(`/frontend/dashboard`);
 
 
       setProfilePic(null); // Reset profile picture
