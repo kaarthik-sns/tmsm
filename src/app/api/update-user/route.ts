@@ -59,6 +59,8 @@ export async function POST(request: NextRequest) {
     const partner_pref_age = (formData.get('partner_pref_age') as string) ?? '';
     const partner_pref_caste = (formData.get('partner_pref_caste') as string) ?? '';
     const partner_pref_subcaste = (formData.get('partner_pref_subcaste') as string) ?? '';
+    const bride_groom_detail = (formData.get('bride_groom_detail') as string) ?? '';
+    const gender = (formData.get('gender') as string) ?? '';
 
     const file = (formData.get('profile_photo') as File) ?? '';
     const file1 = (formData.get('photo1') as File) ?? '';
@@ -245,7 +247,8 @@ export async function POST(request: NextRequest) {
             photo3: photo3 || user.photo3,
             photo4: photo4 || user.photo4,
             horoscope: horoscope || user.horoscope,
-
+            gender: gender || user.gender,
+            bride_groom_detail: bride_groom_detail || user.bride_groom_detail,
         };
 
         // Use findByIdAndUpdate for efficient update

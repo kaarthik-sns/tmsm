@@ -96,10 +96,6 @@ const PaginatedUsers = () => {
   };
 
 
-  const handleBasicInfoClick = () => {
-    // Redirect to login or show a message
-    alert("Please log in to access this feature!");
-  };
   // Handle page navigation
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -303,52 +299,49 @@ const PaginatedUsers = () => {
                       )
                     } */}
 
-{
-  !user?._id ? ( // If user is not logged in or user._id is empty
+                    {
+                      reqData[user._id] ? (
+                        reqData[user._id].status == "accepted" ? (
+                          // If status is "accepted", show "View Details" button
+                          <button
+                            key={user._id}
+                            onClick={() => handleViewDetails(user._id)} // Define handleViewDetails function
+                            className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom"
+                          >
+                            View Details
+                          </button>
+                        ) : reqData[user._id].status === "rejected" ? (
+                          // If status is "rejected", show "Rejected" disabled button
+                          <button
+                            key={user._id}
+                            className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom cursor-not-allowed"
+                            disabled
+                          >
+                            Rejected
+                          </button>
+                        ) : (
+                          // If user._id exists but status is not "accepted", show "Request Sent" button
+                          <button
+                            key={user._id}
+                            className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom cursor-not-allowed"
+                            disabled
+                          >
+                            Request Sent
+                          </button>
+                        )
+                      ) : (
+                        // Else, show "Send Request" button
+                        <button
+                          key={user._id}
+                          onClick={() => handleRequestClick(user._id)} // Define handleRequestClick function
+                          className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom"
+                        >
+                          Send Request
+                        </button>
+                      )
+                    }
 
 
-    <button
-      className="inline-block px-10 py-4 text-white duration-150 rounded-full md:text-sm ftext-custom"
-      onClick={handleBasicInfoClick} // Define handleBasicInfo function
-    >
-      Basic Info
-    </button>
-  ) : reqData[user._id] ? (
-    reqData[user._id].status === "accepted" ? (
-      <button
-        key={user._id}
-        onClick={() => handleViewDetails(user._id)}
-        className="inline-block px-10 py-4 text-white duration-150 rounded-full md:text-sm ftext-custom"
-      >
-        View Details
-      </button>
-    ) : reqData[user._id].status === "rejected" ? (
-      <button
-        key={user._id}
-        className="inline-block px-10 py-4 text-white duration-150 rounded-full md:text-sm ftext-custom cursor-not-allowed"
-        disabled
-      >
-        Rejected
-      </button>
-    ) : (
-      <button
-        key={user._id}
-        className="inline-block px-10 py-4 text-white duration-150 rounded-full md:text-sm ftext-custom cursor-not-allowed"
-        disabled
-      >
-        Request Sent
-      </button>
-    )
-  ) : (
-    <button
-      key={user._id}
-      onClick={() => handleRequestClick(user._id)}
-      className="inline-block px-10 py-4 text-white duration-150 rounded-full md:text-sm ftext-custom"
-    >
-      Send Request
-    </button>
-  )
-}
 
 
                     {/* 
