@@ -70,6 +70,16 @@ main {
     background-color: #FFD16C;
     color: #323232;
 }
+.bg-member {
+    background: #fdfbfb;
+    border-radius: 10px 10px 0px 0px;
+    padding-bottom: 1em;
+    border-bottom: 0;
+}
+.rounded-member{
+    border-radius: 0px 0px 10px 10px;
+
+}
 .member-container .page-number a:last-child {
     margin-right: 0px !important;
 }
