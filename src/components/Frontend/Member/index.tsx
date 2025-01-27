@@ -151,13 +151,13 @@ const PaginatedUsers = () => {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to add FAQ.");
+        throw new Error("Failed to send request");
       }
 
       const data = await res.json();
       fetchUsers(currentPage, filters);
 
-      toast.success('FAQ added successfully!', {
+      toast.success('Request sent successfully!', {
         className: "sonner-toast-success",
         cancel: {
           label: 'Close',
@@ -167,7 +167,7 @@ const PaginatedUsers = () => {
 
 
     } catch (err: any) {
-      toast.error('Failed to add FAQ.', {
+      toast.error('Failed to send request', {
         className: "sonner-toast-error",
         cancel: {
           label: 'Close',
@@ -275,30 +275,6 @@ const PaginatedUsers = () => {
                   </div>
                   <div>
 
-
-
-                    {/* {
-                      reqData[user._id] ? (
-                        // If the user._id exists in reqData, show "Request Sent"
-                        <button
-                          key={user._id}
-                          className="block w-full rounded-md text-center text-white bg-gray-500 cursor-not-allowed transition member-btn"
-                          disabled
-                        >
-                          Request Sent
-                        </button>
-                      ) : (
-                        // Else, show "Send Request" button
-                        <button
-                          key={user._id}
-                          onClick={() => handleRequestClick(user._id)}
-                          className="block w-full rounded-md text-center text-white transition hover:bg-opacity-90 member-btn"
-                        >
-                          Send Request
-                        </button>
-                      )
-                    } */}
-
                     {
                       reqData[user._id] ? (
                         reqData[user._id].status == "accepted" ? (
@@ -340,18 +316,6 @@ const PaginatedUsers = () => {
                         </button>
                       )
                     }
-
-
-
-
-                    {/* 
-                    <button
-                      key={user._id}
-                      onClick={() => handleRequestClick(user._id)}
-                      className="block w-full rounded-md text-center text-white transition hover:bg-opacity-90 member-btn"
-                    >
-                      Send Request
-                    </button> */}
 
                   </div>
                 </div>

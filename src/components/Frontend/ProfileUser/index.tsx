@@ -9,7 +9,8 @@ import { TriangleAlert } from "lucide-react";
 import NextImage from "next/image";
 import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
 import { useRouter, useSearchParams } from "next/navigation";
-const UserProfile = () => {
+const UserProfile = (user_data) => {
+
   const searchParams = useSearchParams();
   // const userId = searchParams.get("userId");
   const [profilePic, setProfilePic] = useState<File | null>(null);
@@ -26,8 +27,6 @@ const UserProfile = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
-
-  const userId = "6763efb8ef4bb11532dfa1b8";
 
   // Array for religions
   const religions = [
@@ -98,13 +97,13 @@ const UserProfile = () => {
   });
 
   useEffect(() => {
-    if (userId) {
+    if (user_data) {
       const fetchUserData = async () => {
         try {
           const response = await fetch("/api/get-user-data", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id: userId }),
+            body: JSON.stringify({ id: user_data.userId }),
           });
 
           if (!response.ok) {
@@ -137,7 +136,7 @@ const UserProfile = () => {
 
       fetchUserData();
     }
-  }, [userId]);
+  }, [user_data]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -295,7 +294,7 @@ const UserProfile = () => {
         throw new Error("Failed to Update user data.");
       }
 
-      toast.success('User updateed successfully!', {
+      toast.success('User updated successfully!', {
         className: "sonner-toast-success",
         cancel: {
           label: 'Close',
@@ -305,7 +304,6 @@ const UserProfile = () => {
 
       // Redirect
       router.push(`/frontend/dashboard`);
-
 
       setProfilePic(null); // Reset profile picture
       setPhoto1(null);
