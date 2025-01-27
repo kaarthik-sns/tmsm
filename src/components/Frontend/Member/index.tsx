@@ -262,7 +262,7 @@ const PaginatedUsers = () => {
           <div className='grid grid-cols-1 gap-7.5 sm:grid-cols-1 xl:grid-cols-2 '>
             {users.map((user: any) => (
               <div className="rounded-sm px-6 py-5" key={user._id}>
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between px-6 py-2 bg-member">
                   <div className="">
                     <div className='h-25 w-25 mb-3'>
 
@@ -319,7 +319,7 @@ const PaginatedUsers = () => {
 
                   </div>
                 </div>
-                <div className="rounded-[10px] bg-[#fdf4e7] p-4 mb-5 mt-5 member-info">
+                <div className="rounded-member bg-[#fdf4e7] p-4 mb-5  member-info">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 text-sm text-black dark:text-white">
                     {/* Left Column */}
                     <div>

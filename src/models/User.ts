@@ -77,7 +77,9 @@ const UserSchema = new Schema({
   profile_creator_aadhar: { type: String, required: false },
   profile_creator_name: { type: String, required: false },
   profile_creator_phonenumber: { type: String, required: false },
-  lookingfor: { type: String, required: false }
+  lookingfor: { type: String, required: false },
+  bride_groom_detail: { type: String, required: false },
+  gender: { type: String, required: false }
 
 });
 

@@ -106,6 +106,9 @@ export async function POST(request: NextRequest) {
     const profile_creator_name = (formData.get('profile_creator_name') as string) ?? '';
     const profile_creator_phonenumber = (formData.get('profile_creator_phonenumber') as string) ?? '';
     const lookingfor = (formData.get('lookingfor') as string) ?? '';
+    const bride_groom_detail = (formData.get('bride_groom_detail') as string) ?? '';
+    const gender = (formData.get('gender') as string) ?? '';
+
 
     const file = formData.get('profile_photo') as File | null;
     const file1 = formData.get('photo1') as File | null;
@@ -202,7 +205,9 @@ export async function POST(request: NextRequest) {
             profile_creator_aadhar,
             profile_creator_name,
             profile_creator_phonenumber,
-            lookingfor
+            lookingfor,
+            bride_groom_detail,
+            gender
         });
 
         if (id) {
