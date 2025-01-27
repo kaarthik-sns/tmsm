@@ -18,16 +18,15 @@ export async function PATCH(req: NextRequest) {
 
         await connectToDatabase();
 
-        // Update the status
-        const result = await ProfileRequests.updateOne(
-            { _id: id },  // Ensure id is cast to ObjectId
-            { $set: { status } }
-        );
 
-        if (result.modifiedCount === 0) {
-            return NextResponse.json(
-                { error: "No record updated, please check the id" },
-                { status: 404 }
+        if (status === 'cancel') {
+            // Delete the record if status is 'cancel'
+            await ProfileRequests.deleteOne({ _id: id }); // Ensure id is cast to ObjectId
+        } else {
+            // Update the status if not 'cancel'
+            await ProfileRequests.updateOne(
+                { _id: id },  // Ensure id is cast to ObjectId
+                { $set: { status } }
             );
         }
 

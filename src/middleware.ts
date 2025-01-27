@@ -53,7 +53,7 @@ export async function middleware(req) {
         return NextResponse.redirect(url);
     }
 
-    if (pathname === '/frontend/dashboard' && token && !token.is_admin) {
+    if (pathname === '/frontend/dashboard' && token && token.is_admin) {
         console.log('in-8')
         url.pathname = '/frontend';
         return NextResponse.redirect(url);
