@@ -127,8 +127,10 @@ const PaginatedUsers = () => {
     fetchUsers(1, filters);
   };
 
-  const handleViewDetails = (e) => {
-    alert('view');
+  const handleViewDetails = (id: string) => {
+    if (id) {
+      router.push(`/frontend/view-profile?id=${id}`); // Call the server-side redirect handler
+    }
   };
 
 

@@ -6,7 +6,7 @@ import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaCheckCircle } from "react-ico
 import { toast } from "sonner";
 
 export default function Profile(data) {
-
+console.log(data);
   const [popupImage, setPopupImage] = useState(null); // State to store the image to show in the popup
 
   const openPopup = (image) => setPopupImage(image); // Set the clicked image in state
@@ -68,7 +68,7 @@ export default function Profile(data) {
             <div className="text-center lg:text-left px-5">
               <h1 className="text-2xl font-bold mb-2 text-white">{profile_data.name || "No name provided"} {profile_data.lastname || ""}</h1>
               <p className="max-w-lg text-white text-justify">
-                I’m Vijay Kumar, who values family, honesty, and meaningful relationships. I enjoy Sports and believe in mutual respect and open communication. Looking for a partner to build a life full of love, trust, and companionship.
+               {profile_data.bride_groom_detail || ""}
               </p>
               {(profile_data.horoscope) && (
                 <button className="inline-block px-10 py-4 text-white duration-150 rounded-full md:text-sm ftext-custom mt-5" onClick={handlePreview} style={{ width: "200px", padding: "8px 0" }}>View Horoscope</button>
@@ -139,6 +139,10 @@ export default function Profile(data) {
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Place Of Birth</strong>
               <span>{profile_data.place_of_birth || ""}</span>
+            </p>
+            <p className="flex gap-x-2 text-left">
+              <strong className="w-auto md:w-40">Gender</strong>
+              <span>{profile_data.gender || ""}</span>
             </p>
           </div>
         </div>
