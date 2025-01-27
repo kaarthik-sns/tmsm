@@ -93,7 +93,9 @@ const FormElements = () => {
     profile_creator_aadhar: "",
     profile_creator_phonenumber: "",
     lookingfor: "",
-    partner_pref_subcaste: ""
+    partner_pref_subcaste: "",
+    gender: "",
+    bride_groom_detail: ""
   });
 
   const handleChange = (e) => {
@@ -171,7 +173,14 @@ const FormElements = () => {
 
     // Validation
     const errors: Record<string, string> = {};
+    
+    if (!formData.bride_groom_detail || formData.bride_groom_detail.trim() === "") {
+      errors.bride_groom_detail = "Fill about short deatils.";
+    }
 
+    if (!formData.gender || formData.gender.trim() === "") {
+      errors.gender = "Gender for is required.";
+    }
     if (!formData.name || formData.name.trim() === "") {
       errors.name = "First name is required.";
     }
@@ -365,6 +374,10 @@ const FormElements = () => {
     { label: 'Bride', value: 'bride' },
     { label: 'Groom', value: 'groom' },
   ];
+  const genderOptions = [
+    { label: 'Boy', value: 'boy' },
+    { label: 'Girl', value: 'girl' },
+  ];
 
   return (
     <>
@@ -496,7 +509,35 @@ const FormElements = () => {
                     </div>
                   </>
                 )}
-
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Detail about groom / bride <span className="text-meta-1">*</span>
+                  </label>
+                  <textarea
+                    rows={6}
+                    name="bride_groom_detail"
+                    value={formData.bride_groom_detail || ""}
+                    onChange={handleChange}
+                    className="w-full rounded-lg border-[1.5px] bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:text-white"
+                  ></textarea>
+                  {formErrors?.bride_groom_detail && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.bride_groom_detail}</p>
+                  )}
+                </div>
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Gender <span className="text-meta-1">*</span>
+                  </label>
+                  <RadioButtonGroup
+                    name="gender"
+                    options={genderOptions}
+                    selectedValue={formData.gender}
+                    onChange={handleChange}
+                  />
+                  {formErrors?.gender && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.gender}</p>
+                  )}
+                </div>
               </div>
             </div>
 
