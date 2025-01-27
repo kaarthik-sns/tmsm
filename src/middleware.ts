@@ -47,6 +47,17 @@ export async function middleware(req) {
         return NextResponse.redirect(url);
     }
 
+    if (pathname === '/frontend/dashboard' && !token) {
+        console.log('in-7')
+        url.pathname = '/frontend';
+        return NextResponse.redirect(url);
+    }
+
+    if (pathname === '/frontend/dashboard' && token && !token.is_admin) {
+        console.log('in-8')
+        url.pathname = '/frontend';
+        return NextResponse.redirect(url);
+    }
 
     // Create a NextResponse instance to modify headers
     const res = NextResponse.next();
@@ -65,5 +76,5 @@ export async function middleware(req) {
 
 // Apply middleware to relevant paths
 export const config = {
-    matcher: ['/', '/api/:path*', '/admin/:path*','/frontend/:path*'], // Apply to root, API routes, and admin routes
+    matcher: ['/', '/api/:path*', '/admin/:path*', '/frontend/:path*'], // Apply to root, API routes, and admin routes
 };
