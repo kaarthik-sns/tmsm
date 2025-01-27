@@ -1277,3 +1277,136 @@ input:-internal-autofill-selected {
         font-size: 20px;
     }
 }
+
+/* new styles 27.1.25*/
+
+.accepted {
+    color: #fff;
+    background: #6aa84f;
+    border: 1px solid #6aa84f;
+    font-weight: 800;
+    font-family: 'Noto Sans';
+    padding: 10px 30px;
+}
+
+/* FAQ  */
+.inner-banner-info {
+    background: rgba(216, 140, 74, 0.60);
+}
+.faq-info-con {
+    padding: 80px 0px 40px 0;
+    background-color: #ffffff;
+}
+.faq-list-con {
+    background-color: #ffffff;
+}
+.title {
+    color: #D13333;
+    font-family: "Playfair Display";
+    font-size: 35px;
+    font-weight: 700;
+    line-height: normal;
+}
+.faq-content .sub-title {
+    color: #323232;
+    font-family: "Noto Sans";
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 30px;
+    line-height: normal;
+}
+.faq-content p {
+    color: rgba(0, 0, 0, 0.50);
+    text-align: justify;
+    font-family: "Noto Sans";
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 30px;
+}
+.faq-list-con {
+    padding: 0px 0px 80px 0;
+}
+.faq-list-con .border-btm {
+    border-color: rgba(33, 28, 28, 0.70);
+    border-bottom-width: 1px;
+}
+.faq-question {
+    color: rgba(33, 28, 28, 0.90);
+    text-align: justify;
+    font-family: "Noto Sans";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}
+.faq-answer {
+    font-family: "Noto Sans";
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.50);
+    font-weight: 600;
+}
+.expand-font {
+    color: rgba(33, 28, 28, 0.90);
+    text-align: justify;
+    font-family: "Noto Sans";
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.faq-req-btn-row  {
+    padding-top: 50px;
+}
+.faq-req-btn-row .req-btn{
+    border-radius: 5px;
+    color: #323232;
+    text-align: center;
+    font-family: "Noto Sans";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 30px; /* 166.667% */
+    background: #FFD16C;
+}
+.faq-req-btn-row .req-btn:hover {
+    color: #ffd16c;
+    background: #af2c2c;
+}
+.faq-req-btn-row p {
+color: rgba(0, 0, 0, 0.50);
+font-family: "Noto Sans";
+font-size: 14px;
+font-weight: 300;
+line-height: 30px;
+padding-top: 1rem;
+}
+@media only screen and (min-width: 768px) {
+    .faq-info-con {
+        padding: 5.56vw 0px 2.78vw 0;
+    }
+    .faq-list-con {
+        padding: 0px 0px 5.56vw 0;
+    }
+    .faq-req-btn-row  {
+        padding-top: 3.47vw;
+    }
+}
+@media only screen and (min-width: 1600px) {
+    .faq-info-con {
+        padding: 80px 0px 40px 0;
+    }
+    .faq-list-con {
+        padding: 0px 0px 80px 0;
+    }
+    .faq-req-btn-row  {
+        padding-top: 50px;
+    }
+}
+@media (max-width: 767px) {
+    .faq-info-con {
+        padding: 40px 0;
+    }
+    .faq-req-btn-row  {
+        padding-top: 40px;
+    }
+}
