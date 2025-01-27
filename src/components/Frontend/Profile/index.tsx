@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaCheckCircle } from "react-icons/fa";
 
-export default function Profile() {
+export default function Profile(data) {
   return (
     <div className="bg-gray-100 min-h-screen">
       {/* Header Section */}

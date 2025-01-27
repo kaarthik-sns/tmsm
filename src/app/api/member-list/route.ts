@@ -7,6 +7,7 @@ import ProfileRequests from '@/models/Profile_requests';
 export const GET = async (req: NextRequest) => {
     try {
         const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+        console.log(token);
 
         const { searchParams } = new URL(req.url);
         const page = parseInt(searchParams.get('page') || '1', 10);

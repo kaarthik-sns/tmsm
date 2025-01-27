@@ -1,19 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Profile from "@/components/Frontend/Profile";
 import ProfileUser from "@/components/Frontend/ProfileUser";
+import { useSession } from "next-auth/react";
 
 
 const RequestStatus = () => {
+
   const [activeTab, setActiveTab] = useState("profile");
-  const myId = 2;
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isEditMode, setIsEditMode] = useState(false);  // State to track edit mode
+  const [loading, setIsLoading] = useState(false);
+  const [profileData, setProfileData] = useState([]);
 
 
+  const { data: session } = useSession();
+  const myId = session.user.id;
+  // const myId =2;
   const receivedRequests = profiles.filter(profile => profile.receiver_id === myId);
   const sentRequests = profiles.filter(profile => profile.sender_id === myId);
 
@@ -33,6 +39,40 @@ const RequestStatus = () => {
     setIsModalOpen(false);
     setSelectedProfile(null);
   };
+
+
+  useEffect(() => {
+    if (myId) {
+      const fetchUserData = async () => {
+        try {
+          const response = await fetch("/api/get-user-data", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: myId }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch user data.");
+          }
+
+          const { data } = await response.json();
+
+          setProfileData(data);
+
+        } catch (err) {
+          console.error(err);
+          // setError(err.message);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      fetchUserData();
+    }
+  }, [myId]);
+
+
+
 
   return (
     <div className="bg-light min-h-screen flex justify-center py-10 px-4">
@@ -83,7 +123,7 @@ const RequestStatus = () => {
             <>
               {!isEditMode ? (
                 <>
-                  <Profile />
+                  <Profile data={profileData}/>
                   <div className="absolute top-2 right-2 z-10 p-2"> {/* Positioned correctly */}
                     <label
                       htmlFor="cover"

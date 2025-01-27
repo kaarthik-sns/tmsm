@@ -1,0 +1,25 @@
+import { NextRequest, NextResponse } from 'next/server';
+import connectToDatabase from '@/lib/mongodb';
+import User from '@/models/User';
+
+export const POST = async (req: NextRequest) => {
+    try {
+
+        const { id } = await req.json();
+
+        // Connect to the database
+        await connectToDatabase();
+
+
+        var user = await User.findById(id);
+
+        // Prepare the response with pagination meta
+        return NextResponse.json({
+            data: user,
+        });
+
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+    }
+};
