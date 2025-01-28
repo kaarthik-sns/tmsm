@@ -52,7 +52,7 @@ function NavList() {
 
       {/* Desktop Navigation */}
       <div className="flex bg-white px-5 py-3 gap-5 rounded-full bg-button hidden lg:block header-text">
-      {session && !session.user.is_admin ? (
+        {session && !session.user.is_admin ? (
           <>
             <NavItem label="Dashboard" href="/frontend/dashboard" className="pr-5 headertext border-r border-black" />
             <NavItem label="Logout" onClick={() => signOut()} className="pl-5  headertext" />
@@ -110,7 +110,6 @@ export function NavbarWithSimpleLinks() {
     <Navbar className="header-bg py-6 border-0"
       fullWidth={true}
     >
-
       <div className="container mx-auto flex items-center justify-between mt-6">
         <Link className="hidden flex-shrink-0 lg:block" href="/frontend/">
           <img
