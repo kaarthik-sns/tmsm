@@ -99,8 +99,8 @@ const SignIn: React.FC = () => {
 
             {/* Show login success message */}
             {successMessage && (
-              <div className="bg-green-100 md:bg-green-200 p-3 rounded-md text-sm success-green mb-6">
-                {successMessage}
+              <div className="bg-green-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-green-600 mb-6">
+                <p>{successMessage}</p>
               </div>
             )}
 
@@ -169,7 +169,7 @@ const SignIn: React.FC = () => {
               <div className="mt-6 text-left">
                 <p>
                   Don’t have an account?{" "}
-                  <Link href="/frontend/register" className="text-dark hover:text-dark">
+                  <Link href="/frontend/register" className="dark-terms" >
                     Sign Up
                   </Link>
                 </p>
