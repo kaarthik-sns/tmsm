@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Contact from '@/models/Contact'; // Adjust this path based on your project structure
 import connectToDatabase from '@/lib/mongodb';
-import { contactFormMailToAdmin } from '@/lib/template/contact-us';
-import * as Handlebars from 'handlebars';
+import { contactUsTemplate } from '@/lib/template/contact-us';
 import { sendEmail } from "@/utils/mail.util"
 
 
@@ -79,18 +78,11 @@ export async function POST(req) {
             message,
         });
 
-        const template = Handlebars.compile(contactFormMailToAdmin);
-        const htmlBody = template({
-            name: name,
-            email: email,
-            interested_in: interested_in,
-            phone: phone,
-            message: message,
-        });
+        const htmlBody = contactUsTemplate(name,email,phone,message);
 
         const receipients = [{
             name: 'admin',
-            address: 'kaarthikr@searchnscore.com'
+            address: ''
         }]
 
         const result3 = await sendEmail({

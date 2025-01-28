@@ -8,7 +8,9 @@ import { toast } from "sonner";
 import { useRouter } from 'next/navigation';
 
 const RequestStatus = () => {
-
+  const { data: session } = useSession();
+  const myId = session?.user.id;
+  
   const [activeTab, setActiveTab] = useState("profile");
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,8 +21,7 @@ const RequestStatus = () => {
   const [sentRequests, setSentReqData] = useState([]);
   const [receivedRequests, setRecivedReqData] = useState([]);
   const router = useRouter();
-  const { data: session } = useSession();
-  const myId = session.user.id;
+
 
   const filteredRequests = (activeTab === "received" ? receivedRequests : sentRequests).filter(profile =>
     profile.user.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -302,6 +303,8 @@ const ProfileCard = ({ profile, activeTab, onViewProfile, onHandleRequest, onRed
           ) : profile.status === "accepted" ? (
             <>
               <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm accepted" >Accepted</button>
+              <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm decline" onClick={() => onHandleRequest(profile._id, 'cancel')}>Cancel</button>
+
             </>
           ) : profile.status === "rejected" ? (
             <>

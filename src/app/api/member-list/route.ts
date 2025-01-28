@@ -48,68 +48,29 @@ export const GET = async (req: NextRequest) => {
 
         query.is_delete = false;
         query.is_approve = true;
+        query.is_verify = true;
 
         // Fetch filtered and paginated users from the database
         const users = await User.find(query).skip(skip).limit(pageSize);
 
         // Count total documents for the query
         const totalUsers = await User.countDocuments(query);
-        interface Filters {
-            sender_id?: string;
-        }
-
-        const filters: Filters = {}; // Declare 'filters' with the correct type
 
 
-        // Add status filter if provided
-        if (token) {
-            filters.sender_id = token.id as string; // Direct match for status field
-        }
+        const ReqsentQuery: any = {};
+        const ReqRecQuery: any = {};
 
-        const ProfileRequestsData = await ProfileRequests.aggregate([
-            {
-                $lookup: {
-                    from: 'users',
-                    let: { receiverId: { $toObjectId: '$receiver_id' } },
-                    pipeline: [
-                        {
-                            $match: {
-                                $expr: { $eq: ['$_id', '$$receiverId'] }
-                            }
-                        },
-                    ],
-                    as: 'receiver',
-                }
-            },
-            {
-                $lookup: {
-                    from: 'users',
-                    let: { senderId: { $toObjectId: '$sender_id' } },
-                    pipeline: [
-                        {
-                            $match: {
-                                $expr: { $eq: ['$_id', '$$senderId'] }
-                            }
-                        },
-                    ],
-                    as: 'sender',
-                }
-            },
-            {
-                $unwind: { path: '$receiver', preserveNullAndEmptyArrays: true }
-            },
-            {
-                $unwind: { path: '$sender', preserveNullAndEmptyArrays: true }
-            },
-            {
-                $match: filters
-            }
-        ]);
+        ReqsentQuery.sender_id = token.id
+        ReqRecQuery.receiver_id = token.id
+
+        const ProfileRequestsSentData = await ProfileRequests.find(ReqsentQuery);
+        const ProfileRequestsRecData = await ProfileRequests.find(ReqRecQuery);
 
         // Prepare the response with pagination meta
         return NextResponse.json({
             data: users,
-            req_data: ProfileRequestsData,
+            req_sent_data: ProfileRequestsSentData,
+            req_rec_data: ProfileRequestsRecData,
             pagination: {
                 currentPage: page,
                 pageSize,

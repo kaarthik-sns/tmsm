@@ -1,4 +1,5 @@
-export const welcome = `<!DOCTYPE html>
+export const welcomeTemplate = (userName: string): string =>
+`<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -47,7 +48,7 @@ export const welcome = `<!DOCTYPE html>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome, {{user_name}}!</h1>
+        <h1>Welcome, ${userName}!</h1>
         <p>Thank you for joining TMSM, the trusted matrimony platform. We are thrilled to have you as a part of our community!</p>
         
         <p>We wish you all the best in your journey to find your perfect match.</p>

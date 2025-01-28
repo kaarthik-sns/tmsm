@@ -6,10 +6,9 @@ import { promises as fs } from 'fs';
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 import { sendEmail } from "@/utils/mail.util"
-import * as Handlebars from 'handlebars';
-import { verification } from '@/lib/template/verification';
-import { welcome } from '@/lib/template/welcome';
-import { welcome_admin } from '@/lib/template/welcome_admin';
+import { verificationTemplate } from '@/lib/template/verification';
+import { welcomeTemplate } from '@/lib/template/welcome';
+import { adminWelcomeTemplate } from '@/lib/template/welcome_admin';
 
 type UploadedFile = {
     name: string;
@@ -224,49 +223,38 @@ export async function POST(request: NextRequest) {
 
             const verificationLink = `${process.env.BASE_URL}/verify-email?code=${newUser.email_code}`;
 
+
             const receipients = [{
                 name: name,
                 address: email
             }]
 
-            const template = Handlebars.compile(welcome);
-            const htmlBody = template({
-                user_name: name
-            });
+            const htmlBody = welcomeTemplate(name);
 
             const result = await sendEmail({
                 receipients,
-                subject: 'TMSM - Welcome mail!',
+                subject: 'TMSM - Welcome mail',
                 message: htmlBody
             })
 
-            const template2 = Handlebars.compile(verification);
-            const htmlBody2 = template2({
-                verification_link: verificationLink,
-                user_name: name
-            });
+            const htmlBody2 = verificationTemplate(name, verificationLink);
 
             const result2 = await sendEmail({
                 receipients,
-                subject: 'TMSM - Verification mail!',
+                subject: 'TMSM - Verification mail',
                 message: htmlBody2
             })
 
-            const template3 = Handlebars.compile(welcome_admin);
-            const htmlBody3 = template3({
-                email: email,
-                name: name,
-                phonenumber: phonenumber
-            });
+            const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber);
 
             const receipients2 = [{
                 name: 'admin',
-                address: 'kaarthikr@searchnscore.com'
+                address: ''
             }]
 
             const result3 = await sendEmail({
                 receipients: receipients2,
-                subject: 'TMSM - New User Registration!',
+                subject: 'TMSM - New User Registration',
                 message: htmlBody3
             })
 
