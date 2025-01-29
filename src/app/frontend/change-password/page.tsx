@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 import FrontendLayouts from "@/components/Layouts/Frontendlayout";
 import Innerbanner from "@/components/Frontend/InnerPageBanner/contact-innerbanner";
-import Contact from "@/components/Frontend/Contact/contact-info";
+import ChangePassword from "@/components/Frontend/Password";
 
 
 export const metadata: Metadata = {
-  title: "Contact us - TMSM",
+  title: "Change Password - TMSM",
   description: "",
 };
 
@@ -25,8 +25,7 @@ export default async function Home() {
   return (
     <>
       <FrontendLayouts>
-        <Innerbanner />
-        <Contact data={data.data} />
+       <ChangePassword/>
       </FrontendLayouts>
     </>
   );

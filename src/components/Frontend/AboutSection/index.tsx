@@ -50,6 +50,7 @@ const AboutUs = (data) => {
                   alt="Happy Couple"
                   layout="fill"
                   objectFit="contain"
+                  loading="lazy"
                 />
               </div>
             </div>
@@ -82,6 +83,7 @@ const AboutUs = (data) => {
                   alt="Happy Couple"
                   layout="fill"
                   objectFit="contain"
+                   loading="lazy"
                 />
               </div>
             </div>
