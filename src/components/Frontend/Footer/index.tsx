@@ -12,14 +12,13 @@ export function FooterWithCustomDesign() {
         {/* Left Column - Logo and Description */}
         <div className="flex flex-col items-center md:items-start">
           <Link className="flex-shrink-0 lg:block" href="/frontend/">
-            <Image
-              src="/images/logo/Footer-logo.svg" // Replace with your logo path
-              width={400}
-              height={50}
-              alt="TMSM Logo"
-               loading="lazy"
-              className="mx-auto md:mx-0"
-            />
+          <img 
+            alt="TMSM Logo" 
+            loading="lazy" 
+            width="400" 
+            height="50" 
+            className="mx-auto md:mx-0" 
+            src="/images/logo/Footer-logo.svg" />
           </Link>
           <div className="flex justify-center md:justify-start space-x-4 mt-4 items-center  md:block  hidden">
             <div className="flex justify-center md:justify-start space-x-4">
