@@ -10,7 +10,7 @@ import NextImage from "next/image";
 import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
 import { useRouter, useSearchParams } from "next/navigation";
 const UserProfile = (user_data) => {
-  
+
   const searchParams = useSearchParams();
   // const userId = searchParams.get("userId");
   const [profilePic, setProfilePic] = useState<File | null>(null);
@@ -25,6 +25,7 @@ const UserProfile = (user_data) => {
   const [profileCreator, setProfileCreator] = useState(false);
   const formData_upload = new FormData();
   const [isLoading, setIsLoading] = useState(true);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const router = useRouter();
 
@@ -283,7 +284,7 @@ const UserProfile = (user_data) => {
     if (photo4) formData_upload.append("photo4", photo4);
     if (horoscope) formData_upload.append("horoscope", horoscope);
     if (profileCreatorPic) formData_upload.append("profile_creator_photo", profileCreatorPic);
-
+    setSuccessMessage("");
     try {
       const res = await fetch("/api/user", {
         method: "POST",
@@ -294,13 +295,15 @@ const UserProfile = (user_data) => {
         throw new Error("Failed to Update user data.");
       }
 
-      toast.success('User updated successfully!', {
-        className: "sonner-toast-success",
-        cancel: {
-          label: 'Close',
-          onClick: () => console.log('Close'),
-        },
-      });
+      setSuccessMessage("Profile updated successfully!");
+
+      // toast.success('Profile updated successfully!', {
+      //   className: "sonner-toast-success",
+      //   cancel: {
+      //     label: 'Close',
+      //     onClick: () => console.log('Close'),
+      //   },
+      // });
 
       // Redirect
       router.push(`/frontend/dashboard`);
@@ -325,6 +328,16 @@ const UserProfile = (user_data) => {
     }
   };
 
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage(""); // Clear the message after 5 seconds
+      }, 5000);
+  
+      return () => clearTimeout(timer); // Cleanup timer when component unmounts or message changes
+    }
+  }, [successMessage]);
+  
   const profileOptions = [
     { label: 'MySelf', value: 'myself' },
     { label: 'Daughter', value: 'daughter' },
@@ -354,6 +367,12 @@ const UserProfile = (user_data) => {
         {/* Header Section */}
         <div className="bg-light text-white py-8">
           <div className="container mx-auto flex flex-col items-center">
+            {/* Show profile update success message */}
+            {successMessage && (
+              <div className="bg-green-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-green-600 mb-6">
+                <p>{successMessage}</p>
+              </div>
+            )}
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 gap-9 sm:grid-cols-2 mt-5">
                 <div className="flex flex-col gap-9">

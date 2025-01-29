@@ -139,14 +139,6 @@ const PaginatedUsers = () => {
     }
   };
 
-  const handleReset = () => {
-    setFilters({
-      lookingfor: "",
-      fromage: "",
-      toage: "",
-      subcaste: "",
-    });
-  };
 
   const handleRequestClick = async (id) => {
 
@@ -260,13 +252,6 @@ const PaginatedUsers = () => {
                 >
                   Search
                 </button>
-                <button
-                  className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom"
-                  type="button"
-                  onClick={handleReset} // Add onClick event
-
-                > Reset
-                  </button>
               </div>
 
             </div>
@@ -309,7 +294,7 @@ const PaginatedUsers = () => {
                           >
                             View Details
                           </button>
-                        ) : reqSentData?.[user._id]?.status === "rejected" ? (
+                        ) : reqSentData?.[user._id].status === "rejected" ? (
                           // If status is "rejected", show "Rejected" disabled button
                           <button
                             key={user._id}
