@@ -109,6 +109,8 @@ export function NavbarWithSimpleLinks() {
   return (
     <Navbar className="header-bg py-6 border-0"
       fullWidth={true}
+      onPointerEnterCapture={() => {}}
+      onPointerLeaveCapture={() => {}}
     >
 
       <div className="container mx-auto flex items-center justify-between mt-6">
