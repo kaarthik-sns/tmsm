@@ -6,11 +6,20 @@ import { sendEmail } from "@/utils/mail.util"
 import { verificationTemplate } from '@/lib/template/verification';
 import { welcomeTemplate } from '@/lib/template/welcome';
 import { adminWelcomeTemplate } from '@/lib/template/welcome-admin';
+import getSMTPSettings from '@/utils/settings.util';
+
 
 export async function POST(request: Request) {
     const { name, lastname, email, password, confirmPassword, phonenumber, religion } = await request.json();
 
     const testData = [];
+
+    let copyright = '';
+
+    const smtpSettings = await getSMTPSettings();
+    if (smtpSettings) {
+        copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
+    }
 
     const isValidEmail = (email: string) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -82,7 +91,7 @@ export async function POST(request: Request) {
             address: email
         }]
 
-        const htmlBody = welcomeTemplate(name);
+        const htmlBody = welcomeTemplate(name,copyright);
 
         const result = await sendEmail({
             receipients,
@@ -90,7 +99,7 @@ export async function POST(request: Request) {
             message: htmlBody
         })
 
-        const htmlBody2 = verificationTemplate(name, verificationLink);
+        const htmlBody2 = verificationTemplate(name, verificationLink,copyright);
 
         const result2 = await sendEmail({
             receipients,
@@ -98,7 +107,7 @@ export async function POST(request: Request) {
             message: htmlBody2
         })
 
-        const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber);
+        const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber,copyright);
 
         const receipients2 = [{
             name: 'admin',

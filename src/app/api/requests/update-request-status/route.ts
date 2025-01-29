@@ -87,7 +87,7 @@ export async function PATCH(req: NextRequest) {
 
                 name2 = reqData.sender.name;
 
-                content = 'Profile view request has been Canceled by ' + name2;
+                content = `The profile view request from ${name2} has been canceled.<br>If you were interested, you can explore more profiles and connect with others on TMSM.`;
 
                 receipients = [{
                     name: name,
@@ -103,11 +103,11 @@ export async function PATCH(req: NextRequest) {
 
                 name2 = reqData.receiver.name;
 
-                content = 'Profile view request has been Accepted by ' + name2;
+                content = `Your profile view request has been accepted by ${name2}. <br>You can now view their profile and connect with them`;
 
                 receipients = [{
                     name: name,
-                    address: 'kaarthikr@searchnscore.com'
+                    address: email
                 }]
 
                 htmlBody = replyProfileRequestTemplate(name, link, content, copyright);
@@ -119,12 +119,12 @@ export async function PATCH(req: NextRequest) {
 
                 name2 = reqData.receiver.name;
 
-                content = 'Profile view request has been Declined by ' + name2;
+                content = `Unfortunately, your profile view request to ${name2} has been rejected. <br>Don't worry! Keep exploring and connecting with other profiles on TMSM.`;
 
 
                 receipients = [{
                     name: name,
-                    address: 'kaarthikr@searchnscore.com'
+                    address: email
                 }]
 
                 htmlBody = replyProfileRequestTemplate(name, link, content, copyright);
@@ -137,8 +137,6 @@ export async function PATCH(req: NextRequest) {
                 subject: 'TMSM - Profile Request',
                 message: htmlBody
             });
-
-            return NextResponse.json({ error: "Failed to update status" }, { status: 500 });
 
 
             if (status === 'cancel') {

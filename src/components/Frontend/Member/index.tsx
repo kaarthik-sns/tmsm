@@ -150,6 +150,11 @@ const PaginatedUsers = () => {
 
   const handleRequestClick = async (id) => {
 
+    if (!session?.user || !session?.user?.is_admin) {
+      router.push(`/frontend/login`);
+      return;
+    }
+    
     const userId = session.user.id;
 
     try {

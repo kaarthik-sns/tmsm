@@ -15,12 +15,15 @@ export async function GET(req: NextRequest) {
 
     // return NextResponse.json('test');
 
+    let copyright = `© ${new Date().getFullYear()} Tmsm.com all rights reserved`;
+        
+
     const receipients = [{
         name: 'kaarthik',
         address: 'kaarthikr@searchnscore.com'
     }]
 
-    const htmlBody = verificationTemplate('Kaarthik', verificationLink);
+    const htmlBody = verificationTemplate('Kaarthik', verificationLink,copyright);
 
 
     const result = await sendEmail({

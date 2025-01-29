@@ -4,10 +4,18 @@ import ProfileRequests from '@/models/Profile_requests';
 import User from '@/models/User';
 import { sendEmail } from "@/utils/mail.util"
 import { profileViewRequestTemplate } from '@/lib/template/profile-request';
+import getSMTPSettings from '@/utils/settings.util';
 
 export async function POST(request: NextRequest) {
 
   try {
+
+    let copyright = '';
+
+    const smtpSettings = await getSMTPSettings();
+    if (smtpSettings) {
+      copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
+    }
 
     // Connect to the database
     await connectToDatabase();
@@ -48,7 +56,7 @@ export async function POST(request: NextRequest) {
 
     const homePage = process.env.BASE_URL;
 
-    const htmlBody = profileViewRequestTemplate(recName, sentName, homePage);
+    const htmlBody = profileViewRequestTemplate(recName, sentName, homePage, copyright);
 
     const result = await sendEmail({
       receipients,

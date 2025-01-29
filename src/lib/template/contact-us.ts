@@ -1,4 +1,4 @@
-export const contactUsTemplate = (name: string, email: string, phone: string, message: string): string => `
+export const contactUsTemplate = (name: string, email: string, phone: string, message: string, copyright: string): string => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,7 +64,7 @@ export const contactUsTemplate = (name: string, email: string, phone: string, me
         </div>
         <p>Kindly respond to this inquiry as soon as possible.</p>
         <div class="footer">
-            <p>© 2025 TMSM.com. All rights reserved.</p>
+           <p>${copyright}</p>
         </div>
     </div>
 </body>

@@ -3,8 +3,38 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 export function FooterWithCustomDesign() {
+
+  const [copyright, setCopyright] = useState('TMSMMatrimony.com. All rights reserved.');
+
+    useEffect(() => {
+  
+      const fetchSettings = async () => {
+        try {
+          const response = await fetch("/api/get-settings-data", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+          });
+  
+          if (!response.ok) {
+            throw new Error("Failed to fetch user data.");
+          }
+  
+          const { data } = await response.json();
+  
+          setCopyright(data.copyright);
+  
+        } catch (err) {
+          console.error(err);
+        }
+      };
+  
+      fetchSettings();
+  
+    }, []);
+
   return (
     <footer className="dark-bg text-white py-8">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-[50%_30%_20%] gap-y-8 md:gap-x-8 md:text-left pl-2 pr-2 footer-text">
@@ -53,7 +83,7 @@ export function FooterWithCustomDesign() {
           </div>
           <div className="mt-4 text-center md:text-left md:block  hidden">
             <p className="footer-p">
-              &copy; {new Date().getFullYear()} TMSMMatrimony.com. All rights reserved.
+              &copy; {new Date().getFullYear()} {copyright}
             </p>
           </div>
         </div>
@@ -134,7 +164,7 @@ export function FooterWithCustomDesign() {
         </div>
         <div className="text-center">
           <p className="footer-p">
-            &copy; {new Date().getFullYear()} TMSMMatrimony.com. All rights reserved.
+           &copy; {new Date().getFullYear()} {copyright}
           </p>
         </div>
       </div>

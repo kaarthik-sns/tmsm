@@ -5,9 +5,17 @@ import connectToDatabase from '@/lib/mongodb';
 import { sendEmail } from "@/utils/mail.util"
 import { changePasswordTemplate } from '@/lib/template/change-password';
 import Admin from '@/models/Admin';
+import getSMTPSettings from '@/utils/settings.util';
+
 
 export async function POST(request: Request) {
     const { email, is_admin } = await request.json();
+
+    let copyright = '';
+    const smtpSettings = await getSMTPSettings();
+    if (smtpSettings) {
+        copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
+    }
 
     const isValidEmail = (email: string) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -46,7 +54,7 @@ export async function POST(request: Request) {
             address: email
         }]
 
-        const htmlBody = changePasswordTemplate(forgotPasswordLink);
+        const htmlBody = changePasswordTemplate(forgotPasswordLink,copyright);
 
         const result = await sendEmail({
             receipients,
