@@ -182,9 +182,9 @@ const ContactInfo = (settings) => {
                                     <h4>Follow Us</h4>
                                     <p>Follow us on social media links for the latest updates and matrimonial tips.</p>
                                     <ul className="social-media-info">
-                                        <li><a href={settings.data.twitter}><img src="/images/contact/twitter-icon.svg" alt="twitter" /></a></li>
-                                        <li><a href={settings.data.facebook}><img src="/images/contact/facebook-icon.svg" alt="facebook" /></a></li>
-                                        <li><a href={settings.data.instagram}><img src="/images/contact/instagram-icon.svg" alt="instagram" /></a></li>
+                                        <li><a href={settings.data.twitter} target="_blank"><img src="/images/contact/twitter-icon.svg" alt="twitter" /></a></li>
+                                        <li><a href={settings.data.facebook} target="_blank"><img src="/images/contact/facebook-icon.svg" alt="facebook" /></a></li>
+                                        <li><a href={settings.data.instagram} target="_blank"><img src="/images/contact/instagram-icon.svg" alt="instagram" /></a></li>
                                     </ul>
                                 </div>
                             </div>
