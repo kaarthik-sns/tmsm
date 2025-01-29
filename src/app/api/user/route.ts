@@ -8,7 +8,7 @@ import bcrypt from 'bcryptjs';
 import { sendEmail } from "@/utils/mail.util"
 import { verificationTemplate } from '@/lib/template/verification';
 import { welcomeTemplate } from '@/lib/template/welcome';
-import { adminWelcomeTemplate } from '@/lib/template/welcome_admin';
+import { adminWelcomeTemplate } from '@/lib/template/welcome-admin';
 
 type UploadedFile = {
     name: string;
