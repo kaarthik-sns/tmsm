@@ -3,10 +3,9 @@ import { NextResponse } from 'next/server'
 import User from '@/models/User'
 import connectToDatabase from '@/lib/mongodb';
 import { sendEmail } from "@/utils/mail.util"
-import * as Handlebars from 'handlebars';
-import { verification } from '@/lib/template/verification';
-import { welcome } from '@/lib/template/welcome';
-import { welcome_admin } from '@/lib/template/welcome_admin';
+import { verificationTemplate } from '@/lib/template/verification';
+import { welcomeTemplate } from '@/lib/template/welcome';
+import { adminWelcomeTemplate } from '@/lib/template/welcome_admin';
 
 export async function POST(request: Request) {
     const { name, lastname, email, password, confirmPassword, phonenumber, religion } = await request.json();
@@ -83,55 +82,37 @@ export async function POST(request: Request) {
             address: email
         }]
 
-        const template = Handlebars.compile(welcome);
-        const htmlBody = template({
-            user_name: name
-        });
+        const htmlBody = welcomeTemplate(name);
 
         const result = await sendEmail({
             receipients,
-            subject: 'TMSM - Welcome mail!',
+            subject: 'TMSM - Welcome mail',
             message: htmlBody
         })
 
-        const template2 = Handlebars.compile(verification);
-        const htmlBody2 = template2({
-            verification_link: verificationLink,
-            user_name: name
-        });
+        const htmlBody2 = verificationTemplate(name, verificationLink);
 
         const result2 = await sendEmail({
             receipients,
-            subject: 'TMSM - Verification mail!',
+            subject: 'TMSM - Verification mail',
             message: htmlBody2
         })
 
-
-        const template3 = Handlebars.compile(welcome_admin);
-        const htmlBody3 = template3({
-            email: email,
-            name: name,
-            phonenumber: phonenumber
-        });
-
+        const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber);
 
         const receipients2 = [{
             name: 'admin',
-            address: 'kaarthikr@searchnscore.com'
+            address: ''
         }]
 
         const result3 = await sendEmail({
             receipients: receipients2,
-            subject: 'TMSM - New User Registration!',
+            subject: 'TMSM - New User Registration',
             message: htmlBody3
         })
 
-        console.log("welcome email:", result);
-        console.log("Verification email:", result2);
-
         return NextResponse.json({ message: "Registration successful. Await admin approval. Check your email for updates." }, { status: 201 });
         
-
     } catch (error) {
         console.log(error)
         return NextResponse.json({ message: "Something went wrong" }, { status: 500 });

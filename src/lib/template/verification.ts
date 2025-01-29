@@ -1,4 +1,5 @@
-export const verification = `<!DOCTYPE html>
+export const verificationTemplate = (user_name: string, verification_link: string): string => `
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -47,11 +48,11 @@ export const verification = `<!DOCTYPE html>
 </head>
 <body>
     <div class="container">
-        <h1>Hi, {{user_name}} Please Verify Your Email</h1>
+        <h1>Hi, ${user_name} Please Verify Your Email</h1>
         <p>Thank you for signing up! To complete your registration, please verify your email address by clicking the button below.</p>
         <p>Once Admin approved your registartion You can login.</p>
         <p>If you did not sign up for this account, you can safely ignore this email.</p>
-        <a href="{{verification_link}}" class="button">Verify Email</a>
+        <a href="${verification_link}" class="button">Verify Email</a>
         <p>If the button doesn't work, copy and paste the following link into your browser:</p>
         <p>{{verification_link}}</p>
         <div class="footer">

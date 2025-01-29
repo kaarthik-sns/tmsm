@@ -35,12 +35,19 @@ const handler = NextAuth({
                         throw new Error("User not found, Please Check your Email");
                     }
 
-                    if (!is_admin && !user.is_approve) {
-                        throw new Error("Admin Not Approved Your Registration");
-                    }
+                    if (!is_admin) {
 
-                    if (!is_admin && !user.is_active) {
-                        throw new Error("Your account has been deactivated");
+                        if (!user.is_approve) {
+                            throw new Error("Admin Not Approved Your Registration");
+                        }
+
+                        if (!user.is_verify) {
+                            throw new Error("Your Email is Not Verified");
+                        }
+
+                        if (!user.is_active) {
+                            throw new Error("Your account has been deactivated");
+                        }
                     }
 
                     const isValidPassword = await bcrypt.compare(

@@ -51,7 +51,7 @@ export default function VerifyEmailPage() {
                 {message && (
                     <p className="mt-3 text-gray-700 max-w-xs text-center">
                         {message}
-                        <a className="font-medium text-indigo-600" href="auth/signin"> Click to SignIn</a>
+                        <a className="font-medium text-indigo-600" href="frontend/login"> Click to Login</a>
                     </p>
                 )}
                 {error && (
