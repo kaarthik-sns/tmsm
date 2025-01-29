@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef  } from "react";
 import Breadcrumb from "@/components/Breadcrumbs/UserBreadcrumb";
 import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
 import SelectGroupCaste from "@/components/SelectGroup/SelectGroupCaste";
@@ -26,6 +26,8 @@ const UserProfile = (user_data) => {
   const formData_upload = new FormData();
   const [isLoading, setIsLoading] = useState(true);
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const errorRef = useRef(null);
 
   const router = useRouter();
 
@@ -98,7 +100,7 @@ const UserProfile = (user_data) => {
   });
 
   useEffect(() => {
-    if (user_data) {
+    if (user_data && !formData.age) { // Only update if formData is empty
       const fetchUserData = async () => {
         try {
           const response = await fetch("/api/get-user-data", {
@@ -106,19 +108,22 @@ const UserProfile = (user_data) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id: user_data.userId }),
           });
-
+  
           if (!response.ok) {
             throw new Error("Failed to fetch user data.");
           }
-
+  
           const { data } = await response.json();
-
-          setFormData(data);
-
-          if (data?.profile_created_for != 'myself') {
+  
+          setFormData((prevData) => ({
+            ...prevData,
+            ...data, // Merge existing data without overwriting user input
+          }));
+  
+          if (data?.profile_created_for !== 'myself') {
             setProfileCreator(true);
           }
-
+  
           setProfilePic(data.profile_photo);
           setPhoto1(data.photo1);
           setPhoto2(data.photo2);
@@ -126,7 +131,7 @@ const UserProfile = (user_data) => {
           setPhoto4(data.photo4);
           setProfileCreatorPic(data.profile_creator_photo);
           setHoroscope(data.horoscope);
-
+  
         } catch (err) {
           console.error(err);
           setError(err.message);
@@ -134,10 +139,11 @@ const UserProfile = (user_data) => {
           setIsLoading(false);
         }
       };
-
+  
       fetchUserData();
     }
-  }, [user_data]);
+  }, [user_data]); // Removed formData dependency to avoid overwriting changes
+  
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -248,19 +254,34 @@ const UserProfile = (user_data) => {
         errors.profile_creator_phonenumber = "Phone number is required.";
       }
     }
-
+    setErrorMessage("");
     // If there are validation errors, show error messages and stop submission
     if (Object.keys(errors).length > 0) {
-      setFormErrors(errors); // Assume `setError` updates the UI to display error messages
-      toast.error('Please fix the highlighted errors.', {
-        className: "sonner-toast-error",
-        cancel: {
-          label: 'Close',
-          onClick: () => console.log('Close'),
-        },
-      });
+      setFormErrors(errors);
+      setErrorMessage("Please fix the highlighted errors.");
+    
+      setTimeout(() => {
+        if (errorRef.current) {
+          errorRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100); // Small delay to wait for state update
+    
       return;
     }
+    
+    setErrorMessage(""); // Clear message if validation passes
+    try {
+    useEffect(() => {
+      if (errorMessage) {
+        const timer = setTimeout(() => {
+          setErrorMessage(""); // Clear the message after 5 seconds
+        }, 5000);
+    
+        return () => clearTimeout(timer); // Cleanup timer when component unmounts or message changes
+      }
+    }, [errorMessage]);
+  } catch (err) { 
+  }
 
     // Reset errors if validation passes
     setFormErrors({});
@@ -365,12 +386,18 @@ const UserProfile = (user_data) => {
     <>
       <div className="bg-gray-100 min-h-screen">
         {/* Header Section */}
-        <div className="bg-light text-white py-8">
-          <div className="container mx-auto flex flex-col items-center">
+        <div className="bg-light text-white py-8" >
+          <div className="container mx-auto flex flex-col items-center" ref={errorRef} >
             {/* Show profile update success message */}
             {successMessage && (
               <div className="bg-green-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-green-600 mb-6">
                 <p>{successMessage}</p>
+              </div>
+            )}
+            {/* Show profile update error message */}
+             {errorMessage && (
+              <div  className="bg-red-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-red-600 mb-6">
+                <p>{errorMessage}</p>
               </div>
             )}
             <form onSubmit={handleSubmit}>
