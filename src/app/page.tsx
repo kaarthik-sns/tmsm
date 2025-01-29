@@ -1,4 +1,4 @@
-import ECommerce from "@/components/Dashboard/E-commerce";
+import ECommerce from "@/components/Dashboard/DashboardUi";
 import { Metadata } from "next";
 import HomeLayout from "@/components/Layouts/HomeLayout";
 
