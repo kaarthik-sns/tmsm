@@ -5,7 +5,7 @@ import connectToDatabase from '@/lib/mongodb';
 import { sendEmail } from "@/utils/mail.util"
 import { verificationTemplate } from '@/lib/template/verification';
 import { welcomeTemplate } from '@/lib/template/welcome';
-import { adminWelcomeTemplate } from '@/lib/template/welcome_admin';
+import { adminWelcomeTemplate } from '@/lib/template/welcome-admin';
 
 export async function POST(request: Request) {
     const { name, lastname, email, password, confirmPassword, phonenumber, religion } = await request.json();

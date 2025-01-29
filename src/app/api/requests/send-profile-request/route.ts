@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/mongodb';
 import ProfileRequests from '@/models/Profile_requests';
+import User from '@/models/User';
+import { sendEmail } from "@/utils/mail.util"
+import { profileViewRequestTemplate } from '@/lib/template/profile-request';
 
 export async function POST(request: NextRequest) {
 
@@ -30,6 +33,28 @@ export async function POST(request: NextRequest) {
     });
 
     await newNotification.save();
+
+    const userRecData = await User.findById(receiver_id);
+    const email = userRecData.emaiil;
+    const recName = userRecData.name;
+
+    const userSentData = await User.findById(sender_id);
+    const sentName = userSentData.name;
+
+    const receipients = [{
+      name: recName,
+      address: 'kaarthikr@searchnscore.com'
+    }]
+
+    const homePage = process.env.BASE_URL;
+
+    const htmlBody = profileViewRequestTemplate(recName, sentName, homePage);
+
+    const result = await sendEmail({
+      receipients,
+      subject: 'TMSM - Profile Request',
+      message: htmlBody
+    });
 
     // Return success response
     return NextResponse.json({ message: 'Profile request sent Successfully' }, { status: 200 });
