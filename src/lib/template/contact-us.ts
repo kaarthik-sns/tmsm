@@ -1,4 +1,4 @@
-export const contactFormMailToAdmin = `
+export const contactUsTemplate = (name: string, email: string, phone: string, message: string): string => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,12 +56,11 @@ export const contactFormMailToAdmin = `
         <p>Hello Admin,</p>
         <p>You have received a new message from the contact form:</p>
         <div class="details">
-            <p><span class="highlight">Name:</span> {{name}}</p>
-            <p><span class="highlight">Email:</span> {{email}}</p>
-            <p><span class="highlight">Interested In:</span> {{interested_in}}</p>
-            <p><span class="highlight">Phone:</span> {{phone}}</p>
+            <p><span class="highlight">Name:</span> ${name}</p>
+            <p><span class="highlight">Email:</span> ${email}</p>
+            <p><span class="highlight">Phone:</span> ${phone}</p>
             <p><span class="highlight">Message:</span></p>
-            <p>{{message}}</p>
+            <p>${message}</p>
         </div>
         <p>Kindly respond to this inquiry as soon as possible.</p>
         <div class="footer">

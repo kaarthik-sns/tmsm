@@ -3,8 +3,7 @@ import { NextResponse } from 'next/server'
 import User from '@/models/User'
 import connectToDatabase from '@/lib/mongodb';
 import { sendEmail } from "@/utils/mail.util"
-import * as Handlebars from 'handlebars';
-import { changePassword } from '@/lib/template/change-password';
+import { changePasswordTemplate } from '@/lib/template/change-password';
 import Admin from '@/models/Admin';
 
 export async function POST(request: Request) {
@@ -47,10 +46,7 @@ export async function POST(request: Request) {
             address: email
         }]
 
-        const template = Handlebars.compile(changePassword);
-        const htmlBody = template({
-            forgotPasswordLink: forgotPasswordLink,
-        });
+        const htmlBody = changePasswordTemplate(forgotPasswordLink);
 
         const result = await sendEmail({
             receipients,

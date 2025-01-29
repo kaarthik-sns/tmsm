@@ -312,6 +312,10 @@ input:-internal-autofill-selected {
     color: #ffffff;
 }
 
+.dark-terms {
+    color: #d13333;
+}
+
 /*Dashboard */
 
 .rounded-radius {

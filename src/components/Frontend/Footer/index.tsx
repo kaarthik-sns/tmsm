@@ -17,6 +17,7 @@ export function FooterWithCustomDesign() {
               width={400}
               height={50}
               alt="TMSM Logo"
+               loading="lazy"
               className="mx-auto md:mx-0"
             />
           </Link>
@@ -28,6 +29,7 @@ export function FooterWithCustomDesign() {
                   width={18}
                   height={15}
                   alt="Twitter"
+                   loading="lazy"
                 />
               </Link>
               <Link href="#">
@@ -36,6 +38,7 @@ export function FooterWithCustomDesign() {
                   width={18}
                   height={15}
                   alt="Facebook"
+                   loading="lazy"
                 />
               </Link>
               <Link href="#">
@@ -44,6 +47,7 @@ export function FooterWithCustomDesign() {
                   width={18}
                   height={15}
                   alt="Instagram"
+                   loading="lazy"
                 />
               </Link>
             </div>
@@ -73,11 +77,6 @@ export function FooterWithCustomDesign() {
                 Terms and Conditions
               </Link>
             </li>
-            <li>
-              <Link href="/frontend/privacy-policy" className="hover:text-white">
-                Privacy Policy
-              </Link>
-            </li>
           </ul>
         </div>
 
@@ -90,13 +89,8 @@ export function FooterWithCustomDesign() {
               </Link>
             </li>
             <li>
-              <Link href="/frontend/guidelines" className="text-gray-400 hover:text-white">
-                General Guidelines
-              </Link>
-            </li>
-            <li>
-              <Link href="/frontend/sitemap" className="text-gray-400 hover:text-white">
-                Sitemap
+              <Link href="/frontend/privacy-policy" className="hover:text-white">
+                Privacy Policy
               </Link>
             </li>
             <li>
@@ -117,6 +111,7 @@ export function FooterWithCustomDesign() {
               width={18}
               height={15}
               alt="Twitter"
+               loading="lazy"
             />
           </Link>
           <Link href="#">
@@ -125,6 +120,7 @@ export function FooterWithCustomDesign() {
               width={18}
               height={15}
               alt="Facebook"
+               loading="lazy"
             />
           </Link>
           <Link href="#">
@@ -133,6 +129,7 @@ export function FooterWithCustomDesign() {
               width={18}
               height={15}
               alt="Instagram"
+               loading="lazy"
             />
           </Link>
         </div>
