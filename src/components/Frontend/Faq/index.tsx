@@ -63,14 +63,7 @@ const AboutUs = (data) => {
               </div>
             ))}
           </div>
-          <div className="row  mx-auto px-7.5 faq-req-btn-row">
-            <div className="text-center mt-10">
-              <a href="/submit-request"  className="text-white px-6 py-3 transition duration-300 req-btn ftext-custom">
-                Submit a Request
-              </a>
-              <p>Contact us and we’ll get back to you as soon as possible.</p>
-            </div>
-          </div>
+        
         </div>
       </div>
 

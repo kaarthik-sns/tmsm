@@ -5,12 +5,12 @@ import Terms from '@/models/Terms';
 export const POST = async (req: NextRequest) => {
     try {
 
-        const { id } = await req.json();
+        // const { id } = await req.json();
 
         // Connect to the database
         await connectToDatabase();
 
-        var Term = await Terms.findById(id);
+        var Term = await Terms.findOne({});
 
         // Prepare the response with pagination meta
         return NextResponse.json({

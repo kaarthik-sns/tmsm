@@ -1320,7 +1320,7 @@ input:-internal-autofill-selected {
     line-height: normal;
 }
 .faq-content p {
-    color: rgba(0, 0, 0, 0.50);
+    color: #333333;
     text-align: justify;
     font-family: "Noto Sans";
     font-size: 18px;
@@ -1346,7 +1346,7 @@ input:-internal-autofill-selected {
 .faq-answer {
     font-family: "Noto Sans";
     font-size: 16px;
-    color: rgba(0, 0, 0, 0.50);
+    color:#333333;
     font-weight: 600;
 }
 .expand-font {
@@ -1414,3 +1414,76 @@ padding-top: 1rem;
         padding-top: 40px;
     }
 }
+
+.team-info-con{
+    display: block;
+    width: 100%;
+    position: relative;
+    padding: 80px 0;
+    background: #fff;
+}
+.team-content{
+    display: block;
+    margin: 0;
+    clear: both;
+
+}
+.team-content h2 {
+    color: #333; 
+    font-family: 'Noto Sans';
+    font-size:24px;
+    font-weight: 700;
+    line-height: normal;
+    margin: 0 0 20px;
+}
+.team-content p{
+    color: #333;
+    text-align: justify;
+    font-family: 'Noto Sans';
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 36px;
+    margin: 0 0 15px;
+    }
+
+    @media only screen and (min-width: 768px) {
+        .team-info-con{      
+            padding: 5.56vw 0;
+        }
+        .team-content h2 {
+            font-size:1.67vw;      
+            margin: 0 0 1.39vw;
+        }
+        .team-content p{           
+            font-size: 1.25vw;
+            line-height: 2.5vw;
+            margin: 0 0 1.04vw;
+        }
+        
+    }
+    @media only screen and (min-width: 1600px) {
+        .team-info-con{      
+            padding: 80px 0;
+        }
+        .team-content h2 {
+            font-size:24px;     
+            margin: 0 0 20px;
+        }
+        .team-content p{           
+            font-size: 18px;
+            line-height: 36px;
+            margin: 0 0 15px;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .team-info-con{
+            padding: 40px 0;
+        }
+        .team-content h3{
+            font-size:25px;
+        }
+        .team-content h2{
+            font-size: 25px;
+        }
+    }
