@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';  // Use NextRequest and NextResponse from 'next/server'
 import User from '@/models/User'; // Adjust this path based on your project structure
 import connectToDatabase from '@/lib/mongodb';
+import { adminApprovalTemplate } from '@/lib/template/admin-approve';
+import getSMTPSettings from '@/utils/settings.util';
+import { sendEmail } from "@/utils/mail.util"
 
 export async function PATCH(req: NextRequest) {
     const { id, is_active, is_approve } = await req.json();  // Read the JSON data from the request
@@ -11,6 +14,36 @@ export async function PATCH(req: NextRequest) {
             { _id: id },
             { $set: { is_active, is_approve } }
         );
+
+        let copyright = '';
+
+        const smtpSettings = await getSMTPSettings();
+        if (smtpSettings) {
+            copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
+        }
+
+        if (is_approve) {
+
+            const userData = await User.findById(id);
+            const name = userData.name;
+            const email = userData.email;
+
+            const receipients = [{
+                name: name,
+                address: email
+            }];
+
+            const homePage = process.env.BASE_URL;
+
+            const htmlBody = adminApprovalTemplate(name, homePage, copyright);
+
+            const result = await sendEmail({
+                receipients,
+                subject: 'TMSM - Login approval',
+                message: htmlBody
+            });
+
+        }
 
         // Use NextResponse for success
         return NextResponse.json({ message: "Status updated successfully" }, { status: 200 });
