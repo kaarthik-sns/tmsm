@@ -7,7 +7,6 @@ import ProfileRequests from '@/models/Profile_requests';
 export const GET = async (req: NextRequest) => {
     try {
         const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-        console.log(token);
 
         const { searchParams } = new URL(req.url);
         const page = parseInt(searchParams.get('page') || '1', 10);
@@ -42,7 +41,7 @@ export const GET = async (req: NextRequest) => {
             query.age = { $gte: parseInt(fromage, 10), $lte: parseInt(toage, 10) };
         }
 
-        if (token) {
+        if (token != null) {
             query._id = { $ne: token.id };
         }
 
@@ -56,15 +55,20 @@ export const GET = async (req: NextRequest) => {
         // Count total documents for the query
         const totalUsers = await User.countDocuments(query);
 
+        let ProfileRequestsSentData = [];
+        let ProfileRequestsRecData = [];
 
-        const ReqsentQuery: any = {};
-        const ReqRecQuery: any = {};
+        if (token != null) {
+            const ReqsentQuery: any = {};
+            const ReqRecQuery: any = {};
 
-        ReqsentQuery.sender_id = token.id
-        ReqRecQuery.receiver_id = token.id
+            ReqsentQuery.sender_id = token.id
+            ReqRecQuery.receiver_id = token.id
 
-        const ProfileRequestsSentData = await ProfileRequests.find(ReqsentQuery);
-        const ProfileRequestsRecData = await ProfileRequests.find(ReqRecQuery);
+            ProfileRequestsSentData = await ProfileRequests.find(ReqsentQuery);
+            ProfileRequestsRecData = await ProfileRequests.find(ReqRecQuery);
+        }
+
 
         // Prepare the response with pagination meta
         return NextResponse.json({
