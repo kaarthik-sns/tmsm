@@ -22,13 +22,7 @@ const SignIn: React.FC = () => {
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
 
-  // Redirect if already logged in
-  useEffect(() => {
-    if (session) {
-      router.replace("/frontend");
-    }
-  }, [session, router]);
-
+  
   // Email validation function
   const validateEmail = (email: string) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
