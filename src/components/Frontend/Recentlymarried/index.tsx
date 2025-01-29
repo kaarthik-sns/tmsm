@@ -61,6 +61,7 @@ const TwoRowTwoColumnSlider = (data) => {
                   src={couple.image}
                   alt={couple.name}
                   className="w-40 h-40 md:w-60 md:h-60 rounded-full object-cover"
+                   loading="lazy"
                 />
                 {/* Content - Below Image on Mobile, Side by Side on Desktop */}
                 <div className="text-center md:text-left">

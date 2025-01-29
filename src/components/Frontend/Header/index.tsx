@@ -117,6 +117,7 @@ export function NavbarWithSimpleLinks() {
             className="xl:w-[700px] lg:w-[400px] sm:w-[300px]"
             src={"/images/logo/Flogo.svg"}
             alt="Logo"
+             loading="lazy"
           />
         </Link>
 

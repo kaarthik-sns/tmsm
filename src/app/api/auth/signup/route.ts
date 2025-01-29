@@ -111,9 +111,8 @@ export async function POST(request: Request) {
             message: htmlBody3
         })
 
-        return NextResponse.json({ message: "Registration is successful" }, { status: 201 });
-
-
+        return NextResponse.json({ message: "Registration successful. Await admin approval. Check your email for updates." }, { status: 201 });
+        
     } catch (error) {
         console.log(error)
         return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
