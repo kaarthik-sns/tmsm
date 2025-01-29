@@ -46,15 +46,20 @@ export async function POST(request: Request) {
 
         const userId = existingUser._id; // Access the _id field
         const name = existingUser.name; // Access the _id field
+        let forgotPasswordLink = '';
 
-        const forgotPasswordLink = `${process.env.BASE_URL}/change-password?id=${userId}&is_admin=${is_admin}`;
+        if (is_admin) {
+            forgotPasswordLink = `${process.env.BASE_URL}/admin/change-password?id=${userId}&is_admin=${is_admin}`;
+        } else {
+            forgotPasswordLink = `${process.env.BASE_URL}/frontend/change-password?id=${userId}&is_admin=${is_admin}`;
+        }
 
         const receipients = [{
             name: name,
             address: email
         }]
 
-        const htmlBody = changePasswordTemplate(forgotPasswordLink,copyright);
+        const htmlBody = changePasswordTemplate(forgotPasswordLink, copyright);
 
         const result = await sendEmail({
             receipients,

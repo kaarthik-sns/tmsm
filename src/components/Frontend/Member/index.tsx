@@ -55,13 +55,17 @@ const PaginatedUsers = () => {
     setIsLoading(true);
     try {
 
-      const query = new URLSearchParams({
-        page: String(page),
-        lookingfor: filters.lookingfor,
-        fromage: filters.fromage,
-        toage: filters.toage,
-        subcaste: filters.subcaste,
-      }).toString();
+      let query = '';
+
+      if (filters) {
+        query = new URLSearchParams({
+          page: String(page),
+          lookingfor: filters.lookingfor,
+          fromage: filters.fromage,
+          toage: filters.toage,
+          subcaste: filters.subcaste,
+        }).toString();
+      }
 
       const res = await fetch(`/api/member-list?${query}`);
       const data = await res.json();
@@ -145,7 +149,11 @@ const PaginatedUsers = () => {
       fromage: "",
       toage: "",
       subcaste: "",
+      homefilter: "",
     });
+
+    fetchUsers(1, null);
+
   };
 
   const handleRequestClick = async (id) => {
@@ -154,7 +162,7 @@ const PaginatedUsers = () => {
       router.push(`/frontend/login`);
       return;
     }
-    
+
     const userId = session.user.id;
 
     try {
@@ -271,7 +279,7 @@ const PaginatedUsers = () => {
                   onClick={handleReset} // Add onClick event
 
                 > Reset
-                  </button>
+                </button>
               </div>
 
             </div>
@@ -294,7 +302,7 @@ const PaginatedUsers = () => {
                   <div className="">
                     <div className='h-25 w-25 mb-3'>
 
-                      <img src={user.profile_photo ? user.profile_photo : '/uploads/photos/1735885953505-c97500831022.webp'} alt="Profile Picture" className="rounded-full w-full h-full object-cover" />
+                      <img src={user.profile_photo ? user.profile_photo : '/uploads/photos/1738154599244-a8e0a88c34bc.png'} alt="Profile Picture" className="rounded-full w-full h-full object-cover" />
 
                     </div>
                     <h4 className="member-title">
@@ -303,7 +311,7 @@ const PaginatedUsers = () => {
                   </div>
                   <div>
 
-                  {
+                    {
                       reqSentData?.[user._id] || reqRecData?.[user._id] ? (
                         reqSentData?.[user._id]?.status === "accepted" || reqRecData?.[user._id]?.status === "accepted" ? (
                           // If status is "accepted", show "View Details" button
