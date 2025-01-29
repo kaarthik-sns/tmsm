@@ -1,4 +1,4 @@
-export const replyProfileRequestTemplate = (name: string, homePage: string, content: string): string =>
+export const replyProfileRequestTemplate = (name: string, homePage: string, content: string, copyright: string): string =>
     `<!DOCTYPE html>
     <html>
     <head>
@@ -56,7 +56,7 @@ export const replyProfileRequestTemplate = (name: string, homePage: string, cont
             <a href="${homePage}" class="button">Login</a>
             
             <div class="footer">
-                <p>© 2025 TMSM.com. All rights reserved.</p>
+                <p>${copyright}</p>
             </div>
         </div>
     </body>
