@@ -1,4 +1,5 @@
-export const changePassword = `<!DOCTYPE html>
+export const changePasswordTemplate = (forgotPasswordLink: string): string => `
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -49,9 +50,9 @@ export const changePassword = `<!DOCTYPE html>
     <div class="container">
         <h1>Reset Your Password</h1>
         <p>To reset your TMSM Password, please click below button </p>
-        <a href="{{forgotPasswordLink}}" class="button">Reset password</a>
+        <a href="${forgotPasswordLink}" class="button">Reset password</a>
         <p>If the button doesn't work, copy and paste the following link into your browser:</p>
-        <p>{{forgotPasswordLink}}</p>
+        <p>${forgotPasswordLink}</p>
         <div class="footer">
             <p>© 2025 tmsm.com. All rights reserved.</p>
         </div>

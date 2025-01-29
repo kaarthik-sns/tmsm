@@ -1,4 +1,5 @@
-export const welcome_admin = `<!DOCTYPE html>
+export const adminWelcomeTemplate = (email: string, name: string, phonenumber: string): string => `
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -44,9 +45,9 @@ export const welcome_admin = `<!DOCTYPE html>
         <p>Hello Admin,</p>
         <p>A new user has just registered on TMSM:</p>
         <ul>
-            <li><strong>Username:</strong> {{name}}</li>
-            <li><strong>Email:</strong> {{email}}</li>
-            <li><strong>Phone Number:</strong>{{phonenumber}}</li>
+            <li><strong>Username:</strong> ${name}</li>
+            <li><strong>Email:</strong> ${email}</li>
+            <li><strong>Phone Number:</strong> ${phonenumber}</li>
 
         </ul>
         <p>Please take the necessary actions if required.</p>

@@ -10,7 +10,7 @@ import NextImage from "next/image";
 import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
 import { useRouter, useSearchParams } from "next/navigation";
 const UserProfile = (user_data) => {
-
+  
   const searchParams = useSearchParams();
   // const userId = searchParams.get("userId");
   const [profilePic, setProfilePic] = useState<File | null>(null);

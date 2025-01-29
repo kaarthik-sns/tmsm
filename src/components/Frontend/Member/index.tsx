@@ -14,7 +14,8 @@ const PaginatedUsers = () => {
   };
 
   const [users, setUsers] = useState([]);
-  const [reqData, setReqData] = useState<Record<string, RequestData>>({});
+  const [reqSentData, setReqSentData] = useState<Record<string, RequestData>>({});
+  const [reqRecData, setReqRecData] = useState<Record<string, RequestData>>({});
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
@@ -68,23 +69,29 @@ const PaginatedUsers = () => {
 
       if (res.ok) {
 
-        const req_data = data.req_data;
 
-        if (session && !session.user.is_admin) {
+        const req_sent_data = data.req_sent_data;
+        const req_rec_data = data.req_rec_data;
 
-          const indexedByReceiverId: Record<string, RequestData> = req_data.reduce((acc, item) => {
-            acc[item.receiver_id] = item;
-            return acc;
-          }, {});
+        const indexedByReceiverId: Record<string, RequestData> = req_sent_data.reduce((acc, item) => {
+          acc[item.receiver_id] = item;
+          return acc;
+        }, {});
 
-          setReqData(indexedByReceiverId);
+        setReqSentData(indexedByReceiverId);
 
-        }
+        const indexedBySenderId: Record<string, RequestData> = req_rec_data.reduce((acc, item) => {
+          acc[item.sender_id] = item;
+          return acc;
+        }, {});
+
+        setReqRecData(indexedBySenderId);
 
         setUsers(data.data);
         setCurrentPage(data.pagination.currentPage);
         setTotalPages(data.pagination.totalPages);
         setTotalCount(data.pagination.totalUsers);
+
       } else {
         console.error('Error fetching users:', data.message);
       }
@@ -277,9 +284,9 @@ const PaginatedUsers = () => {
                   </div>
                   <div>
 
-                    {
-                      reqData[user._id] ? (
-                        reqData[user._id].status == "accepted" ? (
+                  {
+                      reqSentData?.[user._id] || reqRecData?.[user._id] ? (
+                        reqSentData?.[user._id]?.status === "accepted" || reqRecData?.[user._id]?.status === "accepted" ? (
                           // If status is "accepted", show "View Details" button
                           <button
                             key={user._id}
@@ -288,7 +295,7 @@ const PaginatedUsers = () => {
                           >
                             View Details
                           </button>
-                        ) : reqData[user._id].status === "rejected" ? (
+                        ) : reqSentData?.[user._id].status === "rejected" ? (
                           // If status is "rejected", show "Rejected" disabled button
                           <button
                             key={user._id}
