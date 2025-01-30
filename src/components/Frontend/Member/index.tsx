@@ -156,6 +156,7 @@ const PaginatedUsers = () => {
 
   };
 
+
   const handleRequestClick = async (id) => {
 
     if (!session?.user || !session?.user?.is_admin) {
@@ -322,7 +323,7 @@ const PaginatedUsers = () => {
                           >
                             View Details
                           </button>
-                        ) : reqSentData?.[user._id]?.status === "rejected" ? (
+                        ) : reqSentData?.[user._id].status === "rejected" ? (
                           // If status is "rejected", show "Rejected" disabled button
                           <button
                             key={user._id}

@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 const RequestStatus = () => {
   const { data: session } = useSession();
   const myId = session?.user.id;
-
+  const userName = session?.user.name; // Assuming the username is available in the session data
   const [activeTab, setActiveTab] = useState("profile");
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -160,6 +160,11 @@ const RequestStatus = () => {
   return (
     <div className="bg-light min-h-screen flex justify-center py-10 px-4">
       <div className="container max-w-4xl p-6">
+        {/* Welcome message */}
+        <h2 className="text-xl font-semibold text-gray-700 mb-4 text-center">
+          Welcome, {userName ? userName : "Guest"}
+        </h2>
+
         <h1 className="text-lg sm:text-xl font-semibold mb-4 text-gray-700">My Account</h1>
 
         <div className="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-2 sm:space-y-0">
@@ -167,7 +172,10 @@ const RequestStatus = () => {
             <button
               className={`px-4 py-2 rounded-full ${activeTab === "profile" ? "bg-dash-button-active" : "bg-dash-button"
                 }`}
-              onClick={() => setActiveTab("profile")}
+                onClick={() => {
+                  setActiveTab("profile");
+                  setIsEditMode(false); // Reset edit mode when the profile tab is clicked
+                }}
             >
               My Profile
             </button>
