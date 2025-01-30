@@ -9,6 +9,8 @@ import { sendEmail } from "@/utils/mail.util"
 import { verificationTemplate } from '@/lib/template/verification';
 import { welcomeTemplate } from '@/lib/template/welcome';
 import { adminWelcomeTemplate } from '@/lib/template/welcome-admin';
+import getSMTPSettings from '@/utils/settings.util';
+
 
 type UploadedFile = {
     name: string;
@@ -56,6 +58,12 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
 
+
+    let copyright = '';
+    const smtpSettings = await getSMTPSettings();
+    if (smtpSettings) {
+        copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
+    }
 
     // Extract all fields from formData
     const id = (formData.get('_id') as string) ?? '';
@@ -229,7 +237,7 @@ export async function POST(request: NextRequest) {
                 address: email
             }]
 
-            const htmlBody = welcomeTemplate(name);
+            const htmlBody = welcomeTemplate(name, copyright);
 
             const result = await sendEmail({
                 receipients,
@@ -237,7 +245,7 @@ export async function POST(request: NextRequest) {
                 message: htmlBody
             })
 
-            const htmlBody2 = verificationTemplate(name, verificationLink);
+            const htmlBody2 = verificationTemplate(name, verificationLink, copyright);
 
             const result2 = await sendEmail({
                 receipients,
@@ -245,7 +253,7 @@ export async function POST(request: NextRequest) {
                 message: htmlBody2
             })
 
-            const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber);
+            const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber, copyright);
 
             const receipients2 = [{
                 name: 'admin',

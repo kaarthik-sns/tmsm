@@ -1,4 +1,4 @@
-export const verificationTemplate = (user_name: string, verification_link: string): string => `
+export const verificationTemplate = (user_name: string, verification_link: string, copyright: string): string => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,7 +56,7 @@ export const verificationTemplate = (user_name: string, verification_link: strin
         <p>If the button doesn't work, copy and paste the following link into your browser:</p>
         <p>{{verification_link}}</p>
         <div class="footer">
-            <p>© 2025 tmsm.com. All rights reserved.</p>
+           <p>${copyright}</p>
         </div>
     </div>
 </body>

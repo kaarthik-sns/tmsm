@@ -1,4 +1,4 @@
-export const welcomeTemplate = (userName: string): string =>
+export const welcomeTemplate = (userName: string,copyright: string): string =>
 `<!DOCTYPE html>
 <html>
 <head>
@@ -53,7 +53,7 @@ export const welcomeTemplate = (userName: string): string =>
         
         <p>We wish you all the best in your journey to find your perfect match.</p>
         <div class="footer">
-            <p>© 2025 TMSM.com. All rights reserved.</p>
+            <p>${copyright}</p>
         </div>
     </div>
 </body>

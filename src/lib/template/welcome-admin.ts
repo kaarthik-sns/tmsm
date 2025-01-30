@@ -1,4 +1,4 @@
-export const adminWelcomeTemplate = (email: string, name: string, phonenumber: string): string => `
+export const adminWelcomeTemplate = (email: string, name: string, phonenumber: string, copyright: string): string => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,7 +52,7 @@ export const adminWelcomeTemplate = (email: string, name: string, phonenumber: s
         </ul>
         <p>Please take the necessary actions if required.</p>
         <div class="footer">
-            <p>© 2025 TMSM.com. All rights reserved.</p>
+           <p>${copyright}</p>
         </div>
     </div>
 </body>

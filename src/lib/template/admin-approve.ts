@@ -1,10 +1,10 @@
-export const contactUsTemplate = (name: string, email: string, phone: string, message: string, copyright: string): string => `
+export const adminApprovalTemplate = (name: string, loginUrl: string, copyright: string): string => `
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Form Submission</title>
+    <title>Account Approved</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,7 +22,7 @@ export const contactUsTemplate = (name: string, email: string, phone: string, me
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         h1 {
-            color: #007BFF;
+            color: #28a745;
         }
         p {
             color: #666666;
@@ -41,28 +41,33 @@ export const contactUsTemplate = (name: string, email: string, phone: string, me
             border-radius: 5px;
             background-color: #f9f9f9;
         }
-        .details p {
-            margin: 5px 0;
-        }
         .highlight {
             font-weight: bold;
-            color: #007BFF;
+            color: #28a745;
+        }
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        a[href] {
+                color: #ffffff !important;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Contact Form Submission</h1>
-        <p>Hello Admin,</p>
-        <p>You have received a new message from the contact form:</p>
-        <div class="details">
-            <p><span class="highlight">Name:</span> ${name}</p>
-            <p><span class="highlight">Email:</span> ${email}</p>
-            <p><span class="highlight">Phone:</span> ${phone}</p>
-            <p><span class="highlight">Message:</span></p>
-            <p>${message}</p>
-        </div>
-        <p>Kindly respond to this inquiry as soon as possible.</p>
+        <h1>Account Approved</h1>
+        <p>Hello <span class="highlight">${name}</span>,</p>
+        <p>We are pleased to inform you that your account has been approved. You can now log in using the same password you set during registration.</p>
+        <p>Click the button below to access your account:</p>
+        <p><a href="${loginUrl}" class="button">Login Now</a></p>
+        <p>If you have any issues logging in, please contact our support team.</p>
         <div class="footer">
            <p>${copyright}</p>
         </div>

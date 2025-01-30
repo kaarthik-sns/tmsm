@@ -3,6 +3,7 @@ import Contact from '@/models/Contact'; // Adjust this path based on your projec
 import connectToDatabase from '@/lib/mongodb';
 import { contactUsTemplate } from '@/lib/template/contact-us';
 import { sendEmail } from "@/utils/mail.util"
+import getSMTPSettings from '@/utils/settings.util';
 
 
 // Handle GET request to list all contacts
@@ -45,6 +46,12 @@ export async function GET(req) {
 export async function POST(req) {
     try {
 
+        let copyright = '';
+        const smtpSettings = await getSMTPSettings();
+        if (smtpSettings) {
+            copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
+        }
+        
         await connectToDatabase();
         // Parse JSON body data
         const { name, email, interested_in, phone, message } = await req.json();
@@ -78,7 +85,7 @@ export async function POST(req) {
             message,
         });
 
-        const htmlBody = contactUsTemplate(name,email,phone,message);
+        const htmlBody = contactUsTemplate(name, email, phone, message, copyright);
 
         const receipients = [{
             name: 'admin',

@@ -11,7 +11,6 @@ const RequestStatus = () => {
   const { data: session } = useSession();
   const myId = session?.user.id;
   const userName = session?.user.name; // Assuming the username is available in the session data
-
   const [activeTab, setActiveTab] = useState("profile");
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -312,8 +311,6 @@ const ProfileCard = ({ profile, activeTab, onViewProfile, onHandleRequest, onRed
           ) : profile.status === "accepted" ? (
             <>
               <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm accepted" >Accepted</button>
-              <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm decline" onClick={() => onHandleRequest(profile._id, 'cancel')}>Cancel</button>
-
             </>
           ) : profile.status === "rejected" ? (
             <>
@@ -321,9 +318,11 @@ const ProfileCard = ({ profile, activeTab, onViewProfile, onHandleRequest, onRed
             </>
           ) : null
         ) : (
-          <>
-            <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm decline" onClick={() => onHandleRequest(profile._id, 'cancel')}>Cancel</button>
-          </>
+          profile.status === "pending" && (
+            <>
+              <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm decline" onClick={() => onHandleRequest(profile._id, 'cancel')}>Cancel</button>
+            </>
+          )
         )
       }
 

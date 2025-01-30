@@ -1,4 +1,4 @@
-export const changePasswordTemplate = (forgotPasswordLink: string): string => `
+export const changePasswordTemplate = (forgotPasswordLink: string, copyright: string): string => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -54,7 +54,7 @@ export const changePasswordTemplate = (forgotPasswordLink: string): string => `
         <p>If the button doesn't work, copy and paste the following link into your browser:</p>
         <p>${forgotPasswordLink}</p>
         <div class="footer">
-            <p>© 2025 tmsm.com. All rights reserved.</p>
+            <p>${copyright}</p>
         </div>
     </div>
 </body>
