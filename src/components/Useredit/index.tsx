@@ -317,13 +317,13 @@ const FormElements = () => {
       router.push(`/admin/users/userlist`);
 
 
-      setProfilePic(null); // Reset profile picture
-      setPhoto1(null);
-      setPhoto2(null);
-      setPhoto3(null);
-      setPhoto4(null);
-      setHoroscope(null);
-      setProfileCreatorPic(null); // Reset profile picture
+      // setProfilePic(null); // Reset profile picture
+      // setPhoto1(null);
+      // setPhoto2(null);
+      // setPhoto3(null);
+      // setPhoto4(null);
+      // setHoroscope(null);
+      // setProfileCreatorPic(null); // Reset profile picture
 
     } catch (err) {
       setError(err.message);
@@ -356,8 +356,8 @@ const FormElements = () => {
     { label: 'Groom', value: 'groom' },
   ];
   const genderOptions = [
-    { label: 'Boy', value: 'boy' },
-    { label: 'Girl', value: 'girl' },
+    { label: 'Male', value: 'male' },
+    { label: 'Female', value: 'female' },
   ];
 
   if (isLoading) {
@@ -495,7 +495,7 @@ const FormElements = () => {
                   </>
                 )}
 
-<div className="mb-4.5">
+                <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                     Detail about groom / bride <span className="text-meta-1">*</span>
                   </label>

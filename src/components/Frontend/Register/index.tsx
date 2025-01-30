@@ -273,7 +273,9 @@ const SignUp: React.FC = () => {
                   linkText=" Terms and Conditions"
                   linkHref="/frontend/terms"
                 />
-
+                {errors.selected && (
+                  <p className="text-red-600 text-sm">{errors.selected}</p>
+                )}
               </div>
 
               <div className="mb-5">

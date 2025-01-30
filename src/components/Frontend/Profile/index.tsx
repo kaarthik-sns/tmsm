@@ -6,7 +6,7 @@ import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaCheckCircle } from "react-ico
 import { toast } from "sonner";
 
 export default function Profile(data) {
-console.log(data);
+  console.log(data);
   const [popupImage, setPopupImage] = useState(null); // State to store the image to show in the popup
 
   const openPopup = (image) => setPopupImage(image); // Set the clicked image in state
@@ -55,12 +55,11 @@ console.log(data);
                 <Image
                   src={profile_data.profile_photo || ""}
                   alt="Profile Picture"
-                  width={200}
-                  height={200}
+                  width={200} // Fixed width
+                  height={200} // Fixed height
                   quality={100}
                   unoptimized={true}
-                  className="rounded-full border-4 border-white cursor-pointer"
-                  onClick={() => openPopup(profile_data.profile_photo)}
+                  className="w-40 h-40 object-cover rounded-full border-4 border-white cursor-pointer"
                 />
               )}
             </div>
@@ -68,7 +67,7 @@ console.log(data);
             <div className="text-center lg:text-left px-5">
               <h1 className="text-2xl font-bold mb-2 text-white">{profile_data.name || "No name provided"} {profile_data.lastname || ""}</h1>
               <p className="max-w-lg text-white text-justify">
-               {profile_data.bride_groom_detail || ""}
+                {profile_data.bride_groom_detail || ""}
               </p>
               {(profile_data.horoscope) && (
                 <button className="inline-block px-10 py-4 text-white duration-150 rounded-full md:text-sm ftext-custom mt-5" onClick={handlePreview} style={{ width: "200px", padding: "8px 0" }}>View Horoscope</button>
@@ -298,89 +297,68 @@ console.log(data);
 
         {/*Additional Pictures */}
 
-        <div className="border-color mt-6 mb-6"></div>
-        <div className="grid grid-cols-1 gap-4 mt-3">
-          <h2 className="profile-heading py-6">Additional Pictures</h2>
-          <div className="contact-bio flex flex-col-4 gap-4">
-            <p>
-              {profile_data.photo1 && (
-                <Image
-                  src={profile_data.photo1 || ""}
-                  alt="Profile Picture"
-                  width={150}
-                  height={150}
-                  quality={100}
-                  className="rounded-full border-4 border-white mem-addition-photo-width cursor-pointer"
-                  onClick={() => openPopup(profile_data.photo1)}
-                />
-              )}
 
-            </p>
-            <p>
-              {profile_data.photo2 && (
-                <Image
-                  src={profile_data.photo2 || ""}
-                  alt="Profile Picture"
-                  width={150}
-                  height={150}
-                  quality={100}
-                  unoptimized={true}
-                  className="rounded-full border-4 border-white mem-addition-photo-width cursor-pointer"
-                  onClick={() => openPopup(profile_data.photo2)}
-                />
-              )}
-            </p>
-            <p>
-              {profile_data.photo3 && (
-                <Image
-                  src={profile_data.photo3 || ""}
-                  alt="Profile Picture"
-                  width={150}
-                  height={150}
-                  quality={100}
-                  unoptimized={true}
-                  className="rounded-full border-4 border-white mem-addition-photo-width cursor-pointer"
-                  onClick={() => openPopup(profile_data.photo3)}
-                />
-              )}
-            </p>
-            <p>
-              {profile_data.photo4 && (
-                <Image
-                  src={profile_data.photo4 || ""}
-                  alt="Profile Picture"
-                  width={150}
-                  height={150}
-                  quality={100}
-                  unoptimized={true}
-                  className="rounded-full border-4 border-white mem-addition-photo-width cursor-pointer"
-                  onClick={() => openPopup(profile_data.photo4)}
-                />
-              )}
+        {(profile_data.photo1 || profile_data.photo2 || profile_data.photo3 || profile_data.photo4) && (
+          <> <div className="border-color mt-6 mb-6"></div>
+            <div className="grid grid-cols-1 gap-4 mt-3">
+              <h2 className="profile-heading py-6">Additional Pictures</h2>
+              <div className="contact-bio flex flex-wrap gap-4">
+                {[profile_data.photo1, profile_data.photo2, profile_data.photo3, profile_data.photo4]
+                  .filter(Boolean) // Removes `null` or `undefined` values
+                  .map((photo, index) => (
+                    <Image
+                      key={index}
+                      src={photo}
+                      alt={`Profile Picture ${index + 1}`}
+                      width={150}
+                      height={150}
+                      quality={100}
+                      unoptimized={true}
+                      className="rounded-full border-4 border-white cursor-pointer"
+                      onClick={() => openPopup(photo)}
+                    />
+                  ))}
+              </div>
+
               {/* Popup */}
               {popupImage && (
-                <div
-                  className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 mem-addition-photo-popup"
-                  onClick={closePopup} // Close popup when clicking outside the image
-                >
-                  <div className="relative">
-                    <img
-                      src={popupImage} // Use the dynamically set image
-                      alt="Enlarged Profile Picture"
-                      className="max-w-full max-h-screen rounded-lg"
-                    />
+                <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 px-4">
+                  <div className="bg-white p-4 sm:p-6 rounded-lg max-w-sm sm:max-w-md w-full relative">
                     <button
-                      className="absolute top-4 right-4 text-white text-3xl"
-                      onClick={closePopup} // Close button
+                      onClick={closePopup}
+                      className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 red-color"
+                      aria-label="Close"
                     >
-                      &times;
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="w-6 h-6"
+                      >
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                      </svg>
                     </button>
+                    <div className="flex justify-center items-center">
+                      <img
+                        src={popupImage}
+                        alt="Enlarged Profile Picture"
+                        className="max-w-full max-h-screen rounded-lg"
+                      />
+                    </div>
                   </div>
                 </div>
               )}
-            </p>
-          </div>
-        </div>
+
+
+            </div>
+          </>
+        )}
+
       </div>
     </div>
   );

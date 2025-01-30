@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef  } from "react";
+import { useState, useEffect, useRef } from "react";
 import Breadcrumb from "@/components/Breadcrumbs/UserBreadcrumb";
 import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
 import SelectGroupCaste from "@/components/SelectGroup/SelectGroupCaste";
@@ -96,11 +96,13 @@ const UserProfile = (user_data) => {
     profile_creator_aadhar: "",
     profile_creator_phonenumber: "",
     lookingfor: "",
-    partner_pref_subcaste: ""
+    partner_pref_subcaste: "",
+    gender: "",
+    bride_groom_detail: ""
   });
 
   useEffect(() => {
-    if (user_data && !formData.age) { // Only update if formData is empty
+    if (user_data && !formData.email) { // Only update if formData is empty
       const fetchUserData = async () => {
         try {
           const response = await fetch("/api/get-user-data", {
@@ -108,22 +110,22 @@ const UserProfile = (user_data) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id: user_data.userId }),
           });
-  
+
           if (!response.ok) {
             throw new Error("Failed to fetch user data.");
           }
-  
+
           const { data } = await response.json();
-  
+
           setFormData((prevData) => ({
             ...prevData,
             ...data, // Merge existing data without overwriting user input
           }));
-  
+
           if (data?.profile_created_for !== 'myself') {
             setProfileCreator(true);
           }
-  
+
           setProfilePic(data.profile_photo);
           setPhoto1(data.photo1);
           setPhoto2(data.photo2);
@@ -131,7 +133,7 @@ const UserProfile = (user_data) => {
           setPhoto4(data.photo4);
           setProfileCreatorPic(data.profile_creator_photo);
           setHoroscope(data.horoscope);
-  
+
         } catch (err) {
           console.error(err);
           setError(err.message);
@@ -139,11 +141,11 @@ const UserProfile = (user_data) => {
           setIsLoading(false);
         }
       };
-  
+
       fetchUserData();
     }
-  }, [user_data]); // Removed formData dependency to avoid overwriting changes
-  
+  }, [user_data, formData.email]); // Removed formData dependency to avoid overwriting changes
+
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -195,6 +197,15 @@ const UserProfile = (user_data) => {
 
     // Validation
     const errors: Record<string, string> = {};
+
+    if (!formData.bride_groom_detail || formData.bride_groom_detail.trim() === "") {
+      errors.bride_groom_detail = "Fill about short deatils.";
+    }
+
+    if (!formData.gender || formData.gender.trim() === "") {
+      errors.gender = "Gender for is required.";
+    }
+
 
     if (!formData.name || formData.name.trim() === "") {
       errors.name = "First name is required.";
@@ -259,29 +270,29 @@ const UserProfile = (user_data) => {
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
       setErrorMessage("Please fix the highlighted errors.");
-    
+
       setTimeout(() => {
         if (errorRef.current) {
           errorRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
         }
       }, 100); // Small delay to wait for state update
-    
+
       return;
     }
-    
+
     setErrorMessage(""); // Clear message if validation passes
     try {
-    useEffect(() => {
-      if (errorMessage) {
-        const timer = setTimeout(() => {
-          setErrorMessage(""); // Clear the message after 5 seconds
-        }, 5000);
-    
-        return () => clearTimeout(timer); // Cleanup timer when component unmounts or message changes
-      }
-    }, [errorMessage]);
-  } catch (err) { 
-  }
+      useEffect(() => {
+        if (errorMessage) {
+          const timer = setTimeout(() => {
+            setErrorMessage(""); // Clear the message after 5 seconds
+          }, 5000);
+
+          return () => clearTimeout(timer); // Cleanup timer when component unmounts or message changes
+        }
+      }, [errorMessage]);
+    } catch (err) {
+    }
 
     // Reset errors if validation passes
     setFormErrors({});
@@ -329,13 +340,13 @@ const UserProfile = (user_data) => {
       // Redirect
       router.push(`/frontend/dashboard`);
 
-      setProfilePic(null); // Reset profile picture
-      setPhoto1(null);
-      setPhoto2(null);
-      setPhoto3(null);
-      setPhoto4(null);
-      setHoroscope(null);
-      setProfileCreatorPic(null); // Reset profile picture
+      // setProfilePic(null); // Reset profile picture
+      // setPhoto1(null);
+      // setPhoto2(null);
+      // setPhoto3(null);
+      // setPhoto4(null);
+      // setHoroscope(null);
+      // setProfileCreatorPic(null); // Reset profile picture
 
     } catch (err) {
       setError(err.message);
@@ -354,11 +365,11 @@ const UserProfile = (user_data) => {
       const timer = setTimeout(() => {
         setSuccessMessage(""); // Clear the message after 5 seconds
       }, 5000);
-  
+
       return () => clearTimeout(timer); // Cleanup timer when component unmounts or message changes
     }
   }, [successMessage]);
-  
+
   const profileOptions = [
     { label: 'MySelf', value: 'myself' },
     { label: 'Daughter', value: 'daughter' },
@@ -378,6 +389,12 @@ const UserProfile = (user_data) => {
     { label: 'Groom', value: 'groom' },
   ];
 
+  const genderOptions = [
+    { label: 'Male', value: 'male' },
+    { label: 'Female', value: 'female' },
+  ];
+
+
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -395,14 +412,17 @@ const UserProfile = (user_data) => {
               </div>
             )}
             {/* Show profile update error message */}
-             {errorMessage && (
-              <div  className="bg-red-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-red-600 mb-6">
+            {errorMessage && (
+              <div className="bg-red-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-red-600 mb-6">
                 <p>{errorMessage}</p>
               </div>
             )}
             <form onSubmit={handleSubmit}>
+
               <div className="grid grid-cols-1 gap-9 sm:grid-cols-2 mt-5">
+                
                 <div className="flex flex-col gap-9">
+
 
                   {/* <!-- Reference start --> */}
                   <div className="rounded-sm border border-1 bg-light shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -427,6 +447,8 @@ const UserProfile = (user_data) => {
                           <p className="mt-1 text-sm text-red-500">{formErrors.profile_created_for}</p>
                         )}
                       </div>
+
+
 
                       {profileCreator && (
                         <>
@@ -527,9 +549,40 @@ const UserProfile = (user_data) => {
                               <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_phonenumber}</p>
                             )}
                           </div>
+
                         </>
                       )}
 
+
+                      <div className="mb-4.5">
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          Detail about groom / bride <span className="text-meta-1">*</span>
+                        </label>
+                        <textarea
+                          rows={6}
+                          name="bride_groom_detail"
+                          value={formData.bride_groom_detail || ""}
+                          onChange={handleChange}
+                          className="w-full rounded-lg border-[1.5px] bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:text-white"
+                        ></textarea>
+                        {formErrors?.bride_groom_detail && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.bride_groom_detail}</p>
+                        )}
+                      </div>
+                      <div className="mb-4.5 text-black">
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          Gender <span className="text-meta-1">*</span>
+                        </label>
+                        <RadioButtonGroup
+                          name="gender"
+                          options={genderOptions}
+                          selectedValue={formData.gender}
+                          onChange={handleChange}
+                        />
+                        {formErrors?.gender && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.gender}</p>
+                        )}
+                      </div>
                     </div>
                   </div>
 
@@ -546,7 +599,7 @@ const UserProfile = (user_data) => {
                           Profile Picture <span className="text-meta-1">*</span>
                         </label>
                         <div className="flex items-center space-x-4">
-                          <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
+                          <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
                             {formData.profile_photo && (
                               <NextImage
                                 src={formData.profile_photo || ""}
@@ -567,7 +620,7 @@ const UserProfile = (user_data) => {
                             accept="image/*"
                             onChange={handleChange}
                             name="profile_photo"
-                            className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
+                            className="block text-sm flex-1 text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
                           />
                         </div>
                         {formErrors?.profile_photo && (
