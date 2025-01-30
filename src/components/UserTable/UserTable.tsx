@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation"; // For page navigation
 import NextImage from "next/image"; // Rename the import to avoid conflict
 import { toast } from "sonner";
+import Swal from 'sweetalert2';
 
 
 const UserTable = () => {
@@ -87,9 +88,65 @@ const UserTable = () => {
             console.error("Error fetching table items:", error);
         }
     };
+
+
+    const handleVerify = async (userId: string) => {
+        try {
+            const response = await fetch('/api/send-verification-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                toast.success('Verification email sent successfully.', {
+                    className: "sonner-toast-success",
+                    cancel: {
+                        label: 'Close',
+                        onClick: () => console.log('Close'),
+                    },
+                });
+            } else {
+                toast.error('Failed to send verification email.', {
+                    className: "sonner-toast-error",
+                    cancel: {
+                        label: 'Close',
+                        onClick: () => console.log('Close'),
+                    },
+                });
+            }
+        } catch (error) {
+            console.error("Error sending verification email:", error);
+            toast.error('Something went wrong. Please try again.', {
+                className: "sonner-toast-error",
+                cancel: {
+                    label: 'Close',
+                    onClick: () => console.log('Close'),
+                },
+            });
+        }
+    }
+
     const handleDelete = async (userId) => {
-        const confirmation = confirm("Are you sure you want to delete this user?");
-        if (!confirmation) return;
+
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to delete this data ?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel',
+        });
+
+        if (!result.isConfirmed) {
+            return; // Stop submission if the user cancels
+        }
 
         try {
             const response = await axios.get(`/api/delete-user?userId=${userId}`, {
@@ -109,7 +166,7 @@ const UserTable = () => {
             } else {
 
                 toast.error('Failed to delete user!', {
-                    className: "sonner-toast-success",
+                    className: "sonner-toast-error",
                     cancel: {
                         label: 'Close',
                         onClick: () => console.log('Close'),
@@ -120,7 +177,7 @@ const UserTable = () => {
         } catch (error) {
             console.error("Error deleting user:", error);
             toast.error(error.response?.data?.message || "An error occurred while deleting the user. Please try again.", {
-                className: "sonner-toast-success",
+                className: "sonner-toast-error",
                 cancel: {
                     label: 'Close',
                     onClick: () => console.log('Close'),
@@ -150,6 +207,21 @@ const UserTable = () => {
             if (response.status !== 200) {
                 throw new Error("Failed to update status");
             }
+
+            toast.success(
+                key === "is_active"
+                    ? `User ${updatedValue ? "activated" : "deactivated"} successfully!`
+                    : `User ${updatedValue ? "approved" : "disapproved"} successfully!`,
+                {
+                    className: "sonner-toast-success",
+                    cancel: {
+                        label: "Close",
+                        onClick: () => console.log("Close"),
+                    },
+                }
+            );
+
+
         } catch (error) {
             console.error("Error updating status:", error);
 
@@ -158,6 +230,19 @@ const UserTable = () => {
                 prevItems.map((item, idx) =>
                     idx === index ? { ...item, [key]: !updatedValue } : item
                 )
+            );
+
+            toast.error(
+                key === "is_active"
+                    ? "Failed to update activation status."
+                    : "Failed to update approval status.",
+                {
+                    className: "sonner-toast-error",
+                    cancel: {
+                        label: "Close",
+                        onClick: () => console.log("Close"),
+                    },
+                }
             );
         }
     };
@@ -388,6 +473,30 @@ const UserTable = () => {
                                                             fill=""
                                                         />
                                                     </svg>
+
+                                                </button>
+
+                                            )}
+                                            {(!item.is_verify) && (
+                                                <button
+                                                    onClick={() => handleVerify(item._id)}
+                                                    className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
+                                                >
+
+                                                    <svg
+                                                        className="fill-current"
+                                                        width="18"
+                                                        height="18"
+                                                        viewBox="0 0 18 18"
+                                                        fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                        <path
+                                                            d="M2.25 3.375C1.55964 3.375 1 3.93464 1 4.625V13.375C1 14.0654 1.55964 14.625 2.25 14.625H15.75C16.4404 14.625 17 14.0654 17 13.375V4.625C17 3.93464 16.4404 3.375 15.75 3.375H2.25ZM3.0625 4.75H14.9375L9 9.125L3.0625 4.75ZM2.25 5.90625L9 10.875L15.75 5.90625V13.375H2.25V5.90625Z"
+                                                            fill=""
+                                                        />
+                                                    </svg>
+
 
                                                 </button>
 

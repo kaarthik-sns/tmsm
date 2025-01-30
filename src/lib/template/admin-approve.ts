@@ -50,7 +50,7 @@ export const adminApprovalTemplate = (name: string, loginUrl: string, copyright:
             margin-top: 20px;
             padding: 10px 20px;
             background-color: #28a745;
-            color: #ffffff;
+            color: #ffffff !important;
             text-decoration: none;
             border-radius: 5px;
             font-weight: bold;
@@ -66,7 +66,11 @@ export const adminApprovalTemplate = (name: string, loginUrl: string, copyright:
         <p>Hello <span class="highlight">${name}</span>,</p>
         <p>We are pleased to inform you that your account has been approved. You can now log in using the same password you set during registration.</p>
         <p>Click the button below to access your account:</p>
-        <p><a href="${loginUrl}" class="button">Login Now</a></p>
+        <p>
+            <a href="${loginUrl}" class="button" style="color: #fff; text-decoration: none;">
+                Login Now
+            </a>
+        </p>
         <p>If you have any issues logging in, please contact our support team.</p>
         <div class="footer">
            <p>${copyright}</p>

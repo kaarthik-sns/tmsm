@@ -61,7 +61,9 @@ const FormElements = () => {
     profile_creator_aadhar: "",
     profile_creator_phonenumber: "",
     lookingfor: "",
-    partner_pref_subcaste: ""
+    partner_pref_subcaste: "",
+    gender: "",
+    bride_groom_detail: ""
   });
 
   const handlePreview = () => {
@@ -131,7 +133,7 @@ const FormElements = () => {
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
 
-          {(formData.profile_created_for !== 'myself') && (
+          {(formData.profile_created_for && formData.profile_created_for !== 'myself') && (
             <>
               <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
@@ -183,6 +185,18 @@ const FormElements = () => {
                   <div className="mb-2.5">
                     <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                       Phone Number : {formData.profile_creator_phonenumber || ""}
+                    </label>
+                  </div>
+
+                  <div className="mb-2.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Detail about groom / bride : {formData.bride_groom_detail || ""}
+                    </label>
+                  </div>
+
+                  <div className="mb-2.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Gender : {formData.gender || ""}
                     </label>
                   </div>
 

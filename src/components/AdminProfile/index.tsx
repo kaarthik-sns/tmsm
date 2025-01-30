@@ -81,10 +81,21 @@ const AdminProfile = () => {
     formData.append("email", email);
     formData.append("id", session.user.id);
 
+
+    if (name) {
+      setError(`Name can't be empty`)
+      return
+    }
+
+    if (email) {
+      setError(`Email can't be empty`)
+      return
+    }
+
+
     if (profilePic) formData.append("profilePic", profilePic);
     if (password) formData.append("password", password);
 
-    console.log(formData);
 
     try {
       const response = await fetch("/api/update-admin", {

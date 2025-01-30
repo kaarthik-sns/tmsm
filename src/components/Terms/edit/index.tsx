@@ -103,7 +103,7 @@ const TemsElements = () => {
     e.preventDefault();
 
     const errors: Record<string, string> = {};
-    if (!formData.description.trim()) {
+    if (!formData.description.trim() || formData.description.trim() == '<p><br></p>') {
       errors.description = "Description is required.";
     }
 
@@ -121,7 +121,6 @@ const TemsElements = () => {
       return;
     }
 
-    setFormErrors({});
     try {
       const res = await fetch("/api/terms/edit", {
         method: "POST",

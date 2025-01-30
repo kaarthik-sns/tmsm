@@ -63,7 +63,7 @@ export async function POST(request: Request) {
 
         const result = await sendEmail({
             receipients,
-            subject: 'TMSM - Forgot Password!',
+            subject: 'TMSM - Forgot Password',
             message: htmlBody
         })
 

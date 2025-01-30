@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation"; // For page navigation
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { toast } from "sonner";
+import Swal from 'sweetalert2';
 
 
 const FaqTable = () => {
@@ -68,8 +69,21 @@ const FaqTable = () => {
         }
     };
     const handleDelete = async (faqId) => {
-        const confirmation = confirm("Are you sure you want to delete this user?");
-        if (!confirmation) return;
+
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to delete this data ?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel',
+        });
+
+        if (!result.isConfirmed) {
+            return; // Stop submission if the user cancels
+        }
 
         try {
             const response = await axios.get(`/api/faq/delete-faq?faqId=${faqId}`, {
@@ -88,7 +102,7 @@ const FaqTable = () => {
                 fetchTableItems();
             } else {
                 toast.error('Failed to delete Faq!', {
-                    className: "sonner-toast-success",
+                    className: "sonner-toast-error",
                     cancel: {
                         label: 'Close',
                         onClick: () => console.log('Close'),
@@ -98,7 +112,7 @@ const FaqTable = () => {
         } catch (error) {
             console.error("Error deleting Faq:", error);
             toast.error(error.response?.data?.message || "An error occurred while deleting the Faq. Please try again.", {
-                className: "sonner-toast-success",
+                className: "sonner-toast-error",
                 cancel: {
                     label: 'Close',
                     onClick: () => console.log('Close'),
