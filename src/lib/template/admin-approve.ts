@@ -55,6 +55,9 @@ export const adminApprovalTemplate = (name: string, loginUrl: string, copyright:
             border-radius: 5px;
             font-weight: bold;
         }
+        a[href] {
+                color: #ffffff !important;
+        }
     </style>
 </head>
 <body>
