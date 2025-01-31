@@ -1,20 +1,21 @@
 'use client';
 
 import { useState } from 'react';
-import { useSession, signOut } from "next-auth/react"; // Import signOut from next-auth
+import { signOut } from "next-auth/react"; // Import signOut from next-auth
 import Swal from 'sweetalert2'; // Import SweetAlert2
 import { TriangleAlert } from "lucide-react";
 import { IoPower } from 'react-icons/io5';
 import { IoLogOut } from "react-icons/io5"; // Import logout icon
 
-const ChangePassword: React.FC = () => {
-  const { data: session } = useSession();
+type ChangePasswordProps = {
+  myId: string;
+};
+
+const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [activeTab, setActiveTab] = useState('password'); // State for active tab
-
-  const myId = session?.user.id;
 
   const [form, setForm] = useState({
     password: "",
@@ -65,10 +66,15 @@ const ChangePassword: React.FC = () => {
     if (result.isConfirmed) {
       setPending(true);
 
-      const res = await fetch("/api/deactivate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: myId, is_admin: "false" }),
+      const res = await fetch(`/api/update-user-status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: myId,
+          is_active: false,
+        }),
       });
 
       const data = await res.json();
@@ -210,7 +216,7 @@ const ChangePassword: React.FC = () => {
               <div className="w-full flex justify-center md:justify-start p-4">
                 {/* Account Deactivation */}
                 <div className="w-full md:w-1/2 p-4 ">
-                 <button
+                  <button
                     onClick={() => signOut()} // Call NextAuth signOut function
                     className="flex items-center space-x-2 px-3 py-2 text-sm rounded-lg border border-gray-600 bg-gray-600 text-white transition hover:bg-opacity-90"
                   >

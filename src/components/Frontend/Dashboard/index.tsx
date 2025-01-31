@@ -147,7 +147,7 @@ const RequestStatus = () => {
         confirmButton: 'confirm-color',  // Custom class for confirm button (green)
         cancelButton: 'cancel-color'       // Custom class for cancel button (red)
       },
-      
+
     });
 
     if (result.isConfirmed) {
@@ -284,7 +284,7 @@ const RequestStatus = () => {
               </>
             )
           ) : activeTab === "settings" ? (
-            <UserPassword />
+            <UserPassword myId={myId} />
           ) : filteredRequests.length > 0 ? (
             filteredRequests.map((profile) => (
               <ProfileCard
@@ -323,28 +323,25 @@ const ProfileCard = ({ profile, activeTab, onViewProfile, onHandleRequest, onRed
     <div className="flex flex-wrap gap-2 sm:gap-4 justify-center sm:justify-start">
 
       {
-        activeTab === "received" ? (
-          profile.status === "pending" ? (
-            <>
-              <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm accept" onClick={() => onHandleRequest(profile._id, 'accepted')}>Accept</button>
-              <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm decline" onClick={() => onHandleRequest(profile._id, 'rejected')}>Decline</button>
-            </>
-          ) : profile.status === "accepted" ? (
-            <>
-              <button className="px-3 py-1 sm:px-4 sm:py-2 bg-green-500 rounded-full text-xs sm:text-sm accepted" >Accepted</button>
-            </>
-          ) : profile.status === "rejected" ? (
-            <>
-              <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm decline" >Declined</button>
-            </>
-          ) : null
-        ) : (
-          profile.status === "pending" && (
-            <>
-              <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm decline" onClick={() => onHandleRequest(profile._id, 'cancel')}>Cancel</button>
-            </>
-          )
-        )
+        (activeTab === "received" && profile.status === "pending") ? (
+          <>
+            <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm accept" onClick={() => onHandleRequest(profile._id, 'accepted')}>Accept</button>
+            <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm decline" onClick={() => onHandleRequest(profile._id, 'rejected')}>Decline</button>
+          </>
+        ) : profile.status === "accepted" ? (
+          <>
+            <button className="px-3 py-1 sm:px-4 sm:py-2 bg-green-500 rounded-full text-xs sm:text-sm accepted" >Accepted</button>
+          </>
+        ) : profile.status === "rejected" ? (
+          <>
+            <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm decline" >Declined</button>
+          </>
+        ) : (activeTab !== "received" && profile.status === "pending") ? (
+          <>
+            <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm decline" onClick={() => onHandleRequest(profile._id, 'cancel')}>Cancel</button>
+          </>
+        ) : null
+
       }
 
       {
