@@ -22,7 +22,7 @@ const Breadcrumb = ({ breadcrumbs }: BreadcrumbProps) => {
             <li key={index} className="flex items-center">
               {breadcrumb.href ? (
                 <Link className="font-medium" href={breadcrumb.href}>
-                  {breadcrumb.name}
+                   {breadcrumb.name}&nbsp;
                 </Link>
               ) : (
                 <span className="font-medium dark-text">{breadcrumb.name}</span>
