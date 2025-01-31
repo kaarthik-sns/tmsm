@@ -63,7 +63,9 @@ const FormElements = () => {
     lookingfor: "",
     partner_pref_subcaste: "",
     gender: "",
-    bride_groom_detail: ""
+    bride_groom_detail: "",
+    state_id: "",
+    city_id: ""
   });
 
   const handlePreview = () => {
@@ -97,7 +99,6 @@ const FormElements = () => {
 
           const { data } = await response.json();
           setFormData(data);
-          console.log(formData);
 
         } catch (err) {
           console.error(err);
@@ -298,6 +299,16 @@ const FormElements = () => {
               <div className="mb-2.5">
                 <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                   Place of birth :  {formData.place_of_birth || ""}
+                </label>
+              </div>
+              <div className="mb-2.5">
+                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                  City :  {formData?.city?.name || ""}
+                </label>
+              </div>
+              <div className="mb-2.5">
+                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                  State :  {formData?.state?.name || ""}
                 </label>
               </div>
             </div>

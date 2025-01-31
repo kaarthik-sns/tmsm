@@ -4,9 +4,10 @@ import { useState } from "react";
 import Breadcrumb from "@/components/Breadcrumbs/UserBreadcrumb";
 import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
 import SelectGroupCaste from "@/components/SelectGroup/SelectGroupCaste";
+import SelectGroupStates from "@/components/SelectGroup/SelectGroupStates";
+import SelectGroupCities from "@/components/SelectGroup/SelectGroupCities";
 import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
 import { toast } from "sonner";
-import { TriangleAlert } from "lucide-react";
 import NextImage from "next/image";
 import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
 import { useRouter } from "next/navigation";
@@ -23,7 +24,7 @@ const FormElements = () => {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [profileCreator, setProfileCreator] = useState(false);
   const formData_upload = new FormData();
-
+ 
   const router = useRouter();
 
 
@@ -52,6 +53,8 @@ const FormElements = () => {
     subcaste: "",
     birthdate: "",
     age: 0,
+    state_id: "",
+    city_id: "",
     place_of_birth: "",
     education: "",
     complexion: "",
@@ -97,7 +100,22 @@ const FormElements = () => {
     gender: "",
     bride_groom_detail: ""
   });
+  // Set selected state and city based on formData
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
 
+  const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newState = event.target.value;
+    setSelectedState(newState);
+    setFormData({ ...formData, state_id: newState, city_id: "" }); // Reset city when state changes
+    setSelectedCity("");
+  };
+
+  const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCity = event.target.value;
+    setSelectedCity(newCity);
+    setFormData({ ...formData, city_id: newCity });
+  };
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
@@ -173,7 +191,7 @@ const FormElements = () => {
 
     // Validation
     const errors: Record<string, string> = {};
-    
+
     if (!formData.bride_groom_detail || formData.bride_groom_detail.trim() === "") {
       errors.bride_groom_detail = "Fill about short deatils.";
     }
@@ -375,8 +393,8 @@ const FormElements = () => {
     { label: 'Groom', value: 'groom' },
   ];
   const genderOptions = [
-    { label: 'Boy', value: 'boy' },
-    { label: 'Girl', value: 'girl' },
+    { label: 'Male', value: 'male' },
+    { label: 'Female', value: 'female' },
   ];
 
   return (
@@ -733,6 +751,7 @@ const FormElements = () => {
                     }
                   />
                 </div>
+
                 <div>
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                     Caste
@@ -815,7 +834,25 @@ const FormElements = () => {
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    State
+                  </label>
+                  <SelectGroupStates
+                    selectedState={selectedState}
+                    onStateChange={handleStateChange}
+                  />
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    City
+                  </label>
+                  <SelectGroupCities
+                    selectedState={selectedState}
+                    selectedCity={selectedCity}
+                    onCityChange={handleCityChange}
+                  />
 
+
+                </div>
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                     Place of birth

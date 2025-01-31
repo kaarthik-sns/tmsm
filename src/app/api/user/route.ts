@@ -49,7 +49,6 @@ const uploadFile = async (file: UploadedFile | undefined, uploadDir: string): Pr
 };
 
 
-
 export async function POST(request: NextRequest) {
 
     // Ensure the uploads directory exists
@@ -78,6 +77,8 @@ export async function POST(request: NextRequest) {
     const birthdate = (formData.get('birthdate') as string) ?? '';
     const age = (formData.get('age') as string) ?? '';
     const place_of_birth = (formData.get('place_of_birth') as string) ?? '';
+    const state_id = (formData.get('state_id') as string) ?? '';
+    const city_id = (formData.get('city_id') as string) ?? '';
     const education = (formData.get('education') as string) ?? '';
     const complexion = (formData.get('complexion') as string) ?? '';
     const profession = (formData.get('profession') as string) ?? '';
@@ -171,6 +172,8 @@ export async function POST(request: NextRequest) {
             subcaste,
             birthdate: parsedBirthdate,
             age,
+            state_id,
+            city_id,
             place_of_birth,
             education,
             complexion,
@@ -216,7 +219,7 @@ export async function POST(request: NextRequest) {
             bride_groom_detail,
             gender
         });
-
+        console.log("newUserFields", newUserFields);
         if (id) {
             // Update data
             await User.findByIdAndUpdate(id, newUserFields, { new: true });
@@ -229,7 +232,7 @@ export async function POST(request: NextRequest) {
 
             const newUser = await User.create(newUserFields);
 
-            const verificationLink = `${process.env.BASE_URL}/frontend/verify-email?code=${newUser.email_code}`;
+            const verificationLink = `${process.env.BASE_URL}/verify-email?code=${newUser.email_code}`;
 
 
             const receipients = [{
