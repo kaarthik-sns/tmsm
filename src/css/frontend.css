@@ -316,6 +316,10 @@ input:-internal-autofill-selected {
     color: #d13333;
 }
 
+.h-verify {
+    height: 30rem;
+}
+
 /*Dashboard */
 
 .rounded-radius {
@@ -405,6 +409,17 @@ input:-internal-autofill-selected {
     font-family: 'Noto Sans';
 }
 
+.setting {
+    color: #000;
+    font-family: 'Noto Sans';
+    font-weight: 600;
+}
+.active-setting {
+    color: #923d27;
+    font-family: 'Noto Sans';
+    font-weight: 800;
+}
+ 
 /*Responsive code*/
 @media (min-width: 1024px) {
     .lg\:gap-8 {
@@ -1389,6 +1404,18 @@ padding-top: 1rem;
 }
 
 /* Custom class for SweetAlert2 */
+.confirm-color{
+    background-color: rgba(16, 185, 129, .08);
+    color: #10b981;
+}
+.cancel-color {
+    background-color: rgba(251, 84, 84, .08);
+    color: #fb5454;
+}
+.confirm-color-succes {
+    background-color: rgba(16, 185, 129, .08);
+    color: #10b981;
+}
 .swal2-popup {
     font-family: 'Noto Sans'; /* Change to your preferred font family */
   }
