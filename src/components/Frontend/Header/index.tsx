@@ -47,6 +47,7 @@ function NavList() {
   return (
     <ul className="mb-4 mt-2 pl-2 flex flex-col gap-3 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-8 header-text">
       <NavItem label="Home" href="/frontend" />
+      <NavItem label="Member" href="/frontend/member" />
       <NavItem label="About" href="/frontend/about" />
       <NavItem label="Contact" href="/frontend/contact" />
 

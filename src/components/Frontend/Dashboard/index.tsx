@@ -6,11 +6,12 @@ import ProfileUser from "@/components/Frontend/ProfileUser";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useRouter } from 'next/navigation';
+import Swal from 'sweetalert2'; // Import SweetAlert2
+
 
 const RequestStatus = () => {
   const { data: session } = useSession();
   const myId = session?.user.id;
-  const userName = session?.user.name; // Assuming the username is available in the session data
   const [activeTab, setActiveTab] = useState("profile");
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,6 +22,8 @@ const RequestStatus = () => {
   const [sentRequests, setSentReqData] = useState([]);
   const [receivedRequests, setRecivedReqData] = useState([]);
   const router = useRouter();
+  const [userName, setUserName] = useState(""); // Default to "Guest"
+  const [lastName, setLastName] = useState("");
 
 
   const filteredRequests = (activeTab === "received" ? receivedRequests : sentRequests).filter(profile =>
@@ -36,37 +39,46 @@ const RequestStatus = () => {
     setIsEditMode(prev => !prev); // Toggle edit mode
   };
 
+  // Move fetchUserData outside to be reusable
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch("/api/get-user-data", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: myId }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data.");
+      }
+
+      const { data } = await response.json();
+      setProfileData(data);
+      setUserName(data.name); // Assuming API returns `firstName`
+      setLastName(data.lastname); // Assuming API returns `lastName`
+    } catch (err) {
+      console.error(err);
+      // setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Run fetchUserData when exiting edit mode
+  useEffect(() => {
+    if (!isEditMode) {
+      fetchUserData();
+    }
+  }, [isEditMode]);
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedProfile(null);
   };
 
+  // Fetch user data when `myId` changes
   useEffect(() => {
     if (myId) {
-      const fetchUserData = async () => {
-        try {
-          const response = await fetch("/api/get-user-data", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id: myId }),
-          });
-
-          if (!response.ok) {
-            throw new Error("Failed to fetch user data.");
-          }
-
-          const { data } = await response.json();
-
-          setProfileData(data);
-
-        } catch (err) {
-          console.error(err);
-          // setError(err.message);
-        } finally {
-          setIsLoading(false);
-        }
-      };
-
       fetchUserData();
       fetchReqData(myId);
     }
@@ -99,52 +111,79 @@ const RequestStatus = () => {
     }
   };
 
-
   const handleRequest = async (id: string, newStatus: string) => {
-    // Find the item being updated
-
     if (!id || !newStatus) return;
 
-    console.log(id, newStatus);
-    // return
+    // Set different messages based on status
+    let confirmationMessage = "";
+    let successMessage = "";
+    let confirmButtonText = "";
 
-    try {
-      // API call to update the status on the server update-request-status
-      const response = await fetch(`/api/requests/update-request-status`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: id, status: newStatus }), // Ensure the status is sent in the correct format
-      });
+    switch (newStatus) {
+      case "accepted":
+        confirmationMessage = "Do you want to accept this request?";
+        successMessage = "Request accepted successfully.";
+        confirmButtonText = "Yes, Accept";
+        break;
+      case "rejected":
+        confirmationMessage = "Do you want to decline this request?";
+        successMessage = "Request has been declined.";
+        confirmButtonText = "Yes, Decline";
+        break;
+      case "cancel":
+        confirmationMessage = "Do you want to cancel this request?";
+        successMessage = "Request has been cancelled.";
+        confirmButtonText = "Yes, Cancel";
+        break;
+      default:
+        return;
+    }
 
-      if (!response.ok) {
-        throw new Error("Failed to update status");
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: confirmationMessage,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: confirmButtonText,
+      cancelButtonText: "No",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const response = await fetch(`/api/requests/update-request-status`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: id, status: newStatus }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to update status");
+        }
+
+        fetchReqData(myId);
+
+        await Swal.fire({
+          title: "Success!",
+          text: successMessage,
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+
+      } catch (error) {
+        await Swal.fire({
+          title: "Error!",
+          text: "Failed to update request status. Please try again later.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+        console.error("Error updating status:", error);
       }
-
-      fetchReqData(myId);
-      // Success: Optionally handle the response here
-      const data = await response.json();
-
-      toast.success('Request status updated successfully!', {
-        className: "sonner-toast-success",
-        cancel: {
-          label: 'Close',
-          onClick: () => console.log('Close'),
-        },
-      });
-
-
-    } catch (error) {
-      // Failure: revert to the previous status
-      toast.error("Request status failed to update", {
-        className: "sonner-toast-error",
-        cancel: {
-          label: 'Close',
-          onClick: () => console.log('Close'),
-        },
-      });
-      console.error("Error updating status:", error);
+    } else {
+      console.log("Request update was cancelled.");
     }
   };
 
@@ -161,9 +200,9 @@ const RequestStatus = () => {
     <div className="bg-light min-h-screen flex justify-center py-10 px-4">
       <div className="container max-w-4xl p-6">
         {/* Welcome message */}
-        <h2 className="text-xl font-semibold text-gray-700 mb-4 text-center">
-          Welcome, {userName ? userName : "Guest"}
-        </h2>
+        {/* <h2 className="text-xl font-semibold text-gray-700 mb-4 text-center">
+        Welcome, {userName} {lastName}
+        </h2> */}
 
         <h1 className="text-lg sm:text-xl font-semibold mb-4 text-gray-700">My Account</h1>
 
@@ -172,10 +211,10 @@ const RequestStatus = () => {
             <button
               className={`px-4 py-2 rounded-full ${activeTab === "profile" ? "bg-dash-button-active" : "bg-dash-button"
                 }`}
-                onClick={() => {
-                  setActiveTab("profile");
-                  setIsEditMode(false); // Reset edit mode when the profile tab is clicked
-                }}
+              onClick={() => {
+                setActiveTab("profile");
+                setIsEditMode(false); // Reset edit mode when the profile tab is clicked
+              }}
             >
               My Profile
             </button>
@@ -310,7 +349,7 @@ const ProfileCard = ({ profile, activeTab, onViewProfile, onHandleRequest, onRed
             </>
           ) : profile.status === "accepted" ? (
             <>
-              <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm accepted" >Accepted</button>
+              <button className="px-3 py-1 sm:px-4 sm:py-2 bg-green-500 rounded-full text-xs sm:text-sm accepted" >Accepted</button>
             </>
           ) : profile.status === "rejected" ? (
             <>

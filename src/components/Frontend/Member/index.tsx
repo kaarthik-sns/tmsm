@@ -5,6 +5,7 @@ import SelectAge from "@/components/Frontend/HomeFilter/SelectGroup/SelectAge";
 import SelectBrideGroom from "@/components/Frontend/HomeFilter/SelectGroup/SelectBrideGroom";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 const PaginatedUsers = () => {
 
@@ -159,56 +160,82 @@ const PaginatedUsers = () => {
 
   const handleRequestClick = async (id) => {
 
-    if (!session?.user || !session?.user?.is_admin) {
+    // Check if user is logged in
+    if (!session) {
       router.push(`/frontend/login`);
       return;
     }
-
-    const userId = session.user.id;
-
-    try {
-      const formBody = new URLSearchParams({
-        sender_id: userId,
-        receiver_id: id,
-      });
-
-      const res = await fetch("/api/requests/send-profile-request", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: formBody.toString(),
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to send request");
+  
+    // Show confirmation popup using SweetAlert2
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to send a request to view this person\'s profile?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, Request Access',
+      cancelButtonText: 'No',
+      confirmButtonColor: '#3085d6',  // Custom color for "Yes" button (e.g., blue)
+      cancelButtonColor: '#d33',      // Custom color for "No" button (e.g., red)
+    });
+  
+    // If the user clicks "Yes", proceed with the request
+    if (result.isConfirmed) {
+      const userId = session.user.id;
+  
+      try {
+        const formBody = new URLSearchParams({
+          sender_id: userId,
+          receiver_id: id,
+        });
+  
+        const res = await fetch("/api/requests/send-profile-request", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: formBody.toString(),
+        });
+  
+        if (!res.ok) {
+          throw new Error("Failed to send request");
+        }
+  
+        const data = await res.json();
+        fetchUsers(currentPage, filters);
+  
+        // Close the current modal before showing the success message
+        Swal.close();
+  
+        // Show success message
+        Swal.fire({
+          title: 'Success!',
+          text: 'Request sent. Approval is needed to view the profile. You can cancel anytime.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#6f9c5d',  // Custom color for "Yes" button (e.g., blue)
+        });
+  
+      } catch (err) {
+        // Close the current modal before showing the error message
+        Swal.close();
+  
+        // Show error message
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to send request. Please try again later.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
       }
-
-      const data = await res.json();
-      fetchUsers(currentPage, filters);
-
-      toast.success('Request sent successfully!', {
-        className: "sonner-toast-success",
-        cancel: {
-          label: 'Close',
-          onClick: () => console.log('Close'),
-        },
-      });
-
-
-    } catch (err: any) {
-      toast.error('Failed to send request', {
-        className: "sonner-toast-error",
-        cancel: {
-          label: 'Close',
-          onClick: () => console.log('Close'),
-        },
-      });
+    } else {
+      // If user clicks "No", close SweetAlert
+      console.log('Request was not sent.');
     }
-
-
   };
-
+  
+  
+  
+  
   return (
     <>
 
@@ -323,7 +350,7 @@ const PaginatedUsers = () => {
                           >
                             View Details
                           </button>
-                        ) : reqSentData?.[user._id].status === "rejected" ? (
+                        ) : reqSentData?.[user._id]?.status === "rejected" ? (
                           // If status is "rejected", show "Rejected" disabled button
                           <button
                             key={user._id}
@@ -333,10 +360,10 @@ const PaginatedUsers = () => {
                             Rejected
                           </button>
                         ) : (
-                          // If user._id exists but status is not "accepted", show "Request Sent" button
+                          // If user._id exists but status is not "accepted", show "Request Sent" buttonclass="bg-green-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-green-600 mb-6"
                           <button
                             key={user._id}
-                            className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom cursor-not-allowed"
+                            className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm bg-green-500 cursor-not-allowed"
                             disabled
                           >
                             Request Sent

@@ -671,6 +671,9 @@ input:-internal-autofill-selected {
     fill: #FFD16C;
 }
 
+.contact-bio p span {
+    text-transform: capitalize;
+}
 /**contact page**/
 .contact-info-con {
     margin: 0;
@@ -1286,8 +1289,8 @@ input:-internal-autofill-selected {
 
 .accepted {
     color: #fff;
-    background: #6aa84f;
-    border: 1px solid #6aa84f;
+    background: #6f9c5d;
+    border: 1px solid #6f9c5d;
     font-weight: 800;
     font-family: 'Noto Sans';
     padding: 10px 30px;
@@ -1384,6 +1387,24 @@ font-weight: 300;
 line-height: 30px;
 padding-top: 1rem;
 }
+
+/* Custom class for SweetAlert2 */
+.swal2-popup {
+    font-family: 'Noto Sans'; /* Change to your preferred font family */
+  }
+  
+  .swal2-title {
+    font-family: 'Noto Sans'; /* Change to your preferred font family */
+  }
+  
+  .swal2-content {
+    font-family: 'Noto Sans'; /* Change to your preferred font family */
+  }
+  
+  .swal2-actions button {
+    font-family: 'Noto Sans'; /* Change to your preferred font family */
+  }
+  
 @media only screen and (min-width: 768px) {
     .faq-info-con {
         padding: 5.56vw 0px 2.78vw 0;
