@@ -354,24 +354,31 @@ const PaginatedUsers = () => {
                           >
                             View Details
                           </button>
-                        ) : reqSentData?.[user._id]?.status === "rejected" ? (
+                        ) : reqSentData?.[user._id]?.status === "rejected" || reqRecData?.[user._id]?.status === "rejected" ? (
                           // If status is "rejected", show "Rejected" disabled button
                           <button
                             key={user._id}
-                            className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom cursor-not-allowed"
+                            className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom-rej cursor-not-allowed"
                             disabled
                           >
                             Rejected
                           </button>
                         ) : (
+                          
                           // If user._id exists but status is not "accepted", show "Request Sent" buttonclass="bg-green-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-green-600 mb-6"
                           <button
-                            key={user._id}
-                            className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm bg-green-500 cursor-not-allowed"
-                            disabled
-                          >
-                            Request Sent
-                          </button>
+                          key={user._id}
+                          className="inline-block px-10 py-4 text-white duration-150 rounded-full md:text-sm bg-green-500 cursor-not-allowed"
+                          disabled
+                        >
+                          {reqSentData?.[user._id]
+                            ? 'Request Sent' // If user sent request
+                            : 'Request Received' // If user received request
+                           
+                          }
+                        </button>
+
+
                         )
                       ) : (
                         // Else, show "Send Request" button

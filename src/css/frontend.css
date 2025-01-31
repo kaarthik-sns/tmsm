@@ -136,6 +136,15 @@ body {
     border: 1px solid #ffd16c;
 }
 
+.ftext-custom-rej {
+    color: #ffffff;
+    background: #af2c2c;
+    border: 1px solid #af2c2c;
+    font-weight: 800;
+    font-family: 'Noto Sans';
+}
+
+
 .fillter-text label {
     font-size: 18px;
     font-family: 'Noto Sans';
