@@ -13,7 +13,7 @@ export const GET = async (req: NextRequest) => {
         const pageSize = 10;
         const skip = (page - 1) * pageSize;
 
-        const lookingfor = searchParams.get('lookingfor') || '';
+        const gender = searchParams.get('lookingfor') || '';
         const fromage = searchParams.get('fromage') || '';
         const toage = searchParams.get('toage') || '';
         const caste = searchParams.get('caste') || '';
@@ -33,8 +33,8 @@ export const GET = async (req: NextRequest) => {
             query.subcaste = { $regex: subcaste, $options: 'i' }; // Case-insensitive regex search
         }
 
-        if (lookingfor) {
-            query.lookingfor = { $regex: lookingfor, $options: 'i' }; // Case-insensitive regex search
+        if (gender) {
+            query.gender = { $regex: gender, $options: 'i' }; // Case-insensitive regex search
         }
 
         if (fromage && toage) {

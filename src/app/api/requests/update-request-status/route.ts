@@ -77,6 +77,7 @@ export async function PATCH(req: NextRequest) {
         const link = process.env.BASE_URL;
         let content = '';
 
+
         if (ProfileRequestData.length > 0) {
             const reqData = ProfileRequestData[0];
 
@@ -131,13 +132,13 @@ export async function PATCH(req: NextRequest) {
 
             }
 
-
-            const result = await sendEmail({
-                receipients,
-                subject: 'TMSM - Profile Request',
-                message: htmlBody
-            });
-
+            if (status != 'pending') {
+                const result = await sendEmail({
+                    receipients,
+                    subject: 'TMSM - Profile Request',
+                    message: htmlBody
+                });
+            }
 
             if (status === 'cancel') {
                 // Delete the record if status is 'cancel'

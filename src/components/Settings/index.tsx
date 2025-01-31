@@ -13,6 +13,7 @@ const Settings = () => {
   const [faviconPreview, setFaviconPreview] = useState('');
   const [error, setError] = useState(null);
   const formData_upload = new FormData();
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   const [formData, setFormData] = useState({
     organisation_description: "",
@@ -37,7 +38,8 @@ const Settings = () => {
     smtp_host: "",
     smtp_secure: "",
 
-    profile_req_limit: ""
+    profile_req_limit: "",
+    contact_desc:""
   });
 
   useEffect(() => {
@@ -87,11 +89,107 @@ const Settings = () => {
     }
   };
 
+  interface FormDataType {
+    organisation_name: string;
+    organisation_description?: string;
+    organisation_email_id: string;
+    admin_to_email_id: string;
+    admin_from_email_id: string;
+    phone_no: string;
+    address: string;
+    domain_url: string;
+    copyright: string;
+    logo: string;
+    favicon?: string;
+    facebook?: string;
+    twitter?: string;
+    instagram?: string;
+    youtube?: string;
+    smtp_mail: string;
+    smtp_password: string;
+    smtp_port: string;
+    smtp_host: string;
+    smtp_secure: string;
+    profile_req_limit: string;
+    contact_desc:string;
+  }
+
+  const validateFormData = (formData: Partial<FormDataType>): Record<string, string> => {
+    let errors: Record<string, string> = {};
+
+    // Required field validation
+    const requiredFields: (keyof FormDataType)[] = [
+      "organisation_name",
+      "organisation_email_id",
+      "admin_to_email_id",
+      "admin_from_email_id",
+      "phone_no",
+      "address",
+      "domain_url",
+      "copyright",
+      "smtp_mail",
+      "smtp_password",
+      "smtp_port",
+      "smtp_host",
+      "smtp_secure",
+      "profile_req_limit",
+      "domain_url",
+      "facebook",
+      "twitter",
+      "instagram",
+      "youtube",
+      "contact_desc"
+    ];
+
+    requiredFields.forEach((field) => {
+
+      const formfiled = String(formData[field]);
+
+      if (!formfiled?.trim()) {
+        errors[field] = `${field.replace(/_/g, " ")} is required.`;
+      }
+    });
+
+    // Email validation
+    const emailFields: (keyof FormDataType)[] = ["organisation_email_id", "admin_to_email_id", "admin_from_email_id", "smtp_mail"];
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    emailFields.forEach((field) => {
+      if (formData[field] && !emailRegex.test(formData[field] as string)) {
+        errors[field] = "Invalid email format.";
+      }
+    });
+
+    // Phone number validation (10digits)
+    const phoneRegex = /^\d{10}$/;
+    if (formData.phone_no && !phoneRegex.test(formData.phone_no)) {
+      errors.phone_no = "Invalid phone number. Must be 10 digits.";
+    }
+
+    return errors;
+
+  };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     setError(null);
+
+    const errors = validateFormData(formData);
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      toast.error('Please fix the highlighted errors.', {
+        className: "sonner-toast-error",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
+      return;
+    }
+
+    setFormErrors({});
 
     for (const [key, value] of Object.entries(formData)) {
       const excludedKeys = ['logo'];
@@ -165,34 +263,11 @@ const Settings = () => {
                     >
                       Organization Name
                     </label>
-                    <div className="relative">
-                      <span className="absolute left-4.5 top-4">
-                        <svg
-                          className="fill-current"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <g opacity="0.8">
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M3.72039 12.887C4.50179 12.1056 5.5616 11.6666 6.66667 11.6666H13.3333C14.4384 11.6666 15.4982 12.1056 16.2796 12.887C17.061 13.6684 17.5 14.7282 17.5 15.8333V17.5C17.5 17.9602 17.1269 18.3333 16.6667 18.3333C16.2064 18.3333 15.8333 17.9602 15.8333 17.5V15.8333C15.8333 15.1703 15.5699 14.5344 15.1011 14.0655C14.6323 13.5967 13.9964 13.3333 13.3333 13.3333H6.66667C6.00363 13.3333 5.36774 13.5967 4.8989 14.0655C4.43006 14.5344 4.16667 15.1703 4.16667 15.8333V17.5C4.16667 17.9602 3.79357 18.3333 3.33333 18.3333C2.8731 18.3333 2.5 17.9602 2.5 17.5V15.8333C2.5 14.7282 2.93899 13.6684 3.72039 12.887Z"
-                              fill=""
-                            />
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M9.99967 3.33329C8.61896 3.33329 7.49967 4.45258 7.49967 5.83329C7.49967 7.214 8.61896 8.33329 9.99967 8.33329C11.3804 8.33329 12.4997 7.214 12.4997 5.83329C12.4997 4.45258 11.3804 3.33329 9.99967 3.33329ZM5.83301 5.83329C5.83301 3.53211 7.69849 1.66663 9.99967 1.66663C12.3009 1.66663 14.1663 3.53211 14.1663 5.83329C14.1663 8.13448 12.3009 9.99996 9.99967 9.99996C7.69849 9.99996 5.83301 8.13448 5.83301 5.83329Z"
-                              fill=""
-                            />
-                          </g>
-                        </svg>
-                      </span>
+                    <div>
                       <input
-                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                          ${formErrors?.organisation_name ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                          dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary`}
                         type="text"
                         id="organisation_name"
                         name="organisation_name"
@@ -200,6 +275,9 @@ const Settings = () => {
                         onChange={handleChange}
                         placeholder="Enter Organisation Name"
                       />
+                      {formErrors?.organisation_name && (
+                        <p className="mt-1 text-sm text-red-500">{formErrors.organisation_name}</p>
+                      )}
                     </div>
                   </div>
 
@@ -211,14 +289,20 @@ const Settings = () => {
                       Phone Number
                     </label>
                     <input
-                      className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                        ${formErrors?.phone_no ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                        dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary`}
                       type="text"
                       name="phone_no"
                       value={formData.phone_no || ""}
                       onChange={handleChange}
                       id="phone_no"
                       placeholder="Enter Phone Number"
+                      maxLength={10}
                     />
+                    {formErrors?.phone_no && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.phone_no}</p>
+                    )}
                   </div>
                 </div>
 
@@ -229,34 +313,12 @@ const Settings = () => {
                   >
                     Organization Email ID
                   </label>
-                  <div className="relative">
-                    <span className="absolute left-4.5 top-4">
-                      <svg
-                        className="fill-current"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g opacity="0.8">
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M3.33301 4.16667C2.87658 4.16667 2.49967 4.54357 2.49967 5V15C2.49967 15.4564 2.87658 15.8333 3.33301 15.8333H16.6663C17.1228 15.8333 17.4997 15.4564 17.4997 15V5C17.4997 4.54357 17.1228 4.16667 16.6663 4.16667H3.33301ZM0.833008 5C0.833008 3.6231 1.9561 2.5 3.33301 2.5H16.6663C18.0432 2.5 19.1663 3.6231 19.1663 5V15C19.1663 16.3769 18.0432 17.5 16.6663 17.5H3.33301C1.9561 17.5 0.833008 16.3769 0.833008 15V5Z"
-                            fill=""
-                          />
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M0.983719 4.52215C1.24765 4.1451 1.76726 4.05341 2.1443 4.31734L9.99975 9.81615L17.8552 4.31734C18.2322 4.05341 18.7518 4.1451 19.0158 4.52215C19.2797 4.89919 19.188 5.4188 18.811 5.68272L10.4776 11.5161C10.1907 11.7169 9.80879 11.7169 9.52186 11.5161L1.18853 5.68272C0.811486 5.4188 0.719791 4.89919 0.983719 4.52215Z"
-                            fill=""
-                          />
-                        </g>
-                      </svg>
-                    </span>
+                  <div>
                     <input
-                      className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                        ${formErrors?.organisation_email_id ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                        dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary
+                      `}
                       type="email"
                       name="organisation_email_id"
                       id="organisation_email_id"
@@ -264,6 +326,9 @@ const Settings = () => {
                       value={formData.organisation_email_id || ""}
                       onChange={handleChange}
                     />
+                    {formErrors?.organisation_email_id && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.organisation_email_id}</p>
+                    )}
                   </div>
                 </div>
 
@@ -274,34 +339,12 @@ const Settings = () => {
                   >
                     Admin To Email ID
                   </label>
-                  <div className="relative">
-                    <span className="absolute left-4.5 top-4">
-                      <svg
-                        className="fill-current"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g opacity="0.8">
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M3.33301 4.16667C2.87658 4.16667 2.49967 4.54357 2.49967 5V15C2.49967 15.4564 2.87658 15.8333 3.33301 15.8333H16.6663C17.1228 15.8333 17.4997 15.4564 17.4997 15V5C17.4997 4.54357 17.1228 4.16667 16.6663 4.16667H3.33301ZM0.833008 5C0.833008 3.6231 1.9561 2.5 3.33301 2.5H16.6663C18.0432 2.5 19.1663 3.6231 19.1663 5V15C19.1663 16.3769 18.0432 17.5 16.6663 17.5H3.33301C1.9561 17.5 0.833008 16.3769 0.833008 15V5Z"
-                            fill=""
-                          />
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M0.983719 4.52215C1.24765 4.1451 1.76726 4.05341 2.1443 4.31734L9.99975 9.81615L17.8552 4.31734C18.2322 4.05341 18.7518 4.1451 19.0158 4.52215C19.2797 4.89919 19.188 5.4188 18.811 5.68272L10.4776 11.5161C10.1907 11.7169 9.80879 11.7169 9.52186 11.5161L1.18853 5.68272C0.811486 5.4188 0.719791 4.89919 0.983719 4.52215Z"
-                            fill=""
-                          />
-                        </g>
-                      </svg>
-                    </span>
+                  <div>
                     <input
-                      className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                        ${formErrors?.admin_to_email_id ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                        dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary
+                      `}
                       type="email"
                       name="admin_to_email_id"
                       id="admin_to_email_id"
@@ -309,6 +352,9 @@ const Settings = () => {
                       value={formData.admin_to_email_id || ""}
                       onChange={handleChange}
                     />
+                    {formErrors?.admin_to_email_id && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.admin_to_email_id}</p>
+                    )}
                   </div>
                 </div>
 
@@ -320,34 +366,12 @@ const Settings = () => {
                   >
                     Admin From Email ID
                   </label>
-                  <div className="relative">
-                    <span className="absolute left-4.5 top-4">
-                      <svg
-                        className="fill-current"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g opacity="0.8">
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M3.33301 4.16667C2.87658 4.16667 2.49967 4.54357 2.49967 5V15C2.49967 15.4564 2.87658 15.8333 3.33301 15.8333H16.6663C17.1228 15.8333 17.4997 15.4564 17.4997 15V5C17.4997 4.54357 17.1228 4.16667 16.6663 4.16667H3.33301ZM0.833008 5C0.833008 3.6231 1.9561 2.5 3.33301 2.5H16.6663C18.0432 2.5 19.1663 3.6231 19.1663 5V15C19.1663 16.3769 18.0432 17.5 16.6663 17.5H3.33301C1.9561 17.5 0.833008 16.3769 0.833008 15V5Z"
-                            fill=""
-                          />
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M0.983719 4.52215C1.24765 4.1451 1.76726 4.05341 2.1443 4.31734L9.99975 9.81615L17.8552 4.31734C18.2322 4.05341 18.7518 4.1451 19.0158 4.52215C19.2797 4.89919 19.188 5.4188 18.811 5.68272L10.4776 11.5161C10.1907 11.7169 9.80879 11.7169 9.52186 11.5161L1.18853 5.68272C0.811486 5.4188 0.719791 4.89919 0.983719 4.52215Z"
-                            fill=""
-                          />
-                        </g>
-                      </svg>
-                    </span>
+                  <div>
                     <input
-                      className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                      ${formErrors?.admin_from_email_id ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                      dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary
+                    `}
                       type="email"
                       name="admin_from_email_id"
                       id="admin_from_email_id"
@@ -355,6 +379,9 @@ const Settings = () => {
                       value={formData.admin_from_email_id || ""}
                       onChange={handleChange}
                     />
+                    {formErrors?.admin_from_email_id && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.admin_from_email_id}</p>
+                    )}
                   </div>
                 </div>
 
@@ -366,7 +393,10 @@ const Settings = () => {
                     Domain URL
                   </label>
                   <input
-                    className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                    ${formErrors?.domain_url ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                    dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary
+                  `}
                     type="text"
                     name="domain_url"
                     id="domain_url"
@@ -374,6 +404,9 @@ const Settings = () => {
                     value={formData.domain_url || ""}
                     onChange={handleChange}
                   />
+                  {formErrors?.domain_url && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.domain_url}</p>
+                  )}
                 </div>
 
                 <div className="mb-5.5">
@@ -384,7 +417,10 @@ const Settings = () => {
                     Copyright
                   </label>
                   <input
-                    className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                      ${formErrors?.copyright ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                      dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary
+                    `}
                     type="text"
                     name="copyright"
                     id="copyright"
@@ -392,6 +428,9 @@ const Settings = () => {
                     value={formData.copyright || ""}
                     onChange={handleChange}
                   />
+                  {formErrors?.copyright && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.copyright}</p>
+                  )}
                 </div>
 
                 <div className="mb-5.5">
@@ -402,7 +441,10 @@ const Settings = () => {
                     Facebook
                   </label>
                   <input
-                    className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                      ${formErrors?.facebook ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                      dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary
+                    `}
                     type="text"
                     name="facebook"
                     id="facebook"
@@ -410,6 +452,9 @@ const Settings = () => {
                     value={formData.facebook || ""}
                     onChange={handleChange}
                   />
+                  {formErrors?.facebook && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.facebook}</p>
+                  )}
                 </div>
 
                 <div className="mb-5.5">
@@ -420,7 +465,10 @@ const Settings = () => {
                     Twitter
                   </label>
                   <input
-                    className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                      ${formErrors?.twitter ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                      dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary
+                    `}
                     type="text"
                     name="twitter"
                     id="twitter"
@@ -428,6 +476,9 @@ const Settings = () => {
                     value={formData.twitter || ""}
                     onChange={handleChange}
                   />
+                  {formErrors?.twitter && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.twitter}</p>
+                  )}
                 </div>
 
 
@@ -439,7 +490,10 @@ const Settings = () => {
                     Instagram
                   </label>
                   <input
-                    className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                      ${formErrors?.instagram ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                      dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary
+                    `}
                     type="text"
                     name="instagram"
                     id="instagram"
@@ -447,6 +501,9 @@ const Settings = () => {
                     value={formData.instagram || ""}
                     onChange={handleChange}
                   />
+                  {formErrors?.instagram && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.instagram}</p>
+                  )}
                 </div>
 
 
@@ -458,7 +515,10 @@ const Settings = () => {
                     Youtube
                   </label>
                   <input
-                    className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                    ${formErrors?.youtube ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                    dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary
+                  `}
                     type="text"
                     name="youtube"
                     id="youtube"
@@ -466,6 +526,9 @@ const Settings = () => {
                     value={formData.youtube || ""}
                     onChange={handleChange}
                   />
+                  {formErrors?.youtube && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.youtube}</p>
+                  )}
                 </div>
 
                 <div className="mb-5.5">
@@ -475,40 +538,12 @@ const Settings = () => {
                   >
                     Address
                   </label>
-                  <div className="relative">
-                    <span className="absolute left-4.5 top-4">
-                      <svg
-                        className="fill-current"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g opacity="0.8" clipPath="url(#clip0_88_10224)">
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M1.56524 3.23223C2.03408 2.76339 2.66997 2.5 3.33301 2.5H9.16634C9.62658 2.5 9.99967 2.8731 9.99967 3.33333C9.99967 3.79357 9.62658 4.16667 9.16634 4.16667H3.33301C3.11199 4.16667 2.90003 4.25446 2.74375 4.41074C2.58747 4.56702 2.49967 4.77899 2.49967 5V16.6667C2.49967 16.8877 2.58747 17.0996 2.74375 17.2559C2.90003 17.4122 3.11199 17.5 3.33301 17.5H14.9997C15.2207 17.5 15.4326 17.4122 15.5889 17.2559C15.7452 17.0996 15.833 16.8877 15.833 16.6667V10.8333C15.833 10.3731 16.2061 10 16.6663 10C17.1266 10 17.4997 10.3731 17.4997 10.8333V16.6667C17.4997 17.3297 17.2363 17.9656 16.7674 18.4344C16.2986 18.9033 15.6627 19.1667 14.9997 19.1667H3.33301C2.66997 19.1667 2.03408 18.9033 1.56524 18.4344C1.0964 17.9656 0.833008 17.3297 0.833008 16.6667V5C0.833008 4.33696 1.0964 3.70107 1.56524 3.23223Z"
-                            fill=""
-                          />
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M16.6664 2.39884C16.4185 2.39884 16.1809 2.49729 16.0056 2.67253L8.25216 10.426L7.81167 12.188L9.57365 11.7475L17.3271 3.99402C17.5023 3.81878 17.6008 3.5811 17.6008 3.33328C17.6008 3.08545 17.5023 2.84777 17.3271 2.67253C17.1519 2.49729 16.9142 2.39884 16.6664 2.39884ZM14.8271 1.49402C15.3149 1.00622 15.9765 0.732178 16.6664 0.732178C17.3562 0.732178 18.0178 1.00622 18.5056 1.49402C18.9934 1.98182 19.2675 2.64342 19.2675 3.33328C19.2675 4.02313 18.9934 4.68473 18.5056 5.17253L10.5889 13.0892C10.4821 13.196 10.3483 13.2718 10.2018 13.3084L6.86847 14.1417C6.58449 14.2127 6.28409 14.1295 6.0771 13.9225C5.87012 13.7156 5.78691 13.4151 5.85791 13.1312L6.69124 9.79783C6.72787 9.65131 6.80364 9.51749 6.91044 9.41069L14.8271 1.49402Z"
-                            fill=""
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_88_10224">
-                            <rect width="20" height="20" fill="white" />
-                          </clipPath>
-                        </defs>
-                      </svg>
-                    </span>
-
+                  <div>
                     <textarea
-                      className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                        ${formErrors?.address ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                        dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary
+                      `}
                       name="address"
                       id="address"
                       rows={6}
@@ -516,6 +551,9 @@ const Settings = () => {
                       value={formData.address || ""}
                       onChange={handleChange}
                     ></textarea>
+                    {formErrors?.address && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.address}</p>
+                    )}
                   </div>
                 </div>
 
@@ -614,7 +652,10 @@ const Settings = () => {
                     Profile Request Limit
                   </label>
                   <input
-                    className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                      ${formErrors?.profile_req_limit ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                      dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary
+                    `}
                     type="text"
                     name="profile_req_limit"
                     id="profile_req_limit"
@@ -623,13 +664,16 @@ const Settings = () => {
                     value={formData.profile_req_limit || ""}
 
                   />
+                  {formErrors?.profile_req_limit && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.profile_req_limit}</p>
+                  )}
                 </div>
 
               </div>
             </div>
 
 
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark mb-3">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
                   SMTP Information
@@ -644,34 +688,12 @@ const Settings = () => {
                   >
                     Email ID
                   </label>
-                  <div className="relative">
-                    <span className="absolute left-4.5 top-4">
-                      <svg
-                        className="fill-current"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g opacity="0.8">
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M3.33301 4.16667C2.87658 4.16667 2.49967 4.54357 2.49967 5V15C2.49967 15.4564 2.87658 15.8333 3.33301 15.8333H16.6663C17.1228 15.8333 17.4997 15.4564 17.4997 15V5C17.4997 4.54357 17.1228 4.16667 16.6663 4.16667H3.33301ZM0.833008 5C0.833008 3.6231 1.9561 2.5 3.33301 2.5H16.6663C18.0432 2.5 19.1663 3.6231 19.1663 5V15C19.1663 16.3769 18.0432 17.5 16.6663 17.5H3.33301C1.9561 17.5 0.833008 16.3769 0.833008 15V5Z"
-                            fill=""
-                          />
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M0.983719 4.52215C1.24765 4.1451 1.76726 4.05341 2.1443 4.31734L9.99975 9.81615L17.8552 4.31734C18.2322 4.05341 18.7518 4.1451 19.0158 4.52215C19.2797 4.89919 19.188 5.4188 18.811 5.68272L10.4776 11.5161C10.1907 11.7169 9.80879 11.7169 9.52186 11.5161L1.18853 5.68272C0.811486 5.4188 0.719791 4.89919 0.983719 4.52215Z"
-                            fill=""
-                          />
-                        </g>
-                      </svg>
-                    </span>
+                  <div>
                     <input
-                      className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                        ${formErrors?.smtp_mail ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                        dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary
+                      `}
                       type="email"
                       name="smtp_mail"
                       id="smtp_mail"
@@ -680,6 +702,9 @@ const Settings = () => {
                       value={formData.smtp_mail || ""}
 
                     />
+                    {formErrors?.smtp_mail && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.smtp_mail}</p>
+                    )}
                   </div>
                 </div>
 
@@ -691,15 +716,20 @@ const Settings = () => {
                     Password
                   </label>
                   <input
-                    className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                    type="text"
+                    className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                      ${formErrors?.smtp_password ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                      dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary
+                    `}
+                    type="password"
                     name="smtp_password"
                     id="smtp_password"
                     placeholder="Enter Password"
                     onChange={handleChange}
                     value={formData.smtp_password || ""}
-
                   />
+                  {formErrors?.smtp_password && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.smtp_password}</p>
+                  )}
                 </div>
 
                 <div className="mb-5.5">
@@ -710,7 +740,10 @@ const Settings = () => {
                     Host
                   </label>
                   <input
-                    className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                      ${formErrors?.smtp_host ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                      dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary
+                    `}
                     type="text"
                     name="smtp_host"
                     id="smtp_host"
@@ -719,6 +752,9 @@ const Settings = () => {
                     value={formData.smtp_host || ""}
 
                   />
+                  {formErrors?.smtp_host && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.smtp_host}</p>
+                  )}
                 </div>
 
                 <div className="mb-5.5">
@@ -729,7 +765,10 @@ const Settings = () => {
                     Port
                   </label>
                   <input
-                    className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                      ${formErrors?.smtp_port ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                      dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary
+                    `}
                     type="text"
                     name="smtp_port"
                     id="smtp_port"
@@ -738,6 +777,9 @@ const Settings = () => {
                     value={formData.smtp_port || ""}
 
                   />
+                  {formErrors?.smtp_port && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.smtp_port}</p>
+                  )}
                 </div>
 
                 <div className="mb-5.5">
@@ -748,7 +790,10 @@ const Settings = () => {
                     Secure
                   </label>
                   <input
-                    className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                      ${formErrors?.smtp_secure ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                      dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary
+                    `}
                     type="text"
                     name="smtp_secure"
                     id="smtp_secure"
@@ -757,7 +802,50 @@ const Settings = () => {
                     value={formData.smtp_secure || ""}
 
                   />
+                  {formErrors?.smtp_secure && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.smtp_secure}</p>
+                  )}
                 </div>
+              </div>
+            </div>
+
+
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
+                <h3 className="font-medium text-black dark:text-white">
+                  Contact Page Information
+                </h3>
+              </div>
+              <div className="p-7">
+
+                <div className="mb-5.5">
+                  <label
+                    className="mb-3 block text-sm font-medium text-black dark:text-white"
+                    htmlFor="contact_desc"
+                  >
+                    Contact Description
+                  </label>
+                  
+                    <div>
+                      <textarea
+                        className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                        ${formErrors?.contact_desc ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                        dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary
+                      `}
+                        name="contact_desc"
+                        id="contact_desc"
+                        rows={6}
+                        placeholder="Enter Conatct Description"
+                        value={formData.contact_desc || ""}
+                        onChange={handleChange}
+                      ></textarea>
+                      {formErrors?.contact_desc && (
+                        <p className="mt-1 text-sm text-red-500">{formErrors.contact_desc}</p>
+                      )}
+                    </div>
+                  
+                </div>
+
               </div>
             </div>
 

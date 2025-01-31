@@ -24,13 +24,13 @@ const StatusFilter: React.FC<StatusFilterProps> = ({ value, onChange }) => {
             Select Status
           </option>
           <option value="pending" className="text-body dark:text-bodydark">
-            Pending
+            Request sent
           </option>
           <option value="accepted" className="text-body dark:text-bodydark">
             Accepted
           </option>
           <option value="rejected" className="text-body dark:text-bodydark">
-            Rejected
+            Declined
           </option>
         </select>
 
