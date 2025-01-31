@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import React from "react";
 import { useRouter } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
+
 const ChangePassword: React.FC = () => {
 
   const [remainingTime, setRemainingTime] = useState(10); // 5 seconds initially
@@ -12,15 +13,14 @@ const ChangePassword: React.FC = () => {
   const [error, setError] = useState(null);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const is_admin = searchParams.get('is_admin');
-  const id = searchParams.get('id');
+  const token = searchParams.get('token');
   const [successMessage, setSuccessMessage] = useState("");
 
   const [form, setForm] = useState({
     password: "",
     confirmPassword: "",
-    is_admin: is_admin,
-    id: id
+    is_admin: false,
+    token: token
   });
 
   const validatePassword = (password: string): string | null => {
@@ -49,11 +49,20 @@ const ChangePassword: React.FC = () => {
   };
 
 
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setPending(true);
     setSuccessMessage("");
+
+    if (form.password == '' || form.confirmPassword == '') {
+      setError("Please fill the password fileds");
+      return;
+    }
+
+    if (form.password !== form.confirmPassword) {
+      setError("Passwords don't match");
+      return;
+    }
 
     const passwordError = validatePassword(form.password || "");
 

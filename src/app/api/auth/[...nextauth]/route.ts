@@ -25,11 +25,12 @@ const handler = NextAuth({
                     await connectToDatabase();
 
                     const is_admin = credentials?.is_admin === "true";
+                    const email = credentials?.email?.replace(/\s+/g, "").toLowerCase() || "";
 
                     // Check in Admin or User collection based on is_admin
                     let user = is_admin
-                        ? await Admin.findOne({ email: credentials?.email })
-                        : await User.findOne({ email: credentials?.email });
+                        ? await Admin.findOne({ email: email })
+                        : await User.findOne({ email: email });
 
                     if (!user) {
                         throw new Error("User not found, Please Check your Email");

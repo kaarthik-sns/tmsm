@@ -30,6 +30,9 @@ const UserSchema = new Schema({
   age: { type: Number, required: false },
   birthdate: { type: Date, required: false },
 
+  state_id : {type: String, required: false},
+  city_id : {type: String, required: false},
+
   place_of_birth: { type: String, required: false },
   education: { type: String, required: false },
   complexion: { type: String, required: false }, // skin color

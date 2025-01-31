@@ -31,14 +31,26 @@ const ForgotPassword: React.FC = () => {
     });
 
     const data = await res.json();
+    setPending(false);
 
     if (res.ok) {
-      setPending(false);
-      toast.success(data.message);
+      toast.success(data.message, {
+        className: "sonner-toast-success",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
       router.push("/admin/auth/signin");
     } else {
       setError(data.message);
-      setPending(false);
+      toast.error(data.message, {
+        className: "sonner-toast-error",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
     }
   };
 

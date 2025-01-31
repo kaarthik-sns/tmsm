@@ -40,6 +40,31 @@ const SignUp: React.FC = () => {
     "Christian"
   ];
 
+  const validatePassword = (password: string): string | null => {
+    const minLength = 6;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    if (password.length < minLength) {
+      return "Password must be at least 6 characters long.";
+    }
+    if (!hasUpperCase) {
+      return "Password must contain at least one uppercase letter.";
+    }
+    if (!hasLowerCase) {
+      return "Password must contain at least one lowercase letter.";
+    }
+    if (!hasNumber) {
+      return "Password must contain at least one number.";
+    }
+    if (!hasSpecialChar) {
+      return "Password must contain at least one special character.";
+    }
+    return null; // Valid password
+  };
+
   const validate = () => {
     let newErrors: any = {};
 
@@ -67,16 +92,15 @@ const SignUp: React.FC = () => {
       newErrors.phonenumber = "Please enter a valid phone number";
     }
 
-    // Password validation
     if (!form.password) {
       newErrors.password = "Password is required";
-    } else if (form.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
-    }
-
-    // Confirm Password validation
-    if (form.password !== form.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
+    } else if (form.password !== form.confirmPassword) {
+      newErrors.password = "Passwords don't match";
+    } else {
+      const passwordError = validatePassword(form.password);
+      if (passwordError) {
+        newErrors.password = passwordError;
+      }
     }
 
     // Religion validation
@@ -91,8 +115,6 @@ const SignUp: React.FC = () => {
 
     return newErrors;
   };
-
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

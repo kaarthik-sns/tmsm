@@ -1,4 +1,3 @@
-import bcrypt from 'bcryptjs';
 import { NextResponse } from 'next/server'
 import User from '@/models/User'
 import connectToDatabase from '@/lib/mongodb';
@@ -6,6 +5,8 @@ import { sendEmail } from "@/utils/mail.util"
 import { changePasswordTemplate } from '@/lib/template/change-password';
 import Admin from '@/models/Admin';
 import getSMTPSettings from '@/utils/settings.util';
+import crypto from "crypto";
+import { hash } from "bcryptjs";
 
 
 export async function POST(request: Request) {
@@ -33,11 +34,18 @@ export async function POST(request: Request) {
     try {
         await connectToDatabase();
 
+        // Generate a secure token
+        const token = crypto.randomBytes(32).toString("hex");
+        const hashedToken = await hash(token, 10);
+
         var existingUser = await User.findOne({ email, is_active: true });
 
         if (is_admin) {
             existingUser = await Admin.findOne({ email });
         }
+
+        existingUser.email_code = hashedToken;
+        await existingUser.save();
 
         if (!existingUser) {
             // Return a 404 response if the user is not found
@@ -49,9 +57,9 @@ export async function POST(request: Request) {
         let forgotPasswordLink = '';
 
         if (is_admin) {
-            forgotPasswordLink = `${process.env.BASE_URL}/admin/change-password?id=${userId}&is_admin=${is_admin}`;
+            forgotPasswordLink = `${process.env.BASE_URL}/admin/change-password?token=${hashedToken}&is_admin=${is_admin}`;
         } else {
-            forgotPasswordLink = `${process.env.BASE_URL}/frontend/change-password?id=${userId}&is_admin=${is_admin}`;
+            forgotPasswordLink = `${process.env.BASE_URL}/frontend/change-password?token=${hashedToken}`;
         }
 
         const receipients = [{

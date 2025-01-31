@@ -19,6 +19,11 @@ export async function middleware(req) {
         return NextResponse.next();
     }
 
+    if (pathname === '/admin/change-password') {
+        console.log('in-2.1')
+        return NextResponse.next();
+    }
+
     // Redirect unauthenticated admin users to signin page
     if (pathname.startsWith('/admin') && pathname !== '/admin/auth/signin' && !token) {
         console.log('in-3')

@@ -21,15 +21,17 @@ export async function POST(request: Request) {
         copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
     }
 
-    const isValidEmail = (email: string) => {
+    const email_id = email?.replace(/\s+/g, "").toLowerCase() || "";
+
+    const isValidEmail = (email_id: string) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
-    if (!name || !email || !password || !confirmPassword) {
-        return NextResponse.json({ message: " All fields are required" }, { status: 400 })
+        return emailRegex.test(email_id);
     }
 
-    if (!isValidEmail(email)) {
+    if (!name || !email_id || !password || !confirmPassword) {
+        return NextResponse.json({ message: " All fields are required" }, { status: 400 })
+    }
+    if (!isValidEmail(email_id)) {
         return NextResponse.json({ message: "Invalid email format" }, { status: 400 });
     }
     if (confirmPassword !== password) {
@@ -49,7 +51,7 @@ export async function POST(request: Request) {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = new User({
-            email,
+            email: email_id,
             name,
             lastname,
             phonenumber,
@@ -84,14 +86,14 @@ export async function POST(request: Request) {
 
         await newUser.save();
 
-        const verificationLink = `${process.env.BASE_URL}/verify-email?code=${newUser.email_code}`;
+        const verificationLink = `${process.env.BASE_URL}/frontend/verify-email?code=${newUser.email_code}`;
 
         const receipients = [{
             name: name,
             address: email
         }]
 
-        const htmlBody = welcomeTemplate(name,copyright);
+        const htmlBody = welcomeTemplate(name, copyright);
 
         const result = await sendEmail({
             receipients,
@@ -99,7 +101,7 @@ export async function POST(request: Request) {
             message: htmlBody
         })
 
-        const htmlBody2 = verificationTemplate(name, verificationLink,copyright);
+        const htmlBody2 = verificationTemplate(name, verificationLink, copyright);
 
         const result2 = await sendEmail({
             receipients,
@@ -107,7 +109,7 @@ export async function POST(request: Request) {
             message: htmlBody2
         })
 
-        const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber,copyright);
+        const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber, copyright);
 
         const receipients2 = [{
             name: 'admin',
@@ -121,7 +123,7 @@ export async function POST(request: Request) {
         })
 
         return NextResponse.json({ message: "Registration successful. Await admin approval. Check your email for updates." }, { status: 201 });
-        
+
     } catch (error) {
         console.log(error)
         return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
