@@ -1,4 +1,5 @@
-export const verification = `<!DOCTYPE html>
+export const deactivateTemplate = (name: string,copyright: string): string => `
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -37,14 +38,14 @@ export const verification = `<!DOCTYPE html>
 </head>
 <body>
     <div class="container">
-        <h1>We're Sorry to See You Go, {{user_name}}!</h1>
+        <h1>We're Sorry to See You Go, ${name}!</h1>
         <p>We're reaching out to confirm that your account has been deactivated. We're sorry to see you leave, but we respect your decision.</p>
         <p>If this was done by mistake or if you wish to reactivate your account, please don't hesitate to reach out to our support team. We'd be more than happy to assist you in restoring your account.</p>
         <p>If you have any feedback about your experience, please feel free to share it with us. We strive to improve and provide a better experience for our users.</p>
         <p>Thank you for being a part of TMSM. We wish you all the best in your future endeavors.</p>
         <div class="footer">
-            <p>© 2025 TMSM.com. All rights reserved.</p>
+           <p>${copyright}</p>
         </div>
     </div>
 </body>
-</html>`
+</html>`;
