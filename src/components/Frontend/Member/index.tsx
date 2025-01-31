@@ -174,8 +174,10 @@ const PaginatedUsers = () => {
       showCancelButton: true,
       confirmButtonText: 'Yes, Request Access',
       cancelButtonText: 'No',
-      confirmButtonColor: '#3085d6',  // Custom color for "Yes" button (e.g., blue)
-      cancelButtonColor: '#d33',      // Custom color for "No" button (e.g., red)
+      customClass: {
+        confirmButton: 'confirm-color',  // Custom class for confirm button (green)
+        cancelButton: 'cancel-color'       // Custom class for cancel button (red)
+      },
     });
   
     // If the user clicks "Yes", proceed with the request
@@ -209,10 +211,12 @@ const PaginatedUsers = () => {
         // Show success message
         Swal.fire({
           title: 'Success!',
-          text: 'Request sent. Approval is needed to view the profile. You can cancel anytime.',
+          text: 'Request sent. Once approved, you wll be notified via email. You can cancel anytime.',
           icon: 'success',
           confirmButtonText: 'OK',
-          confirmButtonColor: '#6f9c5d',  // Custom color for "Yes" button (e.g., blue)
+          customClass: {
+            confirmButton: 'confirm-color',  // Custom class for confirm button (green)
+          },
         });
   
       } catch (err) {

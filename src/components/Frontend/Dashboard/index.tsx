@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import Profile from "@/components/Frontend/Profile";
 import ProfileUser from "@/components/Frontend/ProfileUser";
+import UserPassword from "@/components/Frontend/Profile/change-password";
 import { useSession } from "next-auth/react";
-import { toast } from "sonner";
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2'; // Import SweetAlert2
 
@@ -22,8 +22,7 @@ const RequestStatus = () => {
   const [sentRequests, setSentReqData] = useState([]);
   const [receivedRequests, setRecivedReqData] = useState([]);
   const router = useRouter();
-  const [userName, setUserName] = useState(""); // Default to "Guest"
-  const [lastName, setLastName] = useState("");
+
 
 
   const filteredRequests = (activeTab === "received" ? receivedRequests : sentRequests).filter(profile =>
@@ -54,8 +53,6 @@ const RequestStatus = () => {
 
       const { data } = await response.json();
       setProfileData(data);
-      setUserName(data.name); // Assuming API returns `firstName`
-      setLastName(data.lastname); // Assuming API returns `lastName`
     } catch (err) {
       console.error(err);
       // setError(err.message);
@@ -146,8 +143,11 @@ const RequestStatus = () => {
       showCancelButton: true,
       confirmButtonText: confirmButtonText,
       cancelButtonText: "No",
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      customClass: {
+        confirmButton: 'confirm-color',  // Custom class for confirm button (green)
+        cancelButton: 'cancel-color'       // Custom class for cancel button (red)
+      },
+      
     });
 
     if (result.isConfirmed) {
@@ -171,6 +171,9 @@ const RequestStatus = () => {
           text: successMessage,
           icon: "success",
           confirmButtonText: "OK",
+          customClass: {
+            confirmButton: 'confirm-color',  // Custom class for confirm button (green)
+          },
         });
 
       } catch (error) {
@@ -179,6 +182,9 @@ const RequestStatus = () => {
           text: "Failed to update request status. Please try again later.",
           icon: "error",
           confirmButtonText: "OK",
+          customClass: {
+            confirmButton: 'confirm-color',  // Custom class for confirm button (green)
+          },
         });
         console.error("Error updating status:", error);
       }
@@ -199,42 +205,42 @@ const RequestStatus = () => {
   return (
     <div className="bg-light min-h-screen flex justify-center py-10 px-4">
       <div className="container max-w-4xl p-6">
-        {/* Welcome message */}
-        {/* <h2 className="text-xl font-semibold text-gray-700 mb-4 text-center">
-        Welcome, {userName} {lastName}
-        </h2> */}
-
         <h1 className="text-lg sm:text-xl font-semibold mb-4 text-gray-700">My Account</h1>
 
+        {/* Tabs Navigation */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-2 sm:space-y-0">
           <div className="grid grid-cols-1 sm:flex sm:space-x-4 gap-2 w-full sm:w-auto">
             <button
-              className={`px-4 py-2 rounded-full ${activeTab === "profile" ? "bg-dash-button-active" : "bg-dash-button"
-                }`}
+              className={`px-4 py-2 rounded-full ${activeTab === "profile" ? "bg-dash-button-active" : "bg-dash-button"}`}
               onClick={() => {
                 setActiveTab("profile");
-                setIsEditMode(false); // Reset edit mode when the profile tab is clicked
+                setIsEditMode(false); // Reset edit mode when switching to profile
               }}
             >
               My Profile
             </button>
             <button
-              className={`px-4 py-2 rounded-full ${activeTab === "received" ? "bg-dash-button-active" : "bg-dash-button"
-                }`}
+              className={`px-4 py-2 rounded-full ${activeTab === "received" ? "bg-dash-button-active" : "bg-dash-button"}`}
               onClick={() => setActiveTab("received")}
             >
               Received Request
             </button>
             <button
-              className={`px-4 py-2 rounded-full ${activeTab === "sent" ? "bg-dash-button-active" : "bg-dash-button"
-                }`}
+              className={`px-4 py-2 rounded-full ${activeTab === "sent" ? "bg-dash-button-active" : "bg-dash-button"}`}
               onClick={() => setActiveTab("sent")}
             >
               Sent Request
             </button>
+            <button
+              className={`px-4 py-2 rounded-full ${activeTab === "settings" ? "bg-dash-button-active" : "bg-dash-button"}`}
+              onClick={() => setActiveTab("settings")}
+            >
+              Settings
+            </button>
           </div>
 
-          {activeTab !== "profile" && (
+          {/* Search Input (Visible in non-profile tabs non-settings tabs) */}
+          {activeTab !== "profile" && activeTab !== "settings" && (
             <div className="w-full sm:w-auto">
               <input
                 type="text"
@@ -247,83 +253,59 @@ const RequestStatus = () => {
           )}
         </div>
 
-
-        <div className="mt-6 relative"> {/* Added relative class */}
+        {/* Tab Content */}
+        <div className="mt-6 relative">
           {activeTab === "profile" ? (
-            <>
-              {!isEditMode ? (
-                <>
-                  <Profile data={profileData} />
-                  <div className="absolute top-2 right-2 z-10 p-2"> {/* Positioned correctly */}
-                    <label
-                      htmlFor="cover"
-                      className="flex cursor-pointer items-center justify-center gap-2 rounded bg-edit px-2 py-1 text-sm font-medium text-white hover:bg-opacity-80"
-                      onClick={handleEditProfile}
-                    >
-                      <span>
-                        <svg
-                          className="fill-current"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 16 16"
-                          fill="#653d27"  // Updated color
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M11.498 1.002a1 1 0 0 1 1.414 0l2.586 2.586a1 1 0 0 1 0 1.414l-6.586 6.586a1 1 0 0 1-.27.2l-4 2a1 1 0 0 1-1.265-1.265l2-4a1 1 0 0 1 .2-.27l6.586-6.586a1 1 0 0 1 0-1.414L11.498 1.002zm1.832 3.538l1.586 1.586-5.02 5.02-1.586-1.586 5.02-5.02z"
-                          />
-                        </svg>
-                      </span>
-                      <span>Edit Profile</span>
-                    </label>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="absolute top-2 right-2 z-10 p-2 mb-5"> {/* Positioned correctly */}
-                    <label
-                      htmlFor="cover"
-                      className="flex cursor-pointer items-center justify-center gap-2 rounded bg-edit px-2 py-1 text-sm font-medium text-white hover:bg-opacity-80"
-                      onClick={handleEditProfile}
-                    >
-                      <span>
-                        <svg
-                          className="fill-current"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 16 16"
-                          fill="#653d27"  // Updated color
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M10.707 13.707a1 1 0 0 1-1.414 0L4.293 8.707a1 1 0 0 1 0-1.414l5-5a1 1 0 1 1 1.414 1.414L6.414 8l4.293 4.293a1 1 0 0 1 0 1.414z"
-                          />
-                        </svg>
-                      </span>
-                      <span>Back</span>
-                    </label>
-                  </div>
-
-                  <ProfileUser userId={myId} />
-
-                </>
-              )}
-            </>
-          ) : (
-            filteredRequests.length > 0 ? (
-              filteredRequests.map(profile => (
-                <ProfileCard key={profile._id} profile={profile} activeTab={activeTab} onViewProfile={handleViewProfile} onHandleRequest={handleRequest} onRedirectProfile={redirectProfile} />
-              ))
+            !isEditMode ? (
+              <>
+                <Profile data={profileData} />
+                <div className="absolute top-2 right-2 z-10 p-2">
+                  <label
+                    htmlFor="cover"
+                    className="flex cursor-pointer items-center justify-center gap-2 rounded bg-edit px-2 py-1 text-sm font-medium text-white hover:bg-opacity-80"
+                    onClick={handleEditProfile}
+                  >
+                    <span>Edit Profile</span>
+                  </label>
+                </div>
+              </>
             ) : (
-              <p className="text-gray-500 text-center">No requests found</p>
+              <>
+                <div className="absolute top-2 right-2 z-10 p-2 mb-5">
+                  <label
+                    htmlFor="cover"
+                    className="flex cursor-pointer items-center justify-center gap-2 rounded bg-edit px-2 py-1 text-sm font-medium text-white hover:bg-opacity-80"
+                    onClick={handleEditProfile}
+                  >
+                    <span>Back</span>
+                  </label>
+                </div>
+                <ProfileUser userId={myId} />
+              </>
             )
+          ) : activeTab === "settings" ? (
+            <UserPassword />
+          ) : filteredRequests.length > 0 ? (
+            filteredRequests.map((profile) => (
+              <ProfileCard
+                key={profile._id}
+                profile={profile}
+                activeTab={activeTab}
+                onViewProfile={handleViewProfile}
+                onHandleRequest={handleRequest}
+                onRedirectProfile={redirectProfile}
+              />
+            ))
+          ) : (
+            <p className="text-gray-500 text-center">No requests found</p>
           )}
         </div>
-
       </div>
 
+      {/* Profile Modal */}
       {isModalOpen && selectedProfile && <ProfileModal profile={selectedProfile} onClose={handleCloseModal} />}
     </div>
+
   );
 };
 
