@@ -30,7 +30,7 @@ const SignIn: React.FC = () => {
       is_admin: true
     });
     if (res?.ok) {
-      toast.success("login Successful", {
+      toast.success("Login Successful", {
         className: "sonner-toast-success",
         cancel: {
           label: 'Close',

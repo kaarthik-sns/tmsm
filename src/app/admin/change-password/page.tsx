@@ -14,14 +14,13 @@ const ChangePassword: React.FC = () => {
     const [error, setError] = useState(null);
     const router = useRouter();
     const searchParams = useSearchParams();
-    const is_admin = searchParams.get('is_admin');
-    const id = searchParams.get('id');
+    const token = searchParams.get('token');
 
     const [form, setForm] = useState({
         password: "",
         confirmPassword: "",
-        is_admin: is_admin,
-        id: id
+        is_admin: true,
+        token: token
     });
 
     const validatePassword = (password: string): string | null => {
@@ -51,6 +50,19 @@ const ChangePassword: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        setError(null);
+
+        if (form.password == '' || form.confirmPassword == '') {
+            setError("Please fill the password fileds");
+            return;
+        }
+
+        if (form.password !== form.confirmPassword) {
+            setError("Passwords don't match");
+            return;
+        }
+
         setPending(true);
 
         const passwordError = validatePassword(form.password || "");
@@ -67,10 +79,9 @@ const ChangePassword: React.FC = () => {
             body: JSON.stringify(form),
         });
         const data = await res.json();
+        setPending(false);
 
         if (res.ok) {
-
-            setPending(false);
 
             toast.success(data.message, {
                 className: "sonner-toast-success",
@@ -80,11 +91,10 @@ const ChangePassword: React.FC = () => {
                 },
             });
 
-            (data.is_admin == 'true') ? router.push("/admin/auth/signin") : router.push("/frontend/login");
+            router.push("/admin/auth/signin");
 
         } else {
             setError(data.message);
-            setPending(false);
         }
     };
 

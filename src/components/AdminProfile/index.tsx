@@ -43,7 +43,6 @@ const AdminProfile = () => {
           setEmail(data.data.email);
           setPreview(data.data.image);
 
-          console.log(data.data.image);
         } else {
           console.error("Failed to fetch user data");
         }
@@ -63,16 +62,48 @@ const AdminProfile = () => {
     }
   };
 
+  const validatePassword = (password: string): string | null => {
+    const minLength = 6;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    if (password.length < minLength) {
+      return "Password must be at least 6 characters long.";
+    }
+    if (!hasUpperCase) {
+      return "Password must contain at least one uppercase letter.";
+    }
+    if (!hasLowerCase) {
+      return "Password must contain at least one lowercase letter.";
+    }
+    if (!hasNumber) {
+      return "Password must contain at least one number.";
+    }
+    if (!hasSpecialChar) {
+      return "Password must contain at least one special character.";
+    }
+    return null; // Valid password
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (changePassword && (password == '' || password == '')) {
+    if (password == '' || confirmPassword == '') {
       setError("Please fill the password fileds");
       return;
     }
 
-    if (changePassword && password !== confirmPassword) {
+    if (password !== confirmPassword) {
       setError("Passwords don't match");
+      return;
+    }
+
+    const passwordError = validatePassword(password || "");
+
+    if (passwordError) {
+      setError(passwordError);
       return;
     }
 
@@ -82,12 +113,12 @@ const AdminProfile = () => {
     formData.append("id", session.user.id);
 
 
-    if (name) {
+    if (!name) {
       setError(`Name can't be empty`)
       return
     }
 
-    if (email) {
+    if (!email) {
       setError(`Email can't be empty`)
       return
     }

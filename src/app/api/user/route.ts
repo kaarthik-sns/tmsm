@@ -229,7 +229,7 @@ export async function POST(request: NextRequest) {
 
             const newUser = await User.create(newUserFields);
 
-            const verificationLink = `${process.env.BASE_URL}/verify-email?code=${newUser.email_code}`;
+            const verificationLink = `${process.env.BASE_URL}/frontend/verify-email?code=${newUser.email_code}`;
 
 
             const receipients = [{

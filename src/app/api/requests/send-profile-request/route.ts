@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
 
     const receipients = [{
       name: recName,
-      address: 'kaarthikr@searchnscore.com'
+      address: email
     }]
 
     const homePage = process.env.BASE_URL;

@@ -4,6 +4,8 @@ import connectToDatabase from '@/lib/mongodb';
 import { sendEmail } from "@/utils/mail.util";
 import { verificationTemplate } from '@/lib/template/verification';
 import getSMTPSettings from '@/utils/settings.util';
+import crypto from "crypto";
+import { hash } from "bcryptjs";
 
 export async function POST(request: Request) {
     const { userId } = await request.json();
@@ -14,7 +16,7 @@ export async function POST(request: Request) {
 
     try {
         await connectToDatabase();
-        const user = await User.findById(userId);
+        const user = await User.findOne({ _id: userId });
 
         if (!user) {
             return NextResponse.json({ message: "User not found" }, { status: 404 });
@@ -24,12 +26,18 @@ export async function POST(request: Request) {
             return NextResponse.json({ message: "User is already verified" }, { status: 400 });
         }
 
+        // Generate a secure token
+        const token = crypto.randomBytes(32).toString("hex");
+        const hashedToken = await hash(token, 10);
+        user.email_code = hashedToken;
+        await user.save();
+
         const smtpSettings = await getSMTPSettings();
         const copyright = smtpSettings
             ? `© ${new Date().getFullYear()} ${smtpSettings.copyright}`
             : '';
 
-        const verificationLink = `${process.env.BASE_URL}/verify-email?code=${user.email_code}`;
+        const verificationLink = `${process.env.BASE_URL}/frontend/verify-email?code=${user.hashedToken}`;
 
         const recipients = [{ name: user.name, address: user.email }];
 
