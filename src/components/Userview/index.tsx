@@ -65,7 +65,9 @@ const FormElements = () => {
     gender: "",
     bride_groom_detail: "",
     state_id: "",
-    city_id: ""
+    city_id: "",
+    state: { name: "" },
+    city: { name: "" },
   });
 
   const handlePreview = () => {
@@ -301,16 +303,35 @@ const FormElements = () => {
                   Place of birth :  {formData.place_of_birth || ""}
                 </label>
               </div>
+            </div>
+          </div>
+
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium dark-text dark:text-white">
+                Location Details
+              </h3>
+            </div>
+            <div className="p-6.5">
+
               <div className="mb-2.5">
                 <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                   City :  {formData?.city?.name || ""}
                 </label>
               </div>
+
               <div className="mb-2.5">
                 <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                   State :  {formData?.state?.name || ""}
                 </label>
               </div>
+
+              <div className="mb-2.5">
+                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                  Address : {formData.address || ""}
+                </label>
+              </div>
+
             </div>
           </div>
 
@@ -465,13 +486,6 @@ const FormElements = () => {
                   Mother's place of work : {formData.mother_placeOfWork || ""}
                 </label>
               </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Address : {formData.address || ""}
-                </label>
-
-              </div>
-
             </div>
           </div>
           {/* <!-- Partner Preference  --> */}

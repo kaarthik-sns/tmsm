@@ -24,7 +24,7 @@ const FormElements = () => {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [profileCreator, setProfileCreator] = useState(false);
   const formData_upload = new FormData();
- 
+
   const router = useRouter();
 
 
@@ -834,25 +834,7 @@ const FormElements = () => {
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    State
-                  </label>
-                  <SelectGroupStates
-                    selectedState={selectedState}
-                    onStateChange={handleStateChange}
-                  />
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    City
-                  </label>
-                  <SelectGroupCities
-                    selectedState={selectedState}
-                    selectedCity={selectedCity}
-                    onCityChange={handleCityChange}
-                  />
 
-
-                </div>
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                     Place of birth
@@ -865,6 +847,51 @@ const FormElements = () => {
                     placeholder="Place of birth"
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
+                </div>
+
+              </div>
+            </div>
+
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                <h3 className="font-medium dark-text dark:text-white">
+                  Location Details
+                </h3>
+              </div>
+              <div className="p-6.5">
+
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    State
+                  </label>
+                  <SelectGroupStates
+                    selectedState={selectedState}
+                    onStateChange={handleStateChange}
+                  />
+                </div>
+
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    City
+                  </label>
+                  <SelectGroupCities
+                    selectedState={selectedState}
+                    selectedCity={selectedCity}
+                    onCityChange={handleCityChange}
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Address
+                  </label>
+                  <textarea
+                    rows={6}
+                    name="address"
+                    value={formData.address || ""}
+                    onChange={handleChange}
+                    className="w-full rounded-lg border-[1.5px] bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:text-white"
+                  ></textarea>
                 </div>
 
               </div>
@@ -1227,20 +1254,6 @@ const FormElements = () => {
                     onChange={handleChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
-                </div>
-
-
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Address
-                  </label>
-                  <textarea
-                    rows={6}
-                    name="address"
-                    value={formData.address || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:text-white"
-                  ></textarea>
                 </div>
 
               </div>
