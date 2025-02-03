@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 export default function Profile({data}) {
   const profile_data = data;
-console.log(profile_data);
+
   const [popupImage, setPopupImage] = useState(null); // State to store the image to show in the popup
   const openPopup = (image) => setPopupImage(image); // Set the clicked image in state
   const closePopup = () => setPopupImage(null); // Close the popup
@@ -52,7 +52,7 @@ console.log(profile_data);
 
               {profile_data.profile_photo && (
                 <Image
-                  src={profile_data.profile_photo || ""}
+                  src={profile_data.profile_photo || "/uploads/photos/1738154599244-a8e0a88c34bc.png"}
                   alt="Profile Picture"
                   width={200} // Fixed width
                   height={200} // Fixed height
