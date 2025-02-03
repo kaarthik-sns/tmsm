@@ -8,6 +8,7 @@ const ContactInfo = ({ data }) => {
     const [pending, setPending] = useState(false);
     const [msg, setMsg] = useState(null);
     const [error, setError] = useState(null);
+    const [errors, setErrors] = useState<any>({});
 
     const [form, setForm] = useState({
         name: "",
@@ -18,48 +19,81 @@ const ContactInfo = ({ data }) => {
         phone: "",
     });
 
+
+    const validate = () => {
+        let newErrors: any = {};
+
+        // Name validation
+        if (!form.name) {
+            newErrors.name = "Name cannot be empty.";
+        }
+
+        // Email validation
+        if (!form.email) {
+            newErrors.email = "Email cannot be empty.";
+        } else if (!/\S+@\S+\.\S+/.test(form.email)) {
+            newErrors.email = "Please enter a valid email address";
+        }
+
+        // Phone number validation
+        if (!form.phone) {
+            newErrors.phone = "Phone number cannot be empty";
+        } else if (!/^\d{10}$/.test(form.phone)) {
+            newErrors.phone = "Please enter a valid 10-digit phone number";
+        }
+        if (!form.message) {
+            newErrors.message = "Message cannot be empty.";
+        }
+
+
+
+        return newErrors;
+    };
+
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        // Set pending state while submitting
         setPending(true);
-        setMsg(null); // Reset any previous error message
-        setError(null);
+        setErrors({});
+        setMsg(""); // Clear any previous success messages
 
-        try {
-            const res = await fetch("/api/contact-us", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form),
-            });
-
-            const data = await res.json();
-
-            if (res.ok) {
-                // On success, show success message
-                setPending(false);
-
-                setMsg('Thank you for contacting us. Our support team will contact you shortly!');
-
-                // Optionally, reset form after successful submission
-                setForm({
-                    name: "",
-                    lastname: "",
-                    email: "",
-                    message: "",
-                    interest: "",
-                    phone: "",
-                });
-            } else {
-                // On error, set the error state
-                setError(data.message || "Something went wrong!");
-                setPending(false);
-            }
-        } catch (err) {
-            // Catch any errors from the fetch itself
+        const validationErrors = validate();
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
             setPending(false);
-            setError("An error occurred while submitting the form. Please try again.");
+            return;
         }
+
+
+        const res = await fetch("/api/contact-us", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(form),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            // On success, show success message
+            setPending(false);
+
+            setMsg('Thank you for contacting us. Our support team will contact you shortly!');
+
+            // Optionally, reset form after successful submission
+            setForm({
+                name: "",
+                lastname: "",
+                email: "",
+                message: "",
+                interest: "",
+                phone: "",
+            });
+        } else {
+            // On error, set the error state
+            setError(data.message || "Something went wrong!");
+            setPending(false);
+        }
+
     };
 
     return (
@@ -86,10 +120,12 @@ const ContactInfo = ({ data }) => {
                                                     disabled={pending}
                                                     value={form.name}
                                                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                                                    required
                                                     placeholder="Name"
                                                     className="w-full text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                                 />
+                                                {errors.name && (
+                                                    <p className="text-red-600 text-sm">{errors.name}</p>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="w-full md:w-1/2  con-list-info">
@@ -100,11 +136,13 @@ const ContactInfo = ({ data }) => {
                                                     disabled={pending}
                                                     value={form.email}
                                                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                                                    required
                                                     placeholder="E-mail id"
                                                     className="w-full text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                                 />
                                             </div>
+                                            {errors.email && (
+                                                <p className="text-red-600 text-sm">{errors.email}</p>
+                                            )}
                                         </div>
 
                                     </div>
@@ -117,12 +155,15 @@ const ContactInfo = ({ data }) => {
                                                     disabled={pending}
                                                     value={form.phone}
                                                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                                                    required
                                                     placeholder="Phone Number"
                                                     className="w-full text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                                 />
                                             </div>
+                                            {errors.phone && (
+                                                <p className="text-red-600 text-sm">{errors.phone}</p>
+                                            )}
                                         </div>
+
                                     </div>
 
 
@@ -133,11 +174,13 @@ const ContactInfo = ({ data }) => {
                                                     disabled={pending}
                                                     value={form.message}
                                                     onChange={(e) => setForm({ ...form, message: e.target.value })}
-                                                    required
                                                     placeholder="Message"
                                                     className="w-full text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                                 />
                                             </div>
+                                            {errors.message && (
+                                                <p className="text-red-600 text-sm">{errors.message}</p>
+                                            )}
                                         </div>
                                     </div>
                                     <p className={`${msg ? "text-green-500" : error ? "text-red-500" : ""}`}>
