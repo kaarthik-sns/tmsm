@@ -30,13 +30,12 @@ export const verificationTemplate = (user_name: string, verification_link: strin
         }
         .button {
             display: inline-block;
-            background-color: #007BFF;
-            color: #ffffff !important;
+            background-color: #FFD16C;
+            color: #653D27 !important;
             text-decoration: none;
             padding: 10px 20px;
             border-radius: 5px;
             font-weight: bold;
-            margin-top: 20px;
         }
         .footer {
             text-align: center;
@@ -48,13 +47,11 @@ export const verificationTemplate = (user_name: string, verification_link: strin
 </head>
 <body>
     <div class="container">
-        <h1>Hi, ${user_name} Please Verify Your Email</h1>
+        <h1>Hi, ${user_name}</h1>
         <p>Thank you for signing up! To complete your registration, please verify your email address by clicking the button below.</p>
-        <p>Once Admin approved your registartion, You can login TMSM.</p>
-        <p>If you did not sign up for this account, you can safely ignore this email.</p>
+        <p>Once the admin approves your registration, you can log in to TMSM.</p>
         <a href="${verification_link}" class="button">Verify Email</a>
-        <p>If the button doesn't work, copy and paste the following link into your browser:</p>
-        <p>{{verification_link}}</p>
+        <p>If you did not sign up for this account, you can safely ignore this email.</p>
         <div class="footer">
            <p>${copyright}</p>
         </div>

@@ -7,6 +7,8 @@ import AuthLayout from '@/components/Layouts/AuthLayout';
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 
 const ChangePassword: React.FC = () => {
 
@@ -100,14 +102,34 @@ const ChangePassword: React.FC = () => {
 
     return (
         <AuthLayout>
-
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                <div className="flex flex-wrap items-center">
+                <div className="flex flex-wrap items-center bg-color-custom">
+                    <div className="hidden w-full xl:block xl:w-1/2">
+                        <div className="px-26 py-17.5 text-center">
+                            <Link className="mb-5.5 inline-block" href="/">
+                                <Image
+                                    className="hidden dark:block f-logo"
+                                    src={"/images/logo/logo.svg"}
+                                    alt="Logo"
+                                    width={300}
+                                    height={100}
+                                />
+                                <Image
+                                    className="dark:hidden f-logo"
+                                    src={"/images/logo/logo-dark.svg"}
+                                    alt="Logo"
+                                    width={300}
+                                    height={100}
+                                />
+                            </Link>
+                        </div>
+                    </div>
                     <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
                         <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
-                            <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
+                            <h2 className="mb-6 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                                 Change Password
                             </h2>
+
                             {!!error && (
                                 <div className="bg-red-100 md:bg-red-200 p-3 rounded-md flex items-center gap-x-2 text-sm text-red-600 mb-6">
                                     <TriangleAlert />

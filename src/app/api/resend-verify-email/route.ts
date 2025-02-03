@@ -37,7 +37,7 @@ export async function POST(request: Request) {
             ? `© ${new Date().getFullYear()} ${smtpSettings.copyright}`
             : '';
 
-        const verificationLink = `${process.env.BASE_URL}/frontend/verify-email?code=${user.hashedToken}`;
+        const verificationLink = `${process.env.BASE_URL}/frontend/verify-email?code=${hashedToken}`;
 
         const recipients = [{ name: user.name, address: user.email }];
 
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
 
         await sendEmail({
             receipients: recipients,
-            subject: 'TMSM - Verification mail',
+            subject: 'Verify Your TMSM Account',
             message: emailBody
         });
 

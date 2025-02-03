@@ -97,7 +97,7 @@ export async function POST(request: Request) {
 
         const result = await sendEmail({
             receipients,
-            subject: 'TMSM - Welcome mail',
+            subject: `Welcome to TMSM, ${name}!`,
             message: htmlBody
         })
 
@@ -105,7 +105,7 @@ export async function POST(request: Request) {
 
         const result2 = await sendEmail({
             receipients,
-            subject: 'TMSM - Verification mail',
+            subject: 'Verify Your TMSM Account',
             message: htmlBody2
         })
 
@@ -118,7 +118,7 @@ export async function POST(request: Request) {
 
         const result3 = await sendEmail({
             receipients: receipients2,
-            subject: 'TMSM - New User Registration',
+            subject: 'New Member Joined TMSM',
             message: htmlBody3
         })
 

@@ -15,11 +15,11 @@ export const changePasswordTemplate = (forgotPasswordLink: string, copyright: st
         }
         .container {
             max-width: 600px;
-            margin: 20px auto;
-            background: #ffffff;
+            margin: 18px auto;
+            background: #00000000;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            box-shadow: 0px 0px 20px 0px #c8c8c8 !important;
         }
         h1 {
             color: #333333;
@@ -30,13 +30,12 @@ export const changePasswordTemplate = (forgotPasswordLink: string, copyright: st
         }
         .button {
             display: inline-block;
-            background-color: #007BFF;
-            color: #ffffff !important;
+            background-color: #FFD16C;
+            color: #653D27 !important;
             text-decoration: none;
             padding: 10px 20px;
             border-radius: 5px;
             font-weight: bold;
-            margin-top: 20px;
         }
         .footer {
             text-align: center;
@@ -49,10 +48,10 @@ export const changePasswordTemplate = (forgotPasswordLink: string, copyright: st
 <body>
     <div class="container">
         <h1>Reset Your Password</h1>
-        <p>To reset your TMSM Password, please click below button </p>
+        <p>We received a request to reset your TMSM password. Click the button below to proceed </p>
         <a href="${forgotPasswordLink}" class="button">Reset password</a>
-        <p>If the button doesn't work, copy and paste the following link into your browser:</p>
-        <p>${forgotPasswordLink}</p>
+        <p>If you didn't request this, please ignore this email.</p>
+       
         <div class="footer">
             <p>${copyright}</p>
         </div>

@@ -22,7 +22,7 @@ export const welcomeTemplate = (userName: string,copyright: string): string =>
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         h1 {
-            color: #007BFF;
+            color: #d09f0f;
         }
         p {
             color: #666666;
@@ -30,13 +30,12 @@ export const welcomeTemplate = (userName: string,copyright: string): string =>
         }
         .button {
             display: inline-block;
-            background-color: #007BFF;
-            color: #ffffff !important;
+            background-color: #FFD16C;
+            color: #653D27 !important;
             text-decoration: none;
             padding: 10px 20px;
             border-radius: 5px;
             font-weight: bold;
-            margin-top: 20px;
         }
         .footer {
             text-align: center;
@@ -50,7 +49,6 @@ export const welcomeTemplate = (userName: string,copyright: string): string =>
     <div class="container">
         <h1>Welcome, ${userName}!</h1>
         <p>Thank you for joining TMSM, the trusted matrimony platform. We are thrilled to have you as a part of our community!</p>
-        
         <p>We wish you all the best in your journey to find your perfect match.</p>
         <div class="footer">
             <p>${copyright}</p>

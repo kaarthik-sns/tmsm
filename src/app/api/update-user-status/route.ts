@@ -28,7 +28,7 @@ export async function PATCH(req: NextRequest) {
         const email = userData.email;
         let htmlBody = '';
 
-        if (!is_active) {
+        if (is_active == false)  {
 
             const receipients = [{
                 name: name,
@@ -40,7 +40,7 @@ export async function PATCH(req: NextRequest) {
 
             await sendEmail({
                 receipients,
-                subject: 'TMSM - Account Deactivated',
+                subject: '*Important* TMSM Account Deactivation Notice',
                 message: htmlBody
             });
 
@@ -59,7 +59,7 @@ export async function PATCH(req: NextRequest) {
 
             await sendEmail({
                 receipients,
-                subject: 'TMSM - Login approval',
+                subject: 'Congratulations! Your TMSM Account is Approved and Ready',
                 message: htmlBody
             });
 
