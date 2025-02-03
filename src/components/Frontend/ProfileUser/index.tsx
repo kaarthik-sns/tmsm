@@ -339,7 +339,7 @@ const UserProfile = (user_data) => {
     for (const [key, value] of Object.entries(formData)) {
       const excludedKeys = ["profile_photo", "photo1", "photo2", "photo3", "photo4", "horoscope", "profile_creator_photo"];
       if (!excludedKeys.includes(key)) {
-        formData_upload.append(key, value.toString());
+        formData_upload.append(key, value != null ? value.toString() : "");
       }
     }
 
