@@ -44,6 +44,7 @@ export async function POST(req: NextRequest) {
     const smtp_host = formData.get('smtp_host') as string;
     const smtp_secure = formData.get('smtp_secure') as string;
 
+    const contact_desc = formData.get('contact_desc') as string;
 
     // Retrieve the Settings settings from the database
     const settings = await Settings.findOne({}) || new Settings();
@@ -72,6 +73,7 @@ export async function POST(req: NextRequest) {
     settings.smtp_host = smtp_host ?? "";
     settings.smtp_secure = smtp_secure ?? "";
     settings.profile_req_limit = profile_req_limit ?? "";
+    settings.contact_desc = contact_desc ?? "";
 
 
     // Update logo

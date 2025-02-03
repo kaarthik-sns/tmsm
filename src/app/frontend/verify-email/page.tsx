@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation"; // For Next.js 13+
 
 
 export default function VerifyEmailPage() {
+
+    const router = useRouter();
     const searchParams = useSearchParams();
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
@@ -47,7 +49,6 @@ export default function VerifyEmailPage() {
     if (loading) {
         return <Loader />
     }
-    const router = useRouter();
 
     return (
         <FrontendLayouts>

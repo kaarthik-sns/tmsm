@@ -1,14 +1,17 @@
 "use client";
+
 import { useState, useEffect, useRef } from "react";
-import Breadcrumb from "@/components/Breadcrumbs/UserBreadcrumb";
+import { toast } from "sonner";
+import NextImage from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+import SelectGroupStates from "@/components/SelectGroup/SelectGroupStates";
+import SelectGroupCities from "@/components/SelectGroup/SelectGroupCities";
 import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
 import SelectGroupCaste from "@/components/SelectGroup/SelectGroupCaste";
 import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
-import { toast } from "sonner";
-import { TriangleAlert } from "lucide-react";
-import NextImage from "next/image";
 import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
-import { useRouter, useSearchParams } from "next/navigation";
+
+
 const UserProfile = (user_data) => {
 
   const searchParams = useSearchParams();
@@ -98,8 +101,29 @@ const UserProfile = (user_data) => {
     lookingfor: "",
     partner_pref_subcaste: "",
     gender: "",
-    bride_groom_detail: ""
+    bride_groom_detail: "",
+    state: { name: "" },
+    city: { name: "" },
+    state_id: '',
+    city_id: '',
   });
+
+  // Set selected state and city based on formData
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+
+  const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newState = event.target.value;
+    setSelectedState(newState);
+    setFormData({ ...formData, state_id: newState, city_id: "" }); // Reset city when state changes
+    setSelectedCity("");
+  };
+
+  const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCity = event.target.value;
+    setSelectedCity(newCity);
+    setFormData({ ...formData, city_id: newCity });
+  };
 
   useEffect(() => {
     if (user_data && !formData.email) { // Only update if formData is empty
@@ -243,6 +267,17 @@ const UserProfile = (user_data) => {
       errors.profile_created_for = "Profile created for is required.";
     }
 
+    if (!formData.state_id) {
+      errors.state_id = "State is required.";
+    }
+    if (!formData.city_id) {
+      errors.city_id = "City is required.";
+    }
+
+    if (!formData.address) {
+      errors.address = "Address is required.";
+    }
+
     if (!formData.lookingfor || formData.lookingfor.trim() === "") {
       errors.lookingfor = "Looking for is required.";
     }
@@ -281,17 +316,13 @@ const UserProfile = (user_data) => {
     }
 
     setErrorMessage(""); // Clear message if validation passes
-    try {
-      useEffect(() => {
-        if (errorMessage) {
-          const timer = setTimeout(() => {
-            setErrorMessage(""); // Clear the message after 5 seconds
-          }, 5000);
 
-          return () => clearTimeout(timer); // Cleanup timer when component unmounts or message changes
-        }
-      }, [errorMessage]);
-    } catch (err) {
+    if (errorMessage) {
+      const timer = setTimeout(() => {
+        setErrorMessage(""); // Clear the message after 5 seconds
+      }, 5000);
+
+      return () => clearTimeout(timer); // Cleanup timer when component unmounts or message changes
     }
 
     // Reset errors if validation passes
@@ -301,11 +332,7 @@ const UserProfile = (user_data) => {
     for (const [key, value] of Object.entries(formData)) {
       const excludedKeys = ["profile_photo", "photo1", "photo2", "photo3", "photo4", "horoscope", "profile_creator_photo"];
       if (!excludedKeys.includes(key)) {
-        if (typeof value === "number") {
-          formData_upload.append(key, value.toString());
-        } else {
-          formData_upload.append(key, value);
-        }
+        formData_upload.append(key, value.toString());
       }
     }
 
@@ -329,24 +356,8 @@ const UserProfile = (user_data) => {
 
       setSuccessMessage("Profile updated successfully!");
 
-      // toast.success('Profile updated successfully!', {
-      //   className: "sonner-toast-success",
-      //   cancel: {
-      //     label: 'Close',
-      //     onClick: () => console.log('Close'),
-      //   },
-      // });
-
       // Redirect
       router.push(`/frontend/dashboard`);
-
-      // setProfilePic(null); // Reset profile picture
-      // setPhoto1(null);
-      // setPhoto2(null);
-      // setPhoto3(null);
-      // setPhoto4(null);
-      // setHoroscope(null);
-      // setProfileCreatorPic(null); // Reset profile picture
 
     } catch (err) {
       setError(err.message);
@@ -420,7 +431,7 @@ const UserProfile = (user_data) => {
             <form onSubmit={handleSubmit}>
 
               <div className="grid grid-cols-1 gap-9 sm:grid-cols-2 mt-5">
-                
+
                 <div className="flex flex-col gap-9">
 
 
@@ -447,7 +458,6 @@ const UserProfile = (user_data) => {
                           <p className="mt-1 text-sm text-red-500">{formErrors.profile_created_for}</p>
                         )}
                       </div>
-
 
 
                       {profileCreator && (
@@ -1004,6 +1014,66 @@ const UserProfile = (user_data) => {
                   </div>
                   {/* <!-- horoscope upload end--> */}
 
+                  {/* <!-- horoscope upload start--> */}
+                  <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                    <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                      <h3 className="font-medium dark-text dark:text-white">
+                        Location Details
+                      </h3>
+                    </div>
+                    <div className="p-6.5">
+
+                      <div className="mb-4.5">
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          State <span className="text-meta-1">*</span>
+                        </label>
+                        <SelectGroupStates
+                          selectedState={selectedState}
+                          onStateChange={handleStateChange}
+                        />
+                        {formErrors?.state_id && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.state_id}</p>
+                        )}
+                      </div>
+
+                      <div className="mb-4.5">
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          City <span className="text-meta-1">*</span>
+                        </label>
+                        <SelectGroupCities
+                          selectedState={selectedState}
+                          selectedCity={selectedCity}
+                          onCityChange={handleCityChange}
+                        />
+                        {formErrors?.city_id && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.city_id}</p>
+                        )}
+                      </div>
+
+                      <div>
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          Address <span className="text-meta-1">*</span>
+                        </label>
+                        <textarea
+                          rows={6}
+                          name="address"
+                          value={formData.address || ""}
+                          onChange={handleChange}
+                          className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.email
+                            ? "border-red-500 focus:border-red-500"
+                            : "border-stroke focus:border-primary"
+                            } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                        ></textarea>
+                        {formErrors?.address && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.address}</p>
+                        )}
+                      </div>
+
+                    </div>
+                  </div>
+                  {/* <!-- horoscope upload end--> */}
+
+
                   {/* <!-- Reference start --> */}
                   <div className="rounded-sm border border-1 bg-light shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
@@ -1208,21 +1278,6 @@ const UserProfile = (user_data) => {
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
-
-
-                      <div>
-                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Address
-                        </label>
-                        <textarea
-                          rows={6}
-                          name="address"
-                          value={formData.address || ""}
-                          onChange={handleChange}
-                          className="w-full rounded-lg border-[1.5px] bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:text-white"
-                        ></textarea>
-                      </div>
-
                     </div>
                   </div>
                   {/* <!-- Partner Preference  --> */}

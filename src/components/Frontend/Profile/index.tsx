@@ -5,13 +5,12 @@ import Image from "next/image";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaCheckCircle } from "react-icons/fa";
 import { toast } from "sonner";
 
-export default function Profile(data) {
-  console.log(data);
+export default function Profile({data}) {
+  const profile_data = data;
+console.log(profile_data);
   const [popupImage, setPopupImage] = useState(null); // State to store the image to show in the popup
-
   const openPopup = (image) => setPopupImage(image); // Set the clicked image in state
   const closePopup = () => setPopupImage(null); // Close the popup
-  const profile_data = data.data;
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
@@ -81,7 +80,11 @@ export default function Profile(data) {
             <div className="mt-2 conatct-bio">
               <p><FaPhoneAlt className="inline-block mr-2" /> {profile_data.phonenumber || "-"}</p>
               <p><FaEnvelope className="inline-block mr-2" /> {profile_data.email || "-"}</p>
-              <p><FaMapMarkerAlt className="inline-block mr-2" />  {profile_data.address || ""}</p>
+              <p>
+                <FaMapMarkerAlt className="inline-block mr-2" />
+                {profile_data?.city?.name ? `${profile_data?.city?.name}, ` : ""}
+                {profile_data?.state?.name || ""}
+              </p>
             </div>
           </div>
 
