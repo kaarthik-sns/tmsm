@@ -46,7 +46,7 @@ export const contactUsTemplate = (name: string, email: string, phone: string, me
         }
         .highlight {
             font-weight: bold;
-            color: #007BFF;
+            color: #333;
         }
     </style>
 </head>
