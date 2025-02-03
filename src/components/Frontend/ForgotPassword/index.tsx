@@ -11,15 +11,24 @@ const ForgotPassword: React.FC = () => {
     email: "",
     is_admin: false
   });
-  const [remainingTime, setRemainingTime] = useState(10); // 5 seconds initially
+  const [remainingTime, setRemainingTime] = useState(9); // 5 seconds initially
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const [emailError, setEmailError] = useState<string>("");
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setPending(true);
+    // Validate email field
+    if (!form.email.trim()) {
+      setEmailError("Email cannot be empty.");
+      setPending(false);
+      return; // Stop the form submission if email is empty
+    } else {
+      setEmailError(""); // Clear any previous error messages
+    }
 
     try {
       const res = await fetch("/api/forgot-password/", {
@@ -32,6 +41,7 @@ const ForgotPassword: React.FC = () => {
       setSuccessMessage(""); // Clear previous success message
 
       if (res.ok) {
+        setError('');
         setPending(false);
         setSuccessMessage("Your password reset request was successful. Please check your email.");
       } else {
@@ -102,10 +112,13 @@ const ForgotPassword: React.FC = () => {
                       disabled={pending}
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      required
-                      placeholder="Enter your email"
-                      className="w-full rounded-lg border border-strokes bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      placeholder="E-mail id"
+                      className={`w-full rounded-lg border ${
+                        emailError ? "border-red-500" : "border-stroke"
+                      } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+                      autoComplete="off"
                     />
+
                     <span className="absolute right-4 top-4">
                       <svg
                         className="fill-current"
@@ -124,12 +137,15 @@ const ForgotPassword: React.FC = () => {
                       </svg>
                     </span>
                   </div>
+                  {emailError && (
+                      <p className="text-red-500 text-sm mt-1">{emailError}</p>
+                    )}
                 </div>
 
                 <div className="mb-5">
                   <input
                     type="submit"
-                    value="Request reset password link"
+                    value="Send Password Reset Link"
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
                   />
                 </div>
