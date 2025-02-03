@@ -159,7 +159,7 @@ const UserProfile = (user_data) => {
           setHoroscope(data.horoscope);
 
         } catch (err) {
-          console.error(err);
+          //console.error(err);
           setError(err.message);
         } finally {
           setIsLoading(false);
@@ -295,9 +295,15 @@ const UserProfile = (user_data) => {
       if (!formData.profile_creator_aadhar || formData.profile_creator_aadhar.trim() === "") {
         errors.profile_creator_aadhar = "Aadhar number is required.";
       }
+      if (!formData.profile_creator_aadhar || !/^\d{16}$/.test(formData.profile_creator_aadhar)) {
+        errors.profile_creator_aadhar = "A valid 16-digit adhar number is required.";
+      }
 
       if (!formData.profile_creator_phonenumber || formData.profile_creator_phonenumber.trim() === "") {
         errors.profile_creator_phonenumber = "Phone number is required.";
+      }
+      if (!formData.profile_creator_phonenumber || !/^\d{10}$/.test(formData.profile_creator_phonenumber)) {
+        errors.profile_creator_phonenumber = "A valid 10-digit phone number is required.";
       }
     }
 
@@ -463,9 +469,9 @@ const UserProfile = (user_data) => {
 
                       {profileCreator && (
                         <>
-                          < div className="mb-4.5">
+                          < div className="mb-4.5 text-black">
                             <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                              Name <span className="text-meta-1">*</span>
+                              Creator Name <span className="text-meta-1">*</span>
                             </label>
                             <input
                               type="text"
@@ -486,9 +492,9 @@ const UserProfile = (user_data) => {
                           </div>
 
 
-                          <div className="mb-4.5">
+                          <div className="mb-4.5 text-black">
                             <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                              Picture <span className="text-meta-1">*</span>
+                             Creator Picture <span className="text-meta-1">*</span>
                             </label>
                             <div className="flex items-center space-x-4">
                               <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
@@ -521,9 +527,9 @@ const UserProfile = (user_data) => {
                           </div>
 
 
-                          <div className="mb-4.5">
+                          <div className="mb-4.5 text-black">
                             <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                              Aadhar Number <span className="text-meta-1">*</span>
+                               Creator Aadhar Number <span className="text-meta-1">*</span>
                             </label>
                             <input
                               type="text"
@@ -541,9 +547,9 @@ const UserProfile = (user_data) => {
                             )}
                           </div>
 
-                          <div className="mb-4.5">
+                          <div className="mb-4.5 text-black">
                             <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                              Phone Number <span className="text-meta-1">*</span>
+                             Creator Phone Number <span className="text-meta-1">*</span>
                             </label>
                             <input
                               type="text"
@@ -1015,64 +1021,6 @@ const UserProfile = (user_data) => {
                   </div>
                   {/* <!-- horoscope upload end--> */}
 
-                  {/* <!-- horoscope upload start--> */}
-                  <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                    <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                      <h3 className="font-medium dark-text dark:text-white">
-                        Location Details
-                      </h3>
-                    </div>
-                    <div className="p-6.5">
-
-                      <div className="mb-4.5">
-                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          State <span className="text-meta-1">*</span>
-                        </label>
-                        <SelectGroupStates
-                          selectedState={selectedState}
-                          onStateChange={handleStateChange}
-                        />
-                        {formErrors?.state_id && (
-                          <p className="mt-1 text-sm text-red-500">{formErrors.state_id}</p>
-                        )}
-                      </div>
-
-                      <div className="mb-4.5">
-                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          City <span className="text-meta-1">*</span>
-                        </label>
-                        <SelectGroupCities
-                          selectedState={selectedState}
-                          selectedCity={selectedCity}
-                          onCityChange={handleCityChange}
-                        />
-                        {formErrors?.city_id && (
-                          <p className="mt-1 text-sm text-red-500">{formErrors.city_id}</p>
-                        )}
-                      </div>
-
-                      <div>
-                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Address <span className="text-meta-1">*</span>
-                        </label>
-                        <textarea
-                          rows={6}
-                          name="address"
-                          value={formData.address || ""}
-                          onChange={handleChange}
-                          className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.email
-                            ? "border-red-500 focus:border-red-500"
-                            : "border-stroke focus:border-primary"
-                            } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                        ></textarea>
-                        {formErrors?.address && (
-                          <p className="mt-1 text-sm text-red-500">{formErrors.address}</p>
-                        )}
-                      </div>
-
-                    </div>
-                  </div>
-                  {/* <!-- horoscope upload end--> */}
 
 
                   {/* <!-- Reference start --> */}
@@ -1281,6 +1229,64 @@ const UserProfile = (user_data) => {
                       </div>
                     </div>
                   </div>
+                                    {/* <!-- Location upload start--> */}
+                                    <div className="rounded-sm border border-stroke  shadow-default dark:border-strokedark ">
+                    <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                      <h3 className="font-medium dark-text dark:text-white">
+                        Location Details
+                      </h3>
+                    </div>
+                    <div className="p-6.5">
+
+                      <div className="mb-4.5 text-black">
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          State <span className="text-meta-1">*</span>
+                        </label>
+                        <SelectGroupStates
+                          selectedState={selectedState}
+                          onStateChange={handleStateChange}
+                        />
+                        {formErrors?.state_id && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.state_id}</p>
+                        )}
+                      </div>
+
+                      <div className="mb-4.5 text-black">
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          City <span className="text-meta-1">*</span>
+                        </label>
+                        <SelectGroupCities
+                          selectedState={selectedState}
+                          selectedCity={selectedCity}
+                          onCityChange={handleCityChange}
+                        />
+                        {formErrors?.city_id && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.city_id}</p>
+                        )}
+                      </div>
+
+                      <div className="mb-4.5 text-black">
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          Address <span className="text-meta-1">*</span>
+                        </label>
+                        <textarea
+                          rows={6}
+                          name="address"
+                          value={formData.address || ""}
+                          onChange={handleChange}
+                          className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.email
+                            ? "border-red-500 focus:border-red-500"
+                            : "border-stroke focus:border-primary"
+                            } dark:border-form-strokedark dark:bg-form-input dark:text-white bg-transparent`}
+                        ></textarea>
+                        {formErrors?.address && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.address}</p>
+                        )}
+                      </div>
+
+                    </div>
+                  </div>
+                  {/* <!-- Location upload end--> */}
                   {/* <!-- Partner Preference  --> */}
                   <div className="rounded-sm border border-1 bg-light shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">

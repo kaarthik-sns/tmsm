@@ -30,13 +30,12 @@ export const profileViewRequestTemplate = (recName: string, sentName: string, ho
             }
             .button {
                 display: inline-block;
-                background-color: #007BFF;
-                color: #ffffff !important;
+                background-color: #FFD16C;
+                color: #653D27 !important;
                 text-decoration: none;
                 padding: 10px 20px;
                 border-radius: 5px;
                 font-weight: bold;
-                margin-top: 20px;
             }
             .footer {
                 text-align: center;
@@ -49,7 +48,6 @@ export const profileViewRequestTemplate = (recName: string, sentName: string, ho
     <body>
         <div class="container">
             <h1>Hello, ${recName}!</h1>
-
             <p> You have received a new profile view request from ${sentName}.</p>
             <p> You can choose to Accept or Reject the request at your convenience.</p>
             <p> Click the button below to log in and respond to the request:</p>

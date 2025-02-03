@@ -1544,3 +1544,9 @@ padding-top: 1rem;
             font-size: 25px;
         }
     }
+
+/* Radio Button */
+
+input[type="radio"] {
+    accent-color: #653D27;
+}

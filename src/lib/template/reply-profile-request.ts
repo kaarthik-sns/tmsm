@@ -28,15 +28,14 @@ export const replyProfileRequestTemplate = (name: string, homePage: string, cont
                 color: #666666;
                 line-height: 1.6;
             }
-            .button {
+           .button {
                 display: inline-block;
-                background-color: #007BFF;
-                color: #ffffff !important;
+                background-color: #FFD16C;
+                color: #653D27 !important;
                 text-decoration: none;
                 padding: 10px 20px;
                 border-radius: 5px;
                 font-weight: bold;
-                margin-top: 20px;
             }
             .footer {
                 text-align: center;

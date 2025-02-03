@@ -47,11 +47,10 @@ export const adminApprovalTemplate = (name: string, loginUrl: string, copyright:
         }
         .button {
             display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #28a745;
-            color: #ffffff !important;
+            background-color: #FFD16C;
+            color: #653D27 !important;
             text-decoration: none;
+            padding: 10px 20px;
             border-radius: 5px;
             font-weight: bold;
         }

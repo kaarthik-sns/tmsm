@@ -22,7 +22,7 @@ export const adminWelcomeTemplate = (email: string, name: string, phonenumber: s
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         h1 {
-            color: #007BFF;
+            color: #d09f0f;
         }
         p {
             color: #666666;
@@ -48,7 +48,6 @@ export const adminWelcomeTemplate = (email: string, name: string, phonenumber: s
             <li><strong>Username:</strong> ${name}</li>
             <li><strong>Email:</strong> ${email}</li>
             <li><strong>Phone Number:</strong> ${phonenumber}</li>
-
         </ul>
         <p>Please take the necessary actions if required.</p>
         <div class="footer">

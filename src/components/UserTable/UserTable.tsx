@@ -92,7 +92,7 @@ const UserTable = () => {
 
     const handleVerify = async (userId: string) => {
         try {
-            const response = await fetch('/api/send-verification-email', {
+            const response = await fetch('/api/resend-verify-email', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
