@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     await newNotification.save();
 
     const userRecData = await User.findById(receiver_id);
-    const email = userRecData.emaiil;
+    const email = userRecData.email;
     const recName = userRecData.name;
 
     const userSentData = await User.findById(sender_id);
@@ -57,6 +57,8 @@ export async function POST(request: NextRequest) {
     const homePage = process.env.BASE_URL;
 
     const htmlBody = profileViewRequestTemplate(recName, sentName, homePage, copyright);
+
+    console.log(receipients);
 
     const result = await sendEmail({
       receipients,
