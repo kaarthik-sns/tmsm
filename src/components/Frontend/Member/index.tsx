@@ -183,11 +183,15 @@ const PaginatedUsers = () => {
   const handleRequestClick = async (id) => {
 
     // Check if user is logged in
-    if (!session) {
+    if (!session ) {
       router.push(`/frontend/login`);
       return;
     }
 
+    if (session.user.is_admin) {
+      router.push(`/frontend/login`);
+      return;
+    }
     // Show confirmation popup using SweetAlert2
     const result = await Swal.fire({
       title: 'Are you sure?',
