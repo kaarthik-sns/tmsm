@@ -27,6 +27,10 @@ const PaginatedUsers = () => {
   const searchParams = useSearchParams();
 
   const [homeFilterPage, setHomeFilterPage] = useState(false);
+  const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
+
+  // Example data array of subcastes
+  const subcastes = ['Brahmin', 'Rajput', 'Jat', 'Kayastha', 'Yadav', 'Gupta', 'Vaishya'];
 
   const [filters, setFilters] = useState({
     lookingfor: searchParams.get("lookingfor") || "",
@@ -108,6 +112,12 @@ const PaginatedUsers = () => {
   };
 
 
+  // Handle suggestion click
+  const handleSuggestionClick = (suggestion: string) => {
+    setFilters({ ...filters, subcaste: suggestion });
+    setFilteredSuggestions([]); // Clear suggestions after selection
+  };
+
   // Handle page navigation
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -118,10 +128,22 @@ const PaginatedUsers = () => {
     }
   };
 
-  const handleInputChange = (e) => {
-    setFilters({ ...filters, [e.target.name]: e.target.value });
-  };
+  // Handle input change and filter suggestions
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setFilters({ ...filters, subcaste: value });
 
+    if (value.length > 0) {
+      // Filter the suggestions based on the user's input
+      const filtered = subcastes.filter((subcaste) =>
+        subcaste.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredSuggestions(filtered);
+    } else {
+      setFilteredSuggestions([]); // Clear suggestions if input is empty
+    }
+  };
+  
   const handleAgeChange = (e) => {
     setFilters({ ...filters, fromage: e.target.value });
   };
@@ -165,7 +187,7 @@ const PaginatedUsers = () => {
       router.push(`/frontend/login`);
       return;
     }
-  
+
     // Show confirmation popup using SweetAlert2
     const result = await Swal.fire({
       title: 'Are you sure?',
@@ -179,17 +201,17 @@ const PaginatedUsers = () => {
         cancelButton: 'cancel-color'       // Custom class for cancel button (red)
       },
     });
-  
+
     // If the user clicks "Yes", proceed with the request
     if (result.isConfirmed) {
       const userId = session.user.id;
-  
+
       try {
         const formBody = new URLSearchParams({
           sender_id: userId,
           receiver_id: id,
         });
-  
+
         const res = await fetch("/api/requests/send-profile-request", {
           method: "POST",
           headers: {
@@ -197,17 +219,17 @@ const PaginatedUsers = () => {
           },
           body: formBody.toString(),
         });
-  
+
         if (!res.ok) {
           throw new Error("Failed to send request");
         }
-  
+
         const data = await res.json();
         fetchUsers(currentPage, filters);
-  
+
         // Close the current modal before showing the success message
         Swal.close();
-  
+
         // Show success message
         Swal.fire({
           title: 'Success!',
@@ -218,11 +240,11 @@ const PaginatedUsers = () => {
             confirmButton: 'confirm-color',  // Custom class for confirm button (green)
           },
         });
-  
+
       } catch (err) {
         // Close the current modal before showing the error message
         Swal.close();
-  
+
         // Show error message
         Swal.fire({
           title: 'Error!',
@@ -236,10 +258,10 @@ const PaginatedUsers = () => {
       console.log('Request was not sent.');
     }
   };
-  
-  
-  
-  
+
+
+
+
   return (
     <>
 
@@ -294,6 +316,19 @@ const PaginatedUsers = () => {
                     onChange={handleInputChange}
                     className="relative z-20 md:w-64 w-full appearance-none rounded border border-stroke bg-white px-5 py-3 outline-none transition dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
+                  {filteredSuggestions.length > 0 && filters.subcaste.length > 0 && (
+                    <ul className="absolute w-full bg-white border shadow-md z-30 max-h-60 overflow-y-auto">
+                      {filteredSuggestions.map((suggestion, index) => (
+                        <li
+                          key={index}
+                          onClick={() => handleSuggestionClick(suggestion)}
+                          className="px-4 py-2 cursor-pointer hover:bg-gray-200"
+                        >
+                          {suggestion}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </div>
 
@@ -364,19 +399,19 @@ const PaginatedUsers = () => {
                             Rejected
                           </button>
                         ) : (
-                          
+
                           // If user._id exists but status is not "accepted", show "Request Sent" buttonclass="bg-green-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-green-600 mb-6"
                           <button
-                          key={user._id}
-                          className="inline-block px-10 py-4 text-white duration-150 rounded-full md:text-sm bg-green-500 cursor-not-allowed"
-                          disabled
-                        >
-                          {reqSentData?.[user._id]
-                            ? 'Request Sent' // If user sent request
-                            : 'Request Received' // If user received request
-                           
-                          }
-                        </button>
+                            key={user._id}
+                            className="inline-block px-10 py-4 text-white duration-150 rounded-full md:text-sm bg-green-500 cursor-not-allowed"
+                            disabled
+                          >
+                            {reqSentData?.[user._id]
+                              ? 'Request Sent' // If user sent request
+                              : 'Request Received' // If user received request
+
+                            }
+                          </button>
 
 
                         )

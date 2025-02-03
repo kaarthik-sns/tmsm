@@ -224,7 +224,7 @@ const FormElements = () => {
                   <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
                     {formData.profile_photo && (
                       <NextImage
-                        src={formData.profile_photo || ""}
+                        src={formData.profile_photo || "/uploads/photos/1738154599244-a8e0a88c34bc.png"}
                         alt="Profile Preview"
                         width={64}
                         height={64}
@@ -235,6 +235,12 @@ const FormElements = () => {
                     )}
                   </div>
                 </div>
+              </div>
+
+              <div className="mb-2.5">
+                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                  Bio : {formData.bride_groom_detail || ''}
+                </label>
               </div>
 
               <div className="mb-2.5">

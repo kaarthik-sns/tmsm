@@ -78,7 +78,7 @@ const UserTable = () => {
             });
 
             const data = await response.json();
-            console.log(data);
+
             setTableItems(data.data);
             setPages(data.pagination.totalPages);
         } catch (error) {
@@ -121,7 +121,6 @@ const UserTable = () => {
 
             // Success: Optionally handle the response here
             const data = await response.json();
-            // toast.success("Status updated successfully");
 
             toast.success('Status updated successfully!', {
                 className: "sonner-toast-success",
@@ -131,7 +130,8 @@ const UserTable = () => {
                 },
             });
 
-            console.log("Status updated successfully", data);
+            fetchTableItems();
+
 
         } catch (error) {
             // Failure: revert to the previous status

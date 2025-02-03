@@ -92,7 +92,7 @@ export async function PATCH(req: NextRequest) {
 
                 receipients = [{
                     name: name,
-                    address: 'kaarthikr@searchnscore.com'
+                    address: email
                 }]
 
                 htmlBody = replyProfileRequestTemplate(name, link, content, copyright);
