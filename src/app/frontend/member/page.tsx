@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import FrontendLayouts from "@/components/Layouts/Frontendlayout";
 import Member from "@/components/Frontend/Member";
-import InnerBanner from '@/components/Frontend/InnerPageBanner/member-innerbanner';
 import '@/css/member.css';
 
 export const metadata: Metadata = {
@@ -15,7 +14,6 @@ export default function Home() {
   return (
     <>
       <FrontendLayouts>
-        <InnerBanner />
         <Member/>
       </FrontendLayouts>
     </>

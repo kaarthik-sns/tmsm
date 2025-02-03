@@ -256,6 +256,17 @@ const FormElements = () => {
       errors.profile_created_for = "Profile created for is required.";
     }
 
+    if (!formData.state_id) {
+      errors.state_id = "State is required.";
+    }
+    if (!formData.city_id) {
+      errors.city_id = "City is required.";
+    }
+
+    if (!formData.address) {
+      errors.address = "Address is required.";
+    }
+
     if (!formData.lookingfor || formData.lookingfor.trim() === "") {
       errors.lookingfor = "Looking for is required.";
     }
@@ -812,36 +823,48 @@ const FormElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    State
+                    State <span className="text-meta-1">*</span>
                   </label>
                   <SelectGroupStates
                     selectedState={selectedState}
                     onStateChange={handleStateChange}
                   />
+                  {formErrors?.state_id && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.state_id}</p>
+                  )}
                 </div>
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    City
+                    City <span className="text-meta-1">*</span>
                   </label>
                   <SelectGroupCities
                     selectedState={selectedState}
                     selectedCity={selectedCity}
                     onCityChange={handleCityChange}
                   />
+                  {formErrors?.city_id && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.city_id}</p>
+                  )}
                 </div>
 
                 <div>
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Address
+                    Address <span className="text-meta-1">*</span>
                   </label>
                   <textarea
                     rows={6}
                     name="address"
                     value={formData.address || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:text-white"
+                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.email
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-stroke focus:border-primary"
+                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
                   ></textarea>
+                  {formErrors?.address && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.address}</p>
+                  )}
                 </div>
 
               </div>
