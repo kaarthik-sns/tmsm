@@ -300,6 +300,7 @@ const UserProfile = (user_data) => {
         errors.profile_creator_phonenumber = "Phone number is required.";
       }
     }
+
     setErrorMessage("");
     // If there are validation errors, show error messages and stop submission
     if (Object.keys(errors).length > 0) {
@@ -314,7 +315,7 @@ const UserProfile = (user_data) => {
 
       return;
     }
-
+    
     setErrorMessage(""); // Clear message if validation passes
 
     if (errorMessage) {

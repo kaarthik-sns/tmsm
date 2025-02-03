@@ -8,13 +8,15 @@ import { TriangleAlert } from "lucide-react";
 
 const ChangePassword: React.FC = () => {
 
-  const [remainingTime, setRemainingTime] = useState(10); // 5 seconds initially
+  const [remainingTime, setRemainingTime] = useState(9); // 5 seconds initially
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
   const [successMessage, setSuccessMessage] = useState("");
+  const [passwordError, setPasswordError] = useState<string>("");
+  const [ConPasswordError, setConPasswordError] = useState<string>("");
 
   const [form, setForm] = useState({
     password: "",
@@ -54,17 +56,29 @@ const ChangePassword: React.FC = () => {
     setPending(true);
     setSuccessMessage("");
 
-    if (form.password == '' || form.confirmPassword == '') {
-      setError("Please fill the password fileds");
+    if (form.password == '') {
+      setPasswordError("Password cannot be empty.");
+      setPending(false);
       return;
     }
+
+    if (form.confirmPassword == '') {
+      setConPasswordError("Confirm Password cannot be empty.");
+      setPending(false);
+      return;
+    }
+
 
     if (form.password !== form.confirmPassword) {
-      setError("Passwords don't match");
+      setConPasswordError("Passwords do not match.");
+      setPending(false);
       return;
     }
 
-    const passwordError = validatePassword(form.password || "");
+    setPending(true);
+    setPasswordError('');
+    setConPasswordError('');
+    const passwordError = validatePassword(form.password);
 
     if (passwordError) {
       setError(passwordError);
@@ -80,7 +94,7 @@ const ChangePassword: React.FC = () => {
     const data = await res.json();
 
     if (res.ok) {
-
+      setError('');  
       setPending(false);
       setSuccessMessage("Your password has been updated successfully.");
       setTimeout(() => {
@@ -148,10 +162,11 @@ const ChangePassword: React.FC = () => {
                       type="password"
                       disabled={pending}
                       value={form.password}
-                      onChange={(e) => setForm({ ...form, password: e.target.value })}
-                      required
                       placeholder="Enter your password"
-                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      onChange={(e) => setForm({ ...form, password: e.target.value })}
+                      className={`w-full rounded-lg border ${passwordError ? "border-red-500" : "border-stroke"
+                        } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+                      autoComplete="off"
                     />
 
                     <span className="absolute right-4 top-4">
@@ -176,6 +191,9 @@ const ChangePassword: React.FC = () => {
                       </svg>
                     </span>
                   </div>
+                  {passwordError && (
+                    <p className="text-red-500 text-sm mt-1">{passwordError}</p>
+                  )}
                 </div>
 
                 <div className="mb-6">
@@ -188,10 +206,11 @@ const ChangePassword: React.FC = () => {
                       disabled={pending}
                       value={form.confirmPassword}
                       onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
-                      required
                       placeholder="Re-enter your password"
-                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
+                      className={`w-full rounded-lg border ${ConPasswordError ? "border-red-500" : "border-stroke"
+                      } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+                    autoComplete="off"
+                   />
 
                     <span className="absolute right-4 top-4">
                       <svg
@@ -215,6 +234,9 @@ const ChangePassword: React.FC = () => {
                       </svg>
                     </span>
                   </div>
+                  {ConPasswordError && (
+                    <p className="text-red-500 text-sm mt-1">{ConPasswordError}</p>
+                  )}
                 </div>
 
                 <div className="mb-5">

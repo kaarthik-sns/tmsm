@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Profile from "@/components/Frontend/Profile";
 import ProfileUser from "@/components/Frontend/ProfileUser";
-import UserPassword from "@/components/Frontend/Profile/change-password";
+import Settings from "@/components/Frontend/Profile/settings";
 import { useSession } from "next-auth/react";
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2'; // Import SweetAlert2
@@ -284,7 +284,7 @@ const RequestStatus = () => {
               </>
             )
           ) : activeTab === "settings" ? (
-            <UserPassword myId={myId} />
+            <Settings myId={myId} />
           ) : filteredRequests.length > 0 ? (
             filteredRequests.map((profile) => (
               <ProfileCard

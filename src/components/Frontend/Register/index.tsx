@@ -70,30 +70,30 @@ const SignUp: React.FC = () => {
 
     // Name validation
     if (!form.name) {
-      newErrors.name = "First name is required";
+      newErrors.name = "First name cannot be empty.";
     }
 
     // Lastname validation
     if (!form.lastname) {
-      newErrors.lastname = "Last name is required";
+      newErrors.lastname = "Last name cannot be empty.";
     }
 
     // Email validation
     if (!form.email) {
-      newErrors.email = "Email is required";
+      newErrors.email = "Email cannot be empty.";
     } else if (!/\S+@\S+\.\S+/.test(form.email)) {
       newErrors.email = "Please enter a valid email address";
     }
 
     // Phone number validation
     if (!form.phonenumber) {
-      newErrors.phonenumber = "Phone number is required";
-    } else if (!/^\d+$/.test(form.phonenumber)) {
-      newErrors.phonenumber = "Please enter a valid phone number";
+      newErrors.phonenumber = "Phone number cannot be empty";
+    } else if (!/^\d{10}$/.test(form.phonenumber)) {
+      newErrors.phonenumber = "Please enter a valid 10-digit phone number";
     }
 
     if (!form.password) {
-      newErrors.password = "Password is required";
+      newErrors.password = "Password cannot be empty";
     } else if (form.password !== form.confirmPassword) {
       newErrors.password = "Passwords don't match";
     } else {
@@ -105,7 +105,10 @@ const SignUp: React.FC = () => {
 
     // Religion validation
     if (!form.religion) {
-      newErrors.religion = "Religion is required";
+      newErrors.religion = "Religion cannot be empty";
+    }
+    if (form.religion.toLowerCase() !== "hindu" && form.religion.toLowerCase() !== "") {
+      newErrors.religion = "Registration is not permitted at this time.";
     }
 
     // Terms and condition check
@@ -157,9 +160,9 @@ const SignUp: React.FC = () => {
   const handleReligionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedReligion = e.target.value;
     setForm({ ...form, religion: selectedReligion });
-
+    setError('');
     if (selectedReligion.toLowerCase() !== "hindu") {
-      setError('Registration is not accepted');
+      setError('Registration is not permitted at this time.');
     } else {
       setError(null);
     }
@@ -186,7 +189,7 @@ const SignUp: React.FC = () => {
                 <p>{error}</p>
               </div>
             )}
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} >
               <div className="mb-4">
                 <input
                   type="text"
@@ -222,6 +225,7 @@ const SignUp: React.FC = () => {
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   placeholder="Email ID"
+                  autoComplete="off" // Disable browser autofill
                   className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary"
                 />
                 {errors.email && (
@@ -307,6 +311,15 @@ const SignUp: React.FC = () => {
                   className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-button"
                 />
               </div>
+              <div className="mt-6 text-center">
+                <p>
+                  Already have an account?{" "}
+                  <Link href="/frontend/login" className="text-primary dark-terms">
+                    Sign in
+                  </Link>
+                </p>
+              </div>
+
             </form>
           </div>
         </div>

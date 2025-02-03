@@ -18,22 +18,18 @@ export async function POST(request: Request) {
         copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
     }
 
-    const isValidEmail = (email: string) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
+
 
     if (!email) {
         return NextResponse.json({ message: " Email is required" }, { status: 400 })
     }
 
-    if (!isValidEmail(email)) {
-        return NextResponse.json({ message: "Invalid email format" }, { status: 400 });
-    }
+
 
     try {
         await connectToDatabase();
 
+        //console.log("boobathi");
         // Generate a secure token
         const token = crypto.randomBytes(32).toString("hex");
         const hashedToken = await hash(token, 10);
@@ -43,15 +39,16 @@ export async function POST(request: Request) {
         if (is_admin) {
             existingUser = await Admin.findOne({ email });
         }
-
-        existingUser.email_code = hashedToken;
-        await existingUser.save();
-
-        if (!existingUser) {
-            // Return a 404 response if the user is not found
-            return NextResponse.json({ message: "Check your email id" }, { status: 404 });
+        if (existingUser !== null && existingUser !== undefined) {
+            existingUser.email_code = hashedToken;
+            await existingUser.save();
         }
 
+        
+        if (!existingUser) {
+            // Return a 404 response if the user is not found
+            return NextResponse.json({ message: "No user exists with the provided email." }, { status: 404 });
+        }
         const userId = existingUser._id; // Access the _id field
         const name = existingUser.name; // Access the _id field
         let forgotPasswordLink = '';
