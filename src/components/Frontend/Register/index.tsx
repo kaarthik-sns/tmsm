@@ -69,17 +69,17 @@ const SignUp: React.FC = () => {
     let newErrors: any = {};
 
     // Name validation
-    if (!form.name) {
+    if (!form.name  || form.name.trim() === "") {
       newErrors.name = "First name cannot be empty.";
     }
 
     // Lastname validation
-    if (!form.lastname) {
+    if (!form.lastname || form.lastname.trim() === "") {
       newErrors.lastname = "Last name cannot be empty.";
     }
 
     // Email validation
-    if (!form.email) {
+    if (!form.email || form.email.trim() === "") {
       newErrors.email = "Email cannot be empty.";
     } else if (!/\S+@\S+\.\S+/.test(form.email)) {
       newErrors.email = "Please enter a valid email address";
@@ -197,7 +197,8 @@ const SignUp: React.FC = () => {
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   placeholder="First name"
-                  className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary"
+                  className={`w-full rounded-lg border ${errors.name ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
+
                 />
                 {errors.name && (
                   <p className="text-red-600 text-sm">{errors.name}</p>
@@ -211,8 +212,8 @@ const SignUp: React.FC = () => {
                   value={form.lastname}
                   onChange={(e) => setForm({ ...form, lastname: e.target.value })}
                   placeholder="Last name"
-                  className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary"
-                />
+                  className={`w-full rounded-lg border ${errors.lastname ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
+                  />
                 {errors.lastname && (
                   <p className="text-red-600 text-sm">{errors.lastname}</p>
                 )}
@@ -226,7 +227,7 @@ const SignUp: React.FC = () => {
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   placeholder="Email ID"
                   autoComplete="off" // Disable browser autofill
-                  className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary"
+                  className={`w-full rounded-lg border ${errors.email ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                 />
                 {errors.email && (
                   <p className="text-red-600 text-sm">{errors.email}</p>
@@ -242,7 +243,7 @@ const SignUp: React.FC = () => {
                     setForm({ ...form, phonenumber: e.target.value })
                   }
                   placeholder="Phone number"
-                  className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary"
+                  className={`w-full rounded-lg border ${errors.phonenumber ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                 />
                 {errors.phonenumber && (
                   <p className="text-red-600 text-sm">{errors.phonenumber}</p>
@@ -268,7 +269,7 @@ const SignUp: React.FC = () => {
                   value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
                   placeholder="Password"
-                  className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary"
+                  className={`w-full rounded-lg border ${errors.password ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                 />
                 {errors.password && (
                   <p className="text-red-600 text-sm">{errors.password}</p>
@@ -284,7 +285,7 @@ const SignUp: React.FC = () => {
                     setForm({ ...form, confirmPassword: e.target.value })
                   }
                   placeholder="Confirm Password"
-                  className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary"
+                  className={`w-full rounded-lg border ${errors.confirmPassword ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                 />
                 {errors.confirmPassword && (
                   <p className="text-red-600 text-sm">{errors.confirmPassword}</p>
