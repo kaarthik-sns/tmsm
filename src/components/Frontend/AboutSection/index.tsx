@@ -50,10 +50,10 @@ const AboutUs = (data) => {
                   alt="Happy Couple"
                   layout="fill"
                   objectFit="contain"
-                  
+
                 />
               </div>
-            </div> 
+            </div>
 
             {/* Text Section */}
             <div className="w-full md:w-1/2 md:text-left py-6 md:py-12 description">
@@ -98,7 +98,7 @@ const AboutUs = (data) => {
               <div key={index} className="flex flex-col items-center sm:flex-row gap-4">
                 {/* Icon */}
                 <div className="flex-shrink-0 w-20 h-20 flex items-center justify-center rounded-full">
-                  <img src={feature.icon} alt={feature.title} className="w-20 h-20" loading="lazy"  />
+                  <img src={feature.icon} alt={feature.title} className="w-20 h-20" loading="lazy" />
                 </div>
                 {/* Title */}
                 <h3 className="flex-1 icon-text text-lg">{feature.title}</h3>
@@ -121,9 +121,13 @@ const AboutUs = (data) => {
 
             {/* Button Section */}
             <div className="w-full sm:w-1/2 text-center sm:text-right">
-              <button className="px-6 py-3 rounded-full bg-color">
-                {homeData.banner_btn_text}
-              </button>
+              <a
+                href={homeData?.banner_btn_link || "#"}
+                className="px-6 py-3 rounded-full bg-color inline-block"
+              >
+                {homeData?.banner_btn_text}
+              </a>
+
             </div>
           </div>
         </div>

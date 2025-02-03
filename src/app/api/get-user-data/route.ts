@@ -17,9 +17,11 @@ export const POST = async (req: NextRequest) => {
             userData = await Admin.findById(id);
         } else {
 
+            // userData = await User.findById(id);
+
             const userDataArray = await User.aggregate([
                 {
-                    $match: { _id: new mongoose.Types.ObjectId(`${id}`) } // Match user by ID
+                    $match: { _id:  new mongoose.Types.ObjectId(id) } // Match user by ID
                 },
                 {
                     $lookup: {
@@ -59,6 +61,8 @@ export const POST = async (req: NextRequest) => {
 
             userData = userDataArray.length > 0 ? userDataArray[0] : {};
         }
+
+        console.log(userData)
 
         // Prepare the response with pagination meta
         return NextResponse.json({

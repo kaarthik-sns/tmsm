@@ -28,7 +28,7 @@ export async function PATCH(req: NextRequest) {
 
         await connectToDatabase();
 
-        const objectId = new mongoose.Types.ObjectId(`${id}`);
+        const objectId = new mongoose.Types.ObjectId(id);
 
         const ProfileRequestData = await ProfileRequests.aggregate([
             {

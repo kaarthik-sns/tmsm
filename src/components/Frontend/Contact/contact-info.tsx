@@ -2,11 +2,9 @@
 
 import React from "react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
-const ContactInfo = (settings) => {
+const ContactInfo = ({ data }) => {
 
-    const router = useRouter();
     const [pending, setPending] = useState(false);
     const [msg, setMsg] = useState(null);
     const [error, setError] = useState(null);
@@ -76,8 +74,7 @@ const ContactInfo = (settings) => {
                     <div className="row flex flex-col md:flex-row ">
                         <div className="w-full md:w-1/2 px-7.5 con-form-line-info">
                             <div className="con-message">
-                                <h4>Send a Message</h4>
-                                <p>Our support team is here for you! Whether you have questions or need assistance, feel free to contact us via phone, email, or our contact form. We're dedicated to making your journey to finding a partner smooth and enjoyable.</p>
+                                <p>{data.contact_desc}</p>
                             </div>
                             <div className="con-data-forms">
                                 <form onSubmit={handleSubmit}>
@@ -166,7 +163,7 @@ const ContactInfo = (settings) => {
                                     <p>Call us for any assistance or inquiries about your matrimonial journey.</p>
                                     <div className="call-info">
                                         <span className="icon-info"><img src="/images/contact/call-icon.svg" alt="call-icon" /></span>
-                                        <a className="info-link-data" href={`tel:${settings.data.phone_no}`} >{settings.data.phone_no}</a>
+                                        <a className="info-link-data" href={`tel:${data.phone_no}`} >{data.phone_no}</a>
                                     </div>
                                 </div>
                                 <div className="con-list-of-data">
@@ -174,7 +171,7 @@ const ContactInfo = (settings) => {
                                     <p>E-Mail us for any assistance or inquiries about your matrimonial journey.</p>
                                     <div className="call-info">
                                         <span className="icon-info"><img src="/images/contact/mail-icon.svg" alt="call-icon" /></span>
-                                        <a className="info-link-data" href={`mailto:${settings.data.organisation_email_id}`}>{settings.data.organisation_email_id}</a>
+                                        <a className="info-link-data" href={`mailto:${data.organisation_email_id}`}>{data.organisation_email_id}</a>
                                     </div>
                                 </div>
 
@@ -182,9 +179,9 @@ const ContactInfo = (settings) => {
                                     <h4>Follow Us</h4>
                                     <p>Follow us on social media links for the latest updates and matrimonial tips.</p>
                                     <ul className="social-media-info">
-                                        <li><a href={settings.data.twitter} target="_blank"><img src="/images/contact/twitter-icon.svg" alt="twitter" /></a></li>
-                                        <li><a href={settings.data.facebook} target="_blank"><img src="/images/contact/facebook-icon.svg" alt="facebook" /></a></li>
-                                        <li><a href={settings.data.instagram} target="_blank"><img src="/images/contact/instagram-icon.svg" alt="instagram" /></a></li>
+                                        <li><a href={data.twitter} target="_blank"><img src="/images/contact/twitter-icon.svg" alt="twitter" /></a></li>
+                                        <li><a href={data.facebook} target="_blank"><img src="/images/contact/facebook-icon.svg" alt="facebook" /></a></li>
+                                        <li><a href={data.instagram} target="_blank"><img src="/images/contact/instagram-icon.svg" alt="instagram" /></a></li>
                                     </ul>
                                 </div>
                             </div>

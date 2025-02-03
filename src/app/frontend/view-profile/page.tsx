@@ -22,7 +22,7 @@ export default async function Home({ searchParams }) {
   }
 
   const { data } = await response.json();
-
+console.log(data);
   return (
     <FrontendLayouts>
       <Profile data={data} />
