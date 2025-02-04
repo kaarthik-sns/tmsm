@@ -62,7 +62,7 @@ export async function POST(request: Request) {
 
         await newUser.save();
 
-        const verificationLink = `${process.env.BASE_URL}/frontend/verify-email?code=${newUser.email_code}`;
+        const verificationLink = `${process.env.BASE_URL}/verify-email?code=${newUser.email_code}`;
 
         const receipients = [{
             name: name,

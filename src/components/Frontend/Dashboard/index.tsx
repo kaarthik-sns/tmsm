@@ -23,8 +23,6 @@ const RequestStatus = () => {
   const [receivedRequests, setRecivedReqData] = useState([]);
   const router = useRouter();
 
-
-
   const filteredRequests = (activeTab === "received" ? receivedRequests : sentRequests).filter(profile =>
     profile.user.name.toLowerCase().includes(searchQuery.toLowerCase())
   );

@@ -17,8 +17,6 @@ export async function POST(request: NextRequest) {
 
         var user = await User.findOne({ email_code: token });
 
-        console.log(user);
-
         if (is_admin) {
             user = await Admin.findOne({ email_code: token });
 

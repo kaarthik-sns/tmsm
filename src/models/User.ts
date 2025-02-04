@@ -72,7 +72,7 @@ const UserSchema = new Schema({
   partner_pref_education: { type: String, required: false },
   partner_pref_age: { type: Number, required: false },
   partner_pref_caste: { type: String, required: false },
-  partner_pref_subCaste: { type: String, required: false },
+  partner_pref_subcaste: { type: String, required: false },
 
   profile_creator_photo: { type: String, required: false },
   maritalstatus: { type: String, required: false },

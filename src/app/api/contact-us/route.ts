@@ -56,26 +56,6 @@ export async function POST(req) {
         // Parse JSON body data
         const { name, email, interested_in, phone, message } = await req.json();
 
-        // const testData = [];
-
-        // for (let i = 0; i < 30; i++) {
-        //     testData.push({
-        //         name: `Test User ${i + 1}`,
-        //         email: `testuser${i + 1}@gmail.com`,
-        //         interested_in: '', // Same hash for simplicity
-        //         phone: 1234567890,
-        //         message: 'test msg',
-        //         created_at: new Date()
-        //     });
-        // }
-
-        // try {
-        //     await Contact.insertMany(testData);
-        //     console.log('Test data added successfully');
-        // } catch (error) {
-        //     console.error('Error adding test data:', error);
-        // }
-
         // Create a new contact document
         const newContact = new Contact({
             name,

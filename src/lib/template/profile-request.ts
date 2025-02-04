@@ -22,7 +22,7 @@ export const profileViewRequestTemplate = (recName: string, sentName: string, ho
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }
             h1 {
-                color: #007BFF;
+                color: #d09f0f;
             }
             p {
                 color: #666666;

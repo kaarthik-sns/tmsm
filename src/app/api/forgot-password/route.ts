@@ -29,7 +29,6 @@ export async function POST(request: Request) {
     try {
         await connectToDatabase();
 
-        //console.log("boobathi");
         // Generate a secure token
         const token = crypto.randomBytes(32).toString("hex");
         const hashedToken = await hash(token, 10);
@@ -56,7 +55,7 @@ export async function POST(request: Request) {
         if (is_admin) {
             forgotPasswordLink = `${process.env.BASE_URL}/admin/change-password?token=${hashedToken}&is_admin=${is_admin}`;
         } else {
-            forgotPasswordLink = `${process.env.BASE_URL}/frontend/change-password?token=${hashedToken}`;
+            forgotPasswordLink = `${process.env.BASE_URL}/change-password?token=${hashedToken}`;
         }
 
         const receipients = [{
@@ -72,7 +71,6 @@ export async function POST(request: Request) {
             message: htmlBody
         })
 
-        console.log("Email sent successfully:", result);
         return NextResponse.json({ message: "Password reset email has been sent successfully" }, { status: 201 });
 
     } catch (error) {

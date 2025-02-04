@@ -277,11 +277,11 @@ export default function Profile({data}) {
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Caste</strong>
-              <span>{profile_data.caste || ""}</span>
+              <span>{profile_data.partner_pref_caste || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">SubCaste</strong>
-              <span>{profile_data.subcaste || ""}</span>
+              <span>{profile_data.partner_pref_subcaste || ""}</span>
             </p>
           </div>
 

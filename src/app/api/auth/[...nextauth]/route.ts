@@ -113,7 +113,7 @@ const handler = NextAuth({
                         desc: user.name + ' Logged In',
                         created_at: new Date()
                     });
-                    console.log('User activity log created successfully.');
+
                 } catch (error) {
                     console.error('Error creating user activity log:', error);
                 }

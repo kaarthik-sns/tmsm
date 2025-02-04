@@ -11,20 +11,16 @@ export const GET = async (req: NextRequest) => {
         if (!id) {
             return NextResponse.json({ message: 'State ID is required' }, { status: 400 });
         }
-        const data = await State.find({ _id : id });
+        const data = await State.find({ _id: id });
 
         const stateId = data[0].state_id;
 
-        console.log("stateId ID:", stateId); // Output: 30
-        // Find cities based on the state_id
-        
-       
-        let cities = await City.find({ state_id : stateId });
-        console.log("cities ID:", cities); // Output: 30
-       if(!cities) {
-            cities = await City.find({ state_id : data[0]._id });
+        let cities = await City.find({ state_id: stateId });
+
+        if (!cities) {
+            cities = await City.find({ state_id: data[0]._id });
         }
-      
+
         return NextResponse.json({
             data: cities,
         });
