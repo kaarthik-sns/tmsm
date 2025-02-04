@@ -156,13 +156,13 @@ const PaginatedUsers = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    router.replace('/frontend/member', undefined);
+    router.replace('/member', undefined);
     fetchUsers(1, filters);
   };
 
   const handleViewDetails = (id: string) => {
     if (id) {
-      router.push(`/frontend/view-profile?id=${id}`); // Call the server-side redirect handler
+      router.push(`/view-profile?id=${id}`); // Call the server-side redirect handler
     }
   };
 
@@ -184,12 +184,12 @@ const PaginatedUsers = () => {
 
     // Check if user is logged in
     if (!session ) {
-      router.push(`/frontend/login`);
+      router.push(`/login`);
       return;
     }
 
     if (session.user.is_admin) {
-      router.push(`/frontend/login`);
+      router.push(`/login`);
       return;
     }
     // Show confirmation popup using SweetAlert2

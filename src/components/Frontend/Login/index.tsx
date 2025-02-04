@@ -71,7 +71,7 @@ const SignIn: React.FC = () => {
     if (res?.ok) {
       setSuccessMessage("Login Successful! Redirecting...");
       setTimeout(() => {
-        router.push("/frontend/dashboard");
+        router.push("/dashboard");
       }, 1000);
     } else if (res?.error) {
       setError(res.error);
@@ -145,7 +145,7 @@ const SignIn: React.FC = () => {
 
               <div className="mb-6 text-right">
                 <p>
-                  <Link href="/frontend/forgot-password" className="text-dark">
+                  <Link href="/forgot-password" className="text-dark">
                     Forgot Password?{" "}
                   </Link>
                 </p>
@@ -163,7 +163,7 @@ const SignIn: React.FC = () => {
               <div className="mt-6 text-left">
                 <p>
                   Don’t have an account?{" "}
-                  <Link href="/frontend/register" className="dark-terms" >
+                  <Link href="/register" className="dark-terms" >
                     Sign Up
                   </Link>
                 </p>

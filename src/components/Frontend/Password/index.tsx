@@ -98,7 +98,7 @@ const ChangePassword: React.FC = () => {
       setPending(false);
       setSuccessMessage("Your password has been updated successfully.");
       setTimeout(() => {
-        router.push("/frontend/login");
+        router.push("/login");
       }, 5000); // 5000ms = 5 seconds
 
     } else {
@@ -114,7 +114,7 @@ const ChangePassword: React.FC = () => {
         setRemainingTime((prevTime) => {
           if (prevTime === 1) {
             clearInterval(timer as NodeJS.Timeout);  // Stop the timer
-            router.push("/frontend/login");  // Redirect after countdown finishes
+            router.push("/login");  // Redirect after countdown finishes
           }
           return prevTime - 1;
         });
