@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    //reactStrictMode: true,  // This should be placed at the top-level, outside the `headers` property
+    reactStrictMode: true,  // This should be placed at the top-level, outside the `headers` property
   
     async headers() {
       return [
@@ -19,4 +19,4 @@ const nextConfig = {
   }
   
   module.exports = nextConfig;
-  
+   

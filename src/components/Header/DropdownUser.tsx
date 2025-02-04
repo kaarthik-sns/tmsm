@@ -57,16 +57,6 @@ const DropdownUser = () => {
         </span>
 
         <span className="h-12 w-12 overflow-hidden rounded-full">
-          {/* <Image
-            width={112}
-            height={112}
-            src={profile}
-            style={{
-              width: "auto",
-              height: "auto",
-            }}
-            alt="User"
-          /> */}
           {profile && (
             <Image
               src={profile}
@@ -157,7 +147,7 @@ const DropdownUser = () => {
           </ul>
           {session?.user.is_admin ? (
             session?.user.name ? (
-              <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out lg:text-base dark-texts"  onClick={() => signOut()}>   <svg
+              <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out lg:text-base dark-texts"  onClick={() => signOut({ callbackUrl: "/admin/auth/signin" })}>   <svg
                 className="fill-current"
                 width="22"
                 height="22"
