@@ -5,8 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Terms from "@/components/Checkboxes/Terms";
 
-import { useState } from "react";
-import { toast } from "sonner";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
 
@@ -24,7 +23,7 @@ const SignUp: React.FC = () => {
     phonenumber: "",
     religion: ""
   });
-
+  const [remainingTime, setRemainingTime] = useState(9); // 5 seconds initially
   const [selected, setselected] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
@@ -168,6 +167,27 @@ const SignUp: React.FC = () => {
     }
   };
 
+
+    useEffect(() => {
+      let timer: NodeJS.Timeout | null = null;
+  
+      if (successMessage) {
+        timer = setInterval(() => {
+          setRemainingTime((prevTime) => {
+            if (prevTime === 1) {
+              clearInterval(timer as NodeJS.Timeout);  // Stop the timer
+              router.push("/login");  // Redirect after countdown finishes
+            }
+            return prevTime - 1;
+          });
+        }, 1000); // 1000ms = 1 second
+      }
+  
+      return () => {
+        if (timer) clearInterval(timer); // Clean up the interval if the component unmounts or successMessage changes
+      };
+    }, [successMessage, router]);
+  
   return (
 
     <div className="flex bg-[#fbeed5]">
@@ -180,7 +200,7 @@ const SignUp: React.FC = () => {
             </h2>
             {successMessage && (
               <div className="bg-green-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-green-600 mb-6">
-                <p>{successMessage}</p>
+                <p>{successMessage} Redirecting to login in {remainingTime} seconds... </p>
               </div>
             )}
             {!!error && (
