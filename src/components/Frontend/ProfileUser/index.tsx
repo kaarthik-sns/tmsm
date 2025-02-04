@@ -84,8 +84,6 @@ const UserProfile = (user_data) => {
     mother_profession: "",
     mother_placeOfWork: "",
     address: "",
-    partner_pref_age: "",
-    partner_pref_education: "",
     profile_photo: "",
     photo1: "",
     photo2: "",
@@ -99,7 +97,10 @@ const UserProfile = (user_data) => {
     profile_creator_aadhar: "",
     profile_creator_phonenumber: "",
     lookingfor: "",
+    partner_pref_caste: "",
     partner_pref_subcaste: "",
+    partner_pref_age: "",
+    partner_pref_education: "",
     gender: "",
     bride_groom_detail: "",
     state: { name: "" },
@@ -1339,9 +1340,9 @@ const UserProfile = (user_data) => {
                         <SelectGroupCaste
                           castes={castes}
                           name="partner_pref_caste"
-                          selectedcaste={formData.caste}
+                          selectedcaste={formData.partner_pref_caste}
                           oncasteChange={(e) =>
-                            setFormData({ ...formData, caste: e.target.value })
+                            setFormData({ ...formData, partner_pref_caste: e.target.value })
                           }
                         />
                       </div>

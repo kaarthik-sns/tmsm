@@ -31,7 +31,6 @@ export const GET = async (req: NextRequest) => {
 
         if (subcaste) {
             subcaste = subcaste.replace(/\bMudaliyar\b/i, '').replace(/\s+/g, ' ').trim(); // Remove 'Mudaliyar' and extra spaces
-            console.log(subcaste)
             query.subcaste = { $regex: subcaste, $options: 'i' }; // Case-insensitive regex search
         }
         

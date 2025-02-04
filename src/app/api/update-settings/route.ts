@@ -83,7 +83,6 @@ export async function POST(req: NextRequest) {
       const uniqueFileName = `${uniqueSuffix}${fileExtension}`;
 
       const filePath = path.join(UPLOAD_DIR, uniqueFileName);
-      console.log('File Path:', filePath);
 
       const fileBuffer = Buffer.from(await logo.arrayBuffer());
       await fs.writeFile(filePath, fileBuffer);
@@ -94,8 +93,6 @@ export async function POST(req: NextRequest) {
 
     // Save changes to the database
     await settings.save();
-
-    console.log('Updated Settings:', settings);
 
     return NextResponse.json({
       message: 'Settings updated successfully',

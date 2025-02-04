@@ -37,7 +37,7 @@ export async function POST(request: Request) {
             ? `© ${new Date().getFullYear()} ${smtpSettings.copyright}`
             : '';
 
-        const verificationLink = `${process.env.BASE_URL}/frontend/verify-email?code=${hashedToken}`;
+        const verificationLink = `${process.env.BASE_URL}/verify-email?code=${hashedToken}`;
 
         const recipients = [{ name: user.name, address: user.email }];
 

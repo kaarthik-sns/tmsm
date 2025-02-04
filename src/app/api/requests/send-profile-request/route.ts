@@ -54,11 +54,9 @@ export async function POST(request: NextRequest) {
       address: email
     }]
 
-    const homePage = process.env.BASE_URL;
+    const homePage = process.env.BASE_URL+'/login';
 
     const htmlBody = profileViewRequestTemplate(recName, sentName, homePage, copyright);
-
-    console.log(receipients);
 
     const result = await sendEmail({
       receipients,
