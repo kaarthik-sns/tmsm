@@ -62,7 +62,7 @@ export default function VerifyEmailPage() {
                                     {message}
                                     <button
                                         className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom mt-5 mb-5"
-                                        onClick={() => router.push("/frontend/login")}
+                                        onClick={() => router.push("/login")}
                                     >
                                         Click to Login
                                     </button>

@@ -60,30 +60,6 @@ export async function POST(request: Request) {
             created_at: new Date()
         });
 
-
-        // for (let i = 0; i < 20; i++) {
-        //     testData.push({
-        //         name: `Test User ${i + 1}`,
-        //         email: `testuser${i + 1}@example.com`,
-        //         password: hashedPassword, // Same hash for simplicity
-        //         is_active: true,
-        //         is_verify: true,
-        //         is_approve: true,
-        //         is_delete:false,
-        //         created_at: new Date(),
-        //         email_code: '',
-        //         updated_at: new Date(),
-        //     });
-        // }
-
-        // try {
-        //     await User.insertMany(testData);
-        //     console.log('Test data added successfully');
-        // } catch (error) {
-        //     console.error('Error adding test data:', error);
-        // }
-
-
         await newUser.save();
 
         const verificationLink = `${process.env.BASE_URL}/frontend/verify-email?code=${newUser.email_code}`;

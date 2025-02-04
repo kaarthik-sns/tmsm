@@ -145,7 +145,7 @@ const SignUp: React.FC = () => {
 
       // Redirect to the login page after 5 seconds
       setTimeout(() => {
-        router.push("/frontend/login");
+        router.push("/login");
       }, 5000); // Redirect after 5 seconds
     } else if (res.status === 400) {
       setErrors(data.message);
@@ -298,7 +298,7 @@ const SignUp: React.FC = () => {
                   setselected={setselected}
                   label="I accept the"
                   linkText=" Terms and Conditions"
-                  linkHref="/frontend/terms"
+                  linkHref="/terms"
                 />
                 {errors.selected && (
                   <p className="text-red-600 text-sm">{errors.selected}</p>
@@ -315,7 +315,7 @@ const SignUp: React.FC = () => {
               <div className="mt-6 text-center">
                 <p>
                   Already have an account?{" "}
-                  <Link href="/frontend/login" className="text-primary dark-terms">
+                  <Link href="/login" className="text-primary dark-terms">
                     Sign in
                   </Link>
                 </p>

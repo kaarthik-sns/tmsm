@@ -62,7 +62,7 @@ const ForgotPassword: React.FC = () => {
         setRemainingTime((prevTime) => {
           if (prevTime === 1) {
             clearInterval(timer as NodeJS.Timeout);  // Stop the timer
-            router.push("/frontend/login");  // Redirect after countdown finishes
+            router.push("/login");  // Redirect after countdown finishes
           }
           return prevTime - 1;
         });
@@ -152,7 +152,7 @@ const ForgotPassword: React.FC = () => {
 
                 <div className="mt-6 text-center">
                   <p>
-                    <Link href="/frontend/login" className="text-primary dark-text">
+                    <Link href="/login" className="text-primary dark-text">
                       Back to Sign in
                     </Link>
                   </p>
