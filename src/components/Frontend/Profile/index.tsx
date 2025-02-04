@@ -146,6 +146,10 @@ export default function Profile({data}) {
               <strong className="w-auto md:w-40">Gender</strong>
               <span>{profile_data.gender || ""}</span>
             </p>
+            <p className="flex gap-x-2 text-left">
+              <strong className="w-auto md:w-40">Complexion</strong>
+              <span>{profile_data.complexion || ""}</span>
+            </p>
           </div>
         </div>
 
