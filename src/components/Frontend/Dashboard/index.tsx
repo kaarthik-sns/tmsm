@@ -197,7 +197,7 @@ const RequestStatus = () => {
 
   const redirectProfile = (id: string) => {
     if (id) {
-      router.push(`/frontend/view-profile?id=${id}`); // Call the server-side redirect handler
+      router.push(`/view-profile?id=${id}`); // Call the server-side redirect handler
     }
   };
 

@@ -94,9 +94,9 @@ const FilterForm = () => {
     
     // Redirect only if there are valid query parameters
     if (queryParams.toString()) {
-      router.push(`/frontend/member?${queryParams.toString()}`);
+      router.push(`/member?${queryParams.toString()}`);
     } else {
-      router.push(`/frontend/member`); // Fallback if no parameters exist
+      router.push(`/member`); // Fallback if no parameters exist
     }
   };
 

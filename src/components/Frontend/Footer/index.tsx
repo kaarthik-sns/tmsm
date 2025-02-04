@@ -44,7 +44,7 @@ export function FooterWithCustomDesign() {
 
         {/* Left Column - Logo and Description */}
         <div className="flex flex-col items-center md:items-start">
-          <Link className="flex-shrink-0 lg:block" href="/frontend/">
+          <Link className="flex-shrink-0 lg:block" href="/">
             <img
               alt="TMSM Logo"
               loading="lazy"
@@ -95,17 +95,17 @@ export function FooterWithCustomDesign() {
         <div className="text-center md:text-left">
           <ul className="space-y-4">
             <li>
-              <Link href="/frontend" className="hover:text-white">
+              <Link href="/" className="hover:text-white">
                 Home
               </Link>
             </li>
             <li>
-              <Link href="/frontend/about" className="hover:text-white">
+              <Link href="/about" className="hover:text-white">
                 About
               </Link>
             </li>
             <li>
-              <Link href="/frontend/terms" className="hover:text-white">
+              <Link href="/terms" className="hover:text-white">
                 Terms and Conditions
               </Link>
             </li>
@@ -116,17 +116,17 @@ export function FooterWithCustomDesign() {
         <div className="text-center md:text-left">
           <ul className="space-y-4">
             <li>
-              <Link href="/frontend/faq" className="text-gray-400 hover:text-white">
+              <Link href="/faq" className="text-gray-400 hover:text-white">
                 FAQ
               </Link>
             </li>
             <li>
-              <Link href="/frontend/privacy-policy" className="hover:text-white">
+              <Link href="/privacy-policy" className="hover:text-white">
                 Privacy Policy
               </Link>
             </li>
             <li>
-              <Link href="/frontend/contact" className="text-gray-400 hover:text-white">
+              <Link href="/contact" className="text-gray-400 hover:text-white">
                 Contact
               </Link>
             </li>

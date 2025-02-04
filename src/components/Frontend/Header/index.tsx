@@ -46,22 +46,22 @@ function NavList() {
   const { data: session } = useSession();
   return (
     <ul className="mb-4 mt-2 pl-2 flex flex-col gap-3 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-8 header-text">
-      <NavItem label="Home" href="/frontend" />
-      <NavItem label="Member" href="/frontend/member" />
-      <NavItem label="About" href="/frontend/about" />
-      <NavItem label="Contact" href="/frontend/contact" />
+      <NavItem label="Home" href="/" />
+      <NavItem label="Member" href="/member" />
+      <NavItem label="About" href="/about" />
+      <NavItem label="Contact" href="/contact" />
 
       {/* Desktop Navigation */}
       <div className="flex bg-white px-5 py-3 gap-5 rounded-full bg-button hidden lg:block header-text">
       {session && !session.user.is_admin ? (
           <>
-            <NavItem label="Dashboard" href="/frontend/dashboard" className="pr-5 headertext border-r border-black" />
+            <NavItem label="Dashboard" href="/dashboard" className="pr-5 headertext border-r border-black" />
             <NavItem label="Logout" onClick={() => signOut()} className="pl-5  headertext" />
           </>
         ) : (
           <>
-            <NavItem label="Register" href="/frontend/register" className="pr-5 headertext border-r border-black headertext" />
-            <NavItem label="Login" href="/frontend/login" className="pl-5" />
+            <NavItem label="Register" href="/register" className="pr-5 headertext border-r border-black headertext" />
+            <NavItem label="Login" href="/login" className="pl-5" />
           </>
         )}
       </div>
@@ -69,13 +69,13 @@ function NavList() {
       {/* Mobile Navigation */}
       {session ? (
         <>
-          <NavItem label="Dashboard" href="/frontend/dashboard" className="block lg:hidden" />
+          <NavItem label="Dashboard" href="/dashboard" className="block lg:hidden" />
           <NavItem label="Logout" onClick={() => signOut()} className="block lg:hidden" />
         </>
       ) : (
         <>
-          <NavItem label="Register" href="/frontend/register" className="block lg:hidden" />
-          <NavItem label="Login" href="/frontend/login" className="block lg:hidden" />
+          <NavItem label="Register" href="/register" className="block lg:hidden" />
+          <NavItem label="Login" href="/login" className="block lg:hidden" />
         </>
       )}
 
@@ -115,7 +115,7 @@ export function NavbarWithSimpleLinks() {
     >
 
       <div className="container mx-auto flex items-center justify-between mt-6">
-        <Link className="hidden flex-shrink-0 lg:block" href="/frontend/">
+        <Link className="hidden flex-shrink-0 lg:block" href="/">
           <img
             className="xl:w-[700px] lg:w-[400px] sm:w-[300px]"
             src={"/images/logo/Flogo.svg"}
@@ -128,7 +128,7 @@ export function NavbarWithSimpleLinks() {
           <NavList />
         </div>
 
-        <Link className="block flex-shrink-0 lg:hidden" href="/frontend/">
+        <Link className="block flex-shrink-0 lg:hidden" href="/">
           <Image width={280} height={300} src={"/images/logo/Flogo.svg"} alt="Logo" />
         </Link>
 

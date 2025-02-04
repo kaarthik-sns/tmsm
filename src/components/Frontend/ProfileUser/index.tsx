@@ -358,7 +358,7 @@ const UserProfile = (user_data) => {
       setSuccessMessage("Profile updated successfully!");
 
       // Redirect
-      router.push(`/frontend/dashboard`);
+      router.push(`/dashboard`);
 
     } catch (err) {
       setError(err.message);
