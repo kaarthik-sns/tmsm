@@ -142,7 +142,7 @@ const SignUp: React.FC = () => {
     if (res.ok) {
       setPending(false);
       setSuccessMessage(data.message);  // Set the success message
-
+      window.scrollTo({ top: 0, behavior: "smooth" });
       // Redirect to the login page after 5 seconds
       setTimeout(() => {
         router.push("/login");
