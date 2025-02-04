@@ -19,7 +19,32 @@ const FilterForm = () => {
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
 
   // Example data array of subcastes
-  const subcastes = ['Brahmin', 'Rajput', 'Jat', 'Kayastha', 'Yadav', 'Gupta', 'Vaishya'];
+  const subcastes = [
+    "Karaikkal Mudaliyar",
+    "Chidambaram Mudaliyar",
+    "Nadar Mudaliyar",
+    "Maravapalayam Mudaliyar",
+    "Sengunthar Mudaliyar",
+    "Pillai Mudaliyar",
+    "Vanniyar Mudaliyar",
+    "Tirunelveli Mudaliyar",
+    "Muthuraja Mudaliyar",
+    "Thuluva Vellalar Mudaliyar",
+    "Sri Lankan Mudaliyar",
+    "Vellalar Mudaliyar",
+    "Kallar Mudaliyar",
+    "Agamudayar Mudaliyar",
+    "Pallai Mudaliyar",
+    "Vanniyan Mudaliyar",
+    "Muthuraja",
+    "Muthurayar",
+    "Sivakami Mudaliyar",
+    "Kongu Mudaliyar",
+    "Vadugan Mudaliyar",
+    "Yadavar Mudaliyar",
+    "Kaikolar Mudaliyar",
+    "Vellalar"
+  ];
 
   // Handle input change and filter suggestions
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

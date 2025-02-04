@@ -157,6 +157,8 @@ const UserProfile = (user_data) => {
           setPhoto4(data.photo4);
           setProfileCreatorPic(data.profile_creator_photo);
           setHoroscope(data.horoscope);
+          setSelectedState(data.state_id);
+          setSelectedCity(data.city_id);
 
         } catch (err) {
           //console.error(err);
@@ -321,16 +323,8 @@ const UserProfile = (user_data) => {
 
       return;
     }
-    
+
     setErrorMessage(""); // Clear message if validation passes
-
-    if (errorMessage) {
-      const timer = setTimeout(() => {
-        setErrorMessage(""); // Clear the message after 5 seconds
-      }, 5000);
-
-      return () => clearTimeout(timer); // Cleanup timer when component unmounts or message changes
-    }
 
     // Reset errors if validation passes
     setFormErrors({});
@@ -377,6 +371,16 @@ const UserProfile = (user_data) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (errorMessage) {
+      const timer = setTimeout(() => {
+        setErrorMessage(""); // Clear the message after 5 seconds
+      }, 5000);
+
+      return () => clearTimeout(timer); // Cleanup timer when component unmounts or message changes
+    }
+  }, [errorMessage]);
 
   useEffect(() => {
     if (successMessage) {
@@ -494,7 +498,7 @@ const UserProfile = (user_data) => {
 
                           <div className="mb-4.5 text-black">
                             <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                             Creator Picture <span className="text-meta-1">*</span>
+                              Creator Picture <span className="text-meta-1">*</span>
                             </label>
                             <div className="flex items-center space-x-4">
                               <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
@@ -529,7 +533,7 @@ const UserProfile = (user_data) => {
 
                           <div className="mb-4.5 text-black">
                             <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                               Creator Aadhar Number <span className="text-meta-1">*</span>
+                              Creator Aadhar Number <span className="text-meta-1">*</span>
                             </label>
                             <input
                               type="text"
@@ -549,7 +553,7 @@ const UserProfile = (user_data) => {
 
                           <div className="mb-4.5 text-black">
                             <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                             Creator Phone Number <span className="text-meta-1">*</span>
+                              Creator Phone Number <span className="text-meta-1">*</span>
                             </label>
                             <input
                               type="text"
@@ -891,7 +895,7 @@ const UserProfile = (user_data) => {
 
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Complexation for Groom / Bride (Dark/Wheat/Fair)
+                          Complexion of Groom/Bride: (Dark, Wheatish, or Fair)
                         </label>
                         <input
                           type="text"
@@ -1229,8 +1233,8 @@ const UserProfile = (user_data) => {
                       </div>
                     </div>
                   </div>
-                                    {/* <!-- Location upload start--> */}
-                                    <div className="rounded-sm border border-stroke  shadow-default dark:border-strokedark ">
+                  {/* <!-- Location upload start--> */}
+                  <div className="rounded-sm border border-stroke  shadow-default dark:border-strokedark ">
                     <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                       <h3 className="font-medium dark-text dark:text-white">
                         Location Details

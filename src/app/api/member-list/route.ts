@@ -17,7 +17,7 @@ export const GET = async (req: NextRequest) => {
         const fromage = searchParams.get('fromage') || '';
         const toage = searchParams.get('toage') || '';
         const caste = searchParams.get('caste') || '';
-        const subcaste = searchParams.get('subcaste') || '';
+        let subcaste = searchParams.get('subcaste') || '';
 
         // Connect to the database
         await connectToDatabase();
@@ -30,8 +30,11 @@ export const GET = async (req: NextRequest) => {
         }
 
         if (subcaste) {
+            subcaste = subcaste.replace(/\bMudaliyar\b/i, '').replace(/\s+/g, ' ').trim(); // Remove 'Mudaliyar' and extra spaces
+            console.log(subcaste)
             query.subcaste = { $regex: subcaste, $options: 'i' }; // Case-insensitive regex search
         }
+        
 
         if (gender) {
             query.gender = { $regex: gender, $options: 'i' }; // Case-insensitive regex search
@@ -39,6 +42,10 @@ export const GET = async (req: NextRequest) => {
 
         if (fromage && toage) {
             query.age = { $gte: parseInt(fromage, 10), $lte: parseInt(toage, 10) };
+        } else if (fromage) {
+            query.age = { $gte: parseInt(fromage, 10) };
+        } else if (toage) {
+            query.age = { $lte: parseInt(toage, 10) };
         }
 
         if (token != null) {
