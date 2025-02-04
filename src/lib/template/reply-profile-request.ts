@@ -22,7 +22,7 @@ export const replyProfileRequestTemplate = (name: string, homePage: string, cont
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }
             h1 {
-                color: #d09f0f;
+                color: #333333;
             }
             p {
                 color: #666666;
