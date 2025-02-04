@@ -90,21 +90,23 @@ const AdminProfile = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (password == '' || confirmPassword == '') {
-      setError("Please fill the password fileds");
-      return;
-    }
+    if (changePassword) {
+      if (password == '' || confirmPassword == '') {
+        setError("Please fill the password fileds");
+        return;
+      }
 
-    if (password !== confirmPassword) {
-      setError("Passwords don't match");
-      return;
-    }
+      if (password !== confirmPassword) {
+        setError("Passwords don't match");
+        return;
+      }
 
-    const passwordError = validatePassword(password || "");
+      const passwordError = validatePassword(password || "");
 
-    if (passwordError) {
-      setError(passwordError);
-      return;
+      if (passwordError) {
+        setError(passwordError);
+        return;
+      }
     }
 
     const formData = new FormData();

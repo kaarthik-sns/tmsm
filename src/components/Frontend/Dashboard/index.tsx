@@ -97,7 +97,7 @@ const RequestStatus = () => {
       }
 
       const { SentRequestsData, RecivedRequestsData } = await response2.json();
-
+      
       setSentReqData(SentRequestsData);
       setRecivedReqData(RecivedRequestsData);
 

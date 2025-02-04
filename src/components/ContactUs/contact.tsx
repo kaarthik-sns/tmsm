@@ -156,7 +156,7 @@ const UserTable = () => {
 
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <h5 className="font-medium text-black dark:text-white">
-                                            {item.message}
+                                            {item.message.length > 50 ? item.message.substring(0, 50) + "..." : item.message}
                                         </h5>
                                     </td>
 

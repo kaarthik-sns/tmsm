@@ -357,7 +357,7 @@ const FormElements = () => {
 
               <div className="mb-2.5">
                 <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Complexation for Groom / Bride (Dark/Wheat/Fair) : {formData.complexion || ""}
+                  Complexion of Groom/Bride: (Dark, Wheatish, or Fair) : {formData.complexion || ""}
                 </label>
               </div>
 
