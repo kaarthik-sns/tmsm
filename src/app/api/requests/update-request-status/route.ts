@@ -74,7 +74,7 @@ export async function PATCH(req: NextRequest) {
         let name = '';
         let email = '';
         let name2 = '';
-        const link = process.env.BASE_URL;
+        const link = process.env.BASE_URL+'/login';
         let content = '';
 
 

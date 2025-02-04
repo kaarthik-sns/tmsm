@@ -17,8 +17,6 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
 
-    console.log('formData: ', formData);
-
     // Extract all fields from formData
     const id = (formData.get('_id') as string) ?? '';
     const name = (formData.get('name') as string) ?? '';

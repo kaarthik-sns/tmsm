@@ -261,7 +261,7 @@ const PaginatedUsers = () => {
         // Show success message
         Swal.fire({
           title: 'Success!',
-          text: 'Request sent. Once approved, you wll be notified via email. You can cancel anytime.',
+          text: 'Request sent. Once approved, you wll be notified via email. You can cancel your request at anytime.',
           icon: 'success',
           confirmButtonText: 'OK',
           customClass: {

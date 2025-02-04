@@ -53,7 +53,7 @@ export async function PATCH(req: NextRequest) {
                 address: email
             }];
 
-            const homePage = process.env.BASE_URL;
+            const homePage = process.env.BASE_URL+'/login';
 
             htmlBody = adminApprovalTemplate(name, homePage, copyright);
 
