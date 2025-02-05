@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import FrontendLayouts from "@/components/Layouts/Frontendlayout";
-import AboutUs from "@/components/Frontend/Faq";
+import FAQ from "@/components/Frontend/Faq";
 import InnerBanner from "@/components/Frontend/InnerPageBanner/faq-innerbanner";
 
 
@@ -27,7 +27,7 @@ export default async function Home() {
     <>
       <FrontendLayouts>
         <InnerBanner />
-        <AboutUs data={data.data} />
+        <FAQ data={data.data} />
       </FrontendLayouts>
     </>
   );

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 
-const AboutUs = (data) => {
+const FAQ = (data) => {
 
   const faqData = data.data;
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -41,7 +41,7 @@ const AboutUs = (data) => {
             {faqData.map((faq, index) => (
               <div
                 key={faq._id}
-                className={`w-full sm:w-full md:w-full lg:w-1/2 px-6 ${index % 2 === 0 ? "lg:pr-8 lg:border-r lg:border-gray-300" : "lg:pl-8"
+                className={`w-full sm:w-full md:w-ful px-6 lg:pr-8 lg:border-r" : "lg:pl-8"
                   }`}
               >
                 <div className="faq-item border-b border-gray-200 border-btm py-8">
@@ -71,4 +71,4 @@ const AboutUs = (data) => {
   );
 };
 
-export default AboutUs;
+export default FAQ;
