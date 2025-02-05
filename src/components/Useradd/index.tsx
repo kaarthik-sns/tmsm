@@ -211,7 +211,7 @@ const FormElements = () => {
     if (!formData.email || !/^\S+@\S+\.\S+$/.test(formData.email)) {
       errors.email = "A valid email is required.";
     }
-
+    
     if (!formData.phonenumber || !/^\d{10}$/.test(formData.phonenumber)) {
       errors.phonenumber = "A valid 10-digit phone number is required.";
     }
@@ -264,6 +264,9 @@ const FormElements = () => {
 
       if (!formData.profile_creator_aadhar || formData.profile_creator_aadhar.trim() === "") {
         errors.profile_creator_aadhar = "Aadhar number is required.";
+      }
+      if (!formData.profile_creator_aadhar || !/^\d{16}$/.test(formData.profile_creator_aadhar)) {
+        errors.profile_creator_aadhar = "A valid 16-digit adhar number is required.";
       }
 
       if (!formData.profile_creator_phonenumber || formData.profile_creator_phonenumber.trim() === "") {
@@ -556,20 +559,6 @@ const FormElements = () => {
                     <p className="mt-1 text-sm text-red-500">{formErrors.bride_groom_detail}</p>
                   )}
                 </div>
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Gender <span className="text-meta-1">*</span>
-                  </label>
-                  <RadioButtonGroup
-                    name="gender"
-                    options={genderOptions}
-                    selectedValue={formData.gender}
-                    onChange={handleChange}
-                  />
-                  {formErrors?.gender && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.gender}</p>
-                  )}
-                </div>
               </div>
             </div>
 
@@ -698,8 +687,6 @@ const FormElements = () => {
                   )}
                 </div>
 
-
-
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                     Password <span className="text-meta-1">*</span>
@@ -720,6 +707,20 @@ const FormElements = () => {
                   )}
                 </div>
 
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                   Bride / Groom  Gender <span className="text-meta-1">*</span>
+                  </label>
+                  <RadioButtonGroup
+                    name="gender"
+                    options={genderOptions}
+                    selectedValue={formData.gender}
+                    onChange={handleChange}
+                  />
+                  {formErrors?.gender && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.gender}</p>
+                  )}
+                </div>
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">

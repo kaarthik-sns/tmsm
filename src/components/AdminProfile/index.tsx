@@ -144,6 +144,10 @@ const AdminProfile = () => {
             onClick: () => console.log('Close'),
           },
         });
+         // Delay the page reload to allow the user to see the success message
+         setTimeout(() => {
+          window.location.reload();
+      }, 1000); // Adjust the delay (in milliseconds) as needed
       } else {
         toast.error('Failed to update profile', {
           className: "sonner-toast-error",

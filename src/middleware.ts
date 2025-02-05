@@ -19,14 +19,23 @@ export async function middleware(req: NextRequest) {
     if (pathname.startsWith('/_next/') || pathname.startsWith('/favicon.ico')) {
         return res;
     }
-	
+
     // Allow /api paths to be accessed by everyone
-    if (pathname.startsWith('/admin') ||pathname.startsWith('/api')) {
+    if (pathname.startsWith('/api') || pathname.startsWith('/admin')) {
         return res;
     }
-    //  // **Admin pages** - If the user is not logged in or is not an admin, redirect to login
-    //  if (!token || (pathname.startsWith('/admin') && !token.is_admin)) {
-    //     return NextResponse.redirect(new URL('/admin/auth/signin', req.url));
+
+    // // Restrict access to /admin/profile
+    // if (pathname === '/admin/profile') {
+
+        
+    //     if (!token) {
+    //         // If no token, redirect to login
+    //         return NextResponse.redirect(new URL('/admin/auth/signin', req.url));
+    //     } else if (!token.is_admin) {
+    //         // If token exists but is_admin is false, redirect to unauthorized page
+    //         return NextResponse.redirect(new URL('/unauthorized', req.url));
+    //     }
     // }
 
     // If the user is not logged in and trying to access restricted paths like /admin or /api, redirect to login

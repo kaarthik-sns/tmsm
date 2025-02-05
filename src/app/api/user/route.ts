@@ -217,7 +217,8 @@ export async function POST(request: NextRequest) {
             profile_creator_phonenumber,
             lookingfor,
             bride_groom_detail,
-            gender
+            gender,
+            created_at: new Date()
         });
         console.log("newUserFields", newUserFields);
         if (id) {
