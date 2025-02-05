@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 
-
 const ContactInnerBanner = () => {
   return (
     <>
@@ -17,7 +16,7 @@ const ContactInnerBanner = () => {
 
         <div className="inner-banner-info">
           <div className="top-title">
-            <h2>Terms and Conditions</h2>
+            <h2>Privacy Policy</h2>
           </div>
         </div>
       </section>

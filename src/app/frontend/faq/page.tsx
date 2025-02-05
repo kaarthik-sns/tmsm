@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default async function Home() {
 
-  const response = await fetch(`${process.env.BASE_URL}/api/cms/faq`, {
+  const response = await fetch(`${process.env.BASE_URL}/api/cms/faq/get-all-faq`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

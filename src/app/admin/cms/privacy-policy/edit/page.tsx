@@ -1,21 +1,21 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import FaqTable from "@/components/Cms/Faq/list";
-
+import React from "react";
+import Elements from "@/components/Cms/Privacy/edit";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
 export const metadata: Metadata = {
-  title: "List Faq - TMSM",
+  title: "Edit Privacy Policy - TMSM",
   description:
     "",
 };
 
-const TablesPage = () => {
+const FormElementsPage = () => {
   return (
     <DefaultLayout>
-      <FaqTable />
+      <Elements />
     </DefaultLayout>
   );
 };
 
-export default TablesPage;
+export default FormElementsPage;
+ 
