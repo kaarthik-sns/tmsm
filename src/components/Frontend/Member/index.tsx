@@ -207,7 +207,7 @@ const PaginatedUsers = () => {
   const handleRequestClick = async (id) => {
 
     // Check if user is logged in
-    if (!session ) {
+    if (!session) {
       router.push(`/login`);
       return;
     }
@@ -383,12 +383,13 @@ const PaginatedUsers = () => {
       </div>
 
       <div className="container mx-auto px-6 py-12 member-container">
-        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="title">
-            <span>You have found {totalCount}</span> search results
-          </h2>
 
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <h2 className="title"><span>You have found {totalCount} </span> search results</h2>
+          <span className="text-lg font-semibold sm:ml-auto">Welcome, {session?.user?.name || 'Guest'}
+          </span>
         </div>
+
         <>
           <div className='grid grid-cols-1 gap-7.5 sm:grid-cols-1 xl:grid-cols-2 '>
             {users.map((user: any) => (
