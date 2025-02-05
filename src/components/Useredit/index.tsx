@@ -285,6 +285,9 @@ const FormElements = () => {
       if (!formData.profile_creator_aadhar || formData.profile_creator_aadhar.trim() === "") {
         errors.profile_creator_aadhar = "Aadhar number is required.";
       }
+      if (!formData.profile_creator_aadhar || !/^\d{16}$/.test(formData.profile_creator_aadhar)) {
+        errors.profile_creator_aadhar = "A valid 16-digit adhar number is required.";
+      }
 
       if (!formData.profile_creator_phonenumber || formData.profile_creator_phonenumber.trim() === "") {
         errors.profile_creator_phonenumber = "Phone number is required.";
@@ -533,20 +536,6 @@ const FormElements = () => {
                     <p className="mt-1 text-sm text-red-500">{formErrors.bride_groom_detail}</p>
                   )}
                 </div>
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Gender <span className="text-meta-1">*</span>
-                  </label>
-                  <RadioButtonGroup
-                    name="gender"
-                    options={genderOptions}
-                    selectedValue={formData.gender}
-                    onChange={handleChange}
-                  />
-                  {formErrors?.gender && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.gender}</p>
-                  )}
-                </div>
               </div>
             </div>
 
@@ -669,7 +658,20 @@ const FormElements = () => {
                     <p className="mt-1 text-sm text-red-500">{formErrors.phonenumber}</p>
                   )}
                 </div>
-
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Bride / Groom  Gender <span className="text-meta-1">*</span>
+                  </label>
+                  <RadioButtonGroup
+                    name="gender"
+                    options={genderOptions}
+                    selectedValue={formData.gender}
+                    onChange={handleChange}
+                  />
+                  {formErrors?.gender && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.gender}</p>
+                  )}
+                </div>
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                     Marital Status <span className="text-meta-1">*</span>

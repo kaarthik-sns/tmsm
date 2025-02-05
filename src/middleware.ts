@@ -1,73 +1,74 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
+import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-export async function middleware(req: NextRequest) {
-    const { pathname } = req.nextUrl;
-    let res = NextResponse.next();
-
-
-    // Check if the user is logged in by getting the JWT token
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET }); // Use your secret key if necessary
-
-
-    // **Allow static assets in /uploads/**
-    if (pathname.startsWith('/uploads/') || pathname.startsWith('/images/')) {
-        return res;
+// Middleware function
+export async function middleware(req) {
+    const url = req.nextUrl;
+    const pathname = url.pathname;
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    // Rewrite `/` to serve content from `/frontend` but keep `/` in the browser's address bar
+    if (pathname === '' || pathname === '/' ) {
+        return NextResponse.rewrite(new URL('/', req.url));
     }
 
-    // Allow Next.js static files
-    if (pathname.startsWith('/_next/') || pathname.startsWith('/favicon.ico')) {
-        return res;
+    // Allow access to forgot-password page
+    if (pathname === '/admin/forgot-password') {
+        return NextResponse.next();
     }
 
-    // Allow /api paths to be accessed by everyone
-    if (pathname.startsWith('/api') || pathname.startsWith('/admin')) {
-        return res;
+    if (pathname === '/admin/change-password') {
+        return NextResponse.next();
     }
 
-    // // Restrict access to /admin/profile
-    // if (pathname === '/admin/profile') {
-
-        
-    //     if (!token) {
-    //         // If no token, redirect to login
-    //         return NextResponse.redirect(new URL('/admin/auth/signin', req.url));
-    //     } else if (!token.is_admin) {
-    //         // If token exists but is_admin is false, redirect to unauthorized page
-    //         return NextResponse.redirect(new URL('/unauthorized', req.url));
-    //     }
-    // }
-
-    // If the user is not logged in and trying to access restricted paths like /admin or /api, redirect to login
-    if (!token && (pathname.startsWith('/dashboard') || pathname.startsWith('/view-profile'))) {
-        return NextResponse.redirect(new URL('/login', req.url)); // Adjust the redirect URL if necessary
+    // Redirect unauthenticated admin users to signin page
+    if (pathname.startsWith('/admin') && pathname !== '/admin/auth/signin' && !token) {
+        url.pathname = '/admin/auth/signin';
+        return NextResponse.redirect(url);
     }
+
+    // Redirect authenticated admin users from signin to dashboard
+    if (pathname === '/admin/auth/signin' && token && token.is_admin) {
+        url.pathname = '/admin/dashboard';
+        return NextResponse.redirect(url);
+    }
+
+    // Restrict non-admin users from accessing admin routes
+    if (pathname.startsWith('/admin') && pathname !== '/admin/auth/signin' && token && !token.is_admin) {
+        url.pathname = '/admin/auth/signin';
+        return NextResponse.redirect(url);
+    }
+
+    // Redirect authenticated users from signin to homepage
+    if (pathname === '/login' && token && !token.is_admin) {
+        url.pathname = '/';
+        return NextResponse.redirect(url);
+    }
+
+    if (pathname === '/dashboard' && token && token.is_admin) {
+        url.pathname = '/';
+        return NextResponse.redirect(url);
+    }
+    // Redirect unauthenticated users trying to access restricted paths
+    if (!token && (pathname.startsWith('/dashboard') || pathname.startsWith('/view-profile') || pathname.startsWith('/member') )) {
+        return NextResponse.redirect(new URL('/login', req.url));
+    }
+
+    // Create a NextResponse instance to modify headers
+    const res = NextResponse.next();
 
     // Add CORS headers
     res.headers.append('Access-Control-Allow-Credentials', "true");
-    res.headers.append('Access-Control-Allow-Origin', '*');
-    res.headers.append('Access-Control-Allow-Methods', 'GET, DELETE, PATCH, POST, PUT');
+    res.headers.append('Access-Control-Allow-Origin', '*'); // Change '*' to a specific domain if needed
+    res.headers.append('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
     res.headers.append(
         'Access-Control-Allow-Headers',
         'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
     );
 
-    // Allow OPTIONS preflight requests for CORS
-    if (req.method === 'OPTIONS') {
-        return res;
-    }
-
-    // Rewrite other paths
-    if (!pathname.startsWith('/frontend') && pathname !== '' && pathname !== '/favicon.ico') {
-        const newUrl = req.nextUrl.clone();
-        newUrl.pathname = `/frontend${pathname}`;
-        return NextResponse.rewrite(newUrl);
-    }
-
-    return res;
+    // return res;
 }
 
-// Apply middleware to all routes
+// Apply middleware to relevant paths
 export const config = {
-    matcher: '/:path*',
+    matcher: ['/', '/api/:path*', '/:path*'], // Apply to root, API routes, and admin routes
 };
