@@ -96,7 +96,7 @@ const SignIn: React.FC = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
-                      placeholder="Enter your email"
+                      placeholder="E-mail id"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
@@ -131,7 +131,7 @@ const SignIn: React.FC = () => {
                       onChange={(e) => setPassword(e.target.value)}
                       required
                       type="password"
-                      placeholder="6+ Characters, 1 Capital letter"
+                      placeholder="Password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
