@@ -1,10 +1,10 @@
 import React from "react";
-import TemsElements from "@/components/Terms/edit";
+import TemsElements from "@/components/Cms/Terms/edit";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
 export const metadata: Metadata = {
-  title: "Add Users - TMSM",
+  title: "Edit Terms & Conditions - TMSM",
   description:
     "",
 };
