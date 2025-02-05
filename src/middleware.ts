@@ -3,20 +3,26 @@ import { getToken } from 'next-auth/jwt';
 
 export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     let res = NextResponse.next();
 
+    // Allow access to public paths
+    if (pathname.startsWith('/public')) {
+        return res;
+    }
 
-    // Check if the user is logged in by getting the JWT token
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET }); // Use your secret key if necessary
+    // // Redirect unauthenticated users trying to access /admin
+    // if (!token && pathname.startsWith('/admin')) {
+    //     return NextResponse.redirect(new URL('/admin/auth/signin', req.url));
+    // }
 
-
-    // **Allow static assets in /uploads/**
+    // Allow static assets in /uploads/ and /images/
     if (pathname.startsWith('/uploads/') || pathname.startsWith('/images/')) {
         return res;
     }
 
     // Allow Next.js static files
-    if (pathname.startsWith('/_next/') || pathname.startsWith('/favicon.ico')) {
+    if (pathname.startsWith('/_next/') || pathname === '/favicon.ico') {
         return res;
     }
 
@@ -25,26 +31,13 @@ export async function middleware(req: NextRequest) {
         return res;
     }
 
-    // // Restrict access to /admin/profile
-    // if (pathname === '/admin/profile') {
-
-        
-    //     if (!token) {
-    //         // If no token, redirect to login
-    //         return NextResponse.redirect(new URL('/admin/auth/signin', req.url));
-    //     } else if (!token.is_admin) {
-    //         // If token exists but is_admin is false, redirect to unauthorized page
-    //         return NextResponse.redirect(new URL('/unauthorized', req.url));
-    //     }
-    // }
-
-    // If the user is not logged in and trying to access restricted paths like /admin or /api, redirect to login
-    if (!token && (pathname.startsWith('/dashboard') || pathname.startsWith('/view-profile'))) {
-        return NextResponse.redirect(new URL('/login', req.url)); // Adjust the redirect URL if necessary
+    // Redirect unauthenticated users trying to access restricted paths
+    if (!token && (pathname.startsWith('/dashboard') || pathname.startsWith('/view-profile') || pathname.startsWith('/member') )) {
+        return NextResponse.redirect(new URL('/login', req.url));
     }
 
     // Add CORS headers
-    res.headers.append('Access-Control-Allow-Credentials', "true");
+    res.headers.append('Access-Control-Allow-Credentials', 'true');
     res.headers.append('Access-Control-Allow-Origin', '*');
     res.headers.append('Access-Control-Allow-Methods', 'GET, DELETE, PATCH, POST, PUT');
     res.headers.append(
@@ -57,7 +50,7 @@ export async function middleware(req: NextRequest) {
         return res;
     }
 
-    // Rewrite other paths
+    // Rewrite other paths to /frontend
     if (!pathname.startsWith('/frontend') && pathname !== '' && pathname !== '/favicon.ico') {
         const newUrl = req.nextUrl.clone();
         newUrl.pathname = `/frontend${pathname}`;
@@ -69,5 +62,5 @@ export async function middleware(req: NextRequest) {
 
 // Apply middleware to all routes
 export const config = {
-    matcher: '/:path*',
+    matcher: ['/admin/:path*', '/:path*'],
 };
