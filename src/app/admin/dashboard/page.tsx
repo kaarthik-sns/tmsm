@@ -1,4 +1,5 @@
 import DashboardUi from "@/components/Dashboard/DashboardUi";
+import DashboardUser from "@/components/DashboardUsers";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
@@ -13,6 +14,7 @@ export default function Home() {
     <>
       <DefaultLayout>
         <DashboardUi />
+        <DashboardUser />
       </DefaultLayout>
     </>
   );

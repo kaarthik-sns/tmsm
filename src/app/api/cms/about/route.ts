@@ -84,7 +84,7 @@ export async function PATCH(request: NextRequest) {
 
         if (existingRecord) {
             // Update the existing record
-            await Model.findOneAndUpdate({}, Fields, { new: true });
+            await Model.findOneAndUpdate(existingRecord._id, Fields, { new: true });
         } else {
             // Create a new record
             await Model.create(Fields);
