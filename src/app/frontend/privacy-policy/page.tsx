@@ -1,16 +1,16 @@
 import { Metadata } from "next";
 import FrontendLayouts from "@/components/Layouts/Frontendlayout";
-import Topbanner from "@/components/Frontend/InnerPageBanner/terms-and-conditions";
+import Topbanner from "@/components/Frontend/InnerPageBanner/privacy-policy";
 import TermsContent from "@/components/Frontend/Terms/terms-content";
 
 export const metadata: Metadata = {
-  title: "Terms and Conditions - TMSM",
+  title: "Privacy Policy - TMSM",
   description: "",
 };
 
 export default async function Home() {
 
-  const response = await fetch(`${process.env.BASE_URL}/api/cms/terms/view`, {
+  const response = await fetch(`${process.env.BASE_URL}/api/cms/privacy/view`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

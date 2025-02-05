@@ -1,11 +1,9 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import FaqTable from "@/components/Cms/Faq/list";
-
+import PrivacyTable from "@/components/Cms/Privacy/view";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
 export const metadata: Metadata = {
-  title: "List Faq - TMSM",
+  title: "Privacy Policy - TMSM",
   description:
     "",
 };
@@ -13,7 +11,7 @@ export const metadata: Metadata = {
 const TablesPage = () => {
   return (
     <DefaultLayout>
-      <FaqTable />
+      <PrivacyTable />
     </DefaultLayout>
   );
 };

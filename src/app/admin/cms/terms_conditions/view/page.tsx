@@ -1,11 +1,10 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import FaqTable from "@/components/Cms/Faq/list";
+import TermTable from "@/components/Cms/Terms/view";
 
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
 export const metadata: Metadata = {
-  title: "List Faq - TMSM",
+  title: "Terms & Conditions - TMSM",
   description:
     "",
 };
@@ -13,7 +12,7 @@ export const metadata: Metadata = {
 const TablesPage = () => {
   return (
     <DefaultLayout>
-      <FaqTable />
+      <TermTable />
     </DefaultLayout>
   );
 };

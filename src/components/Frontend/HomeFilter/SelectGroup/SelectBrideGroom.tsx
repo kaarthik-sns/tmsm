@@ -14,10 +14,10 @@ const SelectBrideGroom = ({ selectedBrideGroom, name, onBrideGroomChange }) => {
           <option value="" className="text-body dark:text-bodydark">
             Select
           </option>
-          <option value="male" className="text-body dark:text-bodydark">
+          <option value="female" className="text-body dark:text-bodydark">
             Bride
           </option>
-          <option value="female" className="text-body dark:text-bodydark">
+          <option value="male" className="text-body dark:text-bodydark">
             Groom
           </option>
         </select>
