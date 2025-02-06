@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';  // Use NextRequest and
 import User from '@/models/User'; // Adjust this path based on your project structure
 import connectToDatabase from '@/lib/mongodb';
 import { adminApprovalTemplate } from '@/lib/template/admin-approve';
+import { accountReactivationTemplate } from '@/lib/template/account-active';
 import { deactivateTemplate } from '@/lib/template/deactivated';
 import getSMTPSettings from '@/utils/settings.util';
 import { sendEmail } from "@/utils/mail.util"
@@ -29,6 +30,8 @@ export async function PATCH(req: NextRequest) {
         const userData = await User.findById(id);
         const name = userData.name;
         const email = userData.email;
+        const homePage = process.env.BASE_URL + '/login';
+
         let htmlBody = '';
 
         if (is_active == false) {
@@ -49,20 +52,31 @@ export async function PATCH(req: NextRequest) {
 
         }
 
+        const receipients = [{
+            name: name,
+            address: email
+        }];
+
         if (is_approve) {
-
-            const receipients = [{
-                name: name,
-                address: email
-            }];
-
-            const homePage = process.env.BASE_URL + '/login';
 
             htmlBody = adminApprovalTemplate(name, homePage, contactMail, copyright);
 
             await sendEmail({
                 receipients,
                 subject: 'Congratulations! Your TMSM Account is Approved and Ready',
+                message: htmlBody
+            });
+
+        }
+
+
+        if (is_active) {
+
+            htmlBody = accountReactivationTemplate(name, homePage, contactMail, copyright);
+
+            await sendEmail({
+                receipients,
+                subject: '*Important* TMSM Account Activation Notice',
                 message: htmlBody
             });
 

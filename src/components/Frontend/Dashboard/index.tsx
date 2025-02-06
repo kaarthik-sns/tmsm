@@ -47,7 +47,7 @@ const RequestStatus = () => {
     if (myId) {
       fetchReqData(myId);
     }
-  }, [myId]);
+  }, [myId,activeTab]);
 
 
 
