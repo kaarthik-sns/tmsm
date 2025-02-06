@@ -218,9 +218,9 @@ export async function POST(request: NextRequest) {
             lookingfor,
             bride_groom_detail,
             gender,
-            created_at: new Date()
+            updated_at: new Date()
         });
-        console.log("newUserFields", newUserFields);
+        
         if (id) {
             // Update data
             await User.findByIdAndUpdate(id, newUserFields, { new: true });

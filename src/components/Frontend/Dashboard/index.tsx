@@ -18,7 +18,6 @@ const RequestStatus = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isEditMode, setIsEditMode] = useState(false);  // State to track edit mode
   const [loading, setIsLoading] = useState(false);
-  const [profileData, setProfileData] = useState([]);
   const [sentRequests, setSentReqData] = useState([]);
   const [receivedRequests, setRecivedReqData] = useState([]);
   const router = useRouter();
@@ -36,35 +35,7 @@ const RequestStatus = () => {
     setIsEditMode(prev => !prev); // Toggle edit mode
   };
 
-  // Move fetchUserData outside to be reusable
-  const fetchUserData = async () => {
-    try {
-      const response = await fetch("/api/get-user-data", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: myId }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch user data.");
-      }
-
-      const { data } = await response.json();
-      setProfileData(data);
-    } catch (err) {
-      console.error(err);
-      // setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Run fetchUserData when exiting edit mode
-  useEffect(() => {
-    if (!isEditMode) {
-      fetchUserData();
-    }
-  }, [isEditMode]);
+ 
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -74,7 +45,6 @@ const RequestStatus = () => {
   // Fetch user data when `myId` changes
   useEffect(() => {
     if (myId) {
-      fetchUserData();
       fetchReqData(myId);
     }
   }, [myId]);
@@ -256,7 +226,7 @@ const RequestStatus = () => {
           {activeTab === "profile" ? (
             !isEditMode ? (
               <>
-                <Profile data={profileData} />
+                <Profile userId={myId} />
                 <div className="absolute top-2 right-2 z-10 p-2">
                   <label
                     htmlFor="cover"

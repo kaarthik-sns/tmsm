@@ -11,21 +11,9 @@ export const metadata: Metadata = {
 export default async function Home({ searchParams }) {
   const { id } = searchParams;
 
-  const response = await fetch(`${process.env.BASE_URL}/api/get-user-data`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id: id }),
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch user data.");
-  }
-
-  const { data } = await response.json();
-console.log(data);
   return (
     <FrontendLayouts>
-      <Profile data={data} />
+      <Profile userId={id} />
     </FrontendLayouts>
   );
 }
