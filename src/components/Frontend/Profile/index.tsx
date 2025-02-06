@@ -113,7 +113,7 @@ export default function Profile({ userId }) {
             <div className="relative">
               {/* Profile Picture */}
                 <Image
-                  src={profile_data.profile_photo || "/images/user/dummy.png"}
+                  src={profileData.profile_photo || "/images/user/dummy.png"}
                   alt="Profile Picture" 
                   width={200} // Fixed width
                   height={200} // Fixed height
