@@ -230,83 +230,82 @@ const UserProfile = (user_data) => {
     }
 
     if (!formData.gender || formData.gender.trim() === "") {
-      errors.gender = "Gender for is required.";
+      errors.gender = "Gender for cannot be empty.";
     }
 
 
     if (!formData.name || formData.name.trim() === "") {
-      errors.name = "First name is required.";
+      errors.name = "First name cannot be empty.";
     }
 
     if (!formData.lastname || formData.lastname.trim() === "") {
-      errors.lastname = "Last name is required.";
+      errors.lastname = "Last name cannot be empty.";
     }
 
     if (!formData.email || !/^\S+@\S+\.\S+$/.test(formData.email)) {
-      errors.email = "A valid email is required.";
+      errors.email = "A valid email cannot be empty.";
     }
 
     if (!formData.phonenumber || !/^\d{10}$/.test(formData.phonenumber)) {
-      errors.phonenumber = "A valid 10-digit phone number is required.";
+      errors.phonenumber = "A valid 10-digit phone number cannot be empty.";
     }
 
     if (!formData.name || formData.name.trim() === "") {
-      errors.name = "First name is required.";
+      errors.name = "First name cannot be empty.";
     }
 
     if (!formData.profile_photo || formData.profile_photo.trim() === "") {
-      errors.profile_photo = "Profile Photo is required.";
+      errors.profile_photo = "Profile Photo cannot be empty.";
     }
 
     if (!formData.birthdate || formData.birthdate.trim() === "") {
-      errors.birthdate = "Date Of Birth is required.";
+      errors.birthdate = "Date Of Birth cannot be empty.";
     }
 
     if (!formData.maritalstatus || formData.maritalstatus.trim() === "") {
-      errors.maritalstatus = "Marital Status is required.";
+      errors.maritalstatus = "Marital Status cannot be empty.";
     }
 
     if (!formData.profile_created_for || formData.profile_created_for.trim() === "") {
-      errors.profile_created_for = "Profile created for is required.";
+      errors.profile_created_for = "Profile created for cannot be empty.";
     }
 
     if (!formData.state_id) {
-      errors.state_id = "State is required.";
+      errors.state_id = "State cannot be empty.";
     }
     if (!formData.city_id) {
-      errors.city_id = "City is required.";
+      errors.city_id = "City cannot be empty.";
     }
 
     if (!formData.address) {
-      errors.address = "Address is required.";
+      errors.address = "Address cannot be empty.";
     }
 
     if (!formData.lookingfor || formData.lookingfor.trim() === "") {
-      errors.lookingfor = "Looking for is required.";
+      errors.lookingfor = "Looking for cannot be empty.";
     }
 
     if (formData.profile_created_for != 'myself') {
 
       if (!formData.profile_creator_name || formData.profile_creator_name.trim() === "") {
-        errors.profile_creator_name = "Name is required.";
+        errors.profile_creator_name = "Name cannot be empty.";
       }
 
       if (!formData.profile_creator_photo || formData.profile_creator_photo.trim() === "") {
-        errors.profile_creator_photo = "Picture is required.";
+        errors.profile_creator_photo = "Picture cannot be empty.";
       }
 
       if (!formData.profile_creator_aadhar || formData.profile_creator_aadhar.trim() === "") {
-        errors.profile_creator_aadhar = "Aadhar number is required.";
+        errors.profile_creator_aadhar = "Aadhar number cannot be empty.";
       }
       if (!formData.profile_creator_aadhar || !/^\d{16}$/.test(formData.profile_creator_aadhar)) {
-        errors.profile_creator_aadhar = "A valid 16-digit adhar number is required.";
+        errors.profile_creator_aadhar = "A valid 16-digit adhar number cannot be empty.";
       }
 
-      if (!formData.profile_creator_phonenumber || formData.profile_creator_phonenumber.trim() === "") {
-        errors.profile_creator_phonenumber = "Phone number is required.";
-      }
-      if (!formData.profile_creator_phonenumber || !/^\d{10}$/.test(formData.profile_creator_phonenumber)) {
-        errors.profile_creator_phonenumber = "A valid 10-digit phone number is required.";
+      if (formData.profile_creator_phonenumber.trim() !== "") {
+        if (!formData.profile_creator_phonenumber || !/^\d{10}$/.test(formData.profile_creator_phonenumber)) {
+          errors.profile_creator_phonenumber = "A valid 10-digit phone number cannot be empty.";
+        }
       }
     }
 
@@ -474,7 +473,7 @@ const UserProfile = (user_data) => {
 
                       {profileCreator && (
                         <>
-                          < div className="mb-4.5 text-black">
+                          <div className="mb-4.5 text-black">
                             <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                               Creator Name <span className="text-meta-1">*</span>
                             </label>
@@ -484,8 +483,6 @@ const UserProfile = (user_data) => {
                               value={formData.profile_creator_name || ""}
                               onChange={handleChange}
                               placeholder="Enter Profile Creator Name"
-
-
                               className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent ${formErrors?.profile_creator_name
                                 ? "border-red-500 focus:border-red-500"
                                 : "border-stroke focus:border-primary"
@@ -495,8 +492,47 @@ const UserProfile = (user_data) => {
                               <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_name}</p>
                             )}
                           </div>
+                        </>
+                      )}
 
 
+                      <div className="mb-4.5">
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          Email
+                        </label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email || ""}
+                          onChange={handleChange}
+                          readOnly
+                          placeholder="Enter your email address"
+                          className=" list-text w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark"
+                        />
+                      </div>
+
+                      <div className="mb-4.5 text-black">
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          Phone Number <span className="text-meta-1">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          name="phonenumber"
+                          value={formData.phonenumber || ""}
+                          onChange={handleChange}
+                          placeholder="Enter your phone number"
+                          className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent ${formErrors?.phonenumber
+                            ? "border-red-500 focus:border-red-500"
+                            : "border-stroke focus:border-primary"
+                            } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                        />
+                        {formErrors?.phonenumber && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.phonenumber}</p>
+                        )}
+                      </div>
+
+                      {profileCreator && (
+                        <>
                           <div className="mb-4.5 text-black">
                             <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                               Creator Picture <span className="text-meta-1">*</span>
@@ -551,60 +587,9 @@ const UserProfile = (user_data) => {
                               <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_aadhar}</p>
                             )}
                           </div>
-
-                          <div className="mb-4.5 text-black">
-                            <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                              Creator Phone Number <span className="text-meta-1">*</span>
-                            </label>
-                            <input
-                              type="text"
-                              name="profile_creator_phonenumber"
-                              value={formData.profile_creator_phonenumber || ""}
-                              onChange={handleChange}
-                              placeholder="Enter your phone number"
-                              className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent ${formErrors?.profile_creator_phonenumber
-                                ? "border-red-500 focus:border-red-500"
-                                : "border-stroke focus:border-primary"
-                                } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                            />
-                            {formErrors?.profile_creator_phonenumber && (
-                              <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_phonenumber}</p>
-                            )}
-                          </div>
-
                         </>
                       )}
 
-
-                      <div className="mb-4.5">
-                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Detail about groom / bride <span className="text-meta-1">*</span>
-                        </label>
-                        <textarea
-                          rows={6}
-                          name="bride_groom_detail"
-                          value={formData.bride_groom_detail || ""}
-                          onChange={handleChange}
-                          className="w-full rounded-lg border-[1.5px] bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:text-white"
-                        ></textarea>
-                        {formErrors?.bride_groom_detail && (
-                          <p className="mt-1 text-sm text-red-500">{formErrors.bride_groom_detail}</p>
-                        )}
-                      </div>
-                      <div className="mb-4.5 text-black">
-                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Gender <span className="text-meta-1">*</span>
-                        </label>
-                        <RadioButtonGroup
-                          name="gender"
-                          options={genderOptions}
-                          selectedValue={formData.gender}
-                          onChange={handleChange}
-                        />
-                        {formErrors?.gender && (
-                          <p className="mt-1 text-sm text-red-500">{formErrors.gender}</p>
-                        )}
-                      </div>
                     </div>
                   </div>
 
@@ -618,7 +603,7 @@ const UserProfile = (user_data) => {
                     <div className="p-6.5">
                       <div className="mb-4.5">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Profile Picture <span className="text-meta-1">*</span>
+                          Picture(Groom / Bride) <span className="text-meta-1">*</span>
                         </label>
                         <div className="flex items-center space-x-4">
                           <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
@@ -690,44 +675,36 @@ const UserProfile = (user_data) => {
                             <p className="mt-1 text-sm text-red-500">{formErrors.lastname}</p>
                           )}
                         </div>
-
                       </div>
-
                       <div className="mb-4.5">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Email
+                          Detail about groom / bride <span className="text-meta-1">*</span>
                         </label>
-                        <input
-                          type="email"
-                          name="email"
-                          value={formData.email || ""}
+                        <textarea
+                          rows={6}
+                          name="bride_groom_detail"
+                          value={formData.bride_groom_detail || ""}
                           onChange={handleChange}
-                          readOnly
-                          placeholder="Enter your email address"
-                          className=" list-text w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark"
-                        />
-                      </div>
-
-                      <div className="mb-4.5 text-black">
-                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Phone Number <span className="text-meta-1">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          name="phonenumber"
-                          value={formData.phonenumber || ""}
-                          onChange={handleChange}
-                          placeholder="Enter your phone number"
-                          className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent ${formErrors?.phonenumber
-                            ? "border-red-500 focus:border-red-500"
-                            : "border-stroke focus:border-primary"
-                            } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                        />
-                        {formErrors?.phonenumber && (
-                          <p className="mt-1 text-sm text-red-500">{formErrors.phonenumber}</p>
+                          className="w-full rounded-lg border-[1.5px] bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:text-white"
+                        ></textarea>
+                        {formErrors?.bride_groom_detail && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.bride_groom_detail}</p>
                         )}
                       </div>
-
+                      <div className="mb-4.5 text-black">
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          Gender for (Bride / Groom)  <span className="text-meta-1">*</span>
+                        </label>
+                        <RadioButtonGroup
+                          name="gender"
+                          options={genderOptions}
+                          selectedValue={formData.gender}
+                          onChange={handleChange}
+                        />
+                        {formErrors?.gender && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.gender}</p>
+                        )}
+                      </div>
                       <div className="mb-4.5 text-black">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                           Marital Status <span className="text-meta-1">*</span>
@@ -867,6 +844,25 @@ const UserProfile = (user_data) => {
                           placeholder="Place of birth"
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
+                      </div>
+                      <div className="mb-4.5 text-black">
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          Additional Phone Number
+                        </label>
+                        <input
+                          type="text"
+                          name="profile_creator_phonenumber"
+                          value={formData.profile_creator_phonenumber || ""}
+                          onChange={handleChange}
+                          placeholder="Enter additional phone number"
+                          className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent ${formErrors?.profile_creator_phonenumber
+                            ? "border-red-500 focus:border-red-500"
+                            : "border-stroke focus:border-primary"
+                            } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                        />
+                        {formErrors?.profile_creator_phonenumber && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_phonenumber}</p>
+                        )}
                       </div>
 
                     </div>

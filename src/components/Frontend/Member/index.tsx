@@ -398,7 +398,7 @@ const PaginatedUsers = () => {
                   <div className="">
                     <div className='h-25 w-25 mb-3'>
 
-                      <img src={user.profile_photo ? user.profile_photo : '/uploads/photos/1738154599244-a8e0a88c34bc.png'} alt="Profile Picture" className="rounded-full w-full h-full object-cover" />
+                      <img src={user.profile_photo ? user.profile_photo : '/images/user/dummy.png'} alt="Profile Picture" className="rounded-full w-full h-full object-cover" />
 
                     </div>
                     <h4 className="member-title">

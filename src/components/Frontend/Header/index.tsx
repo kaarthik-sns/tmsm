@@ -9,12 +9,8 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import GTranslateWidget from '@/components/GTranslateWidget/widget';
+import { Navbar, Collapse, IconButton } from "@material-tailwind/react";
 
-import {
-  Navbar,
-  Collapse,
-  IconButton,
-} from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 interface NavItemPropsType {
@@ -53,7 +49,7 @@ function NavList() {
 
       {/* Desktop Navigation */}
       <div className="flex bg-white px-5 py-3 gap-5 rounded-full bg-button hidden lg:block header-text">
-      {session && !session.user.is_admin ? (
+        {session && !session.user.is_admin ? (
           <>
             <NavItem label="Dashboard" href="/dashboard" className="pr-5 headertext border-r border-black" />
             <NavItem label="Logout" onClick={() => signOut()} className="pl-5  headertext" />
@@ -79,17 +75,6 @@ function NavList() {
         </>
       )}
 
-      {/* <div className="translator-div flex items-center space-x-2">
-        <div>
-          <Image
-            width={30}
-            height={30}
-            src={"../../images/logo/globe.svg"}
-            alt="Logo"
-          />
-        </div>
-        {<GTranslateWidget />}
-      </div> */}
     </ul>
   );
 }
@@ -108,10 +93,12 @@ export function NavbarWithSimpleLinks() {
   }, []);
 
   return (
-    <Navbar className="header-bg py-6 border-0"
+    <Navbar
+      className="header-bg py-6 border-0"
       fullWidth={true}
-      onPointerEnterCapture={() => {}}
-      onPointerLeaveCapture={() => {}}
+      placeholder="" // Provide an empty string or a relevant placeholder text
+      onPointerEnterCapture={() => { }}
+      onPointerLeaveCapture={() => { }}
     >
 
       <div className="container mx-auto flex items-center justify-between mt-6">
@@ -120,7 +107,7 @@ export function NavbarWithSimpleLinks() {
             className="xl:w-[700px] lg:w-[400px] sm:w-[300px]"
             src={"/images/logo/Flogo.svg"}
             alt="Logo"
-             loading="lazy"
+            loading="lazy"
           />
         </Link>
 
@@ -139,8 +126,15 @@ export function NavbarWithSimpleLinks() {
           color="blue-gray"
           onClick={handleOpen}
           className="ml-auto inline-block lg:hidden"
+          placeholder="Your placeholder text"
+          onPointerEnterCapture={() => { }}
+          onPointerLeaveCapture={() => { }}
         >
-          {open ? <XMarkIcon className="h-5 w-5" strokeWidth={2} /> : <Bars3Icon className="h-5 w-5" strokeWidth={2} />}
+          {open ? (
+            <XMarkIcon className="h-5 w-5" strokeWidth={2} />
+          ) : (
+            <Bars3Icon className="h-5 w-5" strokeWidth={2} />
+          )}
         </IconButton>
       </div>
 

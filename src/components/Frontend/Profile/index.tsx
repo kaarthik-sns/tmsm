@@ -50,17 +50,15 @@ export default function Profile({data}) {
             <div className="relative">
               {/* Profile Picture */}
 
-              {profile_data.profile_photo && (
                 <Image
-                  src={profile_data.profile_photo || "/uploads/photos/1738154599244-a8e0a88c34bc.png"}
-                  alt="Profile Picture"
+                  src={profile_data.profile_photo || "/images/user/dummy.png"}
+                  alt="Profile Picture" 
                   width={200} // Fixed width
                   height={200} // Fixed height
                   quality={100}
                   unoptimized={true}
                   className="w-40 h-40 object-cover rounded-full border-4 border-white cursor-pointer"
                 />
-              )}
             </div>
 
             <div className="text-center lg:text-left px-5">

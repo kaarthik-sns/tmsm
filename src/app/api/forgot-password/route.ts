@@ -21,7 +21,7 @@ export async function POST(request: Request) {
 
 
     if (!email) {
-        return NextResponse.json({ message: " Email is required" }, { status: 400 })
+        return NextResponse.json({ message: " Email cannot be empty" }, { status: 400 })
     }
 
 

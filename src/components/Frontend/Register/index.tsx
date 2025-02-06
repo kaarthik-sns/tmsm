@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
 
 import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
+import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
+
 
 
 const SignUp: React.FC = () => {
@@ -21,7 +23,9 @@ const SignUp: React.FC = () => {
     password: "",
     confirmPassword: "",
     phonenumber: "",
-    religion: ""
+    religion: "",
+    profile_created_for: "",
+    profile_creator_name:""
   });
   const [remainingTime, setRemainingTime] = useState(9); // 5 seconds initially
   const [selected, setselected] = useState(false);
@@ -29,6 +33,7 @@ const SignUp: React.FC = () => {
   const [error, setError] = useState(null);
   const [errors, setErrors] = useState<any>({});
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [isProfileCreator, setIsProfileCreator] = useState(false);
 
   const router = useRouter();
 
@@ -38,6 +43,19 @@ const SignUp: React.FC = () => {
     "Muslim",
     "Christian"
   ];
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+  
+    // Update form state
+    setForm((prevData) => ({ ...prevData, [name]: value }));
+  
+    // Handle "Profile created for" specific logic
+    if (name === 'profile_created_for') {
+      setIsProfileCreator(value !== 'myself');
+    }
+  };
+
 
   const validatePassword = (password: string): string | null => {
     const minLength = 6;
@@ -66,6 +84,20 @@ const SignUp: React.FC = () => {
 
   const validate = () => {
     let newErrors: any = {};
+
+    if (!form.profile_created_for) {
+      newErrors.profile_created_for = "Please select a Matrimony profile.";
+    }
+
+
+    if (form.profile_created_for != 'myself') {
+
+      if (!form.profile_creator_name || form.profile_creator_name.trim() === "") {
+        newErrors.profile_creator_name = "Creator Name cannot be empty..";
+      }
+
+    }
+
 
     // Name validation
     if (!form.name  || form.name.trim() === "") {
@@ -118,6 +150,8 @@ const SignUp: React.FC = () => {
     return newErrors;
   };
 
+
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setPending(true);
@@ -154,6 +188,15 @@ const SignUp: React.FC = () => {
       setPending(false);
     }
   };
+
+  const profileOptions = [
+    { label: 'MySelf', value: 'myself' },
+    { label: 'Daughter', value: 'daughter' },
+    { label: 'Son', value: 'son' },
+    { label: 'Others', value: 'others' },
+  ];
+
+
 
 
   const handleReligionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -210,6 +253,39 @@ const SignUp: React.FC = () => {
               </div>
             )}
             <form onSubmit={handleSubmit} >
+            <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                   Matrimony profile for <span className="text-meta-1">*</span>
+                  </label>
+                  <RadioButtonGroup
+                    name="profile_created_for"
+                    options={profileOptions}
+                    selectedValue={form.profile_created_for}
+                    onChange={handleChange}
+                  />
+                  {errors?.profile_created_for && (
+                    <p className="mt-1 text-sm text-red-500">{errors.profile_created_for}</p>
+                  )}
+                </div>  
+ 
+                {isProfileCreator && (
+                   <>
+                     < div className="mb-4.5">
+                       <input
+                         type="text"
+                         name="profile_creator_name"
+                         value={form.profile_creator_name || ""}
+                         onChange={handleChange}
+                         placeholder="Enter Profile Creator Name"
+                         className={`w-full rounded-lg border ${errors.profile_creator_name ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
+
+                       />
+                       {errors?.profile_creator_name && (
+                         <p className="mt-1 text-sm text-red-500">{errors.profile_creator_name}</p>
+                       )}
+                     </div>
+                   </>
+                 )}                          
               <div className="mb-4">
                 <input
                   type="text"

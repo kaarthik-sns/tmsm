@@ -10,7 +10,7 @@ import getSMTPSettings from '@/utils/settings.util';
 
 
 export async function POST(request: Request) {
-    const { name, lastname, email, password, confirmPassword, phonenumber, religion } = await request.json();
+    const { profile_created_for, profile_creator_name, name, lastname, email, password, confirmPassword, phonenumber, religion, } = await request.json();
 
     const testData = [];
 
@@ -51,6 +51,8 @@ export async function POST(request: Request) {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = new User({
+            profile_created_for,
+            profile_creator_name,
             email: email_id,
             name,
             lastname,

@@ -61,15 +61,15 @@ const Elements = () => {
     const errors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      errors.name = "Name is required.";
+      errors.name = "Name cannot be empty.";
     }
 
     if (!formData.rating.trim()) {
-      errors.rating = "Rating is required.";
+      errors.rating = "Rating cannot be empty.";
     }
     
     if (!formData.description.trim()) {
-      errors.description = "Description is required.";
+      errors.description = "Description cannot be empty.";
     }
 
     if (Object.keys(errors).length > 0) {

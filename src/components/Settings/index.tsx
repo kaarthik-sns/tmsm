@@ -146,7 +146,7 @@ const Settings = () => {
       const formfiled = String(formData[field]);
 
       if (!formfiled?.trim()) {
-        errors[field] = `${field.replace(/_/g, " ")} is required.`;
+        errors[field] = `${field.replace(/_/g, " ")} cannot be empty.`;
       }
     });
 

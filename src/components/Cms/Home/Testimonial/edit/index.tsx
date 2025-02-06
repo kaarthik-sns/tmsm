@@ -75,15 +75,15 @@ const Elements = () => {
     const errors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      errors.name = "Name is required.";
+      errors.name = "Name cannot be empty.";
     }
 
     if (!preview.trim()) {
-      errors.preview = "Image is required.";
+      errors.preview = "Image cannot be empty.";
     }
 
     if (!formData.description.trim()) {
-      errors.description = "Description is required.";
+      errors.description = "Description cannot be empty.";
     }
 
     if (Object.keys(errors).length > 0) {

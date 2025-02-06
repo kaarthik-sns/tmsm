@@ -75,7 +75,7 @@ export async function PATCH(req: NextRequest) {
     const { id } = await req.json();
 
     if (!id) {
-        return NextResponse.json({ message: 'ID is required' }, { status: 400 });
+        return NextResponse.json({ message: 'ID cannot be empty' }, { status: 400 });
     }
 
     try {
