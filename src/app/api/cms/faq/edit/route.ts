@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
    
 
     if (!id) {
-        return NextResponse.json({ message: 'Faq ID is required' }, { status: 400 });
+        return NextResponse.json({ message: 'Faq ID cannot be empty' }, { status: 400 });
     }
 
     try {

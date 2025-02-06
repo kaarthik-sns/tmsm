@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     const { userId } = await request.json();
 
     if (!userId) {
-        return NextResponse.json({ message: "User ID is required" }, { status: 400 });
+        return NextResponse.json({ message: "User ID cannot be empty" }, { status: 400 });
     }
 
     try {

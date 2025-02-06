@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
     var horoscope = '';
 
     if (!id) {
-        return NextResponse.json({ message: 'User ID is required' }, { status: 400 });
+        return NextResponse.json({ message: 'User ID cannot be empty' }, { status: 400 });
     }
 
     try {

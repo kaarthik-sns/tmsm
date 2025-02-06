@@ -102,7 +102,7 @@ const TemsElements = () => {
 
     const errors: Record<string, string> = {};
     if (!formData.description.trim() || formData.description.trim() == '<p><br></p>') {
-      errors.description = "Description is required.";
+      errors.description = "Description cannot be empty.";
     }
 
     if (Object.keys(errors).length > 0) {

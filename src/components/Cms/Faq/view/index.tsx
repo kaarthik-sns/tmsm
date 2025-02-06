@@ -60,10 +60,10 @@ const FaqElements = () => {
     const errors: Record<string, string> = {};
 
     if (!formData.title) {
-      errors.title = "Title is required.";
+      errors.title = "Title cannot be empty.";
     }
     if (!formData.description) {
-      errors.description = "Description is required.";
+      errors.description = "Description cannot be empty.";
     }
 
     if (Object.keys(errors).length > 0) {
