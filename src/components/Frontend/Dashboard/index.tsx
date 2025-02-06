@@ -265,7 +265,7 @@ const RequestStatus = () => {
               />
             ))
           ) : (
-            <p className="text-gray-500 text-center">No requests found</p>
+            <p className="text-gray-500 text-center mt-20">No requests found</p>
           )}
         </div>
       </div>

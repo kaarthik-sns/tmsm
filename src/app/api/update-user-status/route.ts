@@ -23,6 +23,7 @@ export async function PATCH(req: NextRequest) {
         if (smtpSettings) {
             copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
             contactMail = smtpSettings.organisation_email_id;
+            
         }
 
         const userData = await User.findById(id);
@@ -38,7 +39,7 @@ export async function PATCH(req: NextRequest) {
             }];
 
 
-            htmlBody = deactivateTemplate(name, copyright);
+            htmlBody = deactivateTemplate(name, copyright, contactMail);
 
             await sendEmail({
                 receipients,

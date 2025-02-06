@@ -1,4 +1,4 @@
-export const deactivateTemplate = (name: string,copyright: string): string => `
+export const deactivateTemplate = (name: string,copyright: string, email: string,): string => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,14 +38,14 @@ export const deactivateTemplate = (name: string,copyright: string): string => `
 </head>
 <body>
     <div class="container">
-        <h1>We're Sorry to See You Go, ${name}!</h1>
-        <p>We're reaching out to confirm that your account has been deactivated. We're sorry to see you leave, but we respect your decision.</p>
-        <p>If this was done by mistake or if you wish to reactivate your account, please don't hesitate to reach out to our support team. We'd be more than happy to assist you in restoring your account.</p>
-        <p>If you have any feedback about your experience, please feel free to share it with us. We strive to improve and provide a better experience for our users.</p>
-        <p>Thank you for being a part of TMSM. We wish you all the best in your future endeavors.</p>
-        <div class="footer">
-           <p>${copyright}</p>
-        </div>
+         <h1>Hello ${name},</h1>
+            <p>We hope this email finds you well.</p>
+            <p>This is to inform you that your matrimony profile on TMSM has been successfully deactivated. As per your request, your profile is no longer visible to other members.
+            </p>
+            <p> If you would like to activate your profile at any time or have any questions, please feel free to reach out to our support team at ${email}.</p>
+            <div class="footer">
+            <p>${copyright}</p>
+            </div>
     </div>
 </body>
 </html>`;
