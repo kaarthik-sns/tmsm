@@ -86,7 +86,7 @@ const SignUp: React.FC = () => {
     let newErrors: any = {};
 
     if (!form.profile_created_for) {
-      newErrors.profile_created_for = "Please select a Matrimony profile.";
+      newErrors.profile_created_for = "Select a Matrimony profile.";
     }
 
 
@@ -113,14 +113,14 @@ const SignUp: React.FC = () => {
     if (!form.email || form.email.trim() === "") {
       newErrors.email = "Email cannot be empty.";
     } else if (!/\S+@\S+\.\S+/.test(form.email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = "Enter a valid email address";
     }
 
     // Phone number validation
     if (!form.phonenumber) {
       newErrors.phonenumber = "Phone number cannot be empty";
     } else if (!/^\d{10}$/.test(form.phonenumber)) {
-      newErrors.phonenumber = "Please enter a valid 10-digit phone number";
+      newErrors.phonenumber = "Enter a valid 10-digit phone number";
     }
 
     if (!form.password) {
@@ -144,7 +144,7 @@ const SignUp: React.FC = () => {
 
     // Terms and condition check
     if (!selected) {
-      newErrors.selected = "Please accept the Terms and Conditions";
+      newErrors.selected = "Accept the Terms and Conditions";
     }
 
     return newErrors;
@@ -255,7 +255,7 @@ const SignUp: React.FC = () => {
             <form onSubmit={handleSubmit} >
             <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                   Matrimony profile for <span className="text-meta-1">*</span>
+                   <b>Matrimony profile for</b>
                   </label>
                   <RadioButtonGroup
                     name="profile_created_for"
