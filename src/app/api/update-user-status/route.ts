@@ -17,10 +17,12 @@ export async function PATCH(req: NextRequest) {
         );
 
         let copyright = '';
+        let contactMail = '';
 
         const smtpSettings = await getSMTPSettings();
         if (smtpSettings) {
             copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
+            contactMail = smtpSettings.organisation_email_id;
         }
 
         const userData = await User.findById(id);
@@ -28,7 +30,7 @@ export async function PATCH(req: NextRequest) {
         const email = userData.email;
         let htmlBody = '';
 
-        if (is_active == false)  {
+        if (is_active == false) {
 
             const receipients = [{
                 name: name,
@@ -53,9 +55,9 @@ export async function PATCH(req: NextRequest) {
                 address: email
             }];
 
-            const homePage = process.env.BASE_URL+'/login';
+            const homePage = process.env.BASE_URL + '/login';
 
-            htmlBody = adminApprovalTemplate(name, homePage, copyright);
+            htmlBody = adminApprovalTemplate(name, homePage, contactMail, copyright);
 
             await sendEmail({
                 receipients,

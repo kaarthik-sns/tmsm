@@ -4,13 +4,76 @@ import React from "react";
 import Image from "next/image";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaCheckCircle } from "react-icons/fa";
 import { toast } from "sonner";
+import { useSession } from "next-auth/react";
+import Swal from 'sweetalert2'; // Import SweetAlert2
+import { useRouter } from 'next/navigation';
 
-export default function Profile({data}) {
-  const profile_data = data;
-
+export default function Profile({ userId }) {
+  const { data: session } = useSession();
+  const [loading, setIsLoading] = useState(false);
+  const [profileData, setProfileData] = useState<any>([]);
   const [popupImage, setPopupImage] = useState(null); // State to store the image to show in the popup
   const openPopup = (image) => setPopupImage(image); // Set the clicked image in state
   const closePopup = () => setPopupImage(null); // Close the popup
+  const router = useRouter();
+
+  const myId = session?.user.id;
+
+  // Move fetchUserData outside to be reusable
+  const fetchUserData = async () => {
+    try {
+
+      if (myId != userId) {
+
+        const response = await fetch("/api/requests/check-profile-permission", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: myId, userId: userId }),
+        });
+
+        if (!response.ok) {
+          const result = await Swal.fire({
+            title: "You don't have permission to view this profile",
+            icon: "error",
+            confirmButtonText: "OK",
+            customClass: {
+              confirmButton: 'confirm-color'  // Custom class for OK button (optional)
+            }
+          });
+
+          if (result.isConfirmed) {
+            router.push(`/`);
+          }
+          return;
+        }
+      }
+
+      const response2 = await fetch("/api/get-user-data", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: userId }),
+      });
+
+      if (!response2.ok) {
+        throw new Error("Failed to fetch user data.");
+      }
+
+      const { data } = await response2.json();
+      setProfileData(data);
+
+
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // Fetch user data when `myId` changes
+  useEffect(() => {
+    if (userId) {
+      fetchUserData();
+    }
+  }, [userId]);
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
@@ -25,9 +88,9 @@ export default function Profile({data}) {
   };
 
   const handlePreview = () => {
-    if (profile_data.horoscope) {
+    if (profileData.horoscope) {
       // Open the file in a new tab
-      window.open(profile_data.horoscope, "_blank");
+      window.open(profileData.horoscope, "_blank");
     } else {
       toast.error('No file uploaded to preview!', {
         className: "sonner-toast-success",
@@ -49,7 +112,6 @@ export default function Profile({data}) {
           <div className="flex flex-col items-center gap-6 lg:flex-row lg:items-start px-5">
             <div className="relative">
               {/* Profile Picture */}
-
                 <Image
                   src={profile_data.profile_photo || "/images/user/dummy.png"}
                   alt="Profile Picture" 
@@ -62,11 +124,11 @@ export default function Profile({data}) {
             </div>
 
             <div className="text-center lg:text-left px-5">
-              <h1 className="text-2xl font-bold mb-2 text-white">{profile_data.name || "No name provided"} {profile_data.lastname || ""}</h1>
+              <h1 className="text-2xl font-bold mb-2 text-white">{profileData.name || "No name provided"} {profileData.lastname || ""}</h1>
               <p className="max-w-lg text-white text-justify">
-                {profile_data.bride_groom_detail || ""}
+                {profileData.bride_groom_detail || ""}
               </p>
-              {(profile_data.horoscope) && (
+              {(profileData.horoscope) && (
                 <button className="inline-block px-10 py-4 text-white duration-150 rounded-full md:text-sm ftext-custom mt-5" onClick={handlePreview} style={{ width: "200px", padding: "8px 0" }}>View Horoscope</button>
               )}
             </div>
@@ -76,12 +138,12 @@ export default function Profile({data}) {
           <div className="p-6 rounded-lg text-white mt-6 lg:mt-0 lg:ml-10 md:px-26">
             <h2 className="text-lg font-bold">CONTACT INFO</h2>
             <div className="mt-2 conatct-bio">
-              <p><FaPhoneAlt className="inline-block mr-2" /> {profile_data.phonenumber || "-"}</p>
-              <p><FaEnvelope className="inline-block mr-2" /> {profile_data.email || "-"}</p>
+              <p><FaPhoneAlt className="inline-block mr-2" /> {profileData.phonenumber || "-"}</p>
+              <p><FaEnvelope className="inline-block mr-2" /> {profileData.email || "-"}</p>
               <p>
                 <FaMapMarkerAlt className="inline-block mr-2" />
-                {profile_data?.city?.name ? `${profile_data?.city?.name}, ` : ""}
-                {profile_data?.state?.name || ""}
+                {profileData?.city?.name ? `${profileData?.city?.name}, ` : ""}
+                {profileData?.state?.name || ""}
               </p>
             </div>
           </div>
@@ -94,11 +156,11 @@ export default function Profile({data}) {
         {/* Verification */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 text-green-600">
           <div className="flex items-center gap-1">
-            <FaCheckCircle /> <span>Email: {profile_data.is_approve === true ? "Verified" : "Not Verified"}
+            <FaCheckCircle /> <span>Email: {profileData.is_approve === true ? "Verified" : "Not Verified"}
             </span>
           </div>
           <div className="flex items-center gap-1">
-            <FaCheckCircle /> <span>Identity: {profile_data.is_verify === true ? "Verified" : "Not Verified"}</span>
+            <FaCheckCircle /> <span>Identity: {profileData.is_verify === true ? "Verified" : "Not Verified"}</span>
           </div>
         </div>
 
@@ -108,45 +170,45 @@ export default function Profile({data}) {
           <div className="contact-bio">
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">D.O.B</strong>
-              <span>{profile_data.birthdate ? formatDate(profile_data.birthdate) : ""}</span>
+              <span>{profileData.birthdate ? formatDate(profileData.birthdate) : ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Age</strong>
-              <span>{profile_data.age || ""}</span>
+              <span>{profileData.age || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Looking For</strong>
-              <span>{profile_data.lookingfor || ""}</span>
+              <span>{profileData.lookingfor || ""}</span>
             </p>
           </div>
 
           <div className="contact-bio">
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Religion</strong>
-              <span>{profile_data.religion || ""}</span>
+              <span>{profileData.religion || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Caste</strong>
-              <span>{profile_data.caste || ""}</span>
+              <span>{profileData.caste || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Sub Caste</strong>
-              <span>{profile_data.subcaste || ""}</span>
+              <span>{profileData.subcaste || ""}</span>
             </p>
           </div>
 
           <div className="contact-bio">
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Place Of Birth</strong>
-              <span>{profile_data.place_of_birth || ""}</span>
+              <span>{profileData.place_of_birth || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Gender</strong>
-              <span>{profile_data.gender || ""}</span>
+              <span>{profileData.gender || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Complexion</strong>
-              <span>{profile_data.complexion || ""}</span>
+              <span>{profileData.complexion || ""}</span>
             </p>
           </div>
         </div>
@@ -160,15 +222,15 @@ export default function Profile({data}) {
             <h2 className="profile-heading py-6">Family Information</h2>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-60">Kuladeivam</strong>
-              <span>{profile_data.kuladeivam || ""}</span>
+              <span>{profileData.kuladeivam || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-60">Place of Kuladeivam</strong>
-              <span>{profile_data.place_of_kuladeivam_temple || ""}</span>
+              <span>{profileData.place_of_kuladeivam_temple || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-60">Gothram</strong>
-              <span>{profile_data.gothram || ""}</span>
+              <span>{profileData.gothram || ""}</span>
             </p>
           </div>
           <div className="border-color mt-3 mb-3 md:hidden"></div>
@@ -177,15 +239,15 @@ export default function Profile({data}) {
             <h2 className="profile-heading py-6">Education / Occupation</h2>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Education</strong>
-              <span>{profile_data.partner_pref_education || ""}</span>
+              <span>{profileData.partner_pref_education || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Profession</strong>
-              <span>{profile_data.profession || ""}</span>
+              <span>{profileData.profession || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Employed In</strong>
-              <span>{profile_data.job || ""}</span>
+              <span>{profileData.job || ""}</span>
             </p>
           </div>
         </div>
@@ -198,54 +260,54 @@ export default function Profile({data}) {
           <div className="contact-bio">
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Father’s Name</strong>
-              <span>{profile_data.father_name || ""}</span>
+              <span>{profileData.father_name || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Phone</strong>
-              <span>{profile_data.father_phonenumber || ""}</span>
+              <span>{profileData.father_phonenumber || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Religion</strong>
-              <span>{profile_data.father_religion || ""}</span>
+              <span>{profileData.father_religion || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Occupation</strong>
-              <span>{profile_data.father_occupation || ""}</span>
+              <span>{profileData.father_occupation || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Profession</strong>
-              <span>{profile_data.father_profession || ""}</span>
+              <span>{profileData.father_profession || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Place of work</strong>
-              <span>{profile_data.father_placeOfWork || ""}</span>
+              <span>{profileData.father_placeOfWork || ""}</span>
             </p>
           </div>
 
           <div className="contact-bio">
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Mother’s Name</strong>
-              <span>{profile_data.mother_name || ""}</span>
+              <span>{profileData.mother_name || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Phone</strong>
-              <span>{profile_data.mother_phonenumber || ""}</span>
+              <span>{profileData.mother_phonenumber || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Religion</strong>
-              <span>{profile_data.mother_religion || ""}</span>
+              <span>{profileData.mother_religion || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Occupation</strong>
-              <span>{profile_data.mother_occupation || ""}</span>
+              <span>{profileData.mother_occupation || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Profession</strong>
-              <span>{profile_data.mother_profession || ""}</span>
+              <span>{profileData.mother_profession || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Place of work</strong>
-              <span>{profile_data.mother_placeOfWork || ""}</span>
+              <span>{profileData.mother_placeOfWork || ""}</span>
             </p>
           </div>
         </div>
@@ -255,7 +317,7 @@ export default function Profile({data}) {
         <div className="grid grid-cols-1 gap-4 mt-3">
           <h2 className="profile-heading py-6">Address</h2>
           <div className="contact-bio">
-            <p>{profile_data.address || ""} </p>
+            <p>{profileData.address || ""} </p>
           </div>
         </div>
 
@@ -267,19 +329,19 @@ export default function Profile({data}) {
             <h2 className="profile-heading py-6">Partner Preference</h2>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Education</strong>
-              <span>{profile_data.partner_pref_education || ""}</span>
+              <span>{profileData.partner_pref_education || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Age</strong>
-              <span>{profile_data.partner_pref_age || ""}</span>
+              <span>{profileData.partner_pref_age || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Caste</strong>
-              <span>{profile_data.partner_pref_caste || ""}</span>
+              <span>{profileData.partner_pref_caste || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">SubCaste</strong>
-              <span>{profile_data.partner_pref_subcaste || ""}</span>
+              <span>{profileData.partner_pref_subcaste || ""}</span>
             </p>
           </div>
 
@@ -290,11 +352,11 @@ export default function Profile({data}) {
             <h2 className="profile-heading py-6">References</h2>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Reference 1</strong>
-              <span> {profile_data.reference1 || ""}</span>
+              <span> {profileData.reference1 || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">Reference 2</strong>
-              <span>{profile_data.reference2 || ""}</span>
+              <span>{profileData.reference2 || ""}</span>
             </p>
 
           </div>
@@ -303,12 +365,12 @@ export default function Profile({data}) {
         {/*Additional Pictures */}
 
 
-        {(profile_data.photo1 || profile_data.photo2 || profile_data.photo3 || profile_data.photo4) && (
+        {(profileData.photo1 || profileData.photo2 || profileData.photo3 || profileData.photo4) && (
           <> <div className="border-color mt-6 mb-6"></div>
             <div className="grid grid-cols-1 gap-4 mt-3">
               <h2 className="profile-heading py-6">Additional Pictures</h2>
               <div className="contact-bio flex flex-wrap gap-4">
-                {[profile_data.photo1, profile_data.photo2, profile_data.photo3, profile_data.photo4]
+                {[profileData.photo1, profileData.photo2, profileData.photo3, profileData.photo4]
                   .filter(Boolean) // Removes `null` or `undefined` values
                   .map((photo, index) => (
                     <Image

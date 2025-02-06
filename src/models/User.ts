@@ -16,7 +16,7 @@ const UserSchema = new Schema({
       return `${Math.floor(Math.random() * 1000000)}`; // Generates a random number for email verificationj
     }
   },
-  created_at: { type: Date, required: false },
+  created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },
 
   created_by: { type: String, required: false }, // admin or user
@@ -30,8 +30,8 @@ const UserSchema = new Schema({
   age: { type: Number, required: false },
   birthdate: { type: Date, required: false },
 
-  state_id : {type: String, required: false},
-  city_id : {type: String, required: false},
+  state_id: { type: String, required: false },
+  city_id: { type: String, required: false },
 
   place_of_birth: { type: String, required: false },
   education: { type: String, required: false },

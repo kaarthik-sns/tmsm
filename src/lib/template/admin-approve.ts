@@ -1,4 +1,4 @@
-export const adminApprovalTemplate = (name: string, loginUrl: string, copyright: string): string => `
+export const adminApprovalTemplate = (name: string, loginUrl: string, email: string, copyright: string): string => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -53,6 +53,9 @@ export const adminApprovalTemplate = (name: string, loginUrl: string, copyright:
             border-radius: 5px;
             font-weight: bold;
         }
+        .text-red {
+         color: #FF0000;
+         }
     </style>
 </head>
 <body>
@@ -66,7 +69,7 @@ export const adminApprovalTemplate = (name: string, loginUrl: string, copyright:
                 Login Now
             </a>
         </p>
-        <p>If you have any issues logging in, please contact our support team.</p>
+        <p class="text-red">Note: If your email address is not verified, please verify it to access your account. If you need assistance, contact the administrator at ${email}.</p>
         <div class="footer">
            <p>${copyright}</p>
         </div>
