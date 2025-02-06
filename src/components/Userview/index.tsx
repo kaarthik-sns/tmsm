@@ -133,7 +133,7 @@ const FormElements = () => {
   return (
     <>
       <Breadcrumb pageName="View User" />
-      <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-9 sm:grid-cols-2 member">
         <div className="flex flex-col gap-9">
 
           {(formData.profile_created_for && formData.profile_created_for !== 'myself') && (

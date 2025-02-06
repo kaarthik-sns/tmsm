@@ -138,6 +138,10 @@ main {
     font-weight: 600;
  }
 
+ .welcome {
+    color: #d13333;
+ }
+
 
  @media only screen and (min-width: 768px) {
     .inner-page-top-banner{

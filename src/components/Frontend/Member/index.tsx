@@ -386,7 +386,7 @@ const PaginatedUsers = () => {
 
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="title"><span>You have found {totalCount} </span> search results</h2>
-          <span className="text-lg font-semibold sm:ml-auto">Welcome, {session?.user?.name || 'Guest'}
+          <span className="text-lg font-semibold sm:ml-auto text-sm welcome">Welcome, {session?.user?.name || 'Guest'}
           </span>
         </div>
 
@@ -397,9 +397,7 @@ const PaginatedUsers = () => {
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between px-6 py-2 bg-member">
                   <div className="">
                     <div className='h-25 w-25 mb-3'>
-
                       <img src={user.profile_photo ? user.profile_photo : '/images/user/dummy.png'} alt="Profile Picture" className="rounded-full w-full h-full object-cover" />
-
                     </div>
                     <h4 className="member-title">
                       {user.name}

@@ -60,9 +60,15 @@ export const accountReactivationTemplate = (name: string, loginUrl: string, emai
 </head>
 <body>
     <div class="container">
-        <h1>Account Reactivated</h1>
-        <p>Hello <span class="highlight">${name}</span>,</p>
-        <p>We are pleased to inform you that your TMSM account has been reactivated.</p>
+
+        <h1>Hello ${name},</h1>
+
+        <p>We are pleased to inform you that your matrimony profile on TMSM has been successfully reactivated. Your profile is now visible to other members, and you can continue using our services without any interruptions.</p>
+
+        <p>If you have any questions or need further assistance, please feel free to contact our support team at ${email}.</p>
+
+        <p>Thank you for being a part of TMSM. We’re happy to have you back!</p>
+
         <p>Click below to access your account:</p>
         <p>
             <a href="${loginUrl}" class="button">
