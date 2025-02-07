@@ -1,14 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
 
 const SignIn: React.FC = () => {
-  const { data: session } = useSession();
+
   const router = useRouter();
 
   const [email, setEmail] = useState<string>("");
@@ -22,17 +21,6 @@ const SignIn: React.FC = () => {
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
 
-  
-  // Email validation function
-  const validateEmail = (email: string) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-  };
-
-  // Password validation function
-  const validatePassword = (password: string) => {
-    return password.length >= 6;
-  };
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,13 +34,13 @@ const SignIn: React.FC = () => {
     // Validate fields
     let valid = true;
 
-    if (!validateEmail(email)) {
+    if (!email) {
       setEmailError("Email cannot be empty.");
       valid = false;
     }
 
-    if (!validatePassword(password)) {
-      setPasswordError("Password must be at least 6 characters.");
+    if (!password) {
+      setPasswordError("Password cannot be empty");
       valid = false;
     }
 
@@ -116,9 +104,8 @@ const SignIn: React.FC = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="E-mail id"
-                    className={`w-full rounded-lg border ${
-                      emailError ? "border-red-500" : "border-stroke"
-                    } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+                    className={`w-full rounded-lg border ${emailError ? "border-red-500" : "border-stroke"
+                      } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
                     autoComplete="off"
                   />
                 </div>
@@ -134,9 +121,8 @@ const SignIn: React.FC = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     type="password"
                     placeholder="Password"
-                    className={`w-full rounded-lg border ${
-                      passwordError ? "border-red-500" : "border-stroke"
-                    } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+                    className={`w-full rounded-lg border ${passwordError ? "border-red-500" : "border-stroke"
+                      } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
                     autoComplete="off"
                   />
                 </div>

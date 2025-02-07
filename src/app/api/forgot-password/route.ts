@@ -55,7 +55,7 @@ export async function POST(request: Request) {
         
         if (!existingUser) {
             // Return a 404 response if the user is not found
-            return NextResponse.json({ message: "No user exists with the provided email." }, { status: 404 });
+            return NextResponse.json({ message: "Please provide a valid email address" }, { status: 404 });
         }
         const userId = existingUser._id; // Access the _id field
         const name = existingUser.name; // Access the _id field

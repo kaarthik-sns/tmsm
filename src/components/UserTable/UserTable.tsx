@@ -189,25 +189,43 @@ const UserTable = () => {
 
     const handleToggle = async (index: number, key: "is_active" | "is_approve") => {
         const updatedValue = !tableItems[index][key];
-
+    
+        // Show confirmation alert before updating status
+        const result = await Swal.fire({
+            title: "Are you sure?",
+            text: key === "is_active" 
+                ? `Do you want to ${updatedValue ? "activate" : "deactivate"} this user?` 
+                : `Do you want to ${updatedValue ? "approve" : "disapprove"} this user?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, proceed!",
+            cancelButtonText: "Cancel",
+        });
+    
+        if (!result.isConfirmed) {
+            return; // Stop execution if the user cancels
+        }
+    
         // Optimistically update the UI
         setTableItems((prevItems) =>
             prevItems.map((item, idx) =>
                 idx === index ? { ...item, [key]: updatedValue } : item
             )
         );
-
+    
         try {
             // Call the API to update the status
             const response = await axios.patch(`/api/update-user-status`, {
                 id: tableItems[index]._id, // Assuming each item has a unique `id`
                 [key]: updatedValue,
             });
-
+    
             if (response.status !== 200) {
                 throw new Error("Failed to update status");
             }
-
+    
             toast.success(
                 key === "is_active"
                     ? `User ${updatedValue ? "activated" : "deactivated"} successfully!`
@@ -220,18 +238,17 @@ const UserTable = () => {
                     },
                 }
             );
-
-
+    
         } catch (error) {
             console.error("Error updating status:", error);
-
+    
             // Revert the optimistic UI update if the API call fails
             setTableItems((prevItems) =>
                 prevItems.map((item, idx) =>
                     idx === index ? { ...item, [key]: !updatedValue } : item
                 )
             );
-
+    
             toast.error(
                 key === "is_active"
                     ? "Failed to update activation status."
@@ -246,6 +263,8 @@ const UserTable = () => {
             );
         }
     };
+    
+    
 
     const handleEdit = (userId) => {
         // Navigate to the edit page with the user ID as a query parameter

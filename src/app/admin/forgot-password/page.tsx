@@ -18,10 +18,22 @@ const ForgotPassword: React.FC = () => {
 
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
+  const [emailError, setEmailError] = useState<string>("");
+
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Reset previous errors
+    setEmailError("");
+    setError("");
+
+    if (!form.email) {
+      setEmailError("Email cannot be empty.");
+      return
+    }
+
     setPending(true);
 
     const res = await fetch("/api/forgot-password/", {
@@ -105,9 +117,9 @@ const ForgotPassword: React.FC = () => {
                       disabled={pending}
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      required
                       placeholder="Enter your email"
-                      className="w-full rounded-lg border border-strokes bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      className={`w-full rounded-lg border ${emailError ? "border-red-500" : "border-stroke"
+                        } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
                     />
 
                     <span className="absolute right-4 top-4">
@@ -127,6 +139,7 @@ const ForgotPassword: React.FC = () => {
                         </g>
                       </svg>
                     </span>
+                    {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
                   </div>
                 </div>
 

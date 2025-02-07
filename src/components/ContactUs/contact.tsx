@@ -3,13 +3,14 @@
 import { useEffect, useState } from "react"
 import axios from "axios";
 import { toast } from "sonner";
+import Swal from 'sweetalert2';
+
 
 const UserTable = () => {
 
     const [tableItems, setTableItems] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
-    const [totalCount, setTotalCount] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
     const [modalData, setModalData] = useState(null); // State for modal data
@@ -39,7 +40,6 @@ const UserTable = () => {
                 setTableItems(data.data);
                 setCurrentPage(data.pagination.currentPage);
                 setTotalPages(data.pagination.totalPages);
-                setTotalCount(data.pagination.totalUsers);
             } else {
                 console.error('Error fetching users:', data.message);
             }
@@ -66,49 +66,62 @@ const UserTable = () => {
     };
 
     const handleDelete = async (Id) => {
-        const confirmation = confirm("Are you sure you want to delete this Data?");
-        if (!confirmation) return;
-
+        const result = await Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to delete this data?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel",
+        });
+    
+        if (!result.isConfirmed) {
+            return; // Stop execution if the user cancels
+        }
+    
         const updatedStatus = { id: Id };
-
+    
         try {
             const response = await axios.patch("/api/contact-us", updatedStatus, {
                 headers: { "Content-Type": "application/json" },
             });
-
+    
             if (response.status === 200) {
-
-                toast.success('Data deleted successfully!', {
+                toast.success("Data deleted successfully!", {
                     className: "sonner-toast-success",
                     cancel: {
-                        label: 'Close',
-                        onClick: () => console.log('Close'),
+                        label: "Close",
+                        onClick: () => console.log("Close"),
                     },
                 });
-
-
+    
                 fetchUsers(currentPage);
             } else {
-                toast.error('Failed to delete data!', {
-                    className: "sonner-toast-success",
+                toast.error("Failed to delete data!", {
+                    className: "sonner-toast-error",
                     cancel: {
-                        label: 'Close',
-                        onClick: () => console.log('Close'),
+                        label: "Close",
+                        onClick: () => console.log("Close"),
                     },
                 });
             }
         } catch (error) {
             console.error("Error deleting data:", error);
-            toast.error(error.response?.data?.message || "An error occurred while deleting the user. Please try again.", {
-                className: "sonner-toast-success",
-                cancel: {
-                    label: 'Close',
-                    onClick: () => console.log('Close'),
-                },
-            });
+            toast.error(
+                error.response?.data?.message || "An error occurred while deleting the user. Please try again.",
+                {
+                    className: "sonner-toast-error",
+                    cancel: {
+                        label: "Close",
+                        onClick: () => console.log("Close"),
+                    },
+                }
+            );
         }
     };
-
+    
     return (
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">
 

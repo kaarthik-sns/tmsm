@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import StatusFilter from "@/components/UserReqTable/Select/StatusFilter";
 import UpdateStatus from "@/components/UserReqTable/Select/UpdateStatus";
 import { toast } from "sonner";
+import Swal from 'sweetalert2';
 
 const UserTable = () => {
 
@@ -90,38 +91,54 @@ const UserTable = () => {
 
 
     const handleStatusUpdate = async (id: string, newStatus: string) => {
+        // Show confirmation alert before updating status
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: `Do you want to update the status to "${newStatus}" ?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, update it!',
+            cancelButtonText: 'Cancel',
+        });
+    
+        if (!result.isConfirmed) {
+            return; // Stop execution if the user cancels
+        }
+    
         // Find the item being updated
         const updatedItem = tableItems.find((item) => item._id === id);
-
+    
         if (!updatedItem) return;
-
+    
         // Keep the previous status to revert in case of failure
         const previousStatus = updatedItem.status;
-
+    
         // Optimistic update: change status in UI immediately
         setTableItems((prev) =>
             prev.map((item) =>
                 item._id === id ? { ...item, status: newStatus } : item
             )
         );
-
+    
         try {
-            // API call to update the status on the server update-request-status
+            // API call to update the status on the server
             const response = await fetch(`/api/requests/update-request-status`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ id: id, status: newStatus }), // Ensure the status is sent in the correct format
+                body: JSON.stringify({ id: id, status: newStatus }),
             });
-
+    
             if (!response.ok) {
                 throw new Error("Failed to update status");
             }
-
+    
             // Success: Optionally handle the response here
             const data = await response.json();
-
+    
             toast.success('Status updated successfully!', {
                 className: "sonner-toast-success",
                 cancel: {
@@ -129,10 +146,9 @@ const UserTable = () => {
                     onClick: () => console.log('Close'),
                 },
             });
-
+    
             fetchTableItems();
-
-
+    
         } catch (error) {
             // Failure: revert to the previous status
             toast.error("Status failed to update", {
@@ -143,7 +159,7 @@ const UserTable = () => {
                 },
             });
             console.error("Error updating status:", error);
-
+    
             setTableItems((prev) =>
                 prev.map((item) =>
                     item._id === id ? { ...item, status: previousStatus } : item
@@ -151,7 +167,7 @@ const UserTable = () => {
             );
         }
     };
-
+    
     // Handle page navigation
     const handlePageChange = (page: number) => {
         if (page >= 1 && page <= pages) {
