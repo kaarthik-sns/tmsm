@@ -17,7 +17,7 @@ const RequestStatus = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isEditMode, setIsEditMode] = useState(false);  // State to track edit mode
-  const [loading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [sentRequests, setSentReqData] = useState([]);
   const [receivedRequests, setRecivedReqData] = useState([]);
   const router = useRouter();
@@ -35,8 +35,6 @@ const RequestStatus = () => {
     setIsEditMode(prev => !prev); // Toggle edit mode
   };
 
- 
-
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedProfile(null);
@@ -47,13 +45,13 @@ const RequestStatus = () => {
     if (myId) {
       fetchReqData(myId);
     }
-  }, [myId,activeTab]);
+  }, [myId, activeTab]);
 
 
 
   const fetchReqData = async (myId) => {
+    setIsLoading(true);
     try {
-
       const response2 = await fetch("/api/requests/profile-req-list", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -65,7 +63,7 @@ const RequestStatus = () => {
       }
 
       const { SentRequestsData, RecivedRequestsData } = await response2.json();
-      
+
       setSentReqData(SentRequestsData);
       setRecivedReqData(RecivedRequestsData);
 

@@ -74,7 +74,7 @@ const UserTable = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "Cancel",
+            cancelButtonText: "No",
         });
     
         if (!result.isConfirmed) {
