@@ -14,7 +14,6 @@ const FaqElements = () => {
     description: "",
   });
 
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -33,7 +32,7 @@ const FaqElements = () => {
           }
 
           const { data } = await response.json();
-          console.log(data);
+       
           setFormData(data);
 
         } catch (err) {
@@ -47,51 +46,6 @@ const FaqElements = () => {
       fetchUserData();
     }
   }, [faqId]);
-
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const errors: Record<string, string> = {};
-
-    if (!formData.title) {
-      errors.title = "Title cannot be empty.";
-    }
-    if (!formData.description) {
-      errors.description = "Description cannot be empty.";
-    }
-
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      toast.error("Please fix the highlighted errors.");
-      return;
-    }
-
-    setFormErrors({});
-    try {
-      const res = await fetch("/api/faq/edit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams(formData).toString(),
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to update FAQ data.");
-      }
-      toast.success("FAQ updated successfully!");
-    } catch (err) {
-      setError(err.message || "An unknown error occurred.");
-      toast.error("Failed to update FAQ.");
-    }
-  };
-
 
   if (isLoading) {
     return <p>Loading...</p>;

@@ -51,7 +51,7 @@ const FaqTable = () => {
     // Fetch table items from API
     const fetchTableItems = async () => {
         try {
-            const response = await axios.get("/api/faq/list", {
+            const response = await axios.get("/api/cms/faq/list", {
                 params: {
                     page: currentPage,
                     title: formState.title,

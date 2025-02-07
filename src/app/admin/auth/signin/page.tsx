@@ -8,21 +8,46 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import AuthLayout from '@/components/Layouts/AuthLayout';
 
-
 import { toast } from "sonner";
 import { TriangleAlert } from "lucide-react";
 
 const SignIn: React.FC = () => {
 
+  const router = useRouter();
+  const [pending, setPending] = useState(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [pending, setPending] = useState(false);
-  const router = useRouter();
   const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
+
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Reset previous errors
+    setEmailError("");
+    setPasswordError("");
+    setError("");
+
+    // Validate fields
+    let valid = true;
+
+    if (!email) {
+      setEmailError("Email cannot be empty.");
+      valid = false;
+    }
+
+    if (!password) {
+      setPasswordError("Password cannot be empty");
+      valid = false;
+    }
+
+    if (!valid) return;
+
     setPending(true);
+
     const res = await signIn("credentials", {
       redirect: false,
       email,
@@ -95,9 +120,9 @@ const SignIn: React.FC = () => {
                       disabled={pending}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      required
                       placeholder="E-mail id"
-                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      className={`w-full rounded-lg border ${passwordError ? "border-red-500" : "border-stroke"
+                        } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
                     />
 
                     <span className="absolute right-4 top-4">
@@ -117,6 +142,8 @@ const SignIn: React.FC = () => {
                         </g>
                       </svg>
                     </span>
+                    {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
+
                   </div>
                 </div>
 
@@ -129,10 +156,10 @@ const SignIn: React.FC = () => {
                       disabled={pending}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      required
                       type="password"
                       placeholder="Password"
-                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      className={`w-full rounded-lg border ${passwordError ? "border-red-500" : "border-stroke"
+                        } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
                     />
 
                     <span className="absolute right-4 top-4">
@@ -156,6 +183,7 @@ const SignIn: React.FC = () => {
                         </g>
                       </svg>
                     </span>
+                    {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
                   </div>
                 </div>
 

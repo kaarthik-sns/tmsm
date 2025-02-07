@@ -140,7 +140,7 @@ const menuGroups = [
           { label: "Testimonials", route: "/admin/cms/home/testimonial/list"},
           { label: "Reviews", route: "/admin/cms/home/review/list"},
           { label: "About", route: "/admin/cms/about/view"},
-          { label: "Faq", route: "/admin/cms/faq/view"},
+          { label: "Faq", route: "/admin/cms/faq/list"},
           { label: "Terms", route: "/admin/cms/terms_conditions/view"},
           { label: "Privacy Policy", route: "/admin/cms/privacy-policy/view"},
         ],
