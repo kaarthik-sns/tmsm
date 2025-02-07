@@ -413,3 +413,17 @@ th.py-3.px-6.dark-text {
 .member label {
     text-transform: capitalize;
 }
+
+/* Custom class for SweetAlert2 */
+.confirm-color{
+    background-color: rgba(16, 185, 129, .08);
+    color: #10b981;
+}
+.cancel-color {
+    background-color: rgba(251, 84, 84, .08);
+    color: #fb5454;
+}
+.confirm-color-succes {
+    background-color: rgba(16, 185, 129, .08);
+    color: #10b981;
+}
