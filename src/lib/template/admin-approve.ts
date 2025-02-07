@@ -118,13 +118,13 @@ export const adminApprovalTemplate = (name: string, loginUrl: string, email: str
                                     Login Now
                                 </a>
                             </p>
-                            <p class="text-red">Note: If your email address is not verified, please verify it to access your account. If you need assistance, contact the administrator at<a href="mailto:${email}" style="color:#FF0000;text-decoration:none;font-weight:bold">${email}</a>.</p>
+                            <p class="text-red"><i>Note: If your email address is not verified, please verify it to access your account. If you need assistance, contact the administrator at <a href="mailto:${email}" style="color:#000;text-decoration:none;font-weight:bold">${email}</a>.</i></p>
                             <!-- Added Thanks & Regards Section -->
-                            <p style="margin-top: 30px; font-size: 14px; color:rgb(0, 0, 0);">
-                                Thanks & Regards,<br>
-                                <span style="color:rgb(0, 0, 0); font-size: 14px;">TMSM Team</span>
+                            <p style="margin-top: 30px; font-size: 12px; color:rgb(0, 0, 0);">
+                                <i>Thanks & Regards,<br>
+                                <span style="color:rgb(0, 0, 0); font-size: 12px;">TMSM Team</span></i>
                             </p>
-                            <p class="footer">${copyright}</p>
+                            <p class="footer"><i>${copyright}</i></p>
                         </td>
                     </tr>
                 </table>

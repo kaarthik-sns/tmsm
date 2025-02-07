@@ -112,21 +112,21 @@ export const changePasswordTemplate = (forgotPasswordLink: string, copyright: st
                         <td align="left">
                             <h1>Reset Your Password</h1>
                             <p>We received a request to reset your TMSM password. </p>
-                            <p>Click the<strong> "Reset password" </strong>button below to access your account.</p>
+                            <p>Click the<strong> "Reset password" </strong>button below to set a new password for your account.</p>
                             <p style="text-align: center;">
                                 <a href="${forgotPasswordLink}" class="button">
                                     Reset password
                                 </a>
                             </p>
-                            <p class="text-red">Note: If you didn't request this, please ignore this email, please contact our support team at <a href="mailto:${email}" style="color:#000;text-decoration:none;font-weight:bold">${email}</a>.</p>
+                            <p class="text-red"><i>Note: If you didn't request this, please ignore this email. If you need assistance, contact our support team at <a href="mailto:${email}" style="color:#000;text-decoration:none;font-weight:bold">${email}</a>.</i></p>
                             
                             <!-- Thanks & Regards Section -->
                             <p style="margin-top: 30px; font-size: 12px; color:rgb(0, 0, 0);">
-                                Thanks & Regards,<br>
-                                <span style="color:rgb(0, 0, 0); font-size: 12px;">TMSM Team</span>
+                                <i>Thanks & Regards,<br>
+                                <span style="color:rgb(0, 0, 0); font-size: 12px;">TMSM Team</span></i>
                             </p>
                             
-                            <p class="footer">${copyright}</p>
+                            <p class="footer"><i>${copyright}</i></p>
                         </td>
                     </tr>
                 </table>

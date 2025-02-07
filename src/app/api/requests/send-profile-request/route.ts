@@ -11,10 +11,17 @@ export async function POST(request: NextRequest) {
   try {
 
     let copyright = '';
+    let contactMail = '';
+    let baseUrl = process.env.BASE_URL || '';  // ✅ Get BASE_URL from .env
+    //let mail_logo = `${baseUrl}/images/logo/Flogo.svg`;  // ✅ Construct full path dynamically
+    let mail_logo = `https://searchnscore.in/tmsm/images/mail-logo.png?t=${new Date().getTime()}`;
+
 
     const smtpSettings = await getSMTPSettings();
     if (smtpSettings) {
       copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
+      contactMail = smtpSettings.organisation_email_id;
+
     }
 
     // Connect to the database
@@ -56,13 +63,13 @@ export async function POST(request: NextRequest) {
 
     const homePage = process.env.BASE_URL+'/login';
 
-    const htmlBody = profileViewRequestTemplate(recName, sentName, homePage, copyright);
+    const htmlBody = profileViewRequestTemplate(recName, sentName, homePage, copyright, mail_logo, contactMail);
 
     const result = await sendEmail({
       receipients,
-      subject: 'TMSM - Profile Request',
+      subject: `TMSM - You Have a New Profile View Request from ${sentName}`,
       message: htmlBody
-    });
+    }); 
 
     // Return success response
     return NextResponse.json({ message: 'Profile request sent Successfully' }, { status: 200 });
