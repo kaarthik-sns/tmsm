@@ -91,37 +91,64 @@ const UserTable = () => {
 
 
     const handleStatusUpdate = async (id: string, newStatus: string) => {
-        // Show confirmation alert before updating status
+
+        let confirmationMessage = "";
+        let successMessage = "";
+        let confirmButtonText = "";
+
+        switch (newStatus) {
+            case "accepted":
+                confirmationMessage = "Do you want to accept this request?";
+                successMessage = "Request accepted successfully.";
+                confirmButtonText = "Yes, Accept";
+                break;
+            case "rejected":
+                confirmationMessage = "Do you want to decline this request?";
+                successMessage = "Request has been declined.";
+                confirmButtonText = "Yes, Decline";
+                break;
+            case "cancel":
+                confirmationMessage = "Do you want to cancel this request?";
+                successMessage = "Request has been cancelled.";
+                confirmButtonText = "Yes, Cancel";
+                break;
+            default:
+                return;
+        }
+
         const result = await Swal.fire({
-            title: 'Are you sure?',
-            text: `Do you want to update the status to "${newStatus}" ?`,
-            icon: 'warning',
+            title: "Are you sure?",
+            text: confirmationMessage,
+            icon: "question",
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, update it!',
-            cancelButtonText: 'Cancel',
+            confirmButtonText: confirmButtonText,
+            cancelButtonText: "No",
+            customClass: {
+                confirmButton: 'confirm-color',  // Custom class for confirm button (green)
+                cancelButton: 'cancel-color'       // Custom class for cancel button (red)
+            },
+
         });
-    
+
         if (!result.isConfirmed) {
             return; // Stop execution if the user cancels
         }
-    
+
         // Find the item being updated
         const updatedItem = tableItems.find((item) => item._id === id);
-    
+
         if (!updatedItem) return;
-    
+
         // Keep the previous status to revert in case of failure
         const previousStatus = updatedItem.status;
-    
+
         // Optimistic update: change status in UI immediately
         setTableItems((prev) =>
             prev.map((item) =>
                 item._id === id ? { ...item, status: newStatus } : item
             )
         );
-    
+
         try {
             // API call to update the status on the server
             const response = await fetch(`/api/requests/update-request-status`, {
@@ -131,14 +158,14 @@ const UserTable = () => {
                 },
                 body: JSON.stringify({ id: id, status: newStatus }),
             });
-    
+
             if (!response.ok) {
                 throw new Error("Failed to update status");
             }
-    
+
             // Success: Optionally handle the response here
             const data = await response.json();
-    
+
             toast.success('Status updated successfully!', {
                 className: "sonner-toast-success",
                 cancel: {
@@ -146,9 +173,9 @@ const UserTable = () => {
                     onClick: () => console.log('Close'),
                 },
             });
-    
+
             fetchTableItems();
-    
+
         } catch (error) {
             // Failure: revert to the previous status
             toast.error("Status failed to update", {
@@ -159,7 +186,7 @@ const UserTable = () => {
                 },
             });
             console.error("Error updating status:", error);
-    
+
             setTableItems((prev) =>
                 prev.map((item) =>
                     item._id === id ? { ...item, status: previousStatus } : item
@@ -167,7 +194,7 @@ const UserTable = () => {
             );
         }
     };
-    
+
     // Handle page navigation
     const handlePageChange = (page: number) => {
         if (page >= 1 && page <= pages) {

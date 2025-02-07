@@ -4,8 +4,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import SelectAge from "@/components/Frontend/HomeFilter/SelectGroup/SelectAge";
 import SelectBrideGroom from "@/components/Frontend/HomeFilter/SelectGroup/SelectBrideGroom";
 import { useSession } from "next-auth/react";
-import { toast } from "sonner";
 import Swal from 'sweetalert2'; // Import SweetAlert2
+import Loader from "@/components/common/Loader";
 
 const PaginatedUsers = () => {
 
@@ -63,7 +63,6 @@ const PaginatedUsers = () => {
     subcaste: searchParams.get("subcaste") || "",
     homefilter: searchParams.get("homefilter") || "",
   });
-
 
   useEffect(() => {
     if (filters.homefilter != '' && !homeFilterPage) {
@@ -288,7 +287,9 @@ const PaginatedUsers = () => {
   };
 
 
-
+  if (isLoading) {
+    return <Loader />
+  }
 
   return (
     <>

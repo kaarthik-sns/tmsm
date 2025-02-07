@@ -7,10 +7,11 @@ import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import Swal from 'sweetalert2'; // Import SweetAlert2
 import { useRouter } from 'next/navigation';
+import Loader from "@/components/common/Loader";
 
 export default function Profile({ userId }) {
   const { data: session } = useSession();
-  const [loading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [profileData, setProfileData] = useState<any>([]);
   const [popupImage, setPopupImage] = useState(null); // State to store the image to show in the popup
   const openPopup = (image) => setPopupImage(image); // Set the clicked image in state
@@ -21,6 +22,7 @@ export default function Profile({ userId }) {
 
   // Move fetchUserData outside to be reusable
   const fetchUserData = async () => {
+    setIsLoading(true);
     try {
 
       if (myId != userId) {
@@ -64,6 +66,8 @@ export default function Profile({ userId }) {
 
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -102,6 +106,10 @@ export default function Profile({ userId }) {
     }
   };
 
+  if (isLoading) {
+    return <Loader />
+  }
+
   return (
     <div className="bg-gray-100 min-h-screen">
       {/* Header Section */}
@@ -112,15 +120,15 @@ export default function Profile({ userId }) {
           <div className="flex flex-col items-center gap-6 lg:flex-row lg:items-start px-5">
             <div className="relative">
               {/* Profile Picture */}
-                <Image
-                  src={profileData.profile_photo || "/images/user/dummy.png"}
-                  alt="Profile Picture" 
-                  width={200} // Fixed width
-                  height={200} // Fixed height
-                  quality={100}
-                  unoptimized={true}
-                  className="w-40 h-40 object-cover rounded-full border-4 border-white cursor-pointer"
-                />
+              <Image
+                src={profileData.profile_photo || "/images/user/dummy.png"}
+                alt="Profile Picture"
+                width={200} // Fixed width
+                height={200} // Fixed height
+                quality={100}
+                unoptimized={true}
+                className="w-40 h-40 object-cover rounded-full border-4 border-white cursor-pointer"
+              />
             </div>
 
             <div className="text-center lg:text-left px-5">
