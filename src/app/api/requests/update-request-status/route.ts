@@ -20,10 +20,15 @@ export async function PATCH(req: NextRequest) {
         }
 
         let copyright = '';
+        let contactMail = '';
+        let baseUrl = process.env.BASE_URL || '';  // ✅ Get BASE_URL from .env
+        //let mail_logo = `${baseUrl}/images/logo/Flogo.svg`;  // ✅ Construct full path dynamically
+        let mail_logo = `https://searchnscore.in/tmsm/images/mail-logo.png?t=${new Date().getTime()}`;
 
         const smtpSettings = await getSMTPSettings();
         if (smtpSettings) {
             copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
+            contactMail = smtpSettings.organisation_email_id;
         }
 
         await connectToDatabase();
@@ -76,6 +81,8 @@ export async function PATCH(req: NextRequest) {
         let name2 = '';
         const link = process.env.BASE_URL+'/login';
         let content = '';
+        let subjects = '';
+        let name3 = '';
 
 
         if (ProfileRequestData.length > 0) {
@@ -87,15 +94,19 @@ export async function PATCH(req: NextRequest) {
                 email = reqData.receiver.email;
 
                 name2 = reqData.sender.name;
+                name3 = reqData.sender.name;
 
-                content = `The profile view request from ${name2} has been canceled.<br>If you were interested, you can explore more profiles and connect with others on TMSM.`;
+                subjects = `TMSM - ${name3} Has Canceled Their Profile View Request`;
+                
+                content = `We wanted to inform you that <b>${name3}</b> has <b style="color:red">canceled</b> their profile view request. <p>We sincerely apologize for any inconvenience this may have caused. However, you can still explore other profiles and send new requests to connect with potential matches.</p>`;
+                //content = `The profile view request from ${name2} has been <b>canceled</b>.<p>If you were interested, you can explore more profiles and connect with others on TMSM.</p>`;
 
                 receipients = [{
                     name: name,
                     address: email
                 }]
 
-                htmlBody = replyProfileRequestTemplate(name, link, content, copyright);
+                htmlBody = replyProfileRequestTemplate(name, link, content, copyright, contactMail, mail_logo, status);
 
             } else if (status === 'accepted') {
 
@@ -104,14 +115,17 @@ export async function PATCH(req: NextRequest) {
 
                 name2 = reqData.receiver.name;
 
-                content = `Your profile view request has been accepted by ${name2}. <br>You can now view their profile and connect with them`;
+                subjects = `TMSM - ${name2} Has Accepted Your Profile View Request`;
+
+                content = `Your profile view request has been <strong style="color:green">accepted</strong> by <strong>${name2}</strong>, <p>You can now view their profile and connect with them.</p> <p>Click the<strong> "Login" </strong>button below to access your account.</p>`;
+
 
                 receipients = [{
                     name: name,
                     address: email
                 }]
 
-                htmlBody = replyProfileRequestTemplate(name, link, content, copyright);
+                htmlBody = replyProfileRequestTemplate(name, link, content, copyright, contactMail, mail_logo, status);
 
             } else if (status === 'rejected') {
 
@@ -120,7 +134,9 @@ export async function PATCH(req: NextRequest) {
 
                 name2 = reqData.receiver.name;
 
-                content = `Unfortunately, your profile view request to ${name2} has been rejected. <br>Don't worry! Keep exploring and connecting with other profiles on TMSM.`;
+                subjects = `TMSM - ${name2} Has Rejected Your Profile View Request`;
+
+                content = `Unfortunately, your profile view request to <strong>${name2}</strong> has been <strong style="color:red">rejected</strong>. <p>Don't worry! Keep exploring and connecting with other profiles on TMSM.</p>`;
 
 
                 receipients = [{
@@ -128,14 +144,14 @@ export async function PATCH(req: NextRequest) {
                     address: email
                 }]
 
-                htmlBody = replyProfileRequestTemplate(name, link, content, copyright);
+                htmlBody = replyProfileRequestTemplate(name, link, content, copyright, contactMail, mail_logo, status);
 
             }
 
             if (status != 'pending') {
                 const result = await sendEmail({
                     receipients,
-                    subject: 'TMSM - Profile Request',
+                    subject: subjects,
                     message: htmlBody
                 });
             }

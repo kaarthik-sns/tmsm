@@ -115,15 +115,16 @@ export const deactivateTemplate = (name: string,copyright: string, email: string
                             <p>We hope this email finds you well.</p>
                             <p>This is to inform you that your matrimony profile on <strong>TMSM</strong> has been successfully deactivated. As per your request, your profile is no longer visible to other members.</p>
                             <p>We appreciate your time with <strong>TMSM</strong> and hope to serve you again in the future.</p>
-                            <p class="text-red">Note: You will not be able to access your account until it is reactivated. If you wish to restore your profile, please contact our support team at <a href="mailto:${email}" style="color:#000;text-decoration:none;font-weight:bold">${email}</a>.</p>
+                           
+                            <p class="text-red"><i>Note: You will not be able to access your account until it is reactivated. If you wish to restore your profile, please contact our support team at <a href="mailto:${email}" style="color:#000;text-decoration:none;font-weight:bold">${email}</a>.</i></p>
                             
                             <!-- Thanks & Regards Section -->
                             <p style="margin-top: 30px; font-size: 12px; color:rgb(0, 0, 0);">
-                                Thanks & Regards,<br>
-                                <span style="color:rgb(0, 0, 0); font-size: 12px;">TMSM Team</span>
+                                <i>Thanks & Regards,<br>
+                                <span style="color:rgb(0, 0, 0); font-size: 12px;">TMSM Team</span></i>
                             </p>
                             
-                            <p class="footer">${copyright}</p>
+                            <p class="footer"><i>${copyright}</i></p>
                         </td>
                     </tr>
                 </table>
