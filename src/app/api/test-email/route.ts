@@ -13,24 +13,20 @@ export async function GET(req: NextRequest) {
     //     _id: { $nin: ["6763efb8ef4bb11532dfa1b8", "676416e6ef4bb11532dfa37f"] },
     // });
 
-    // return NextResponse.json('test');
+    // return NextResponse.json('test');        
 
-    let copyright = `© ${new Date().getFullYear()} Tmsm.com all rights reserved`;
-        
+    // const receipients = [{
+    //     name: 'kaarthik',
+    //     address: 'kaarthikr@searchnscore.com'
+    // }]
 
-    const receipients = [{
-        name: 'kaarthik',
-        address: 'kaarthikr@searchnscore.com'
-    }]
+    // const htmlBody = 'test mail';
 
-    const htmlBody = verificationTemplate('Kaarthik', verificationLink,copyright);
-
-
-    const result = await sendEmail({
-        receipients,
-        subject: 'TMSM - verification!',
-        message: htmlBody
-    });
+    // const result = await sendEmail({
+    //     receipients,
+    //     subject: 'TMSM - verification!',
+    //     message: htmlBody
+    // });
 
     return NextResponse.json('test');
 }

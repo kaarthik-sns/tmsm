@@ -76,7 +76,7 @@ export default function Profile({ userId }) {
     if (userId) {
       fetchUserData();
     }
-  }, [userId]);
+  }, [userId,session]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
