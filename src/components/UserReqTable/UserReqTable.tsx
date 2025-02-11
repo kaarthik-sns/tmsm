@@ -5,6 +5,7 @@ import StatusFilter from "@/components/UserReqTable/Select/StatusFilter";
 import UpdateStatus from "@/components/UserReqTable/Select/UpdateStatus";
 import { toast } from "sonner";
 import Swal from 'sweetalert2';
+import Loader from "@/components/common/Loader";
 
 const UserTable = () => {
 
@@ -12,6 +13,7 @@ const UserTable = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [tableItems, setTableItems] = useState([]);
     const [triggerFetch, setTriggerFetch] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [formState, setFormState] = useState({
         name: "",
@@ -64,6 +66,7 @@ const UserTable = () => {
 
     // Fetch table items from API
     const fetchTableItems = async () => {
+        setIsLoading(true);
         try {
             const response = await fetch('/api/requests/user-req-list', {
                 method: 'POST',
@@ -83,9 +86,18 @@ const UserTable = () => {
             setTableItems(data.data);
             setPages(data.pagination.totalPages);
         } catch (error) {
-            toast.error("Error fetching table items");
+
+            toast.error('Error fetching table items.', {
+                className: "sonner-toast-error",
+                cancel: {
+                    label: 'Close',
+                    onClick: () => console.log('Close'),
+                }
+            });
 
             console.error("Error fetching table items:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -205,6 +217,10 @@ const UserTable = () => {
             });
         }
     };
+
+    if (isLoading) {
+        return <Loader />
+    }
 
     return (
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">

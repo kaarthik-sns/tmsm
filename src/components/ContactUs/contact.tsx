@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import axios from "axios";
 import { toast } from "sonner";
 import Swal from 'sweetalert2';
+import Loader from "@/components/common/Loader";
 
 
 const UserTable = () => {
@@ -41,6 +42,15 @@ const UserTable = () => {
                 setCurrentPage(data.pagination.currentPage);
                 setTotalPages(data.pagination.totalPages);
             } else {
+
+                toast.error('Error fetching table items.', {
+                    className: "sonner-toast-error",
+                    cancel: {
+                        label: 'Close',
+                        onClick: () => console.log('Close'),
+                    }
+                });
+
                 console.error('Error fetching users:', data.message);
             }
         } catch (error) {
@@ -76,18 +86,18 @@ const UserTable = () => {
             confirmButtonText: "Yes, delete it!",
             cancelButtonText: "No",
         });
-    
+
         if (!result.isConfirmed) {
             return; // Stop execution if the user cancels
         }
-    
+
         const updatedStatus = { id: Id };
-    
+
         try {
             const response = await axios.patch("/api/contact-us", updatedStatus, {
                 headers: { "Content-Type": "application/json" },
             });
-    
+
             if (response.status === 200) {
                 toast.success("Data deleted successfully!", {
                     className: "sonner-toast-success",
@@ -96,7 +106,7 @@ const UserTable = () => {
                         onClick: () => console.log("Close"),
                     },
                 });
-    
+
                 fetchUsers(currentPage);
             } else {
                 toast.error("Failed to delete data!", {
@@ -121,7 +131,11 @@ const UserTable = () => {
             );
         }
     };
-    
+
+    if (isLoading) {
+        return <Loader />
+    }
+
     return (
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">
 

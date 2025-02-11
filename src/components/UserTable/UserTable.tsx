@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation"; // For page navigation
 import NextImage from "next/image"; // Rename the import to avoid conflict
 import { toast } from "sonner";
 import Swal from 'sweetalert2';
+import Loader from "@/components/common/Loader";
 
 
 const UserTable = () => {
@@ -19,6 +20,7 @@ const UserTable = () => {
     const [switchStates, setSwitchStates] = useState<boolean[]>([]);
     const [switchStates2, setSwitchStates2] = useState<boolean[]>([]);
     const router = useRouter(); // Initialize Next.js router
+    const [isLoading, setIsLoading] = useState(false);
 
     const [formState, setFormState] = useState({
         name: "",
@@ -69,6 +71,7 @@ const UserTable = () => {
 
     // Fetch table items from API
     const fetchTableItems = async () => {
+        setIsLoading(true);
         try {
             const response = await axios.get("/api/user-list", {
                 params: {
@@ -85,7 +88,18 @@ const UserTable = () => {
 
 
         } catch (error) {
+
+            toast.error('Error fetching table items.', {
+                className: "sonner-toast-error",
+                cancel: {
+                    label: 'Close',
+                    onClick: () => console.log('Close'),
+                }
+            });
+
             console.error("Error fetching table items:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -189,12 +203,12 @@ const UserTable = () => {
 
     const handleToggle = async (index: number, key: "is_active" | "is_approve") => {
         const updatedValue = !tableItems[index][key];
-    
+
         // Show confirmation alert before updating status
         const result = await Swal.fire({
             title: "Are you sure?",
-            text: key === "is_active" 
-                ? `Do you want to ${updatedValue ? "activate" : "deactivate"} this user?` 
+            text: key === "is_active"
+                ? `Do you want to ${updatedValue ? "activate" : "deactivate"} this user?`
                 : `Do you want to ${updatedValue ? "approve" : "disapprove"} this user?`,
             icon: "warning",
             showCancelButton: true,
@@ -203,29 +217,29 @@ const UserTable = () => {
             confirmButtonText: "Yes, proceed!",
             cancelButtonText: "No",
         });
-    
+
         if (!result.isConfirmed) {
             return; // Stop execution if the user cancels
         }
-    
+
         // Optimistically update the UI
         setTableItems((prevItems) =>
             prevItems.map((item, idx) =>
                 idx === index ? { ...item, [key]: updatedValue } : item
             )
         );
-    
+
         try {
             // Call the API to update the status
             const response = await axios.patch(`/api/update-user-status`, {
                 id: tableItems[index]._id, // Assuming each item has a unique `id`
                 [key]: updatedValue,
             });
-    
+
             if (response.status !== 200) {
                 throw new Error("Failed to update status");
             }
-    
+
             toast.success(
                 key === "is_active"
                     ? `User ${updatedValue ? "activated" : "deactivated"} successfully!`
@@ -238,17 +252,17 @@ const UserTable = () => {
                     },
                 }
             );
-    
+
         } catch (error) {
             console.error("Error updating status:", error);
-    
+
             // Revert the optimistic UI update if the API call fails
             setTableItems((prevItems) =>
                 prevItems.map((item, idx) =>
                     idx === index ? { ...item, [key]: !updatedValue } : item
                 )
             );
-    
+
             toast.error(
                 key === "is_active"
                     ? "Failed to update activation status."
@@ -263,8 +277,8 @@ const UserTable = () => {
             );
         }
     };
-    
-    
+
+
 
     const handleEdit = (userId) => {
         // Navigate to the edit page with the user ID as a query parameter
@@ -281,6 +295,11 @@ const UserTable = () => {
             });
         }
     };
+
+    
+    if (isLoading) {
+        return <Loader />
+    }
 
     return (
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">
