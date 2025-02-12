@@ -82,8 +82,8 @@ const UserSchema = new Schema({
   profile_creator_phonenumber: { type: String, required: false },
   lookingfor: { type: String, required: false },
   bride_groom_detail: { type: String, required: false },
-  gender: { type: String, required: false }
-
+  gender: { type: String, required: false },
+  deactivate_reason: { type: String, required: false }
 });
 
 // Get user by name
