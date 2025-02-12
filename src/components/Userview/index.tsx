@@ -273,7 +273,7 @@ const FormElements = () => {
               </div>
               <div>
                 <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  SubCaste : {formData.subcaste}
+                  Subcaste in Mudaliyar : {formData.subcaste}
                 </label>
               </div>
               <div>
@@ -509,7 +509,7 @@ const FormElements = () => {
               </div>
               <div className="mb-2.5">
                 <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  SubCaste : {formData.subcaste}
+                  Subcaste in Mudaliyar : {formData.subcaste}
                 </label>
               </div>
             </div>

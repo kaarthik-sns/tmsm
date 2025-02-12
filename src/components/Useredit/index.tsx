@@ -408,7 +408,7 @@ const FormElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Matrimony profile for <span className="text-meta-1">*</span>
+                    Matrimony profile for <span className="text-meta-1">*</span>
                   </label>
                   <RadioButtonGroup
                     name="profile_created_for"
@@ -642,7 +642,7 @@ const FormElements = () => {
                     <p className="mt-1 text-sm text-red-500">{formErrors.bride_groom_detail}</p>
                   )}
                 </div>
-              
+
 
                 <div className="mb-4.5 text-black">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
@@ -718,7 +718,7 @@ const FormElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    SubCaste
+                    Subcaste in Mudaliyar
                   </label>
                   <input
                     type="text"
@@ -799,24 +799,24 @@ const FormElements = () => {
                   />
                 </div>
                 <div className="mb-4.5">
-                      <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                      Additional Phone Number        
-                      </label>
-                      <input
-                        type="text"
-                        name="profile_creator_phonenumber"
-                        value={formData.profile_creator_phonenumber || ""}
-                        onChange={handleChange}
-                        placeholder="Enter your phone number"
-                        className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.profile_creator_phonenumber
-                          ? "border-red-500 focus:border-red-500"
-                          : "border-stroke focus:border-primary"
-                          } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                      />
-                      {formErrors?.profile_creator_phonenumber && (
-                        <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_phonenumber}</p>
-                      )}
-                    </div>
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Additional Phone Number
+                  </label>
+                  <input
+                    type="text"
+                    name="profile_creator_phonenumber"
+                    value={formData.profile_creator_phonenumber || ""}
+                    onChange={handleChange}
+                    placeholder="Enter your phone number"
+                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.profile_creator_phonenumber
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-stroke focus:border-primary"
+                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                  />
+                  {formErrors?.profile_creator_phonenumber && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_phonenumber}</p>
+                  )}
+                </div>
 
               </div>
             </div>
@@ -1294,7 +1294,7 @@ const FormElements = () => {
                 </div>
                 <div>
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    SubCaste
+                    Subcaste in Mudaliyar
                   </label>
                   <input
                     type="text"

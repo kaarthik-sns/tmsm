@@ -4,7 +4,7 @@ main {
 .member-container .title {
     color: #333;
     font-family: "Playfair Display";
-    font-size: 40px;
+    font-size: 30px;
     font-weight: 700;
     line-height: normal;
 }
@@ -44,7 +44,7 @@ main {
 
 .member-container .page-number {
     border-radius: 50px;
-    background: #323232;
+    background: #992222;
     padding: 10px 50px;
 }
 
@@ -96,14 +96,14 @@ main {
     height: 48px;
     width: 48px;
     margin-right: 1.16rem;
-    background: #323232;
+    background: #992222;
 }
 
 .next-btn {
     height: 48px;
     width: 48px;
     margin-left: 1.16rem;
-    background: #323232;
+    background: #992222;
 }
 .inner-page-top-banner{
     position: relative;

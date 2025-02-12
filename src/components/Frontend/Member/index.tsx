@@ -336,7 +336,7 @@ const PaginatedUsers = () => {
               </div>
 
               <div className="w-full md:w-auto relative">
-                <label className="mb-3 block text-sm font-medium text-white">SubCaste</label>
+                <label className="mb-3 block text-sm font-medium text-white">Subcaste</label>
                 <div className="mb-4.5">
                   <input
                     type="text"
@@ -383,7 +383,7 @@ const PaginatedUsers = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 py-12 member-container">
+      <div className="container mx-auto px-6 py-6 member-container">
 
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="title"><span>You have found {totalCount} </span> search results</h2>
@@ -474,7 +474,7 @@ const PaginatedUsers = () => {
                         <span className="value">{user.caste ? user.caste : '-'}</span>
                       </p>
                       <p className="flex">
-                        <span className="label w-26 text-black flex-shrink-0">SubCaste:</span>
+                        <span className="label w-26 text-black flex-shrink-0">Subcaste :</span>
                         <span className="value">{user.subcaste ? user.subcaste : '-'}</span>
                       </p>
                     </div>

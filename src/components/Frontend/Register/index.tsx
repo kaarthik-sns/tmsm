@@ -25,7 +25,7 @@ const SignUp: React.FC = () => {
     phonenumber: "",
     religion: "",
     profile_created_for: "",
-    profile_creator_name:""
+    profile_creator_name: ""
   });
   const [remainingTime, setRemainingTime] = useState(9); // 5 seconds initially
   const [selected, setselected] = useState(false);
@@ -34,6 +34,14 @@ const SignUp: React.FC = () => {
   const [errors, setErrors] = useState<any>({});
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isProfileCreator, setIsProfileCreator] = useState(false);
+  const [placeholders, setPlaceholders] = useState({
+    name: "First name",
+    lastname: "Last name",
+    phonenumber: "Phone number",
+    email: "Email ID",
+  });
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -43,17 +51,47 @@ const SignUp: React.FC = () => {
     "Muslim",
     "Christian"
   ];
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
+
     // Update form state
-    setForm((prevData) => ({ ...prevData, [name]: value }));
-  
-    // Handle "Profile created for" specific logic
-    if (name === 'profile_created_for') {
-      setIsProfileCreator(value !== 'myself');
-    }
+    setForm((prevData) => {
+      const updatedForm = { ...prevData, [name]: value };
+
+      // Validate password
+      if (name === "password") {
+        setPasswordError(validatePassword(value));
+      }
+
+      // Validate confirm password
+      if (name === "confirmPassword") {
+        setConfirmPasswordError(updatedForm.password !== value ? "Passwords do not match." : null);
+      }
+
+      // Handle "Profile created for" specific logic
+      if (name === "profile_created_for") {
+        setIsProfileCreator(value !== "myself");
+
+        // Update placeholders dynamically
+        setPlaceholders(
+          value === "myself"
+            ? {
+              name: "First name",
+              lastname: "Last name",
+              phonenumber: "Phone number",
+              email: "Email ID",
+            }
+            : {
+              name: "Bride/Groom First name",
+              lastname: "Bride/Groom Last name",
+              phonenumber: "Creator Phone number",
+              email: "Creator Email ID",
+            }
+        );
+      }
+
+      return updatedForm;
+    });
   };
 
 
@@ -63,6 +101,8 @@ const SignUp: React.FC = () => {
     const hasLowerCase = /[a-z]/.test(password);
     const hasNumber = /[0-9]/.test(password);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    if (!password) return "Password cannot be empty.";
 
     if (password.length < minLength) {
       return "Password must be at least 6 characters long.";
@@ -84,6 +124,7 @@ const SignUp: React.FC = () => {
 
   const validate = () => {
     let newErrors: any = {};
+    let valid = true;
 
     if (!form.profile_created_for) {
       newErrors.profile_created_for = "Select a Matrimony profile.";
@@ -98,9 +139,8 @@ const SignUp: React.FC = () => {
 
     }
 
-
     // Name validation
-    if (!form.name  || form.name.trim() === "") {
+    if (!form.name || form.name.trim() === "") {
       newErrors.name = "First name cannot be empty.";
     }
 
@@ -123,15 +163,21 @@ const SignUp: React.FC = () => {
       newErrors.phonenumber = "Enter a valid 10-digit phone number";
     }
 
-    if (!form.password) {
-      newErrors.password = "Password cannot be empty";
+    // Validate password
+    const passwordValidationError = validatePassword(form.password);
+    if (passwordValidationError) {
+      setPasswordError(passwordValidationError);
+      valid = false;
+    }
+
+
+    // Validate confirm password
+    if (!form.confirmPassword) {
+      setConfirmPasswordError("Confirm Password cannot be empty.");
+      valid = false;
     } else if (form.password !== form.confirmPassword) {
-      newErrors.password = "Passwords don't match";
-    } else {
-      const passwordError = validatePassword(form.password);
-      if (passwordError) {
-        newErrors.password = passwordError;
-      }
+      setConfirmPasswordError("Passwords do not match.");
+      valid = false;
     }
 
     // Religion validation
@@ -202,35 +248,42 @@ const SignUp: React.FC = () => {
   const handleReligionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedReligion = e.target.value;
     setForm({ ...form, religion: selectedReligion });
-    setError('');
-    if (selectedReligion.toLowerCase() !== "hindu") {
-      setError('Registration is not permitted at this time.');
+
+    let newErrors = { ...errors };
+
+    if (!selectedReligion) {
+      newErrors.religion = "Religion cannot be empty.";
+    } else if (selectedReligion.toLowerCase() !== "hindu") {
+      newErrors.religion = "Registration is not permitted at this time.";
     } else {
-      setError(null);
+      delete newErrors.religion;
     }
+
+    setErrors(newErrors);
   };
 
 
-    useEffect(() => {
-      let timer: NodeJS.Timeout | null = null;
-  
-      if (successMessage) {
-        timer = setInterval(() => {
-          setRemainingTime((prevTime) => {
-            if (prevTime === 1) {
-              clearInterval(timer as NodeJS.Timeout);  // Stop the timer
-              router.push("/login");  // Redirect after countdown finishes
-            }
-            return prevTime - 1;
-          });
-        }, 1000); // 1000ms = 1 second
-      }
-  
-      return () => {
-        if (timer) clearInterval(timer); // Clean up the interval if the component unmounts or successMessage changes
-      };
-    }, [successMessage, router]);
-  
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+
+    if (successMessage) {
+      timer = setInterval(() => {
+        setRemainingTime((prevTime) => {
+          if (prevTime === 1) {
+            clearInterval(timer as NodeJS.Timeout);  // Stop the timer
+            router.push("/login");  // Redirect after countdown finishes
+          }
+          return prevTime - 1;
+        });
+      }, 1000); // 1000ms = 1 second
+    }
+
+    return () => {
+      if (timer) clearInterval(timer); // Clean up the interval if the component unmounts or successMessage changes
+    };
+  }, [successMessage, router]);
+
   return (
 
     <div className="flex bg-[#fbeed5]">
@@ -253,46 +306,46 @@ const SignUp: React.FC = () => {
               </div>
             )}
             <form onSubmit={handleSubmit} >
-            <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                   <b>Matrimony profile for</b>
-                  </label>
-                  <RadioButtonGroup
-                    name="profile_created_for"
-                    options={profileOptions}
-                    selectedValue={form.profile_created_for}
-                    onChange={handleChange}
-                  />
-                  {errors?.profile_created_for && (
-                    <p className="mt-1 text-sm text-red-500">{errors.profile_created_for}</p>
-                  )}
-                </div>  
- 
-                {isProfileCreator && (
-                   <>
-                     < div className="mb-4.5">
-                       <input
-                         type="text"
-                         name="profile_creator_name"
-                         value={form.profile_creator_name || ""}
-                         onChange={handleChange}
-                         placeholder="Enter Profile Creator Name"
-                         className={`w-full rounded-lg border ${errors.profile_creator_name ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
+              <div className="mb-4.5">
+                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                  <b>Matrimony profile for</b>
+                </label>
+                <RadioButtonGroup
+                  name="profile_created_for"
+                  options={profileOptions}
+                  selectedValue={form.profile_created_for}
+                  onChange={handleChange}
+                />
+                {errors?.profile_created_for && (
+                  <p className="mt-1 text-red-600 text-sm">{errors.profile_created_for}</p>
+                )}
+              </div>
 
-                       />
-                       {errors?.profile_creator_name && (
-                         <p className="mt-1 text-sm text-red-500">{errors.profile_creator_name}</p>
-                       )}
-                     </div>
-                   </>
-                 )}                          
+              {isProfileCreator && (
+                <>
+                  < div className="mb-4.5">
+                    <input
+                      type="text"
+                      name="profile_creator_name"
+                      value={form.profile_creator_name || ""}
+                      onChange={handleChange}
+                      placeholder="Profile Creator Name"
+                      className={`w-full rounded-lg border ${errors.profile_creator_name ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
+
+                    />
+                    {errors?.profile_creator_name && (
+                      <p className="mt-1 text-sm text-red-500">{errors.profile_creator_name}</p>
+                    )}
+                  </div>
+                </>
+              )}
               <div className="mb-4">
                 <input
                   type="text"
                   disabled={pending}
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  placeholder="First name"
+                  placeholder={placeholders.name}
                   className={`w-full rounded-lg border ${errors.name ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
 
                 />
@@ -307,9 +360,9 @@ const SignUp: React.FC = () => {
                   disabled={pending}
                   value={form.lastname}
                   onChange={(e) => setForm({ ...form, lastname: e.target.value })}
-                  placeholder="Last name"
+                  placeholder={placeholders.lastname}
                   className={`w-full rounded-lg border ${errors.lastname ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
-                  />
+                />
                 {errors.lastname && (
                   <p className="text-red-600 text-sm">{errors.lastname}</p>
                 )}
@@ -321,7 +374,7 @@ const SignUp: React.FC = () => {
                   disabled={pending}
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  placeholder="Email ID"
+                  placeholder={placeholders.email}
                   autoComplete="off" // Disable browser autofill
                   className={`w-full rounded-lg border ${errors.email ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                 />
@@ -338,7 +391,7 @@ const SignUp: React.FC = () => {
                   onChange={(e) =>
                     setForm({ ...form, phonenumber: e.target.value })
                   }
-                  placeholder="Phone number"
+                  placeholder={placeholders.phonenumber}
                   className={`w-full rounded-lg border ${errors.phonenumber ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                 />
                 {errors.phonenumber && (
@@ -357,35 +410,30 @@ const SignUp: React.FC = () => {
                   <p className="text-red-600 text-sm">{errors.religion}</p>
                 )}
               </div>
-
               <div className="mb-4">
                 <input
                   type="password"
-                  disabled={pending}
+                  name="password"
                   value={form.password}
-                  onChange={(e) => setForm({ ...form, password: e.target.value })}
+                  onChange={handleChange}
                   placeholder="Password"
-                  className={`w-full rounded-lg border ${errors.password ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
+                  className={`w-full rounded-lg border ${passwordError ? "border-red-500" : "border-stroke"
+                    } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                 />
-                {errors.password && (
-                  <p className="text-red-600 text-sm">{errors.password}</p>
-                )}
+                {passwordError && <p className="text-red-600 text-sm">{passwordError}</p>}
               </div>
-
+              {/* Confirm Password Field */}
               <div className="mb-4">
                 <input
                   type="password"
-                  disabled={pending}
-                  value={form.confirmPassword}
-                  onChange={(e) =>
-                    setForm({ ...form, confirmPassword: e.target.value })
-                  }
+                  name="confirmPassword" // ✅ Ensure this matches state key
+                  value={form.confirmPassword} // ✅ Ensure correct state binding
+                  onChange={handleChange}
                   placeholder="Confirm Password"
-                  className={`w-full rounded-lg border ${errors.confirmPassword ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
+                  className={`w-full rounded-lg border ${confirmPasswordError ? "border-red-500" : "border-stroke"
+                    } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                 />
-                {errors.confirmPassword && (
-                  <p className="text-red-600 text-sm">{errors.confirmPassword}</p>
-                )}
+                {confirmPasswordError && <p className="text-red-600 text-sm">{confirmPasswordError}</p>}
               </div>
 
               <div className="mb-5">

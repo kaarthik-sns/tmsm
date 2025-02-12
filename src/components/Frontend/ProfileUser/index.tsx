@@ -765,7 +765,7 @@ const UserProfile = (user_data) => {
 
                       <div className="mb-4.5">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          SubCaste
+                        Subcaste in Mudaliyar
                         </label>
                         <input
                           type="text"
@@ -1344,7 +1344,7 @@ const UserProfile = (user_data) => {
                       </div>
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          SubCaste
+                          Subcaste in Mudaliyar
                         </label>
                         <input
                           type="text"

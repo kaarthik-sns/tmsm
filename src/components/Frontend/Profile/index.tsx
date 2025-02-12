@@ -200,7 +200,7 @@ export default function Profile({ userId }) {
               <span>{profileData.caste || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Sub Caste</strong>
+              <strong className="w-auto md:w-40">Subcaste in Mudaliyar</strong>
               <span>{profileData.subcaste || ""}</span>
             </p>
           </div>
@@ -348,7 +348,7 @@ export default function Profile({ userId }) {
               <span>{profileData.partner_pref_caste || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">SubCaste</strong>
+              <strong className="w-auto md:w-40">Subcaste in Mudaliyar</strong>
               <span>{profileData.partner_pref_subcaste || ""}</span>
             </p>
           </div>
