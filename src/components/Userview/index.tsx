@@ -68,6 +68,9 @@ const FormElements = () => {
     city_id: "",
     state: { name: "" },
     city: { name: "" },
+    reactivate_reason: "",
+    deactivate_reason: "",
+    is_active:Boolean
   });
 
   const handlePreview = () => {
@@ -512,6 +515,43 @@ const FormElements = () => {
                   Subcaste in Mudaliyar : {formData.subcaste}
                 </label>
               </div>
+            </div>
+          </div>
+          {/* <!-- Partner Preference end --> */}
+
+          {/* <!-- acount status details --> */}
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium dark-text dark:text-white">
+                Account Status Details
+              </h3>
+            </div>
+            <div className="p-6.5">
+
+              <div className="mb-2.5">
+                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                  Account Status :{" "}
+                  <span
+                    className={`${formData.is_active ? "text-green-500" : "text-red-500"
+                      } font-semibold`}
+                  >
+                    {formData.is_active ? "Active" : "Inactive"}
+                  </span>
+                </label>
+              </div>
+
+
+              <div className="mb-2.5">
+                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                  Deactivate Reason : {formData.deactivate_reason || ""}
+                </label>
+              </div>
+              <div className="mb-2.5">
+                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                  Reactivate Reason : {formData.reactivate_reason || ""}
+                </label>
+              </div>
+
             </div>
           </div>
           {/* <!-- Partner Preference end --> */}
