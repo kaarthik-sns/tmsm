@@ -112,7 +112,7 @@ export const verificationTemplate = (user_name: string, verification_link: strin
                             <h1>Registration Successful!</h1>
                                 <h2>Hello ${user_name},</h2>
 
-                                <p>Thank you for signing up! To complete your registration.</p>
+                                <p>Thank you for signing up! To complete your registration, please verify your email address.</p>
                                 <p>Once the admin approves your registration, you will be able to log in to TMSM.</p>
                                 <p>Click the<strong> "Verify Email" </strong>button below to confirm your email address.</p>
 

@@ -96,9 +96,7 @@ export function NavbarWithSimpleLinks() {
     <Navbar
       className="header-bg py-6 border-0"
       fullWidth={true}
-      placeholder="" // Provide an empty string or a relevant placeholder text
-      onPointerEnterCapture={() => { }}
-      onPointerLeaveCapture={() => { }}
+      {...({} as any)}
     >
 
       <div className="container mx-auto flex items-center justify-between mt-6">
@@ -126,9 +124,7 @@ export function NavbarWithSimpleLinks() {
           color="blue-gray"
           onClick={handleOpen}
           className="ml-auto inline-block lg:hidden"
-          placeholder="Your placeholder text"
-          onPointerEnterCapture={() => { }}
-          onPointerLeaveCapture={() => { }}
+          {...({} as any)}
         >
           {open ? (
             <XMarkIcon className="h-5 w-5" strokeWidth={2} />

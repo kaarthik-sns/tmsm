@@ -32,16 +32,23 @@ export async function POST(request: Request) {
         user.email_code = hashedToken;
         await user.save();
 
+        let copyright = '';
+        let contactMail = '';
+        let baseUrl = process.env.BASE_URL || '';  // ✅ Get BASE_URL from .env
+        //let mail_logo = `${baseUrl}/images/logo/Flogo.svg`;  // ✅ Construct full path dynamically
+        let mail_logo = `https://searchnscore.in/tmsm/images/mail-logo.png?t=${new Date().getTime()}`;
+    
         const smtpSettings = await getSMTPSettings();
-        const copyright = smtpSettings
-            ? `© ${new Date().getFullYear()} ${smtpSettings.copyright}`
-            : '';
+        if (smtpSettings) {
+            copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
+            contactMail = smtpSettings.organisation_email_id;
+        }
 
         const verificationLink = `${process.env.BASE_URL}/verify-email?code=${hashedToken}`;
 
         const recipients = [{ name: user.name, address: user.email }];
 
-        const emailBody = verificationTemplate(user.name, verificationLink, copyright);
+        const emailBody = verificationTemplate(user.name, verificationLink, copyright, contactMail, mail_logo);
 
         await sendEmail({
             receipients: recipients,

@@ -47,11 +47,15 @@ export async function POST(req) {
     try {
 
         let copyright = '';
+        let contactMail = '';
+
         const smtpSettings = await getSMTPSettings();
+
         if (smtpSettings) {
             copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
+            contactMail = smtpSettings.organisation_email_id;
         }
-        
+
         await connectToDatabase();
         // Parse JSON body data
         const { name, email, interested_in, phone, message } = await req.json();
@@ -74,7 +78,7 @@ export async function POST(req) {
 
         const result3 = await sendEmail({
             receipients: receipients,
-            subject: 'TMSM - New Contact Form Submission',
+            subject: 'New Contact Inquiry',
             message: htmlBody
         })
 
