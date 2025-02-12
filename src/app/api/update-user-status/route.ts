@@ -8,13 +8,20 @@ import getSMTPSettings from '@/utils/settings.util';
 import { sendEmail } from "@/utils/mail.util"
 
 export async function PATCH(req: NextRequest) {
-    const { id, is_active, is_approve } = await req.json();
- 
+    const { id, is_active, is_approve, reason = null } = await req.json();
+
     try {
         await connectToDatabase();
+        const updateFields: Record<string, any> = { is_active, is_approve };
+
+        // Only add `deactivate_reason` if `reason` is provided
+        if (reason) {
+            updateFields.deactivate_reason = reason;
+        }
+
         const result = await User.updateOne(
             { _id: id },
-            { $set: { is_active, is_approve } }
+            { $set: updateFields }
         );
 
         let copyright = '';
