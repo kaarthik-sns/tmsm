@@ -71,7 +71,7 @@ body {
 
 /*Footer */
 .dark-bg {
-    background: #323232;
+    background: #992222;
 }
 
 .footer-text a {
@@ -618,7 +618,7 @@ input:-internal-autofill-selected {
 
 .offer-list-itmes {
     position: relative;
-    background: #323232;
+    background: #ffd16c;
     border-radius: 10px;
     padding: 24px;
     height: 100%;
@@ -646,7 +646,7 @@ input:-internal-autofill-selected {
 }
 
 .offer-list-itmes h4 {
-    color: #FFF;
+    color: #000000;
     font-family: "Playfair Display";
     font-size: 20px;
     font-weight: 700;
@@ -655,7 +655,7 @@ input:-internal-autofill-selected {
 }
 
 .offer-list-itmes p {
-    color: #FFF;
+    color: #000000;
     text-align: justify;
     font-family: 'Noto Sans';
     font-size: 18px;

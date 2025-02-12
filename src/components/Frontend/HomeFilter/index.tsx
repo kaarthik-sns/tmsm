@@ -144,7 +144,7 @@ const FilterForm = () => {
             </div>
 
             <div className="w-full md:w-auto relative">
-              <label className="mb-3 block text-sm font-medium text-white">SubCaste</label>
+              <label className="mb-3 block text-sm font-medium text-white">Subcaste in Mudaliyar</label>
               <div className="mb-4.5">
                 <input
                   type="text"

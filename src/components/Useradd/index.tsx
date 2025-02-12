@@ -766,7 +766,7 @@ const FormElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    SubCaste
+                    Subcaste in Mudaliyar
                   </label>
                   <input
                     type="text"
@@ -1345,7 +1345,7 @@ const FormElements = () => {
                 </div>
                 <div>
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    SubCaste
+                    Subcaste in Mudaliyar
                   </label>
                   <input
                     type="text"
