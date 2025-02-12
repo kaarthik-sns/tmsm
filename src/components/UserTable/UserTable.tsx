@@ -203,8 +203,31 @@ const UserTable = () => {
 
     const handleToggle = async (index: number, key: "is_active" | "is_approve") => {
         const updatedValue = !tableItems[index][key];
-
-        // Show confirmation alert before updating status
+    
+        let reactivate_reason = "";
+        
+        // Prompt for reason when reactivating a user
+        if (key === "is_active" && updatedValue) {
+            const { value } = await Swal.fire({
+                icon: "warning",
+                title: "Reason for Reactivation",
+                input: "textarea",
+                inputPlaceholder: "Enter the reason...",
+                showCancelButton: true,
+                confirmButtonText: "Submit",
+                cancelButtonText: "Cancel",
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                inputValidator: (value) => {
+                    if (!value) return "Reason is required!";
+                },
+            });
+    
+            if (!value) return; // Stop if no reason is provided
+            reactivate_reason = value;
+        }
+    
+        // Show confirmation alert
         const result = await Swal.fire({
             title: "Are you sure?",
             text: key === "is_active"
@@ -217,66 +240,52 @@ const UserTable = () => {
             confirmButtonText: "Yes, proceed!",
             cancelButtonText: "No",
         });
-
-        if (!result.isConfirmed) {
-            return; // Stop execution if the user cancels
-        }
-
+    
+        if (!result.isConfirmed) return;
+    
         // Optimistically update the UI
         setTableItems((prevItems) =>
             prevItems.map((item, idx) =>
                 idx === index ? { ...item, [key]: updatedValue } : item
             )
         );
-
+    
         try {
             // Call the API to update the status
             const response = await axios.patch(`/api/update-user-status`, {
-                id: tableItems[index]._id, // Assuming each item has a unique `id`
+                id: tableItems[index]._id,
                 [key]: updatedValue,
+                reactivate_reason, // Include the reason for reactivation
             });
-
+    
             if (response.status !== 200) {
                 throw new Error("Failed to update status");
             }
-
+    
             toast.success(
                 key === "is_active"
                     ? `User ${updatedValue ? "activated" : "deactivated"} successfully!`
-                    : `User ${updatedValue ? "approved" : "disapproved"} successfully!`,
-                {
-                    className: "sonner-toast-success",
-                    cancel: {
-                        label: "Close",
-                        onClick: () => console.log("Close"),
-                    },
-                }
+                    : `User ${updatedValue ? "approved" : "disapproved"} successfully!`
             );
-
+    
         } catch (error) {
             console.error("Error updating status:", error);
-
+    
             // Revert the optimistic UI update if the API call fails
             setTableItems((prevItems) =>
                 prevItems.map((item, idx) =>
                     idx === index ? { ...item, [key]: !updatedValue } : item
                 )
             );
-
+    
             toast.error(
                 key === "is_active"
                     ? "Failed to update activation status."
-                    : "Failed to update approval status.",
-                {
-                    className: "sonner-toast-error",
-                    cancel: {
-                        label: "Close",
-                        onClick: () => console.log("Close"),
-                    },
-                }
+                    : "Failed to update approval status."
             );
         }
     };
+    
 
 
 
@@ -438,7 +447,7 @@ const UserTable = () => {
                                         <div className="flex items-center space-x-3.5">
                                             <button
                                                 onClick={() => handleEdit(item._id)}
-
+                                                title="Edit"
                                                 className="py-2 px-3 font-medium  hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg "
                                             >
                                                 <svg
@@ -459,6 +468,7 @@ const UserTable = () => {
                                                     pathname: "/admin/users/userview",
                                                     query: { userId: item._id },
                                                 }}
+                                                
                                                 className="inline-block px-4 py-2 text-white duration-150 font-medium  md:text-sm dark-text"
                                             >
                                                 <svg
@@ -518,6 +528,7 @@ const UserTable = () => {
                                             {(!item.is_verify) && (
                                                 <button
                                                     onClick={() => handleVerify(item._id)}
+                                                    title="Verify"
                                                     className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
                                                 >
 
