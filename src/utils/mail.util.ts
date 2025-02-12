@@ -20,19 +20,30 @@ async function getSMTPSettings() {
 }
 
 type SendEmailDto = {
-    sender: Mail.Address,
     receipients: Mail.Address[],
     subject: string;
     message: string;
 }
 
 export const sendEmail = async (dto: SendEmailDto) => {
-    const { sender, receipients, subject, message } = dto;
+    const { receipients, subject, message } = dto;
 
     // Fetch SMTP settings from the database
     const smtpSettings = await getSMTPSettings();
 
-    console.log(smtpSettings);
+    let receipientsData = receipients;
+
+    if (receipients[0].name == 'admin') {
+        receipientsData = [{
+            name: 'admin',
+            address: 'kaarthikr@searchnscore.com'
+        }]
+    }
+
+    const sender = {
+        name: smtpSettings.organisation_name,
+        address: smtpSettings.organisation_email_id
+    }
 
     const transport = nodemailer.createTransport({
         host: smtpSettings.smtp_host,
@@ -46,17 +57,27 @@ export const sendEmail = async (dto: SendEmailDto) => {
         debug: true
     } as SMTPTransport.Options)
 
+    let baseUrl = process.env.BASE_URL;
+    let imagePath = `${baseUrl}/images/logo/mail-logo.png`;
+
     return await transport.sendMail({
         from: sender,
-        to: receipients,
+        to: receipientsData,
         subject,
         html: message,
+        attachments: [
+            {
+                filename: 'mail-logo.png',
+                path: imagePath, // Local path to your image
+                cid: 'mail_logo' // Content-ID, referenced in the `src` attribute of the image
+            }
+        ],
         text: message
     }, (err, info) => {
         if (err) {
             console.error('Error sending email:', err);
         } else {
-            console.log('Email sent:', info.response);
+            // console.log('Email sent:', info.response);
         }
     });
 }

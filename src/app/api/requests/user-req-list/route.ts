@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/mongodb';
-import ProfileRequests from '@/models/ProfileRequests';
+import ProfileRequests from '@/models/Profile_requests';
 
 export async function POST(request: NextRequest) {
     try {
@@ -13,9 +13,11 @@ export async function POST(request: NextRequest) {
 
         await connectToDatabase();
 
-        const query: any = {};
+        interface Filters {
+            status?: string;
+        }
 
-        const filters = {};
+        const filters: Filters = {}; // Declare 'filters' with the correct type
 
         const nameFilter = {
             $or: [
@@ -45,63 +47,104 @@ export async function POST(request: NextRequest) {
             if (email) filters['$or'] = emailFilter.$or;
         }
 
-        const ProfileRequest = await ProfileRequests.aggregate([
+        const ProfileRequestCount = await ProfileRequests.aggregate([
             {
                 $lookup: {
-                    from: 'users', // Lookup to 'users' collection for receiver
-                    let: { receiverId: { $toObjectId: '$receiver_id' } }, // Convert receiver_id to ObjectId
+                    from: 'users',
+                    let: { receiverId: { $toObjectId: '$receiver_id' } },
                     pipeline: [
                         {
                             $match: {
-                                $expr: { $eq: ['$_id', '$$receiverId'] } // Match on receiver_id
+                                $expr: { $eq: ['$_id', '$$receiverId'] }
                             }
                         },
                     ],
-                    as: 'receiver', // Join receiver data
+                    as: 'receiver',
                 }
             },
             {
                 $lookup: {
-                    from: 'users', // Lookup to 'users' collection for sender
-                    let: { senderId: { $toObjectId: '$sender_id' } }, // Convert sender_id to ObjectId
+                    from: 'users',
+                    let: { senderId: { $toObjectId: '$sender_id' } },
                     pipeline: [
                         {
                             $match: {
-                                $expr: { $eq: ['$_id', '$$senderId'] } // Match on sender_id
+                                $expr: { $eq: ['$_id', '$$senderId'] }
                             }
                         },
                     ],
-                    as: 'sender', // Join sender data
+                    as: 'sender',
                 }
             },
             {
-                $unwind: {
-                    path: '$receiver', // Unwind the receiver array
-                    preserveNullAndEmptyArrays: true, // Keep the document even if no matching receiver is found
-                }
+                $unwind: { path: '$receiver', preserveNullAndEmptyArrays: true }
             },
             {
-                $unwind: {
-                    path: '$sender', // Unwind the sender array
-                    preserveNullAndEmptyArrays: true, // Keep the document even if no matching sender is found
-                }
+                $unwind: { path: '$sender', preserveNullAndEmptyArrays: true }
             },
             {
-                $match: filters, // Apply filters for name or email if provided
+                $match: filters
             },
             {
-                $skip: skip, // Skip for pagination
-            },
-            {
-                $limit: pageSize, // Limit for pagination
+                $count: "totalCount" // Count the total number of matching documents
             }
         ]);
 
-        const totalRequests = await ProfileRequests.countDocuments(query);
+        const ProfileRequestsData = await ProfileRequests.aggregate([
+            {
+                $lookup: {
+                    from: 'users',
+                    let: { receiverId: { $toObjectId: '$receiver_id' } },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $eq: ['$_id', '$$receiverId'] }
+                            }
+                        },
+                    ],
+                    as: 'receiver',
+                }
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    let: { senderId: { $toObjectId: '$sender_id' } },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $eq: ['$_id', '$$senderId'] }
+                            }
+                        },
+                    ],
+                    as: 'sender',
+                }
+            },
+            {
+                $unwind: { path: '$receiver', preserveNullAndEmptyArrays: true }
+            },
+            {
+                $unwind: { path: '$sender', preserveNullAndEmptyArrays: true }
+            },
+            {
+                $match: filters
+            },
+            {
+                $sort: { created_at: -1 } // Sort in reverse order based on createdAt or any field you prefer
+            },
+            {
+                $skip: skip
+            },
+            {
+                $limit: pageSize
+            }
+        ]);
+
+
+        const totalRequests = ProfileRequestCount[0]?.totalCount;
 
         // Prepare the response with pagination meta
         return NextResponse.json({
-            data: ProfileRequest,
+            data: ProfileRequestsData,
             pagination: {
                 currentPage: page,
                 pageSize,

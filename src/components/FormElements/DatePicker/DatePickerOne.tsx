@@ -9,6 +9,7 @@ const DatePickerOne = ({
   onChange,
   value,
 }) => {
+
   useEffect(() => {
     const today = new Date();
     const eighteenYearsAgo = new Date(
@@ -17,8 +18,8 @@ const DatePickerOne = ({
       today.getDate()
     );
 
-    const flatpickrInstance = flatpickr(".form-datepicker", {
-      mode,
+    const flatpickrInstance = flatpickr(document.querySelectorAll(".form-datepicker"), {
+      mode: "single",
       static: true,
       monthSelectorType: "static",
       dateFormat,
@@ -35,15 +36,12 @@ const DatePickerOne = ({
         '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M1.4 10.8L0 9.4l4-4-4-4L1.4 0l5.4 5.4z" /></svg>',
     });
 
-    return () => {
-      flatpickrInstance.destroy(); // Clean up instance on unmount
-    };
   }, [dateFormat, mode, value]);
 
   return (
     <div className="mb-4.5">
       <label className="mb-3 block text-sm font-medium text-black dark:text-white dark-text">
-      Date Of Birth
+        Date Of Birth <span className="text-meta-1">*</span>
       </label>
       <div className="relative">
         <input

@@ -3,25 +3,41 @@ import { NextResponse } from 'next/server'
 import User from '@/models/User'
 import connectToDatabase from '@/lib/mongodb';
 import { sendEmail } from "@/utils/mail.util"
-import * as Handlebars from 'handlebars';
-import { verification } from '@/lib/template/verification';
-import { welcome } from '@/lib/template/welcome';
-import { welcome_admin } from '@/lib/template/welcome_admin';
+import { verificationTemplate } from '@/lib/template/verification';
+import { welcomeTemplate } from '@/lib/template/welcome';
+import { adminWelcomeTemplate } from '@/lib/template/welcome-admin';
+import getSMTPSettings from '@/utils/settings.util';
+
 
 export async function POST(request: Request) {
-    const { name, lastname, email, password, confirmPassword, phonenumber, religion } = await request.json();
+    const { profile_created_for, profile_creator_name, name, lastname, email, password, confirmPassword, phonenumber, religion, } = await request.json();
 
-    // const testData = [];
+    const testData = [];
 
-    const isValidEmail = (email: string) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
+    let copyright = '';
+    let contactMail = '';
+    let baseUrl = process.env.BASE_URL || '';  // ✅ Get BASE_URL from .env
+    //let mail_logo = `${baseUrl}/images/logo/Flogo.svg`;  // ✅ Construct full path dynamically
+    let mail_logo = `https://searchnscore.in/tmsm/images/mail-logo.png?t=${new Date().getTime()}`;
+
+    const smtpSettings = await getSMTPSettings();
+    if (smtpSettings) {
+        copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
+        contactMail = smtpSettings.organisation_email_id;
     }
-    if (!name || !email || !password || !confirmPassword) {
+
+
+    const email_id = email?.replace(/\s+/g, "").toLowerCase() || "";
+
+    const isValidEmail = (email_id: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email_id);
+    }
+
+    if (!name || !email_id || !password || !confirmPassword) {
         return NextResponse.json({ message: " All fields are required" }, { status: 400 })
     }
-
-    if (!isValidEmail(email)) {
+    if (!isValidEmail(email_id)) {
         return NextResponse.json({ message: "Invalid email format" }, { status: 400 });
     }
     if (confirmPassword !== password) {
@@ -41,7 +57,9 @@ export async function POST(request: Request) {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = new User({
-            email,
+            profile_created_for,
+            profile_creator_name,
+            email: email_id,
             name,
             lastname,
             phonenumber,
@@ -50,93 +68,45 @@ export async function POST(request: Request) {
             created_at: new Date()
         });
 
-
-        // for (let i = 0; i < 1000; i++) {
-        //     testData.push({
-        //         name: `Test User ${i + 1}`,
-        //         email: `testuser${i + 1}@example.com`,
-        //         password: hashedPassword, // Same hash for simplicity
-        //         is_active: true,
-        //         is_verify: true,
-        //         is_approve: true,
-        //         created_at: new Date(),
-        //         email_code: '',
-        //         updated_at: new Date(),
-        //     });
-        // }
-
-        // try {
-        //     await User.insertMany(testData);
-        //     console.log('Test data added successfully');
-        // } catch (error) {
-        //     console.error('Error adding test data:', error);
-        // }
-
-
         await newUser.save();
 
         const verificationLink = `${process.env.BASE_URL}/verify-email?code=${newUser.email_code}`;
-
-        const sender = {
-            name: 'TMSM',
-            address: 'no-reply@tmsm.com'
-        }
 
         const receipients = [{
             name: name,
             address: email
         }]
 
-        const template = Handlebars.compile(welcome);
-        const htmlBody = template({
-            user_name: name
-        });
+        const htmlBody = welcomeTemplate(name, copyright, contactMail, mail_logo);
 
         const result = await sendEmail({
-            sender,
             receipients,
-            subject: 'TMSM - Welcome mail!',
+            subject: `Welcome to TMSM, ${name}!`,
             message: htmlBody
         })
 
-        const template2 = Handlebars.compile(verification);
-        const htmlBody2 = template2({
-            verification_link: verificationLink,
-            user_name: name
-        });
+        const htmlBody2 = verificationTemplate(name, verificationLink, copyright, contactMail, mail_logo);
 
         const result2 = await sendEmail({
-            sender,
             receipients,
-            subject: 'TMSM - Verification mail!',
+            subject: 'Verify Your TMSM Account',
             message: htmlBody2
         })
 
-
-        const template3 = Handlebars.compile(welcome_admin);
-        const htmlBody3 = template3({
-            email: email,
-            name: name,
-            phonenumber: phonenumber
-        });
-
+        const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber, copyright, mail_logo);
 
         const receipients2 = [{
             name: 'admin',
-            address: 'kaarthikr@searchnscore.com'
+            address: ''
         }]
 
         const result3 = await sendEmail({
-            sender,
             receipients: receipients2,
-            subject: 'TMSM - New User Registration!',
+            subject: 'New Member Joined TMSM',
             message: htmlBody3
         })
 
-        console.log("welcome email:", result);
-        console.log("Verification email:", result2);
-
-        return NextResponse.json({ message: "Registration successful" }, { status: 201 });
+        return NextResponse.json({ message: "Registration successful. Await admin approval. Check your email for updates." }, { status: 201 });
 
     } catch (error) {
         console.log(error)

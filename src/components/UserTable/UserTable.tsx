@@ -2,25 +2,25 @@
 import { useEffect, useState } from "react"
 import axios from "axios";
 import SwitcherFour from "@/components/Switchers/SwitcherFour";
-import { BsPencilSquare } from "react-icons/bs";
-import { BsFillTrash3Fill } from "react-icons/bs";
-import { AiFillEye } from "react-icons/ai";
 import SelectGroupTwo from "@/components/SelectGroup/SelectGroupTwo";
 import SelectGroupOne from "@/components/SelectGroup/SelectGroupOne";
 import Link from "next/link";
 import { useRouter } from "next/navigation"; // For page navigation
 import NextImage from "next/image"; // Rename the import to avoid conflict
-
+import { toast } from "sonner";
+import Swal from 'sweetalert2';
+import Loader from "@/components/common/Loader";
 
 
 const UserTable = () => {
 
-    const [pages, setPages] = useState("");
+    const [pages, setPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [tableItems, setTableItems] = useState([]);
     const [switchStates, setSwitchStates] = useState<boolean[]>([]);
     const [switchStates2, setSwitchStates2] = useState<boolean[]>([]);
     const router = useRouter(); // Initialize Next.js router
+    const [isLoading, setIsLoading] = useState(false);
 
     const [formState, setFormState] = useState({
         name: "",
@@ -71,6 +71,7 @@ const UserTable = () => {
 
     // Fetch table items from API
     const fetchTableItems = async () => {
+        setIsLoading(true);
         try {
             const response = await axios.get("/api/user-list", {
                 params: {
@@ -87,32 +88,139 @@ const UserTable = () => {
 
 
         } catch (error) {
+
+            toast.error('Error fetching table items.', {
+                className: "sonner-toast-error",
+                cancel: {
+                    label: 'Close',
+                    onClick: () => console.log('Close'),
+                }
+            });
+
             console.error("Error fetching table items:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
+
+
+    const handleVerify = async (userId: string) => {
+        try {
+            const response = await fetch('/api/resend-verify-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                toast.success('Verification email sent successfully.', {
+                    className: "sonner-toast-success",
+                    cancel: {
+                        label: 'Close',
+                        onClick: () => console.log('Close'),
+                    },
+                });
+            } else {
+                toast.error('Failed to send verification email.', {
+                    className: "sonner-toast-error",
+                    cancel: {
+                        label: 'Close',
+                        onClick: () => console.log('Close'),
+                    },
+                });
+            }
+        } catch (error) {
+            console.error("Error sending verification email:", error);
+            toast.error('Something went wrong. Please try again.', {
+                className: "sonner-toast-error",
+                cancel: {
+                    label: 'Close',
+                    onClick: () => console.log('Close'),
+                },
+            });
+        }
+    }
+
     const handleDelete = async (userId) => {
-        const confirmation = confirm("Are you sure you want to delete this user?");
-        if (!confirmation) return;
+
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to delete this data ?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No',
+        });
+
+        if (!result.isConfirmed) {
+            return; // Stop submission if the user cancels
+        }
 
         try {
             const response = await axios.get(`/api/delete-user?userId=${userId}`, {
             });
 
             if (response.status === 200) {
-                alert("User deleted successfully.");
+
+                toast.success('User deleted successfully!', {
+                    className: "sonner-toast-success",
+                    cancel: {
+                        label: 'Close',
+                        onClick: () => console.log('Close'),
+                    },
+                });
+
                 fetchTableItems();
             } else {
-                alert(`Failed to delete user: ${response.data.message || "Unknown error"}`);
+
+                toast.error('Failed to delete user!', {
+                    className: "sonner-toast-error",
+                    cancel: {
+                        label: 'Close',
+                        onClick: () => console.log('Close'),
+                    },
+                });
+
             }
         } catch (error) {
             console.error("Error deleting user:", error);
-            alert(error.response?.data?.message || "An error occurred while deleting the user. Please try again.");
+            toast.error(error.response?.data?.message || "An error occurred while deleting the user. Please try again.", {
+                className: "sonner-toast-error",
+                cancel: {
+                    label: 'Close',
+                    onClick: () => console.log('Close'),
+                },
+            });
         }
     };
 
 
     const handleToggle = async (index: number, key: "is_active" | "is_approve") => {
         const updatedValue = !tableItems[index][key];
+
+        // Show confirmation alert before updating status
+        const result = await Swal.fire({
+            title: "Are you sure?",
+            text: key === "is_active"
+                ? `Do you want to ${updatedValue ? "activate" : "deactivate"} this user?`
+                : `Do you want to ${updatedValue ? "approve" : "disapprove"} this user?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, proceed!",
+            cancelButtonText: "No",
+        });
+
+        if (!result.isConfirmed) {
+            return; // Stop execution if the user cancels
+        }
 
         // Optimistically update the UI
         setTableItems((prevItems) =>
@@ -131,6 +239,20 @@ const UserTable = () => {
             if (response.status !== 200) {
                 throw new Error("Failed to update status");
             }
+
+            toast.success(
+                key === "is_active"
+                    ? `User ${updatedValue ? "activated" : "deactivated"} successfully!`
+                    : `User ${updatedValue ? "approved" : "disapproved"} successfully!`,
+                {
+                    className: "sonner-toast-success",
+                    cancel: {
+                        label: "Close",
+                        onClick: () => console.log("Close"),
+                    },
+                }
+            );
+
         } catch (error) {
             console.error("Error updating status:", error);
 
@@ -140,27 +262,44 @@ const UserTable = () => {
                     idx === index ? { ...item, [key]: !updatedValue } : item
                 )
             );
+
+            toast.error(
+                key === "is_active"
+                    ? "Failed to update activation status."
+                    : "Failed to update approval status.",
+                {
+                    className: "sonner-toast-error",
+                    cancel: {
+                        label: "Close",
+                        onClick: () => console.log("Close"),
+                    },
+                }
+            );
         }
     };
+
+
+
     const handleEdit = (userId) => {
         // Navigate to the edit page with the user ID as a query parameter
         router.push(`/admin/users/useredit?userId=${userId}`);
     };
 
-    // Handle Previous Page click
-    const handlePrevious = () => {
-        if (currentPage > 1) {
-            setCurrentPage(prevPage => prevPage - 1);
+    // Handle page navigation
+    const handlePageChange = (page: number) => {
+        if (page >= 1 && page <= pages) {
+            setCurrentPage(page);
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
         }
     };
 
-    // Handle Next Page click
-    const handleNext = () => {
-        if (currentPage < pages) {
-            setCurrentPage(prevPage => prevPage + 1);
-        }
-    };
-
+    
+    if (isLoading) {
+        return <Loader />
+    }
 
     return (
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">
@@ -250,13 +389,13 @@ const UserTable = () => {
                             <th className="py-3 px-6 dark-text">Phone Number</th>
                             <th className="py-3 px-6 dark-text">User Status</th>
                             <th className="py-3 px-6 dark-text">Acccount Status</th>
-                            <th className="py-3 px-6">Action</th>
+                            <th className="py-3 px-6 dark-text">Action</th>
                         </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y">
                         {tableItems.length === 0 ? (
                             <tr>
-                                <td colSpan="6" className="text-center px-6 py-4 whitespace-nowrap">
+                                <td colSpan={6} className="text-center px-6 py-4 whitespace-nowrap">
                                     No data found
                                 </td>
                             </tr>
@@ -376,6 +515,30 @@ const UserTable = () => {
                                                 </button>
 
                                             )}
+                                            {(!item.is_verify) && (
+                                                <button
+                                                    onClick={() => handleVerify(item._id)}
+                                                    className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
+                                                >
+
+                                                    <svg
+                                                        className="fill-current"
+                                                        width="18"
+                                                        height="18"
+                                                        viewBox="0 0 18 18"
+                                                        fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                        <path
+                                                            d="M2.25 3.375C1.55964 3.375 1 3.93464 1 4.625V13.375C1 14.0654 1.55964 14.625 2.25 14.625H15.75C16.4404 14.625 17 14.0654 17 13.375V4.625C17 3.93464 16.4404 3.375 15.75 3.375H2.25ZM3.0625 4.75H14.9375L9 9.125L3.0625 4.75ZM2.25 5.90625L9 10.875L15.75 5.90625V13.375H2.25V5.90625Z"
+                                                            fill=""
+                                                        />
+                                                    </svg>
+
+
+                                                </button>
+
+                                            )}
                                         </div>
                                     </td>
                                 </tr>
@@ -385,19 +548,85 @@ const UserTable = () => {
 
                 </table>
             </div>
-            <div className="max-w-screen-xl mx-auto mt-12 px-4 text-gray-600 md:px-8">
-                <div className="flex items-center justify-between text-sm text-gray-600 font-medium">
-                    <a href="#" onClick={handlePrevious} className="px-4 py-2 border rounded-lg duration-150 hover:bg-gray-50 dark-text">
-                        Previous
-                    </a>
-                    <div className="dark-text">
-                        Page {currentPage} of {pages}
+
+            {pages > 1 && (
+                <div className='rounded-sm dark:bg-boxdark'>
+                    <div className="p-4 sm:p-6 xl:p-7.5 pagination-div">
+                        <nav>
+                            <ul className="flex items-center justify-center space-x-2">
+                                {/* Previous Button */}
+                                <li>
+                                    <a
+                                        className={`flex h-8 w-8 items-center justify-center rounded-full bg-arrow text-white prev-btn ${currentPage === 1 ? 'pointer-events-none opacity-50' : ''
+                                            }`}
+                                        href="#"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            if (currentPage > 1) handlePageChange(currentPage - 1);
+                                        }}
+                                        aria-label="Previous Page"
+                                    >
+                                        <svg
+                                            className="fill-black"
+                                            width="8"
+                                            height="16"
+                                            viewBox="0 0 8 16"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M7.17578 15.1156C7.00703 15.1156 6.83828 15.0593 6.72578 14.9187L0.369531 8.44995C0.116406 8.19683 0.116406 7.80308 0.369531 7.54995L6.72578 1.0812C6.97891 0.828076 7.37266 0.828076 7.62578 1.0812C7.87891 1.33433 7.87891 1.72808 7.62578 1.9812L1.71953 7.99995L7.65391 14.0187C7.90703 14.2718 7.90703 14.6656 7.65391 14.9187C7.48516 15.0312 7.34453 15.1156 7.17578 15.1156Z" />
+                                        </svg>
+                                    </a>
+                                </li>
+
+                                {/* Page Numbers */}
+                                <li className="text-white p-2 page-number">
+                                    <div className="flex items-center justify-center">
+                                        {Array.from({ length: pages }, (_, index) => (
+                                            <a
+                                                key={index}
+                                                className={`flex items-center justify-center rounded-full text-black mr-5 ml-5 ${currentPage === index + 1 ? 'dark-text-active dark-text active-page-number' : ''
+                                                    }`}
+                                                href="#"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    handlePageChange(index + 1);
+                                                }}
+                                            >
+                                                {index + 1}
+                                            </a>
+                                        ))}
+                                    </div>
+                                </li>
+
+                                {/* Next Button */}
+                                <li>
+                                    <a
+                                        className={`flex h-8 w-8 items-center justify-center rounded-full bg-arrow text-white next-btn ${currentPage === pages ? 'pointer-events-none opacity-50' : ''
+                                            }`}
+                                        href="#"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            if (currentPage < pages) handlePageChange(currentPage + 1);
+                                        }}
+                                        aria-label="Next Page"
+                                    >
+                                        <svg
+                                            className="fill-black"
+                                            width="8"
+                                            height="16"
+                                            viewBox="0 0 8 16"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M0.819531 15.1156C0.650781 15.1156 0.510156 15.0593 0.369531 14.9468C0.116406 14.6937 0.116406 14.3 0.369531 14.0468L6.27578 7.99995L0.369531 1.9812C0.116406 1.72808 0.116406 1.33433 0.369531 1.0812C0.622656 0.828076 1.01641 0.828076 1.26953 1.0812L7.62578 7.54995C7.87891 7.80308 7.87891 8.19683 7.62578 8.44995L1.26953 14.9187C1.15703 15.0312 0.988281 15.1156 0.819531 15.1156Z" />
+                                        </svg>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+
                     </div>
-                    <a href="#" onClick={handleNext} className="px-4 py-2 border rounded-lg duration-150 hover:bg-gray-50 dark-text">
-                        Next
-                    </a>
                 </div>
-            </div>
+            )}
         </div >
     );
 };

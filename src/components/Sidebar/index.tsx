@@ -76,7 +76,7 @@ const menuGroups = [
           { label: "Add Users", route: "/admin/users/useradd" },
         ],
       },
-      
+
       {
         icon: (
           <svg
@@ -95,7 +95,7 @@ const menuGroups = [
         ),
         label: "Profile Request",
         route: "/admin/users/user-req-list",
-      }, 
+      },
       {
         icon: (
           <svg
@@ -135,11 +135,37 @@ const menuGroups = [
         label: "CMS",
         route: "#",
         children: [
-          { label: "Faq", route: "/admin/cms/faq/list" },
-          { label: "Terms", route: "/admin/cms/terms_conditions/list" },
+          { label: "Home ", route: "/admin/cms/home/page/view"},
+          { label: "Slider", route: "/admin/cms/home/slider/list"},
+          { label: "Testimonials", route: "/admin/cms/home/testimonial/list"},
+          { label: "Reviews", route: "/admin/cms/home/review/list"},
+          { label: "About", route: "/admin/cms/about/view"},
+          { label: "Faq", route: "/admin/cms/faq/list"},
+          { label: "Terms", route: "/admin/cms/terms_conditions/view"},
+          { label: "Privacy Policy", route: "/admin/cms/privacy-policy/view"},
         ],
       },
+      {
+        icon: (
+          <svg
+            className="fill-current"
+            width="18"
+            height="18"
+            viewBox="0 0 17 17"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M2.25 3.375C1.55964 3.375 1 3.93464 1 4.625V13.375C1 14.0654 1.55964 14.625 2.25 14.625H15.75C16.4404 14.625 17 14.0654 17 13.375V4.625C17 3.93464 16.4404 3.375 15.75 3.375H2.25ZM3.0625 4.75H14.9375L9 9.125L3.0625 4.75ZM2.25 5.90625L9 10.875L15.75 5.90625V13.375H2.25V5.90625Z"
+              fill=""
+            />
+          </svg>
 
+
+        ),
+        label: "Contact",
+        route: "/admin/contact-us",
+      },
 
     ],
   },
@@ -216,7 +242,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
       <aside
-        className={`fixed left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark bg-color-custom lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        className={`fixed left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden duration-300 ease-linear dark:bg-boxdark bg-color-custom lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
       >
         {/* <!-- SIDEBAR HEADER --> */}
@@ -259,7 +285,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-6">
             {menuGroups.map((group, groupIndex) => (
               <div key={groupIndex}>
-                <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
+                <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2 dark-texts">
                   {group.name}
                 </h3>
 

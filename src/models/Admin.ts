@@ -4,6 +4,7 @@ const AdminSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String },
+  email_code: { type: String, required: false },
   image: { type: String },
   updated_at: { type: Date, default: Date.now }
 }, { collection: "admin_users" });
@@ -12,11 +13,6 @@ const AdminSchema = new Schema({
 AdminSchema.statics.getByName = function (name: string) {
   return this.findOne({ name });
 };
-
-// Get Admin by id
-AdminSchema.statics.getById = function (id: string) {
-  return this.findOne({ _id: id });
-}
 
 // Get Admin by email
 AdminSchema.statics.getByEmail = function (email: string) {

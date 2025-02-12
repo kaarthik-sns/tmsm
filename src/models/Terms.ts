@@ -13,12 +13,6 @@ TermsSchema.statics.getByTitle = function (title: string) {
   return this.findOne({ title });
 };
 
-// Get terms by id
-TermsSchema.statics.getById = function (id: string) {
-  return this.findOne({ _id: id });
-}
-
-
 const Terms = models.terms_conditions || model("terms_conditions", TermsSchema);
 
 export default Terms;

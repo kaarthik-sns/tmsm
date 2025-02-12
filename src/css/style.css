@@ -333,4 +333,97 @@ li::marker {
     top: 54px;
     padding: 6px;
 }
+h2#swal2-title {
+    font-size: 16px;
+}
+div#swal2-html-container {
+    font-size: 16px;
+}
+button.swal2-confirm.swal2-styled.swal2-default-outline {
+    background: #fff2d7 !important;
+    color: #653D27;
+}
+button.swal2-cancel.swal2-styled.swal2-default-outline {
+    background: #ff0000 !important;
+}
 
+.dark-texts {
+    color: #653D27;
+}
+.dark-texts:hover {
+    color: #ff0000;
+}
+
+.cms-heading {
+    font-size: 25px;
+    font-weight: 600;
+    font-family: 'Noto Sans';
+    text-align: left;
+    text-transform: capitalize;
+    color: #000;
+    line-height: 35px;
+}
+.cms-description {
+    font-family: 'Noto Sans';
+    font-weight: 300;
+    text-transform: capitalize;
+    text-align: left;
+    font-size: 15px;
+    color: #653D27;
+    line-height: 35px;
+}
+
+.cms-heading  h2{
+    font-size: 25px;
+    font-weight: 600;
+    font-family: 'Noto Sans';
+    text-align: left;
+    text-transform: capitalize;
+    color: #000;
+    line-height: 35px;
+}
+.cms-heading  p{
+    font-family: 'Noto Sans';
+    font-weight: 300;
+    text-transform: capitalize;
+    text-align: left;
+    font-size: 15px;
+    color: #653D27;
+    line-height: 35px;
+    margin-top: 1em;
+
+}
+.cms-heading  p br{
+    display: none;
+}
+
+.bg-arrow {
+    background: #f8f0df;
+}
+
+th.py-3.px-6.dark-text {
+    font-size: 12px;
+}
+
+.focus\:border-primary:focus {
+    --tw-border-opacity: 1;
+    border-color: rgb(51 51 51) !important;
+}
+
+.member label {
+    text-transform: capitalize;
+}
+
+/* Custom class for SweetAlert2 */
+.confirm-color{
+    background-color: rgba(16, 185, 129, .08);
+    color: #10b981;
+}
+.cancel-color {
+    background-color: rgba(251, 84, 84, .08);
+    color: #fb5454;
+}
+.confirm-color-succes {
+    background-color: rgba(16, 185, 129, .08);
+    color: #10b981;
+}

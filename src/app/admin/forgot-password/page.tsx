@@ -4,19 +4,10 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import AuthLayout from '@/components/Layouts/AuthLayout';
-
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
-import { exit } from "process";
-import { Metadata } from "next";
-
-// export const metadata: Metadata = {
-//   title: "Forgot Passsword - TMSM",
-//   description:
-//     "",
-// };
 
 const ForgotPassword: React.FC = () => {
 
@@ -27,10 +18,22 @@ const ForgotPassword: React.FC = () => {
 
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
+  const [emailError, setEmailError] = useState<string>("");
+
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Reset previous errors
+    setEmailError("");
+    setError("");
+
+    if (!form.email) {
+      setEmailError("Email cannot be empty.");
+      return
+    }
+
     setPending(true);
 
     const res = await fetch("/api/forgot-password/", {
@@ -38,21 +41,30 @@ const ForgotPassword: React.FC = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     });
+
     const data = await res.json();
-    exit;
+    setPending(false);
+
     if (res.ok) {
-      setPending(false);
-      toast.success(data.message);
+      toast.success(data.message, {
+        className: "sonner-toast-success",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
       router.push("/admin/auth/signin");
-    } else if (res.status === 400) {
+    } else {
       setError(data.message);
-      setPending(false);
-    } else if (res.status === 500) {
-      setError(data.message);
-      setPending(false);
+      toast.error(data.message, {
+        className: "sonner-toast-error",
+        cancel: {
+          label: 'Close',
+          onClick: () => console.log('Close'),
+        },
+      });
     }
   };
-
 
 
   return (
@@ -60,7 +72,7 @@ const ForgotPassword: React.FC = () => {
 
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center bg-color-custom">
-        <div className="hidden w-full xl:block xl:w-1/2">
+          <div className="hidden w-full xl:block xl:w-1/2">
             <div className="px-26 py-17.5 text-center">
               <Link className="mb-5.5 inline-block" href="/">
                 <Image
@@ -105,9 +117,9 @@ const ForgotPassword: React.FC = () => {
                       disabled={pending}
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      required
                       placeholder="Enter your email"
-                      className="w-full rounded-lg border border-strokes bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      className={`w-full rounded-lg border ${emailError ? "border-red-500" : "border-stroke"
+                        } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
                     />
 
                     <span className="absolute right-4 top-4">
@@ -127,13 +139,14 @@ const ForgotPassword: React.FC = () => {
                         </g>
                       </svg>
                     </span>
+                    {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
                   </div>
                 </div>
 
                 <div className="mb-5">
                   <input
                     type="submit"
-                    value="Request rest password link"
+                    value="Send Password Reset Link"
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
                   />
                 </div>

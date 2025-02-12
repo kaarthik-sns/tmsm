@@ -1,38 +1,21 @@
-// import { headers } from 'next/headers';
-
-// export default async function VerifyEmailPage() {
-//     const searchParams = new URLSearchParams(headers().get('referer')?.split('?')[1]);
-//     const code = searchParams.get('code');
-
-//     if (!code) {
-//         return <div>Invalid verification code</div>;
-//     }
-
-//     try {
-//         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/verify-email?code=${code}`, {
-//             cache: 'no-store',
-//         });
-//         const data = await res.json();
-
-//         if (res.ok) {
-//             return <div>{data.message}</div>;
-//         } else {
-//             return <div>{data.message}</div>;
-//         }
-//     } catch (error) {
-//         console.error(error);
-//         return <div>An error occurred while processing your request</div>;
-//     }
-// }
-
 'use client';
 
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Loader from "@/components/common/Loader";
+import FrontendLayouts from "@/components/Layouts/Frontendlayout";
+import { useRouter } from "next/navigation"; // For Next.js 13+
+
 
 export default function VerifyEmailPage() {
+
+    const router = useRouter();
     const searchParams = useSearchParams();
-    const [message, setMessage] = useState('Loading...');
+    const [message, setMessage] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(1);
+
+
     const code = searchParams.get('code');
 
     useEffect(() => {
@@ -49,8 +32,11 @@ export default function VerifyEmailPage() {
                 if (res.ok) {
                     setMessage(data.message);
                 } else {
-                    setMessage(data.message);
+                    setError(data.message);
                 }
+
+                setLoading(0);
+
             } catch (error) {
                 console.error(error);
                 setMessage('An error occurred while processing your request');
@@ -60,10 +46,38 @@ export default function VerifyEmailPage() {
         verifyEmail();
     }, [code]);
 
-    // return <div>{message}</div>;
-    return (<div className="max-w-md h-40 mx-auto mt-12 rounded-lg border-2 flex items-center justify-center">
+    if (loading) {
+        return <Loader />
+    }
 
-        <p className="mt-3 text-gray-700 max-w-xs mx-auto">{message} <a className="font-medium text-indigo-600" href='auth/signin'>Click to SignIn</a></p> 
+    return (
+        <FrontendLayouts>
+            <div className="flex bg-[#fbeed5] h-verify max-h-screen">
+                {/* Left Section - Login Form */}
+                <div className="w-full  flex flex-col justify-center items-center p-6 md:p-10">
+                    <div className="items-center md:w-100">
+                        <div className="w-full p-4">
+                            {message && (
+                                <p className="mt-3 text-gray-700 max-w-xs text-center">
+                                    {message}
+                                    <button
+                                        className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom mt-5 mb-5"
+                                        onClick={() => router.push("/login")}
+                                    >
+                                        Click to Login
+                                    </button>
+                                </p>
+                            )}
+                            {error && (
+                                <p className="mt-3 text-gray-700 max-w-xs text-center">{error}</p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </FrontendLayouts>
 
-    </div>)
+    );
+
+
 }

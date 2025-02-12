@@ -14,11 +14,6 @@ FaqSchema.statics.getByTitle = function (title: string) {
   return this.findOne({ title });
 };
 
-// Get faq by id
-FaqSchema.statics.getById = function (id: string) {
-  return this.findOne({ _id: id });
-}
-
 
 const Faq = models.faqs || model("faqs", FaqSchema);
 
