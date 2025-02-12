@@ -6,7 +6,6 @@ import Swal from 'sweetalert2'; // Import SweetAlert2
 import { TriangleAlert } from "lucide-react";
 import { IoPower } from 'react-icons/io5';
 import { IoLogOut } from "react-icons/io5"; // Import logout icon
-import DeactivateModal from "@/components/Frontend/Modal/DeactivateModal"
 
 type ChangePasswordProps = {
   myId: string;
@@ -19,7 +18,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
   const [activeTab, setActiveTab] = useState('password'); // State for active tab
   const [passwordError, setPasswordError] = useState<string>("");
   const [ConPasswordError, setConPasswordError] = useState<string>("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   const [form, setForm] = useState({
     password: "",
@@ -53,54 +52,55 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
     return null; // Valid password
   };
 
-  const handleDeactivateAccount = async (reason: string) => {
-
-    setPending(true);
-
-    const res = await fetch(`/api/update-user-status`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
+  const handleDeactivateAccount = async () => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "Once deactivated, you'll be logged out and can't log in until admin approval.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, deactivate it!',
+      cancelButtonText: 'No, cancel',
+      customClass: {
+        confirmButton: 'confirm-color',  // Custom class for confirm button (green)
+        cancelButton: 'cancel-color'       // Custom class for cancel button (red)
       },
-      body: JSON.stringify({
-        id: myId,
-        is_active: false,
-        reason
-      }),
-    })
+    });
 
-    const data = await res.json();
+    if (result.isConfirmed) {
+      setPending(true);
 
-    setIsModalOpen(false);
-
-    if (res.ok) {
-      setPending(false);
-      Swal.fire({
-        title: 'Deactivated!',
-        text: 'Deactivated, Your account has been deactivated',
-        icon: 'success',
-        confirmButtonText: 'OK',
-        customClass: {
-          confirmButton: 'confirm-color',  // Custom class for confirm button (green)
+      const res = await fetch(`/api/update-user-status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          id: myId,
+          is_active: false,
+        }),
       });
-      signOut(); // Log out the user
-    } else {
-      setPending(false);
-      Swal.fire('Error', data.message, 'error');
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setPending(false);
+        Swal.fire({
+          title: 'Deactivated!',
+          text: 'Deactivated, Your account has been deactivated',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          customClass: {
+            confirmButton: 'confirm-color',  // Custom class for confirm button (green)
+          },
+        });
+        signOut(); // Log out the user
+      } else {
+        setPending(false);
+        Swal.fire('Error', data.message, 'error');
+      }
     }
-
   };
 
-  const handleDeactivatePopup = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setPending(true);
@@ -273,22 +273,16 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
                         signOut(); // Proceed with sign-out if confirmed
                       }
                     }}
-                    className="flex items-center space-x-2 mb-2 px-3 py-2 text-sm rounded-lg border border-gray-600 bg-gray-600 text-white transition hover:bg-opacity-90"
+                    className="flex items-center space-x-2 px-3 py-2 text-sm rounded-lg border border-gray-600 bg-gray-600 text-white transition hover:bg-opacity-90"
                   >
                     <IoLogOut className="mr-2" /> Logout
                   </button>
                   <button
-                    onClick={handleDeactivatePopup}
-                    className="flex items-center space-x-2 px-3 py-2 text-sm rounded-lg border border-red-600 bg-red-600 text-white transition hover:bg-opacity-90"
+                    onClick={handleDeactivateAccount}
+                    className="flex items-center space-x-2 px-3 py-2 text-sm rounded-lg border border-red-600 bg-red-600 text-white transition hover:bg-opacity-90 mt-5"
                   >
-                    <IoPower className="mr-2" /> Deactivate Account
+                    <IoPower className="mr-2" />Deactivate Account
                   </button>
-
-                  <DeactivateModal
-                    isOpen={isModalOpen}
-                    onClose={handleCloseModal}
-                    onSubmit={handleDeactivateAccount}
-                  />
 
                 </div>
               </div>
