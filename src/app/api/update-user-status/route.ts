@@ -36,9 +36,6 @@ export async function PATCH(req: NextRequest) {
 
         let copyright = '';
         let contactMail = '';
-        let baseUrl = process.env.BASE_URL || '';  // ✅ Get BASE_URL from .env
-        //let mail_logo = `${baseUrl}/images/logo/Flogo.svg`;  // ✅ Construct full path dynamically
-        let mail_logo = `https://searchnscore.in/tmsm/images/mail-logo.png?t=${new Date().getTime()}`;
 
         const smtpSettings = await getSMTPSettings();
         if (smtpSettings) {
@@ -55,7 +52,7 @@ export async function PATCH(req: NextRequest) {
 
         if (is_active === false) {
             const receipients = [{ name, address: email }];
-            htmlBody = deactivateTemplate(name, copyright, contactMail, mail_logo);
+            htmlBody = deactivateTemplate(name, copyright, contactMail);
 
             await sendEmail({
                 receipients,
@@ -67,7 +64,7 @@ export async function PATCH(req: NextRequest) {
         const receipients = [{ name, address: email }];
 
         if (is_approve) {
-            htmlBody = adminApprovalTemplate(name, homePage, contactMail, copyright, mail_logo);
+            htmlBody = adminApprovalTemplate(name, homePage, contactMail, copyright);
             await sendEmail({
                 receipients,
                 subject: 'Congratulations! Your TMSM Account is Approved and Ready',
@@ -76,7 +73,7 @@ export async function PATCH(req: NextRequest) {
         }
 
         if (is_active) {
-            htmlBody = accountReactivationTemplate(name, homePage, contactMail, copyright, mail_logo);
+            htmlBody = accountReactivationTemplate(name, homePage, contactMail, copyright);
             await sendEmail({
                 receipients,
                 subject: '*Important* TMSM Account Activation Notice',

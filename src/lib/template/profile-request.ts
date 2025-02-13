@@ -1,4 +1,4 @@
-export const profileViewRequestTemplate = (recName: string, sentName: string, homePage: string, copyright: string, mail_logo: string, email: string) : string =>
+export const profileViewRequestTemplate = (recName: string, sentName: string, homePage: string, copyright: string, email: string) : string =>
     `<!DOCTYPE html>
     <html>
     <head>
@@ -104,7 +104,7 @@ export const profileViewRequestTemplate = (recName: string, sentName: string, ho
                 <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" class="container">
                     <tr>
                         <td align="center" class="logo">
-                            <img src="${mail_logo}" alt="TMSM Logo">
+                            <img src="cid:mail_logo" alt="TMSM Logo">
                         </td>
                     </tr>
                     <tr>
@@ -123,7 +123,7 @@ export const profileViewRequestTemplate = (recName: string, sentName: string, ho
                             <!-- Added Thanks & Regards Section -->
                             <p style="margin-top: 30px; font-size: 12px; color:rgb(0, 0, 0);">
                                 Thanks & Regards,<br>
-                                <span style="color:rgb(0, 0, 0); font-size: 12px;">TMSM Team</span>
+                                <span style="color:rgb(0, 0, 0); font-size: 12px;">TMSM Hub Team</span>
                             </p>
                             <p class="footer">${copyright}</p>
                         </td> 

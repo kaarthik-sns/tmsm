@@ -1,10 +1,10 @@
-export const welcomeTemplate = (userName: string,copyright: string, email: string, mail_logo: string): string =>
+export const welcomeTemplate = (userName: string,copyright: string): string =>
 `<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to TMSM</title>
+    <title>Welcome to TMSM Hub</title>
           <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
 
@@ -105,7 +105,7 @@ export const welcomeTemplate = (userName: string,copyright: string, email: strin
                 <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" class="container">
                     <tr>
                         <td align="center" class="logo">
-                            <img src="${mail_logo}" alt="TMSM Logo">
+                            <img src="cid:mail_logo" alt="TMSM Logo">
                         </td>
                     </tr>
                     <tr>
@@ -113,9 +113,9 @@ export const welcomeTemplate = (userName: string,copyright: string, email: strin
                             <h1>Registration Successful!</h1>
                                 <h2>Welcome, ${userName}!</h2>
 
-                                <p>Thank you for joining <strong>TMSM</strong>, the trusted matrimony platform. We are thrilled to have you as a part of our community!</p>
+                                <p>Thank you for joining <strong>TMSM Hub</strong>, the trusted matrimony platform. We are thrilled to have you as a part of our community!</p>
                                 <p>We wish you all the best in your journey to find your perfect match.</p>
-                                <p>Once the admin approves your registration, you will be able to log in to TMSM.</p>
+                                <p>Once the admin approves your registration, you will be able to log in to TMSM Hub.</p>
 
                                 <p class="text-red>
                                    <i><b>Admin approval</b> is required before you can access your account.  
@@ -124,7 +124,7 @@ export const welcomeTemplate = (userName: string,copyright: string, email: strin
                                 <!-- Thanks & Regards Section -->
                                 <p style="margin-top: 30px; font-size: 12px; color: rgb(0, 0, 0);">
                                     <i>Thanks & Regards,<br>
-                                    <span style="color: rgb(0, 0, 0); font-size: 12px;">TMSM Team</span></i>
+                                    <span style="color: rgb(0, 0, 0); font-size: 12px;">TMSM Hub Team</span></i>
                                 </p>
                                 <p class="footer"><i>${copyright}</i></p>
 
