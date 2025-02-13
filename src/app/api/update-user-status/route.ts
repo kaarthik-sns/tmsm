@@ -8,7 +8,7 @@ import getSMTPSettings from '@/utils/settings.util';
 import { sendEmail } from "@/utils/mail.util"
 
 export async function PATCH(req: NextRequest) {
-    const { id, is_active, is_approve, reason = null } = await req.json();
+    const { id, is_active, is_approve, reason = null, reactivate_reason = null } = await req.json();
 
     if (!id) {
         return NextResponse.json({ error: "Something went wrong please try again later!" }, { status: 500 });
@@ -22,6 +22,12 @@ export async function PATCH(req: NextRequest) {
         if (reason) {
             updateFields.deactivate_reason = reason;
         }
+
+        // Only add `reactivate_reason` if `reason` is provided
+        if (reactivate_reason) {
+            updateFields.reactivate_reason = reactivate_reason;
+        }
+
 
         const result = await User.updateOne(
             { _id: id },
