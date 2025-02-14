@@ -8,7 +8,9 @@ import bcrypt from 'bcryptjs';
 import { sendEmail } from "@/utils/mail.util"
 import { verificationTemplate } from '@/lib/template/verification';
 import { welcomeTemplate } from '@/lib/template/welcome';
-import { adminWelcomeTemplate } from '@/lib/template/welcome_admin';
+import { adminWelcomeTemplate } from '@/lib/template/welcome-admin';
+import getSMTPSettings from '@/utils/settings.util';
+
 
 type UploadedFile = {
     name: string;
@@ -47,7 +49,6 @@ const uploadFile = async (file: UploadedFile | undefined, uploadDir: string): Pr
 };
 
 
-
 export async function POST(request: NextRequest) {
 
     // Ensure the uploads directory exists
@@ -56,6 +57,14 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
 
+    let copyright = '';
+    let contactMail = '';
+
+    const smtpSettings = await getSMTPSettings();
+    if (smtpSettings) {
+        copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
+        contactMail = smtpSettings.organisation_email_id;
+    }
 
     // Extract all fields from formData
     const id = (formData.get('_id') as string) ?? '';
@@ -70,6 +79,8 @@ export async function POST(request: NextRequest) {
     const birthdate = (formData.get('birthdate') as string) ?? '';
     const age = (formData.get('age') as string) ?? '';
     const place_of_birth = (formData.get('place_of_birth') as string) ?? '';
+    const state_id = (formData.get('state_id') as string) ?? '';
+    const city_id = (formData.get('city_id') as string) ?? '';
     const education = (formData.get('education') as string) ?? '';
     const complexion = (formData.get('complexion') as string) ?? '';
     const profession = (formData.get('profession') as string) ?? '';
@@ -163,6 +174,8 @@ export async function POST(request: NextRequest) {
             subcaste,
             birthdate: parsedBirthdate,
             age,
+            state_id,
+            city_id,
             place_of_birth,
             education,
             complexion,
@@ -206,9 +219,10 @@ export async function POST(request: NextRequest) {
             profile_creator_phonenumber,
             lookingfor,
             bride_groom_detail,
-            gender
+            gender,
+            updated_at: new Date()
         });
-
+        
         if (id) {
             // Update data
             await User.findByIdAndUpdate(id, newUserFields, { new: true });
@@ -229,7 +243,7 @@ export async function POST(request: NextRequest) {
                 address: email
             }]
 
-            const htmlBody = welcomeTemplate(name);
+            const htmlBody = welcomeTemplate(name, copyright);
 
             const result = await sendEmail({
                 receipients,
@@ -237,7 +251,7 @@ export async function POST(request: NextRequest) {
                 message: htmlBody
             })
 
-            const htmlBody2 = verificationTemplate(name, verificationLink);
+            const htmlBody2 = verificationTemplate(name, verificationLink, copyright,contactMail);
 
             const result2 = await sendEmail({
                 receipients,
@@ -245,7 +259,7 @@ export async function POST(request: NextRequest) {
                 message: htmlBody2
             })
 
-            const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber);
+            const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber, copyright);
 
             const receipients2 = [{
                 name: 'admin',

@@ -2,14 +2,13 @@
 
 import React from "react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
-const ContactInfo = (settings) => {
+const ContactInfo = ({ data }) => {
 
-    const router = useRouter();
     const [pending, setPending] = useState(false);
     const [msg, setMsg] = useState(null);
     const [error, setError] = useState(null);
+    const [errors, setErrors] = useState<any>({});
 
     const [form, setForm] = useState({
         name: "",
@@ -20,48 +19,81 @@ const ContactInfo = (settings) => {
         phone: "",
     });
 
+
+    const validate = () => {
+        let newErrors: any = {};
+
+        // Name validation
+        if (!form.name) {
+            newErrors.name = "Name cannot be empty.";
+        }
+
+        // Email validation
+        if (!form.email) {
+            newErrors.email = "Email cannot be empty.";
+        } else if (!/\S+@\S+\.\S+/.test(form.email)) {
+            newErrors.email = "Please enter a valid email address";
+        }
+
+        // Phone number validation
+        if (!form.phone) {
+            newErrors.phone = "Phone number cannot be empty";
+        } else if (!/^\d{10}$/.test(form.phone)) {
+            newErrors.phone = "Please enter a valid 10-digit phone number";
+        }
+        if (!form.message) {
+            newErrors.message = "Message cannot be empty.";
+        }
+
+
+
+        return newErrors;
+    };
+
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        // Set pending state while submitting
         setPending(true);
-        setMsg(null); // Reset any previous error message
-        setError(null);
+        setErrors({});
+        setMsg(""); // Clear any previous success messages
 
-        try {
-            const res = await fetch("/api/contact-us", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form),
-            });
-
-            const data = await res.json();
-
-            if (res.ok) {
-                // On success, show success message
-                setPending(false);
-
-                setMsg('Thank you for contacting us. Our support team will contact you shortly!');
-
-                // Optionally, reset form after successful submission
-                setForm({
-                    name: "",
-                    lastname: "",
-                    email: "",
-                    message: "",
-                    interest: "",
-                    phone: "",
-                });
-            } else {
-                // On error, set the error state
-                setError(data.message || "Something went wrong!");
-                setPending(false);
-            }
-        } catch (err) {
-            // Catch any errors from the fetch itself
+        const validationErrors = validate();
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
             setPending(false);
-            setError("An error occurred while submitting the form. Please try again.");
+            return;
         }
+
+
+        const res = await fetch("/api/contact-us", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(form),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            // On success, show success message
+            setPending(false);
+
+            setMsg('Thank you for contacting us. Our support team will contact you shortly!');
+
+            // Optionally, reset form after successful submission
+            setForm({
+                name: "",
+                lastname: "",
+                email: "",
+                message: "",
+                interest: "",
+                phone: "",
+            });
+        } else {
+            // On error, set the error state
+            setError(data.message || "Something went wrong!");
+            setPending(false);
+        }
+
     };
 
     return (
@@ -76,8 +108,7 @@ const ContactInfo = (settings) => {
                     <div className="row flex flex-col md:flex-row ">
                         <div className="w-full md:w-1/2 px-7.5 con-form-line-info">
                             <div className="con-message">
-                                <h4>Send a Message</h4>
-                                <p>Our support team is here for you! Whether you have questions or need assistance, feel free to contact us via phone, email, or our contact form. We're dedicated to making your journey to finding a partner smooth and enjoyable.</p>
+                                <p>{data.contact_desc}</p>
                             </div>
                             <div className="con-data-forms">
                                 <form onSubmit={handleSubmit}>
@@ -89,10 +120,12 @@ const ContactInfo = (settings) => {
                                                     disabled={pending}
                                                     value={form.name}
                                                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                                                    required
                                                     placeholder="Name"
                                                     className="w-full text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                                 />
+                                                {errors.name && (
+                                                    <p className="text-red-600 text-sm">{errors.name}</p>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="w-full md:w-1/2  con-list-info">
@@ -103,11 +136,13 @@ const ContactInfo = (settings) => {
                                                     disabled={pending}
                                                     value={form.email}
                                                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                                                    required
                                                     placeholder="E-mail id"
                                                     className="w-full text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                                 />
                                             </div>
+                                            {errors.email && (
+                                                <p className="text-red-600 text-sm">{errors.email}</p>
+                                            )}
                                         </div>
 
                                     </div>
@@ -120,12 +155,15 @@ const ContactInfo = (settings) => {
                                                     disabled={pending}
                                                     value={form.phone}
                                                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                                                    required
                                                     placeholder="Phone Number"
                                                     className="w-full text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                                 />
                                             </div>
+                                            {errors.phone && (
+                                                <p className="text-red-600 text-sm">{errors.phone}</p>
+                                            )}
                                         </div>
+
                                     </div>
 
 
@@ -136,11 +174,13 @@ const ContactInfo = (settings) => {
                                                     disabled={pending}
                                                     value={form.message}
                                                     onChange={(e) => setForm({ ...form, message: e.target.value })}
-                                                    required
                                                     placeholder="Message"
                                                     className="w-full text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                                 />
                                             </div>
+                                            {errors.message && (
+                                                <p className="text-red-600 text-sm">{errors.message}</p>
+                                            )}
                                         </div>
                                     </div>
                                     <p className={`${msg ? "text-green-500" : error ? "text-red-500" : ""}`}>
@@ -166,7 +206,7 @@ const ContactInfo = (settings) => {
                                     <p>Call us for any assistance or inquiries about your matrimonial journey.</p>
                                     <div className="call-info">
                                         <span className="icon-info"><img src="/images/contact/call-icon.svg" alt="call-icon" /></span>
-                                        <a className="info-link-data" href={`tel:${settings.data.phone_no}`} >{settings.data.phone_no}</a>
+                                        <a className="info-link-data" href={`tel:${data.phone_no}`} >{data.phone_no}</a>
                                     </div>
                                 </div>
                                 <div className="con-list-of-data">
@@ -174,7 +214,7 @@ const ContactInfo = (settings) => {
                                     <p>E-Mail us for any assistance or inquiries about your matrimonial journey.</p>
                                     <div className="call-info">
                                         <span className="icon-info"><img src="/images/contact/mail-icon.svg" alt="call-icon" /></span>
-                                        <a className="info-link-data" href={`mailto:${settings.data.organisation_email_id}`}>{settings.data.organisation_email_id}</a>
+                                        <a className="info-link-data" href={`mailto:${data.organisation_email_id}`}>{data.organisation_email_id}</a>
                                     </div>
                                 </div>
 
@@ -182,9 +222,9 @@ const ContactInfo = (settings) => {
                                     <h4>Follow Us</h4>
                                     <p>Follow us on social media links for the latest updates and matrimonial tips.</p>
                                     <ul className="social-media-info">
-                                        <li><a href={settings.data.twitter} target="_blank"><img src="/images/contact/twitter-icon.svg" alt="twitter" /></a></li>
-                                        <li><a href={settings.data.facebook} target="_blank"><img src="/images/contact/facebook-icon.svg" alt="facebook" /></a></li>
-                                        <li><a href={settings.data.instagram} target="_blank"><img src="/images/contact/instagram-icon.svg" alt="instagram" /></a></li>
+                                        <li><a href={data.twitter} target="_blank"><img src="/images/contact/twitter-icon.svg" alt="twitter" /></a></li>
+                                        <li><a href={data.facebook} target="_blank"><img src="/images/contact/facebook-icon.svg" alt="facebook" /></a></li>
+                                        <li><a href={data.instagram} target="_blank"><img src="/images/contact/instagram-icon.svg" alt="instagram" /></a></li>
                                     </ul>
                                 </div>
                             </div>

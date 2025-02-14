@@ -43,7 +43,6 @@ const AdminProfile = () => {
           setEmail(data.data.email);
           setPreview(data.data.image);
 
-          console.log(data.data.image);
         } else {
           console.error("Failed to fetch user data");
         }
@@ -63,17 +62,51 @@ const AdminProfile = () => {
     }
   };
 
+  const validatePassword = (password: string): string | null => {
+    const minLength = 6;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    if (password.length < minLength) {
+      return "Password must be at least 6 characters long.";
+    }
+    if (!hasUpperCase) {
+      return "Password must contain at least one uppercase letter.";
+    }
+    if (!hasLowerCase) {
+      return "Password must contain at least one lowercase letter.";
+    }
+    if (!hasNumber) {
+      return "Password must contain at least one number.";
+    }
+    if (!hasSpecialChar) {
+      return "Password must contain at least one special character.";
+    }
+    return null; // Valid password
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (changePassword && (password == '' || password == '')) {
-      setError("Please fill the password fileds");
-      return;
-    }
+    if (changePassword) {
+      if (password == '' || confirmPassword == '') {
+        setError("Please fill the password fileds");
+        return;
+      }
 
-    if (changePassword && password !== confirmPassword) {
-      setError("Passwords don't match");
-      return;
+      if (password !== confirmPassword) {
+        setError("Passwords don't match");
+        return;
+      }
+
+      const passwordError = validatePassword(password || "");
+
+      if (passwordError) {
+        setError(passwordError);
+        return;
+      }
     }
 
     const formData = new FormData();
@@ -81,10 +114,21 @@ const AdminProfile = () => {
     formData.append("email", email);
     formData.append("id", session.user.id);
 
+
+    if (!name) {
+      setError(`Name can't be empty`)
+      return
+    }
+
+    if (!email) {
+      setError(`Email can't be empty`)
+      return
+    }
+
+
     if (profilePic) formData.append("profilePic", profilePic);
     if (password) formData.append("password", password);
 
-    console.log(formData);
 
     try {
       const response = await fetch("/api/update-admin", {
@@ -100,6 +144,10 @@ const AdminProfile = () => {
             onClick: () => console.log('Close'),
           },
         });
+         // Delay the page reload to allow the user to see the success message
+         setTimeout(() => {
+          window.location.reload();
+      }, 1000); // Adjust the delay (in milliseconds) as needed
       } else {
         toast.error('Failed to update profile', {
           className: "sonner-toast-error",

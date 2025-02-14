@@ -61,7 +61,16 @@ const FormElements = () => {
     profile_creator_aadhar: "",
     profile_creator_phonenumber: "",
     lookingfor: "",
-    partner_pref_subcaste: ""
+    partner_pref_subcaste: "",
+    gender: "",
+    bride_groom_detail: "",
+    state_id: "",
+    city_id: "",
+    state: { name: "" },
+    city: { name: "" },
+    reactivate_reason: "",
+    deactivate_reason: "",
+    is_active:Boolean
   });
 
   const handlePreview = () => {
@@ -95,7 +104,6 @@ const FormElements = () => {
 
           const { data } = await response.json();
           setFormData(data);
-          console.log(formData);
 
         } catch (err) {
           console.error(err);
@@ -128,10 +136,10 @@ const FormElements = () => {
   return (
     <>
       <Breadcrumb pageName="View User" />
-      <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-9 sm:grid-cols-2 member">
         <div className="flex flex-col gap-9">
 
-          {(formData.profile_created_for !== 'myself') && (
+          {(formData.profile_created_for && formData.profile_created_for !== 'myself') && (
             <>
               <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
@@ -140,10 +148,38 @@ const FormElements = () => {
                   </h3>
                 </div>
                 <div className="p-6.5">
+                  <div className="mb-2.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Profile created for : {formData.profile_created_for || ''}
+                    </label>
+                  </div>
 
+                  <div className="mb-2.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Email : {formData.email || ""}
+                    </label>
+                  </div>
+                  <div className="mb-2.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Phone Number : {formData.phonenumber || ""}
+                    </label>
+
+                  </div>
+
+                  < div className="mb-2.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Name : {formData.profile_creator_name || ""}
+                    </label>
+                  </div>
+
+                  <div className="mb-2.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Aadhar Number : {formData.profile_creator_aadhar || ""}
+                    </label>
+                  </div>
                   <div className="mb-4.5">
                     <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                      Picture
+                      Creator Picture
                     </label>
                     <div className="flex items-center space-x-4">
                       <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
@@ -161,31 +197,6 @@ const FormElements = () => {
                       </div>
                     </div>
                   </div>
-
-                  <div className="mb-2.5">
-                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                      Profile created for : {formData.profile_created_for || ''}
-                    </label>
-                  </div>
-
-                  < div className="mb-2.5">
-                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                      Name : {formData.profile_creator_name || ""}
-                    </label>
-                  </div>
-
-                  <div className="mb-2.5">
-                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                      Aadhar Number : {formData.profile_creator_aadhar || ""}
-                    </label>
-                  </div>
-
-                  <div className="mb-2.5">
-                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                      Phone Number : {formData.profile_creator_phonenumber || ""}
-                    </label>
-                  </div>
-
                 </div>
               </div>
             </>
@@ -201,13 +212,13 @@ const FormElements = () => {
             <div className="p-6.5">
               <div className="mb-4.5">
                 <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Profile Picture
+                  Profile (Groom / Bride)
                 </label>
                 <div className="flex items-center space-x-4">
                   <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
                     {formData.profile_photo && (
                       <NextImage
-                        src={formData.profile_photo || ""}
+                        src={formData.profile_photo || "/uploads/photos/1738154599244-a8e0a88c34bc.png"}
                         alt="Profile Preview"
                         width={64}
                         height={64}
@@ -223,30 +234,28 @@ const FormElements = () => {
               <div className="mb-2.5">
                 <div className="w-full xl:w-1/2">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    First name : {formData.name || "No name provided"} {formData.lastname || ""}
+                    Name : {formData.name || "No name provided"} {formData.lastname || ""}
                   </label>
 
                 </div>
-
-
               </div>
               <div className="mb-2.5">
                 <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Email : {formData.email || ""}
+                  Bio  (Bride / Groom): {formData.bride_groom_detail || ""}
                 </label>
               </div>
+
               <div className="mb-2.5">
                 <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Phone Number : {formData.phonenumber || ""}
+                  Gender for (Bride / Groom) : {formData.gender || ""}
                 </label>
-
               </div>
-
               <div className="mb-4.5">
                 <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                   Marital Status : {formData.maritalstatus || ''}
                 </label>
               </div>
+
 
               <div className="mb-4.5">
                 <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
@@ -267,7 +276,7 @@ const FormElements = () => {
               </div>
               <div>
                 <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  SubCaste : {formData.subcaste}
+                  Subcaste in Mudaliyar : {formData.subcaste}
                 </label>
               </div>
               <div>
@@ -286,6 +295,42 @@ const FormElements = () => {
                   Place of birth :  {formData.place_of_birth || ""}
                 </label>
               </div>
+
+              <div className="mb-2.5">
+                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                  Additional Number : {formData.profile_creator_phonenumber || ""}
+                </label>
+              </div>
+
+            </div>
+          </div>
+
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium dark-text dark:text-white">
+                Location Details
+              </h3>
+            </div>
+            <div className="p-6.5">
+
+              <div className="mb-2.5">
+                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                  City :  {formData?.city?.name || ""}
+                </label>
+              </div>
+
+              <div className="mb-2.5">
+                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                  State :  {formData?.state?.name || ""}
+                </label>
+              </div>
+
+              <div className="mb-2.5">
+                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                  Address : {formData.address || ""}
+                </label>
+              </div>
+
             </div>
           </div>
 
@@ -305,7 +350,7 @@ const FormElements = () => {
 
               <div className="mb-2.5">
                 <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Complexation for Groom / Bride (Dark/Wheat/Fair) : {formData.complexion || ""}
+                  Complexion of Groom/Bride: (Dark, Wheatish, or Fair) : {formData.complexion || ""}
                 </label>
               </div>
 
@@ -440,13 +485,6 @@ const FormElements = () => {
                   Mother's place of work : {formData.mother_placeOfWork || ""}
                 </label>
               </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Address : {formData.address || ""}
-                </label>
-
-              </div>
-
             </div>
           </div>
           {/* <!-- Partner Preference  --> */}
@@ -474,109 +512,147 @@ const FormElements = () => {
               </div>
               <div className="mb-2.5">
                 <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  SubCaste : {formData.subcaste}
+                  Subcaste in Mudaliyar : {formData.subcaste}
                 </label>
               </div>
             </div>
           </div>
           {/* <!-- Partner Preference end --> */}
 
-
-          {/* <!-- Photo upload start --> */}
+          {/* <!-- acount status details --> */}
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium dark-text dark:text-white">
-                Additional Picture
+                Account Status Details
               </h3>
             </div>
+            <div className="p-6.5">
 
-            <div className="flex flex-col gap-5.5 p-6.5">
-              <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                {formData.photo1 && (
-                  <div className="w-full xl:w-1/2">
-                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                      Picture
-                    </label>
-                    <div className="flex items-center space-x-4">
-                      <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                        <NextImage
-                          src={formData.photo1 || ""}
-                          alt="Profile Preview"
-                          width={64}
-                          height={64}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {formData.photo2 && (
-                  <div className="w-full xl:w-1/2">
-                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                      Picture2
-                    </label>
-                    <div className="flex items-center space-x-4">
-                      <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                        <NextImage
-                          src={formData.photo2 || ""}
-                          alt="Profile Preview"
-                          width={64}
-                          height={64}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {formData.photo2 && (
-                  <div className="w-full xl:w-1/2">
-                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                      Picture3
-                    </label>
-                    <div className="flex items-center space-x-4">
-                      <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                        <NextImage
-                          src={formData.photo3 || ""}
-                          alt="Profile Preview"
-                          width={64}
-                          height={64}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {formData.photo4 && (
-                  <div className="w-full xl:w-1/2">
-                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                      Picture4
-                    </label>
-                    <div className="flex items-center space-x-4">
-                      <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                        <NextImage
-                          src={formData.photo4 || ""}
-                          alt="Profile Preview"
-                          width={64}
-                          height={64}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
+              <div className="mb-2.5">
+                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                  Account Status :{" "}
+                  <span
+                    className={`${formData.is_active ? "text-green-500" : "text-red-500"
+                      } font-semibold`}
+                  >
+                    {formData.is_active ? "Active" : "Inactive"}
+                  </span>
+                </label>
               </div>
+
+
+              <div className="mb-2.5">
+                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                  Deactivate Reason : {formData.deactivate_reason || ""}
+                </label>
+              </div>
+              <div className="mb-2.5">
+                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                  Reactivate Reason : {formData.reactivate_reason || ""}
+                </label>
+              </div>
+
             </div>
           </div>
-          {/* <!-- Photo upload end--> */}
+          {/* <!-- Partner Preference end --> */}
 
+
+          {/* <!-- Photo upload start --> */}
+          {(formData.photo1 || formData.photo2 || formData.photo3 || formData.photo4) && (
+
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                <h3 className="font-medium dark-text dark:text-white">
+                  Additional Picture
+                </h3>
+              </div>
+
+              <div className="flex flex-col gap-5.5 p-6.5">
+                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                  {formData.photo1 && (
+                    <div className="w-full xl:w-1/2">
+                      <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                        Picture
+                      </label>
+                      <div className="flex items-center space-x-4">
+                        <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
+                          <NextImage
+                            src={formData.photo1 || ""}
+                            alt="Profile Preview"
+                            width={64}
+                            height={64}
+                            quality={100}
+                            unoptimized={true}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {formData.photo2 && (
+                    <div className="w-full xl:w-1/2">
+                      <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                        Picture2
+                      </label>
+                      <div className="flex items-center space-x-4">
+                        <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
+                          <NextImage
+                            src={formData.photo2 || ""}
+                            alt="Profile Preview"
+                            width={64}
+                            height={64}
+                            quality={100}
+                            unoptimized={true}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {formData.photo2 && (
+                    <div className="w-full xl:w-1/2">
+                      <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                        Picture3
+                      </label>
+                      <div className="flex items-center space-x-4">
+                        <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
+                          <NextImage
+                            src={formData.photo3 || ""}
+                            alt="Profile Preview"
+                            width={64}
+                            height={64}
+                            quality={100}
+                            unoptimized={true}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {formData.photo4 && (
+                    <div className="w-full xl:w-1/2">
+                      <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                        Picture4
+                      </label>
+                      <div className="flex items-center space-x-4">
+                        <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
+                          <NextImage
+                            src={formData.photo4 || ""}
+                            alt="Profile Preview"
+                            width={64}
+                            height={64}
+                            quality={100}
+                            unoptimized={true}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
 
         </div>
       </div>

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react"
 import StatusFilter from "@/components/UserReqTable/Select/StatusFilter";
 import UpdateStatus from "@/components/UserReqTable/Select/UpdateStatus";
 import { toast } from "sonner";
+import Swal from 'sweetalert2';
+import Loader from "@/components/common/Loader";
 
 const UserTable = () => {
 
@@ -11,6 +13,7 @@ const UserTable = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [tableItems, setTableItems] = useState([]);
     const [triggerFetch, setTriggerFetch] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [formState, setFormState] = useState({
         name: "",
@@ -63,6 +66,7 @@ const UserTable = () => {
 
     // Fetch table items from API
     const fetchTableItems = async () => {
+        setIsLoading(true);
         try {
             const response = await fetch('/api/requests/user-req-list', {
                 method: 'POST',
@@ -78,18 +82,70 @@ const UserTable = () => {
             });
 
             const data = await response.json();
-            console.log(data);
+
             setTableItems(data.data);
             setPages(data.pagination.totalPages);
         } catch (error) {
-            toast.error("Error fetching table items");
+
+            toast.error('Error fetching table items.', {
+                className: "sonner-toast-error",
+                cancel: {
+                    label: 'Close',
+                    onClick: () => console.log('Close'),
+                }
+            });
 
             console.error("Error fetching table items:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
 
     const handleStatusUpdate = async (id: string, newStatus: string) => {
+
+        let confirmationMessage = "";
+        let successMessage = "";
+        let confirmButtonText = "";
+
+        switch (newStatus) {
+            case "accepted":
+                confirmationMessage = "Do you want to accept this request?";
+                successMessage = "Request accepted successfully.";
+                confirmButtonText = "Yes, Accept";
+                break;
+            case "rejected":
+                confirmationMessage = "Do you want to decline this request?";
+                successMessage = "Request has been declined.";
+                confirmButtonText = "Yes, Decline";
+                break;
+            case "cancel":
+                confirmationMessage = "Do you want to cancel this request?";
+                successMessage = "Request has been cancelled.";
+                confirmButtonText = "Yes, Cancel";
+                break;
+            default:
+                return;
+        }
+
+        const result = await Swal.fire({
+            title: "Are you sure?",
+            text: confirmationMessage,
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: confirmButtonText,
+            cancelButtonText: "No",
+            customClass: {
+                confirmButton: 'confirm-color',  // Custom class for confirm button (green)
+                cancelButton: 'cancel-color'       // Custom class for cancel button (red)
+            },
+
+        });
+
+        if (!result.isConfirmed) {
+            return; // Stop execution if the user cancels
+        }
+
         // Find the item being updated
         const updatedItem = tableItems.find((item) => item._id === id);
 
@@ -106,13 +162,13 @@ const UserTable = () => {
         );
 
         try {
-            // API call to update the status on the server update-request-status
+            // API call to update the status on the server
             const response = await fetch(`/api/requests/update-request-status`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ id: id, status: newStatus }), // Ensure the status is sent in the correct format
+                body: JSON.stringify({ id: id, status: newStatus }),
             });
 
             if (!response.ok) {
@@ -121,7 +177,6 @@ const UserTable = () => {
 
             // Success: Optionally handle the response here
             const data = await response.json();
-            // toast.success("Status updated successfully");
 
             toast.success('Status updated successfully!', {
                 className: "sonner-toast-success",
@@ -131,7 +186,7 @@ const UserTable = () => {
                 },
             });
 
-            console.log("Status updated successfully", data);
+            fetchTableItems();
 
         } catch (error) {
             // Failure: revert to the previous status
@@ -162,6 +217,10 @@ const UserTable = () => {
             });
         }
     };
+
+    if (isLoading) {
+        return <Loader />
+    }
 
     return (
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">

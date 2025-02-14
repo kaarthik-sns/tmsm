@@ -19,7 +19,10 @@ export async function POST(request: NextRequest) {
                     pipeline: [
                         {
                             $match: {
-                                $expr: { $eq: ['$_id', '$$receiverId'] }
+                                $expr: { $eq: ['$_id', '$$receiverId'] },
+                                is_delete: false,
+                                is_approve: true,
+                                is_verify: true
                             }
                         },
                     ],
@@ -27,7 +30,7 @@ export async function POST(request: NextRequest) {
                 }
             },
             {
-                $unwind: { path: '$user', preserveNullAndEmptyArrays: true }
+                $unwind: '$user' // Removes documents where no matching user is found
             },
             {
                 $match: {
@@ -48,7 +51,10 @@ export async function POST(request: NextRequest) {
                     pipeline: [
                         {
                             $match: {
-                                $expr: { $eq: ['$_id', '$$senderId'] }
+                                $expr: { $eq: ['$_id', '$$senderId'] },
+                                is_delete: false,
+                                is_approve: true,
+                                is_verify: true
                             }
                         },
                     ],
@@ -56,7 +62,7 @@ export async function POST(request: NextRequest) {
                 }
             },
             {
-                $unwind: { path: '$user', preserveNullAndEmptyArrays: true }
+                $unwind: '$user' // Removes documents where no matching user is found
             },
             {
                 $match: {

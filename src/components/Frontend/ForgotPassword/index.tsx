@@ -1,94 +1,107 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import AuthLayout from '@/components/Layouts/AuthLayout';
 import Link from "next/link";
-import Image from "next/image";
-import { useState } from "react";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
 
 const ForgotPassword: React.FC = () => {
-
   const [form, setForm] = useState({
     email: "",
     is_admin: false
   });
-
+  const [remainingTime, setRemainingTime] = useState(9); // 5 seconds initially
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [emailError, setEmailError] = useState<string>("");
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setPending(true);
-
-    const res = await fetch("/api/forgot-password/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
+    // Validate email field
+    if (!form.email.trim()) {
+      setEmailError("Email cannot be empty.");
       setPending(false);
-
-      toast.success(data.message, {
-        className: "sonner-toast-success",
-        cancel: {
-          label: 'Close',
-          onClick: () => console.log('Close'),
-        },
-      });
-      
-      router.push("/frontend/login");
+      return; // Stop the form submission if email is empty
     } else {
-      setError(data.message);
+      setEmailError(""); // Clear any previous error messages
+    }
+
+    try {
+      const res = await fetch("/api/forgot-password/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+      setSuccessMessage(""); // Clear previous success message
+
+      if (res.ok) {
+        setError('');
+        setPending(false);
+        setSuccessMessage("Your password reset request was successful. Please check your email.");
+      } else {
+        setError(data.message);
+        setPending(false);
+      }
+    } catch (err) {
+      setError("An error occurred. Please try again.");
       setPending(false);
     }
   };
 
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+
+    if (successMessage) {
+      timer = setInterval(() => {
+        setRemainingTime((prevTime) => {
+          if (prevTime === 1) {
+            clearInterval(timer as NodeJS.Timeout);  // Stop the timer
+            router.push("/login");  // Redirect after countdown finishes
+          }
+          return prevTime - 1;
+        });
+      }, 1000); // 1000ms = 1 second
+    }
+
+    return () => {
+      if (timer) clearInterval(timer); // Clean up the interval if the component unmounts or successMessage changes
+    };
+  }, [successMessage, router]);
+
   return (
-    <AuthLayout>
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div className="flex flex-wrap items-center bg-color-custom">
-          <div className="hidden w-full xl:block xl:w-1/2">
-            <div className="px-26 py-17.5 text-center">
-              <Link className="mb-5.5 inline-block" href="/">
-                <Image
-                  className="hidden dark:block f-logo"
-                  src={"/images/logo/logo.svg"}
-                  alt="Logo"
-                  width={300}
-                  height={100}
-                />
-                <Image
-                  className="dark:hidden f-logo"
-                  src={"/images/logo/logo-dark.svg"}
-                  alt="Logo"
-                  width={300}
-                  height={100}
-                />
-              </Link>
-            </div>
-          </div>
-          <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
-            <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
+    <>
+      <div className="flex bg-[#fbeed5]">
+        {/* Left Section - Forgot Password Form */}
+        <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-6 md:p-10">
+          <div className="flex items-center md:w-100">
+            <div className="w-full p-4">
               <h2 className="mb-6 text-2xl font-bold text-black dark:text-white sm:text-title-xl2 heading-title">
                 Forgot Password
               </h2>
-              <span className="mb-6 block font-medium">Please enter the email address you'd like your password <p>reset information sent to</p> </span>
 
+              {/* Show success message */}
+              {successMessage && (
+                <div className="bg-green-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-green-600 mb-6">
+                  <p>{successMessage} Redirecting to login in {remainingTime} seconds... </p>
+                </div>
+              )}
+
+              {/* Show error message */}
               {!!error && (
                 <div className="bg-red-100 md:bg-red-200 p-3 rounded-md flex items-center gap-x-2 text-sm text-red-600 mb-6">
                   <TriangleAlert />
                   <p>{error}</p>
                 </div>
               )}
-              <form onSubmit={handleSubmit}>
 
+              {/* Forgot Password Form */}
+              <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email
@@ -99,9 +112,11 @@ const ForgotPassword: React.FC = () => {
                       disabled={pending}
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      required
-                      placeholder="Enter your email"
-                      className="w-full rounded-lg border border-strokes bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      placeholder="E-mail id"
+                      className={`w-full rounded-lg border ${
+                        emailError ? "border-red-500" : "border-stroke"
+                      } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+                      autoComplete="off"
                     />
 
                     <span className="absolute right-4 top-4">
@@ -122,20 +137,22 @@ const ForgotPassword: React.FC = () => {
                       </svg>
                     </span>
                   </div>
+                  {emailError && (
+                      <p className="text-red-500 text-sm mt-1">{emailError}</p>
+                    )}
                 </div>
 
                 <div className="mb-5">
                   <input
                     type="submit"
-                    value="Request rest password link"
+                    value="Send Password Reset Link"
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
                   />
                 </div>
 
                 <div className="mt-6 text-center">
                   <p>
-                    {" "}
-                    <Link href="/frontend/login" className="text-primary dark-text">
+                    <Link href="/login" className="text-primary dark-text">
                       Back to Sign in
                     </Link>
                   </p>
@@ -144,8 +161,17 @@ const ForgotPassword: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Right Section - Image with Overlay */}
+        <div className="w-1/2 relative hidden md:block">
+          <img
+            src="/images/login/login.svg"
+            alt="Couple"
+            className="w-full h-full object-cover"
+          />
+        </div>
       </div>
-    </AuthLayout>
+    </>
   );
 };
 

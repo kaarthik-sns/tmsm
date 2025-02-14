@@ -140,7 +140,7 @@ export async function POST(request: NextRequest) {
         ]);
 
 
-        const totalRequests = ProfileRequestCount[0].totalCount;
+        const totalRequests = ProfileRequestCount[0]?.totalCount;
 
         // Prepare the response with pagination meta
         return NextResponse.json({

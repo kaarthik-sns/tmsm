@@ -2,10 +2,11 @@
 import { useState, useEffect } from "react";
 import Breadcrumb from "@/components/Breadcrumbs/UserBreadcrumb";
 import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
+import SelectGroupStates from "@/components/SelectGroup/SelectGroupStates";
+import SelectGroupCities from "@/components/SelectGroup/SelectGroupCities";
 import SelectGroupCaste from "@/components/SelectGroup/SelectGroupCaste";
 import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
 import { toast } from "sonner";
-import { TriangleAlert } from "lucide-react";
 import NextImage from "next/image";
 import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -29,6 +30,7 @@ const FormElements = () => {
 
   const router = useRouter();
 
+
   // Array for religions
   const religions = [
     "Hindu",
@@ -47,13 +49,15 @@ const FormElements = () => {
   const [formData, setFormData] = useState({
     name: "",
     lastname: "",
-    email: "",
-    phonenumber: "",
     religion: "",
     caste: "",
     subcaste: "",
+    email: "",
+    phonenumber: "",
     birthdate: "",
     age: 0,
+    state_id: "",
+    city_id: "",
     place_of_birth: "",
     education: "",
     complexion: "",
@@ -79,8 +83,6 @@ const FormElements = () => {
     mother_profession: "",
     mother_placeOfWork: "",
     address: "",
-    partner_pref_age: "",
-    partner_pref_education: "",
     profile_photo: "",
     photo1: "",
     photo2: "",
@@ -94,11 +96,29 @@ const FormElements = () => {
     profile_creator_aadhar: "",
     profile_creator_phonenumber: "",
     lookingfor: "",
+    partner_pref_age: "",
+    partner_pref_education: "",
+    partner_pref_caste: "",
     partner_pref_subcaste: "",
     gender: "",
     bride_groom_detail: ""
   });
+  // Set selected state and city based on formData
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
 
+  const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newState = event.target.value;
+    setSelectedState(newState);
+    setFormData({ ...formData, state_id: newState, city_id: "" }); // Reset city when state changes
+    setSelectedCity("");
+  };
+
+  const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCity = event.target.value;
+    setSelectedCity(newCity);
+    setFormData({ ...formData, city_id: newCity });
+  };
   useEffect(() => {
     if (userId) {
       const fetchUserData = async () => {
@@ -114,9 +134,10 @@ const FormElements = () => {
           }
 
           const { data } = await response.json();
-
+          console.log("data----", data);
           setFormData(data);
-
+          setSelectedState(data.state_id);
+          setSelectedCity(data.city_id);
           if (data?.profile_created_for != 'myself') {
             setProfileCreator(true);
           }
@@ -197,68 +218,82 @@ const FormElements = () => {
     }
 
     if (!formData.gender || formData.gender.trim() === "") {
-      errors.gender = "Gender for is required.";
+      errors.gender = "Gender for cannot be empty.";
     }
 
     if (!formData.name || formData.name.trim() === "") {
-      errors.name = "First name is required.";
+      errors.name = "First name cannot be empty.";
     }
 
     if (!formData.lastname || formData.lastname.trim() === "") {
-      errors.lastname = "Last name is required.";
+      errors.lastname = "Last name cannot be empty.";
     }
 
     if (!formData.email || !/^\S+@\S+\.\S+$/.test(formData.email)) {
-      errors.email = "A valid email is required.";
+      errors.email = "A valid email cannot be empty.";
     }
 
     if (!formData.phonenumber || !/^\d{10}$/.test(formData.phonenumber)) {
-      errors.phonenumber = "A valid 10-digit phone number is required.";
+      errors.phonenumber = "A valid 10-digit phone number cannot be empty.";
     }
 
     if (!formData.name || formData.name.trim() === "") {
-      errors.name = "First name is required.";
+      errors.name = "First name cannot be empty.";
     }
 
     if (!formData.profile_photo || formData.profile_photo.trim() === "") {
-      errors.profile_photo = "Profile Photo is required.";
+      errors.profile_photo = "Profile Photo cannot be empty.";
     }
 
     if (!formData.birthdate || formData.birthdate.trim() === "") {
-      errors.birthdate = "Date Of Birth is required.";
+      errors.birthdate = "Date Of Birth cannot be empty.";
     }
 
     if (!formData.maritalstatus || formData.maritalstatus.trim() === "") {
-      errors.maritalstatus = "Marital Status is required.";
+      errors.maritalstatus = "Marital Status cannot be empty.";
     }
 
     if (!formData.profile_created_for || formData.profile_created_for.trim() === "") {
-      errors.profile_created_for = "Profile created for is required.";
+      errors.profile_created_for = "Matrimony profile for  cannot be empty.";
+    }
+
+    if (!formData.state_id) {
+      errors.state_id = "State cannot be empty.";
+    }
+    if (!formData.city_id) {
+      errors.city_id = "City cannot be empty.";
+    }
+
+    if (!formData.address) {
+      errors.address = "Address cannot be empty.";
     }
 
     if (!formData.lookingfor || formData.lookingfor.trim() === "") {
-      errors.lookingfor = "Looking for is required.";
+      errors.lookingfor = "Looking for cannot be empty.";
     }
 
     if (formData.profile_created_for != 'myself') {
 
       if (!formData.profile_creator_name || formData.profile_creator_name.trim() === "") {
-        errors.profile_creator_name = "Name is required.";
+        errors.profile_creator_name = "Name cannot be empty.";
       }
 
       if (!formData.profile_creator_photo || formData.profile_creator_photo.trim() === "") {
-        errors.profile_creator_photo = "Picture is required.";
+        errors.profile_creator_photo = "Picture cannot be empty.";
       }
 
       if (!formData.profile_creator_aadhar || formData.profile_creator_aadhar.trim() === "") {
-        errors.profile_creator_aadhar = "Aadhar number is required.";
+        errors.profile_creator_aadhar = "Aadhar number cannot be empty.";
       }
-
-      if (!formData.profile_creator_phonenumber || formData.profile_creator_phonenumber.trim() === "") {
-        errors.profile_creator_phonenumber = "Phone number is required.";
+      if (!formData.profile_creator_aadhar || !/^\d{16}$/.test(formData.profile_creator_aadhar)) {
+        errors.profile_creator_aadhar = "A valid 16-digit adhar number cannot be empty.";
       }
     }
-
+    if (formData.profile_creator_phonenumber.trim() !== "") {
+      if (!formData.profile_creator_phonenumber || !/^\d{10}$/.test(formData.profile_creator_phonenumber)) {
+        errors.profile_creator_phonenumber = "A valid 10-digit phone number cannot be empty.";
+      }
+    }
     // If there are validation errors, show error messages and stop submission
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors); // Assume `setError` updates the UI to display error messages
@@ -286,7 +321,7 @@ const FormElements = () => {
         }
       }
     }
-
+    console.log("formData_upload", formData);
     if (profilePic) formData_upload.append("profile_photo", profilePic);
     if (photo1) formData_upload.append("photo1", photo1);
     if (photo2) formData_upload.append("photo2", photo2);
@@ -305,7 +340,7 @@ const FormElements = () => {
         throw new Error("Failed to Update user data.");
       }
 
-      toast.success('User updateed successfully!', {
+      toast.success('User updated successfully!', {
         className: "sonner-toast-success",
         cancel: {
           label: 'Close',
@@ -315,15 +350,6 @@ const FormElements = () => {
 
       // Redirect
       router.push(`/admin/users/userlist`);
-
-
-      setProfilePic(null); // Reset profile picture
-      setPhoto1(null);
-      setPhoto2(null);
-      setPhoto3(null);
-      setPhoto4(null);
-      setHoroscope(null);
-      setProfileCreatorPic(null); // Reset profile picture
 
     } catch (err) {
       setError(err.message);
@@ -356,8 +382,8 @@ const FormElements = () => {
     { label: 'Groom', value: 'groom' },
   ];
   const genderOptions = [
-    { label: 'Boy', value: 'boy' },
-    { label: 'Girl', value: 'girl' },
+    { label: 'Male', value: 'male' },
+    { label: 'Female', value: 'female' },
   ];
 
   if (isLoading) {
@@ -382,7 +408,7 @@ const FormElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Profile created for <span className="text-meta-1">*</span>
+                    Matrimony profile for <span className="text-meta-1">*</span>
                   </label>
                   <RadioButtonGroup
                     name="profile_created_for"
@@ -397,9 +423,9 @@ const FormElements = () => {
 
                 {profileCreator && (
                   <>
-                    < div className="mb-4.5">
+                    <div className="mb-4.5 text-black">
                       <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                        Name <span className="text-meta-1">*</span>
+                        Creator Name <span className="text-meta-1">*</span>
                       </label>
                       <input
                         type="text"
@@ -407,7 +433,7 @@ const FormElements = () => {
                         value={formData.profile_creator_name || ""}
                         onChange={handleChange}
                         placeholder="Enter Profile Creator Name"
-                        className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.profile_creator_name
+                        className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent ${formErrors?.profile_creator_name
                           ? "border-red-500 focus:border-red-500"
                           : "border-stroke focus:border-primary"
                           } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
@@ -416,8 +442,45 @@ const FormElements = () => {
                         <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_name}</p>
                       )}
                     </div>
+                  </>
+                )}
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email || ""}
+                    onChange={handleChange}
+                    readOnly
+                    placeholder="Enter your email address"
+                    className=" list-text w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark"
+                  />
+                </div>
 
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Phone Number <span className="text-meta-1">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="phonenumber"
+                    value={formData.phonenumber || ""}
+                    onChange={handleChange}
+                    placeholder="Enter your phone number"
+                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.phonenumber
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-stroke focus:border-primary"
+                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                  />
+                  {formErrors?.phonenumber && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.phonenumber}</p>
+                  )}
+                </div>
 
+                {profileCreator && (
+                  <>
                     <div className="mb-4.5">
                       <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                         Picture <span className="text-meta-1">*</span>
@@ -473,57 +536,10 @@ const FormElements = () => {
                       )}
                     </div>
 
-                    <div className="mb-4.5">
-                      <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                        Phone Number <span className="text-meta-1">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="profile_creator_phonenumber"
-                        value={formData.profile_creator_phonenumber || ""}
-                        onChange={handleChange}
-                        placeholder="Enter your phone number"
-                        className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.profile_creator_phonenumber
-                          ? "border-red-500 focus:border-red-500"
-                          : "border-stroke focus:border-primary"
-                          } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                      />
-                      {formErrors?.profile_creator_phonenumber && (
-                        <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_phonenumber}</p>
-                      )}
-                    </div>
                   </>
                 )}
 
-<div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Detail about groom / bride <span className="text-meta-1">*</span>
-                  </label>
-                  <textarea
-                    rows={6}
-                    name="bride_groom_detail"
-                    value={formData.bride_groom_detail || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:text-white"
-                  ></textarea>
-                  {formErrors?.bride_groom_detail && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.bride_groom_detail}</p>
-                  )}
-                </div>
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Gender <span className="text-meta-1">*</span>
-                  </label>
-                  <RadioButtonGroup
-                    name="gender"
-                    options={genderOptions}
-                    selectedValue={formData.gender}
-                    onChange={handleChange}
-                  />
-                  {formErrors?.gender && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.gender}</p>
-                  )}
-                </div>
+
               </div>
             </div>
 
@@ -611,42 +627,37 @@ const FormElements = () => {
                   </div>
 
                 </div>
-
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Email
+                    Detail about groom / bride <span className="text-meta-1">*</span>
                   </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email || ""}
+                  <textarea
+                    rows={6}
+                    name="bride_groom_detail"
+                    value={formData.bride_groom_detail || ""}
                     onChange={handleChange}
-                    readOnly
-                    placeholder="Enter your email address"
-                    className=" list-text w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark"
-                  />
-                </div>
-
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Phone Number <span className="text-meta-1">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="phonenumber"
-                    value={formData.phonenumber || ""}
-                    onChange={handleChange}
-                    placeholder="Enter your phone number"
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.phonenumber
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                  />
-                  {formErrors?.phonenumber && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.phonenumber}</p>
+                    className="w-full rounded-lg border-[1.5px] bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:text-white"
+                  ></textarea>
+                  {formErrors?.bride_groom_detail && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.bride_groom_detail}</p>
                   )}
                 </div>
 
+
+                <div className="mb-4.5 text-black">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Gender for (Bride / Groom)  <span className="text-meta-1">*</span>
+                  </label>
+                  <RadioButtonGroup
+                    name="gender"
+                    options={genderOptions}
+                    selectedValue={formData.gender}
+                    onChange={handleChange}
+                  />
+                  {formErrors?.gender && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.gender}</p>
+                  )}
+                </div>
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                     Marital Status <span className="text-meta-1">*</span>
@@ -707,7 +718,7 @@ const FormElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    SubCaste
+                    Subcaste in Mudaliyar
                   </label>
                   <input
                     type="text"
@@ -787,6 +798,82 @@ const FormElements = () => {
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Additional Phone Number
+                  </label>
+                  <input
+                    type="text"
+                    name="profile_creator_phonenumber"
+                    value={formData.profile_creator_phonenumber || ""}
+                    onChange={handleChange}
+                    placeholder="Enter your phone number"
+                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.profile_creator_phonenumber
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-stroke focus:border-primary"
+                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                  />
+                  {formErrors?.profile_creator_phonenumber && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_phonenumber}</p>
+                  )}
+                </div>
+
+              </div>
+            </div>
+
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                <h3 className="font-medium dark-text dark:text-white">
+                  Location Details
+                </h3>
+              </div>
+              <div className="p-6.5">
+
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    State <span className="text-meta-1">*</span>
+                  </label>
+                  <SelectGroupStates
+                    selectedState={selectedState}
+                    onStateChange={handleStateChange}
+                  />
+                  {formErrors?.state_id && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.state_id}</p>
+                  )}
+                </div>
+
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    City <span className="text-meta-1">*</span>
+                  </label>
+                  <SelectGroupCities
+                    selectedState={selectedState}
+                    selectedCity={selectedCity}
+                    onCityChange={handleCityChange}
+                  />
+                  {formErrors?.city_id && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.city_id}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Address <span className="text-meta-1">*</span>
+                  </label>
+                  <textarea
+                    rows={6}
+                    name="address"
+                    value={formData.address || ""}
+                    onChange={handleChange}
+                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.email
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-stroke focus:border-primary"
+                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                  ></textarea>
+                  {formErrors?.address && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.address}</p>
+                  )}
+                </div>
 
               </div>
             </div>
@@ -815,7 +902,7 @@ const FormElements = () => {
 
                 <div>
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Complexation for Groom / Bride (Dark/Wheat/Fair)
+                    Complexion of Groom/Bride: (Dark, Wheatish, or Fair)
                   </label>
                   <input
                     type="text"
@@ -1149,21 +1236,6 @@ const FormElements = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
-
-
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Address
-                  </label>
-                  <textarea
-                    rows={6}
-                    name="address"
-                    value={formData.address || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:text-white"
-                  ></textarea>
-                </div>
-
               </div>
             </div>
             {/* <!-- Partner Preference  --> */}
@@ -1214,15 +1286,15 @@ const FormElements = () => {
                   <SelectGroupCaste
                     castes={castes}
                     name="partner_pref_caste"
-                    selectedcaste={formData.caste}
+                    selectedcaste={formData.partner_pref_caste}
                     oncasteChange={(e) =>
-                      setFormData({ ...formData, caste: e.target.value })
+                      setFormData({ ...formData, partner_pref_caste: e.target.value })
                     }
                   />
                 </div>
                 <div>
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    SubCaste
+                    Subcaste in Mudaliyar
                   </label>
                   <input
                     type="text"

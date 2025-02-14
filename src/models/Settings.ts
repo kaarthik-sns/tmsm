@@ -24,6 +24,7 @@ const SettingsSchema = new Schema({
   smtp_port: { type: String, required: false },
   smtp_host: { type: String, required: false },
   smtp_secure: { type: Boolean, default: true, required: false },
+  contact_desc: { type: String, required: false },
 
   updated_at: { type: Date, default: Date.now }
 }, { collection: "settings" });

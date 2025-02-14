@@ -16,7 +16,7 @@ const UserSchema = new Schema({
       return `${Math.floor(Math.random() * 1000000)}`; // Generates a random number for email verificationj
     }
   },
-  created_at: { type: Date, required: false },
+  created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },
 
   created_by: { type: String, required: false }, // admin or user
@@ -29,6 +29,9 @@ const UserSchema = new Schema({
 
   age: { type: Number, required: false },
   birthdate: { type: Date, required: false },
+
+  state_id: { type: String, required: false },
+  city_id: { type: String, required: false },
 
   place_of_birth: { type: String, required: false },
   education: { type: String, required: false },
@@ -69,7 +72,7 @@ const UserSchema = new Schema({
   partner_pref_education: { type: String, required: false },
   partner_pref_age: { type: Number, required: false },
   partner_pref_caste: { type: String, required: false },
-  partner_pref_subCaste: { type: String, required: false },
+  partner_pref_subcaste: { type: String, required: false },
 
   profile_creator_photo: { type: String, required: false },
   maritalstatus: { type: String, required: false },
@@ -79,8 +82,9 @@ const UserSchema = new Schema({
   profile_creator_phonenumber: { type: String, required: false },
   lookingfor: { type: String, required: false },
   bride_groom_detail: { type: String, required: false },
-  gender: { type: String, required: false }
-
+  gender: { type: String, required: false },
+  deactivate_reason: { type: String, required: false },
+  reactivate_reason: { type: String, required: false }
 });
 
 // Get user by name

@@ -71,7 +71,7 @@ body {
 
 /*Footer */
 .dark-bg {
-    background: #323232;
+    background: #992222;
 }
 
 .footer-text a {
@@ -135,6 +135,15 @@ body {
     background: #af2c2c;
     border: 1px solid #ffd16c;
 }
+
+.ftext-custom-rej {
+    color: #ffffff;
+    background: #af2c2c;
+    border: 1px solid #af2c2c;
+    font-weight: 800;
+    font-family: 'Noto Sans';
+}
+
 
 .fillter-text label {
     font-size: 18px;
@@ -316,6 +325,10 @@ input:-internal-autofill-selected {
     color: #d13333;
 }
 
+.h-verify {
+    height: 30rem;
+}
+
 /*Dashboard */
 
 .rounded-radius {
@@ -403,6 +416,21 @@ input:-internal-autofill-selected {
     color: #653d27;
     font-weight: 700;
     font-family: 'Noto Sans';
+}
+
+.setting {
+    color: #000;
+    font-family: 'Noto Sans';
+    font-weight: 600;
+}
+.active-setting {
+    color: #923d27;
+    font-family: 'Noto Sans';
+    font-weight: 800;
+}
+
+.mt-20 {
+    margin-top:10rem;
 }
 
 /*Responsive code*/
@@ -590,7 +618,7 @@ input:-internal-autofill-selected {
 
 .offer-list-itmes {
     position: relative;
-    background: #323232;
+    background: #ffd16c;
     border-radius: 10px;
     padding: 24px;
     height: 100%;
@@ -618,7 +646,7 @@ input:-internal-autofill-selected {
 }
 
 .offer-list-itmes h4 {
-    color: #FFF;
+    color: #000000;
     font-family: "Playfair Display";
     font-size: 20px;
     font-weight: 700;
@@ -627,7 +655,7 @@ input:-internal-autofill-selected {
 }
 
 .offer-list-itmes p {
-    color: #FFF;
+    color: #000000;
     text-align: justify;
     font-family: 'Noto Sans';
     font-size: 18px;
@@ -671,6 +699,9 @@ input:-internal-autofill-selected {
     fill: #FFD16C;
 }
 
+.contact-bio p span {
+    text-transform: capitalize;
+}
 /**contact page**/
 .contact-info-con {
     margin: 0;
@@ -1286,8 +1317,8 @@ input:-internal-autofill-selected {
 
 .accepted {
     color: #fff;
-    background: #6aa84f;
-    border: 1px solid #6aa84f;
+    background: #6f9c5d;
+    border: 1px solid #6f9c5d;
     font-weight: 800;
     font-family: 'Noto Sans';
     padding: 10px 30px;
@@ -1384,6 +1415,36 @@ font-weight: 300;
 line-height: 30px;
 padding-top: 1rem;
 }
+
+/* Custom class for SweetAlert2 */
+.confirm-color{
+    background-color: rgba(16, 185, 129, .08);
+    color: #10b981;
+}
+.cancel-color {
+    background-color: rgba(251, 84, 84, .08);
+    color: #fb5454;
+}
+.confirm-color-succes {
+    background-color: rgba(16, 185, 129, .08);
+    color: #10b981;
+}
+.swal2-popup {
+    font-family: 'Noto Sans'; /* Change to your preferred font family */
+  }
+  
+  .swal2-title {
+    font-family: 'Noto Sans'; /* Change to your preferred font family */
+  }
+  
+  .swal2-content {
+    font-family: 'Noto Sans'; /* Change to your preferred font family */
+  }
+  
+  .swal2-actions button {
+    font-family: 'Noto Sans'; /* Change to your preferred font family */
+  }
+  
 @media only screen and (min-width: 768px) {
     .faq-info-con {
         padding: 5.56vw 0px 2.78vw 0;
@@ -1487,3 +1548,16 @@ padding-top: 1rem;
             font-size: 25px;
         }
     }
+
+/* Radio Button */
+
+input[type="radio"] {
+    accent-color: #653D27;
+}
+
+.focus\:border-primary:focus {
+    --tw-border-opacity: 1;
+    border-color: rgb(51 51 51);
+}
+
+

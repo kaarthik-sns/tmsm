@@ -5,22 +5,36 @@ import connectToDatabase from '@/lib/mongodb';
 import { sendEmail } from "@/utils/mail.util"
 import { verificationTemplate } from '@/lib/template/verification';
 import { welcomeTemplate } from '@/lib/template/welcome';
-import { adminWelcomeTemplate } from '@/lib/template/welcome_admin';
+import { adminWelcomeTemplate } from '@/lib/template/welcome-admin';
+import getSMTPSettings from '@/utils/settings.util';
+
 
 export async function POST(request: Request) {
-    const { name, lastname, email, password, confirmPassword, phonenumber, religion } = await request.json();
+    const { profile_created_for, profile_creator_name, name, lastname, email, password, confirmPassword, phonenumber, religion, } = await request.json();
 
     const testData = [];
 
-    const isValidEmail = (email: string) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
-    if (!name || !email || !password || !confirmPassword) {
-        return NextResponse.json({ message: " All fields are required" }, { status: 400 })
+    let copyright = '';
+    let contactMail = '';
+
+    const smtpSettings = await getSMTPSettings();
+    if (smtpSettings) {
+        copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
+        contactMail = smtpSettings.organisation_email_id;
     }
 
-    if (!isValidEmail(email)) {
+
+    const email_id = email?.replace(/\s+/g, "").toLowerCase() || "";
+
+    const isValidEmail = (email_id: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email_id);
+    }
+
+    if (!name || !email_id || !password || !confirmPassword) {
+        return NextResponse.json({ message: " All fields are required" }, { status: 400 })
+    }
+    if (!isValidEmail(email_id)) {
         return NextResponse.json({ message: "Invalid email format" }, { status: 400 });
     }
     if (confirmPassword !== password) {
@@ -40,7 +54,9 @@ export async function POST(request: Request) {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = new User({
-            email,
+            profile_created_for,
+            profile_creator_name,
+            email: email_id,
             name,
             lastname,
             phonenumber,
@@ -48,30 +64,6 @@ export async function POST(request: Request) {
             password: hashedPassword,
             created_at: new Date()
         });
-
-
-        // for (let i = 0; i < 20; i++) {
-        //     testData.push({
-        //         name: `Test User ${i + 1}`,
-        //         email: `testuser${i + 1}@example.com`,
-        //         password: hashedPassword, // Same hash for simplicity
-        //         is_active: true,
-        //         is_verify: true,
-        //         is_approve: true,
-        //         is_delete:false,
-        //         created_at: new Date(),
-        //         email_code: '',
-        //         updated_at: new Date(),
-        //     });
-        // }
-
-        // try {
-        //     await User.insertMany(testData);
-        //     console.log('Test data added successfully');
-        // } catch (error) {
-        //     console.error('Error adding test data:', error);
-        // }
-
 
         await newUser.save();
 
@@ -82,23 +74,23 @@ export async function POST(request: Request) {
             address: email
         }]
 
-        const htmlBody = welcomeTemplate(name);
+        const htmlBody = welcomeTemplate(name, copyright);
 
         const result = await sendEmail({
             receipients,
-            subject: 'TMSM - Welcome mail',
+            subject: `Welcome to TMSM, ${name}!`,
             message: htmlBody
         })
 
-        const htmlBody2 = verificationTemplate(name, verificationLink);
+        const htmlBody2 = verificationTemplate(name, verificationLink, copyright, contactMail);
 
         const result2 = await sendEmail({
             receipients,
-            subject: 'TMSM - Verification mail',
+            subject: 'Verify Your TMSM Account',
             message: htmlBody2
         })
 
-        const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber);
+        const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber, copyright);
 
         const receipients2 = [{
             name: 'admin',
@@ -107,12 +99,12 @@ export async function POST(request: Request) {
 
         const result3 = await sendEmail({
             receipients: receipients2,
-            subject: 'TMSM - New User Registration',
+            subject: 'New Member Joined TMSM',
             message: htmlBody3
         })
 
         return NextResponse.json({ message: "Registration successful. Await admin approval. Check your email for updates." }, { status: 201 });
-        
+
     } catch (error) {
         console.log(error)
         return NextResponse.json({ message: "Something went wrong" }, { status: 500 });

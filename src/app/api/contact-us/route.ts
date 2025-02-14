@@ -3,6 +3,7 @@ import Contact from '@/models/Contact'; // Adjust this path based on your projec
 import connectToDatabase from '@/lib/mongodb';
 import { contactUsTemplate } from '@/lib/template/contact-us';
 import { sendEmail } from "@/utils/mail.util"
+import getSMTPSettings from '@/utils/settings.util';
 
 
 // Handle GET request to list all contacts
@@ -45,29 +46,19 @@ export async function GET(req) {
 export async function POST(req) {
     try {
 
+        let copyright = '';
+        let contactMail = '';
+
+        const smtpSettings = await getSMTPSettings();
+
+        if (smtpSettings) {
+            copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
+            contactMail = smtpSettings.organisation_email_id;
+        }
+
         await connectToDatabase();
         // Parse JSON body data
         const { name, email, interested_in, phone, message } = await req.json();
-
-        // const testData = [];
-
-        // for (let i = 0; i < 30; i++) {
-        //     testData.push({
-        //         name: `Test User ${i + 1}`,
-        //         email: `testuser${i + 1}@gmail.com`,
-        //         interested_in: '', // Same hash for simplicity
-        //         phone: 1234567890,
-        //         message: 'test msg',
-        //         created_at: new Date()
-        //     });
-        // }
-
-        // try {
-        //     await Contact.insertMany(testData);
-        //     console.log('Test data added successfully');
-        // } catch (error) {
-        //     console.error('Error adding test data:', error);
-        // }
 
         // Create a new contact document
         const newContact = new Contact({
@@ -78,7 +69,7 @@ export async function POST(req) {
             message,
         });
 
-        const htmlBody = contactUsTemplate(name,email,phone,message);
+        const htmlBody = contactUsTemplate(name, email, phone, message, copyright);
 
         const receipients = [{
             name: 'admin',
@@ -87,7 +78,7 @@ export async function POST(req) {
 
         const result3 = await sendEmail({
             receipients: receipients,
-            subject: 'TMSM - New Contact Form Submission',
+            subject: 'New Contact Inquiry',
             message: htmlBody
         })
 

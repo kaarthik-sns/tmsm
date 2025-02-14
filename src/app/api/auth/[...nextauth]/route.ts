@@ -25,24 +25,35 @@ const handler = NextAuth({
                     await connectToDatabase();
 
                     const is_admin = credentials?.is_admin === "true";
+                    const email = credentials?.email?.replace(/\s+/g, "").toLowerCase() || "";
 
                     // Check in Admin or User collection based on is_admin
                     let user = is_admin
-                        ? await Admin.findOne({ email: credentials?.email })
-                        : await User.findOne({ email: credentials?.email });
+                        ? await Admin.findOne({ email: email })
+                        : await User.findOne({ email: email });
 
                     if (!user) {
-                        throw new Error("User not found, Please Check your Email");
+                        throw new Error("Email address not recognized.");
+                    }
+
+                    // Check password first
+                    const isValidPasswords = await bcrypt.compare(
+                        credentials?.password ?? "",
+                        user.password as string
+                    );
+
+                    if (!isValidPasswords) {
+                        throw new Error("Invalid password. Please check your credentials.");
                     }
 
                     if (!is_admin) {
 
                         if (!user.is_approve) {
-                            throw new Error("Admin Not Approved Your Registration");
+                            throw new Error("Account activation is pending. You will be notified once approved.");
                         }
 
                         if (!user.is_verify) {
-                            throw new Error("Your Email is Not Verified");
+                            throw new Error("Email not yet verified.");
                         }
 
                         if (!user.is_active) {
@@ -56,13 +67,13 @@ const handler = NextAuth({
                     );
 
                     if (!isValidPassword) {
-                        throw new Error("Invalid password");
+                        throw new Error("Invalid password. Please check your credentials.");
                     }
 
                     // Add is_admin to user object
                     return { ...user.toObject(), is_admin };
                 } catch (error) {
-                    throw new Error(error.message || "Authentication failed");
+                    throw new Error(error.message || "Authentication error. Please check your login details.");
                 }
             },
         }),
@@ -102,7 +113,7 @@ const handler = NextAuth({
                         desc: user.name + ' Logged In',
                         created_at: new Date()
                     });
-                    console.log('User activity log created successfully.');
+
                 } catch (error) {
                     console.error('Error creating user activity log:', error);
                 }

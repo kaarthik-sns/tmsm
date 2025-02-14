@@ -6,59 +6,67 @@ export async function middleware(req) {
     const url = req.nextUrl;
     const pathname = url.pathname;
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-
     // Rewrite `/` to serve content from `/frontend` but keep `/` in the browser's address bar
-    if (pathname === '/') {
-        console.log('in-1')
-        return NextResponse.rewrite(new URL('/frontend', req.url));
+    if (pathname === '' || pathname === '/' ) {
+        return NextResponse.rewrite(new URL('/', req.url));
     }
 
     // Allow access to forgot-password page
     if (pathname === '/admin/forgot-password') {
-        console.log('in-2')
+        console.log('++++1')
+        return NextResponse.next();
+    }
+
+    if (pathname === '/admin/change-password') {
+        console.log('++++2')
         return NextResponse.next();
     }
 
     // Redirect unauthenticated admin users to signin page
     if (pathname.startsWith('/admin') && pathname !== '/admin/auth/signin' && !token) {
-        console.log('in-3')
+        console.log('++++3')
         url.pathname = '/admin/auth/signin';
         return NextResponse.redirect(url);
     }
 
     // Redirect authenticated admin users from signin to dashboard
     if (pathname === '/admin/auth/signin' && token && token.is_admin) {
-        console.log('in-4')
+        console.log('++++3')
         url.pathname = '/admin/dashboard';
         return NextResponse.redirect(url);
     }
 
     // Restrict non-admin users from accessing admin routes
     if (pathname.startsWith('/admin') && pathname !== '/admin/auth/signin' && token && !token.is_admin) {
-        console.log('in-5')
+        console.log('++++4')
         url.pathname = '/admin/auth/signin';
         return NextResponse.redirect(url);
     }
 
     // Redirect authenticated users from signin to homepage
-    if (pathname === '/frontend/login' && token && !token.is_admin) {
-        console.log('in-6')
-        url.pathname = '/frontend';
+    if (pathname === '/login' && token && !token.is_admin) {
+        console.log('++++5')
+        url.pathname = '/';
         return NextResponse.redirect(url);
     }
 
-    if (pathname === '/frontend/dashboard' && !token) {
-        console.log('in-7')
-        url.pathname = '/frontend';
-        return NextResponse.redirect(url);
+    // if (pathname === '/dashboard' && token && token.is_admin) {
+    //     url.pathname = '/';
+    //     return NextResponse.redirect(url);
+    // }
+
+    // Redirect unauthenticated users trying to access restricted paths
+    if (!token && (pathname.startsWith('/dashboard') || pathname.startsWith('/view-profile') || pathname.startsWith('/member') )) {
+        console.log('++++6')
+        return NextResponse.redirect(new URL('/login', req.url));
     }
 
-    if (pathname === '/frontend/dashboard' && token && token.is_admin) {
-        console.log('in-8')
-        url.pathname = '/frontend';
-        return NextResponse.redirect(url);
+    // Redirect unauthenticated users trying to access restricted paths
+    if (token && token.is_admin && (pathname.startsWith('/dashboard') || pathname.startsWith('/view-profile') || pathname.startsWith('/member') )) {
+        console.log('++++7')
+        return NextResponse.redirect(new URL('/login', req.url));
     }
-
+    
     // Create a NextResponse instance to modify headers
     const res = NextResponse.next();
 
@@ -76,5 +84,5 @@ export async function middleware(req) {
 
 // Apply middleware to relevant paths
 export const config = {
-    matcher: ['/', '/api/:path*', '/admin/:path*', '/frontend/:path*'], // Apply to root, API routes, and admin routes
+    matcher: ['/', '/api/:path*', '/:path*'], // Apply to root, API routes, and admin routes
 };

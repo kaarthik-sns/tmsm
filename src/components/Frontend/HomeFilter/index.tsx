@@ -19,7 +19,32 @@ const FilterForm = () => {
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
 
   // Example data array of subcastes
-  const subcastes = ['Brahmin', 'Rajput', 'Jat', 'Kayastha', 'Yadav', 'Gupta', 'Vaishya'];
+  const subcastes = [
+    "Karaikkal Mudaliyar",
+    "Chidambaram Mudaliyar",
+    "Nadar Mudaliyar",
+    "Maravapalayam Mudaliyar",
+    "Sengunthar Mudaliyar",
+    "Pillai Mudaliyar",
+    "Vanniyar Mudaliyar",
+    "Tirunelveli Mudaliyar",
+    "Muthuraja Mudaliyar",
+    "Thuluva Vellalar Mudaliyar",
+    "Sri Lankan Mudaliyar",
+    "Vellalar Mudaliyar",
+    "Kallar Mudaliyar",
+    "Agamudayar Mudaliyar",
+    "Pallai Mudaliyar",
+    "Vanniyan Mudaliyar",
+    "Muthuraja",
+    "Muthurayar",
+    "Sivakami Mudaliyar",
+    "Kongu Mudaliyar",
+    "Vadugan Mudaliyar",
+    "Yadavar Mudaliyar",
+    "Kaikolar Mudaliyar",
+    "Vellalar"
+  ];
 
   // Handle input change and filter suggestions
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,9 +94,9 @@ const FilterForm = () => {
     
     // Redirect only if there are valid query parameters
     if (queryParams.toString()) {
-      router.push(`/frontend/member?${queryParams.toString()}`);
+      router.push(`/member?${queryParams.toString()}`);
     } else {
-      router.push(`/frontend/member`); // Fallback if no parameters exist
+      router.push(`/member`); // Fallback if no parameters exist
     }
   };
 
@@ -119,7 +144,7 @@ const FilterForm = () => {
             </div>
 
             <div className="w-full md:w-auto relative">
-              <label className="mb-3 block text-sm font-medium text-white">SubCaste</label>
+              <label className="mb-3 block text-sm font-medium text-white">Subcaste in Mudaliyar</label>
               <div className="mb-4.5">
                 <input
                   type="text"

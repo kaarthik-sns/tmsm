@@ -135,13 +135,14 @@ const menuGroups = [
         label: "CMS",
         route: "#",
         children: [
-          { label: "Home ", route: "/admin/cms/home/page/view" },
-          { label: "Slider", route: "/admin/cms/home/slider/list" },
-          { label: "Testimonials", route: "/admin/cms/home/testimonial/list" },
-          { label: "About", route: "/admin/cms/about/view" },
-          { label: "Faq", route: "/admin/cms/faq/list" },
-          { label: "Terms", route: "/admin/cms/terms_conditions/list" },
-          { label: "Reviews", route: "/admin/cms/home/review/list" },
+          { label: "Home ", route: "/admin/cms/home/page/view"},
+          { label: "Slider", route: "/admin/cms/home/slider/list"},
+          { label: "Testimonials", route: "/admin/cms/home/testimonial/list"},
+          { label: "Reviews", route: "/admin/cms/home/review/list"},
+          { label: "About", route: "/admin/cms/about/view"},
+          { label: "Faq", route: "/admin/cms/faq/list"},
+          { label: "Terms", route: "/admin/cms/terms_conditions/view"},
+          { label: "Privacy Policy", route: "/admin/cms/privacy-policy/view"},
         ],
       },
       {
@@ -150,15 +151,16 @@ const menuGroups = [
             className="fill-current"
             width="18"
             height="18"
-            viewBox="0 0 18 18"
+            viewBox="0 0 17 17"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M16 2H2C1.44772 2 1 2.44772 1 3V15C1 15.5523 1.44772 16 2 16H16C16.5523 16 17 15.5523 17 15V3C17 2.44772 16.5523 2 16 2ZM3 3H15V6.8L9 9.6L3 6.8V3ZM3 12.4L9 9.6L15 12.4V12H3V12.4Z"
+              d="M2.25 3.375C1.55964 3.375 1 3.93464 1 4.625V13.375C1 14.0654 1.55964 14.625 2.25 14.625H15.75C16.4404 14.625 17 14.0654 17 13.375V4.625C17 3.93464 16.4404 3.375 15.75 3.375H2.25ZM3.0625 4.75H14.9375L9 9.125L3.0625 4.75ZM2.25 5.90625L9 10.875L15.75 5.90625V13.375H2.25V5.90625Z"
               fill=""
             />
           </svg>
+
 
         ),
         label: "Contact",
@@ -240,7 +242,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
       <aside
-        className={`fixed left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark bg-color-custom lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        className={`fixed left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden duration-300 ease-linear dark:bg-boxdark bg-color-custom lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
       >
         {/* <!-- SIDEBAR HEADER --> */}

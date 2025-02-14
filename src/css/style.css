@@ -404,3 +404,26 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 th.py-3.px-6.dark-text {
     font-size: 12px;
 }
+
+.focus\:border-primary:focus {
+    --tw-border-opacity: 1;
+    border-color: rgb(51 51 51) !important;
+}
+
+.member label {
+    text-transform: capitalize;
+}
+
+/* Custom class for SweetAlert2 */
+.confirm-color{
+    background-color: rgba(16, 185, 129, .08);
+    color: #10b981;
+}
+.cancel-color {
+    background-color: rgba(251, 84, 84, .08);
+    color: #fb5454;
+}
+.confirm-color-succes {
+    background-color: rgba(16, 185, 129, .08);
+    color: #10b981;
+}

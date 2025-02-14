@@ -1,10 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/mongodb';
 import ProfileRequests from '@/models/Profile_requests';
+import User from '@/models/User';
+import { sendEmail } from "@/utils/mail.util"
+import { profileViewRequestTemplate } from '@/lib/template/profile-request';
+import getSMTPSettings from '@/utils/settings.util';
 
 export async function POST(request: NextRequest) {
 
   try {
+
+    let copyright = '';
+    let contactMail = '';
+
+    const smtpSettings = await getSMTPSettings();
+    if (smtpSettings) {
+      copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
+      contactMail = smtpSettings.organisation_email_id;
+
+    }
 
     // Connect to the database
     await connectToDatabase();
@@ -30,6 +44,28 @@ export async function POST(request: NextRequest) {
     });
 
     await newNotification.save();
+
+    const userRecData = await User.findById(receiver_id);
+    const email = userRecData.email;
+    const recName = userRecData.name;
+
+    const userSentData = await User.findById(sender_id);
+    const sentName = userSentData.name;
+
+    const receipients = [{
+      name: recName,
+      address: email
+    }]
+
+    const homePage = process.env.BASE_URL+'/login';
+
+    const htmlBody = profileViewRequestTemplate(recName, sentName, homePage, copyright,contactMail);
+
+    const result = await sendEmail({
+      receipients,
+      subject: `TMSM - You Have a New Profile View Request from ${sentName}`,
+      message: htmlBody
+    }); 
 
     // Return success response
     return NextResponse.json({ message: 'Profile request sent Successfully' }, { status: 200 });

@@ -1,16 +1,19 @@
 "use client";
-import { useState, useEffect } from "react";
-import Breadcrumb from "@/components/Breadcrumbs/UserBreadcrumb";
+
+import { useState, useEffect, useRef } from "react";
+import { toast } from "sonner";
+import NextImage from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+import SelectGroupStates from "@/components/SelectGroup/SelectGroupStates";
+import SelectGroupCities from "@/components/SelectGroup/SelectGroupCities";
 import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
 import SelectGroupCaste from "@/components/SelectGroup/SelectGroupCaste";
 import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
-import { toast } from "sonner";
-import { TriangleAlert } from "lucide-react";
-import NextImage from "next/image";
 import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
-import { useRouter, useSearchParams } from "next/navigation";
+
+
 const UserProfile = (user_data) => {
-  
+
   const searchParams = useSearchParams();
   // const userId = searchParams.get("userId");
   const [profilePic, setProfilePic] = useState<File | null>(null);
@@ -25,6 +28,9 @@ const UserProfile = (user_data) => {
   const [profileCreator, setProfileCreator] = useState(false);
   const formData_upload = new FormData();
   const [isLoading, setIsLoading] = useState(true);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const errorRef = useRef(null);
 
   const router = useRouter();
 
@@ -78,8 +84,6 @@ const UserProfile = (user_data) => {
     mother_profession: "",
     mother_placeOfWork: "",
     address: "",
-    partner_pref_age: "",
-    partner_pref_education: "",
     profile_photo: "",
     photo1: "",
     photo2: "",
@@ -93,11 +97,37 @@ const UserProfile = (user_data) => {
     profile_creator_aadhar: "",
     profile_creator_phonenumber: "",
     lookingfor: "",
-    partner_pref_subcaste: ""
+    partner_pref_caste: "",
+    partner_pref_subcaste: "",
+    partner_pref_age: "",
+    partner_pref_education: "",
+    gender: "",
+    bride_groom_detail: "",
+    state: { name: "" },
+    city: { name: "" },
+    state_id: '',
+    city_id: '',
   });
 
+  // Set selected state and city based on formData
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+
+  const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newState = event.target.value;
+    setSelectedState(newState);
+    setFormData({ ...formData, state_id: newState, city_id: "" }); // Reset city when state changes
+    setSelectedCity("");
+  };
+
+  const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCity = event.target.value;
+    setSelectedCity(newCity);
+    setFormData({ ...formData, city_id: newCity });
+  };
+
   useEffect(() => {
-    if (user_data) {
+    if (user_data && !formData.email) { // Only update if formData is empty
       const fetchUserData = async () => {
         try {
           const response = await fetch("/api/get-user-data", {
@@ -112,9 +142,12 @@ const UserProfile = (user_data) => {
 
           const { data } = await response.json();
 
-          setFormData(data);
+          setFormData((prevData) => ({
+            ...prevData,
+            ...data, // Merge existing data without overwriting user input
+          }));
 
-          if (data?.profile_created_for != 'myself') {
+          if (data?.profile_created_for !== 'myself') {
             setProfileCreator(true);
           }
 
@@ -125,9 +158,11 @@ const UserProfile = (user_data) => {
           setPhoto4(data.photo4);
           setProfileCreatorPic(data.profile_creator_photo);
           setHoroscope(data.horoscope);
+          setSelectedState(data.state_id);
+          setSelectedCity(data.city_id);
 
         } catch (err) {
-          console.error(err);
+          //console.error(err);
           setError(err.message);
         } finally {
           setIsLoading(false);
@@ -136,7 +171,8 @@ const UserProfile = (user_data) => {
 
       fetchUserData();
     }
-  }, [user_data]);
+  }, [user_data, formData.email]); // Removed formData dependency to avoid overwriting changes
+
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -189,77 +225,106 @@ const UserProfile = (user_data) => {
     // Validation
     const errors: Record<string, string> = {};
 
+    if (!formData.bride_groom_detail || formData.bride_groom_detail.trim() === "") {
+      errors.bride_groom_detail = "Fill about short deatils.";
+    }
+
+    if (!formData.gender || formData.gender.trim() === "") {
+      errors.gender = "Gender for cannot be empty.";
+    }
+
+
     if (!formData.name || formData.name.trim() === "") {
-      errors.name = "First name is required.";
+      errors.name = "First name cannot be empty.";
     }
 
     if (!formData.lastname || formData.lastname.trim() === "") {
-      errors.lastname = "Last name is required.";
+      errors.lastname = "Last name cannot be empty.";
     }
 
     if (!formData.email || !/^\S+@\S+\.\S+$/.test(formData.email)) {
-      errors.email = "A valid email is required.";
+      errors.email = "A valid email cannot be empty.";
     }
 
     if (!formData.phonenumber || !/^\d{10}$/.test(formData.phonenumber)) {
-      errors.phonenumber = "A valid 10-digit phone number is required.";
+      errors.phonenumber = "A valid 10-digit phone number cannot be empty.";
     }
 
     if (!formData.name || formData.name.trim() === "") {
-      errors.name = "First name is required.";
+      errors.name = "First name cannot be empty.";
     }
 
     if (!formData.profile_photo || formData.profile_photo.trim() === "") {
-      errors.profile_photo = "Profile Photo is required.";
+      errors.profile_photo = "Profile Photo cannot be empty.";
     }
 
     if (!formData.birthdate || formData.birthdate.trim() === "") {
-      errors.birthdate = "Date Of Birth is required.";
+      errors.birthdate = "Date Of Birth cannot be empty.";
     }
 
     if (!formData.maritalstatus || formData.maritalstatus.trim() === "") {
-      errors.maritalstatus = "Marital Status is required.";
+      errors.maritalstatus = "Marital Status cannot be empty.";
     }
 
     if (!formData.profile_created_for || formData.profile_created_for.trim() === "") {
-      errors.profile_created_for = "Profile created for is required.";
+      errors.profile_created_for = "Profile created for cannot be empty.";
+    }
+
+    if (!formData.state_id) {
+      errors.state_id = "State cannot be empty.";
+    }
+    if (!formData.city_id) {
+      errors.city_id = "City cannot be empty.";
+    }
+
+    if (!formData.address) {
+      errors.address = "Address cannot be empty.";
     }
 
     if (!formData.lookingfor || formData.lookingfor.trim() === "") {
-      errors.lookingfor = "Looking for is required.";
+      errors.lookingfor = "Looking for cannot be empty.";
     }
 
     if (formData.profile_created_for != 'myself') {
 
       if (!formData.profile_creator_name || formData.profile_creator_name.trim() === "") {
-        errors.profile_creator_name = "Name is required.";
+        errors.profile_creator_name = "Name cannot be empty.";
       }
 
       if (!formData.profile_creator_photo || formData.profile_creator_photo.trim() === "") {
-        errors.profile_creator_photo = "Picture is required.";
+        errors.profile_creator_photo = "Picture cannot be empty.";
       }
 
       if (!formData.profile_creator_aadhar || formData.profile_creator_aadhar.trim() === "") {
-        errors.profile_creator_aadhar = "Aadhar number is required.";
+        errors.profile_creator_aadhar = "Aadhar number cannot be empty.";
+      }
+      if (!formData.profile_creator_aadhar || !/^\d{16}$/.test(formData.profile_creator_aadhar)) {
+        errors.profile_creator_aadhar = "A valid 16-digit adhar number cannot be empty.";
       }
 
-      if (!formData.profile_creator_phonenumber || formData.profile_creator_phonenumber.trim() === "") {
-        errors.profile_creator_phonenumber = "Phone number is required.";
+      if (formData.profile_creator_phonenumber.trim() !== "") {
+        if (!formData.profile_creator_phonenumber || !/^\d{10}$/.test(formData.profile_creator_phonenumber)) {
+          errors.profile_creator_phonenumber = "A valid 10-digit phone number cannot be empty.";
+        }
       }
     }
 
+    setErrorMessage("");
     // If there are validation errors, show error messages and stop submission
     if (Object.keys(errors).length > 0) {
-      setFormErrors(errors); // Assume `setError` updates the UI to display error messages
-      toast.error('Please fix the highlighted errors.', {
-        className: "sonner-toast-error",
-        cancel: {
-          label: 'Close',
-          onClick: () => console.log('Close'),
-        },
-      });
+      setFormErrors(errors);
+      setErrorMessage("Please fix the highlighted errors.");
+
+      setTimeout(() => {
+        if (errorRef.current) {
+          errorRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100); // Small delay to wait for state update
+
       return;
     }
+
+    setErrorMessage(""); // Clear message if validation passes
 
     // Reset errors if validation passes
     setFormErrors({});
@@ -268,11 +333,7 @@ const UserProfile = (user_data) => {
     for (const [key, value] of Object.entries(formData)) {
       const excludedKeys = ["profile_photo", "photo1", "photo2", "photo3", "photo4", "horoscope", "profile_creator_photo"];
       if (!excludedKeys.includes(key)) {
-        if (typeof value === "number") {
-          formData_upload.append(key, value.toString());
-        } else {
-          formData_upload.append(key, value);
-        }
+        formData_upload.append(key, value != null ? value.toString() : "");
       }
     }
 
@@ -283,7 +344,7 @@ const UserProfile = (user_data) => {
     if (photo4) formData_upload.append("photo4", photo4);
     if (horoscope) formData_upload.append("horoscope", horoscope);
     if (profileCreatorPic) formData_upload.append("profile_creator_photo", profileCreatorPic);
-
+    setSuccessMessage("");
     try {
       const res = await fetch("/api/user", {
         method: "POST",
@@ -294,24 +355,10 @@ const UserProfile = (user_data) => {
         throw new Error("Failed to Update user data.");
       }
 
-      toast.success('User updated successfully!', {
-        className: "sonner-toast-success",
-        cancel: {
-          label: 'Close',
-          onClick: () => console.log('Close'),
-        },
-      });
+      setSuccessMessage("Profile updated successfully!");
 
       // Redirect
-      router.push(`/frontend/dashboard`);
-
-      setProfilePic(null); // Reset profile picture
-      setPhoto1(null);
-      setPhoto2(null);
-      setPhoto3(null);
-      setPhoto4(null);
-      setHoroscope(null);
-      setProfileCreatorPic(null); // Reset profile picture
+      router.push(`/dashboard`);
 
     } catch (err) {
       setError(err.message);
@@ -324,6 +371,26 @@ const UserProfile = (user_data) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (errorMessage) {
+      const timer = setTimeout(() => {
+        setErrorMessage(""); // Clear the message after 5 seconds
+      }, 5000);
+
+      return () => clearTimeout(timer); // Cleanup timer when component unmounts or message changes
+    }
+  }, [errorMessage]);
+
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage(""); // Clear the message after 5 seconds
+      }, 5000);
+
+      return () => clearTimeout(timer); // Cleanup timer when component unmounts or message changes
+    }
+  }, [successMessage]);
 
   const profileOptions = [
     { label: 'MySelf', value: 'myself' },
@@ -344,6 +411,12 @@ const UserProfile = (user_data) => {
     { label: 'Groom', value: 'groom' },
   ];
 
+  const genderOptions = [
+    { label: 'Male', value: 'male' },
+    { label: 'Female', value: 'female' },
+  ];
+
+
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -352,11 +425,26 @@ const UserProfile = (user_data) => {
     <>
       <div className="bg-gray-100 min-h-screen">
         {/* Header Section */}
-        <div className="bg-light text-white py-8">
-          <div className="container mx-auto flex flex-col items-center">
+        <div className="bg-light text-white py-8" >
+          <div className="container mx-auto flex flex-col items-center" ref={errorRef} >
+            {/* Show profile update success message */}
+            {successMessage && (
+              <div className="bg-green-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-green-600 mb-6">
+                <p>{successMessage}</p>
+              </div>
+            )}
+            {/* Show profile update error message */}
+            {errorMessage && (
+              <div className="bg-red-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-red-600 mb-6">
+                <p>{errorMessage}</p>
+              </div>
+            )}
             <form onSubmit={handleSubmit}>
+
               <div className="grid grid-cols-1 gap-9 sm:grid-cols-2 mt-5">
+
                 <div className="flex flex-col gap-9">
+
 
                   {/* <!-- Reference start --> */}
                   <div className="rounded-sm border border-1 bg-light shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -382,11 +470,12 @@ const UserProfile = (user_data) => {
                         )}
                       </div>
 
+
                       {profileCreator && (
                         <>
-                          < div className="mb-4.5">
+                          <div className="mb-4.5 text-black">
                             <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                              Name <span className="text-meta-1">*</span>
+                              Creator Name <span className="text-meta-1">*</span>
                             </label>
                             <input
                               type="text"
@@ -394,8 +483,6 @@ const UserProfile = (user_data) => {
                               value={formData.profile_creator_name || ""}
                               onChange={handleChange}
                               placeholder="Enter Profile Creator Name"
-
-
                               className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent ${formErrors?.profile_creator_name
                                 ? "border-red-500 focus:border-red-500"
                                 : "border-stroke focus:border-primary"
@@ -405,11 +492,50 @@ const UserProfile = (user_data) => {
                               <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_name}</p>
                             )}
                           </div>
+                        </>
+                      )}
 
 
-                          <div className="mb-4.5">
+                      <div className="mb-4.5">
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          Email
+                        </label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email || ""}
+                          onChange={handleChange}
+                          readOnly
+                          placeholder="Enter your email address"
+                          className=" list-text w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark"
+                        />
+                      </div>
+
+                      <div className="mb-4.5 text-black">
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          Phone Number <span className="text-meta-1">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          name="phonenumber"
+                          value={formData.phonenumber || ""}
+                          onChange={handleChange}
+                          placeholder="Enter your phone number"
+                          className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent ${formErrors?.phonenumber
+                            ? "border-red-500 focus:border-red-500"
+                            : "border-stroke focus:border-primary"
+                            } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                        />
+                        {formErrors?.phonenumber && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.phonenumber}</p>
+                        )}
+                      </div>
+
+                      {profileCreator && (
+                        <>
+                          <div className="mb-4.5 text-black">
                             <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                              Picture <span className="text-meta-1">*</span>
+                              Creator Picture <span className="text-meta-1">*</span>
                             </label>
                             <div className="flex items-center space-x-4">
                               <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
@@ -442,9 +568,9 @@ const UserProfile = (user_data) => {
                           </div>
 
 
-                          <div className="mb-4.5">
+                          <div className="mb-4.5 text-black">
                             <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                              Aadhar Number <span className="text-meta-1">*</span>
+                              Creator Aadhar Number <span className="text-meta-1">*</span>
                             </label>
                             <input
                               type="text"
@@ -459,26 +585,6 @@ const UserProfile = (user_data) => {
                             />
                             {formErrors?.profile_creator_aadhar && (
                               <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_aadhar}</p>
-                            )}
-                          </div>
-
-                          <div className="mb-4.5">
-                            <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                              Phone Number <span className="text-meta-1">*</span>
-                            </label>
-                            <input
-                              type="text"
-                              name="profile_creator_phonenumber"
-                              value={formData.profile_creator_phonenumber || ""}
-                              onChange={handleChange}
-                              placeholder="Enter your phone number"
-                              className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent ${formErrors?.profile_creator_phonenumber
-                                ? "border-red-500 focus:border-red-500"
-                                : "border-stroke focus:border-primary"
-                                } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                            />
-                            {formErrors?.profile_creator_phonenumber && (
-                              <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_phonenumber}</p>
                             )}
                           </div>
                         </>
@@ -497,10 +603,10 @@ const UserProfile = (user_data) => {
                     <div className="p-6.5">
                       <div className="mb-4.5">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Profile Picture <span className="text-meta-1">*</span>
+                          Picture(Groom / Bride) <span className="text-meta-1">*</span>
                         </label>
                         <div className="flex items-center space-x-4">
-                          <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
+                          <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
                             {formData.profile_photo && (
                               <NextImage
                                 src={formData.profile_photo || ""}
@@ -521,7 +627,7 @@ const UserProfile = (user_data) => {
                             accept="image/*"
                             onChange={handleChange}
                             name="profile_photo"
-                            className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
+                            className="block text-sm flex-1 text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
                           />
                         </div>
                         {formErrors?.profile_photo && (
@@ -569,44 +675,36 @@ const UserProfile = (user_data) => {
                             <p className="mt-1 text-sm text-red-500">{formErrors.lastname}</p>
                           )}
                         </div>
-
                       </div>
-
                       <div className="mb-4.5">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Email
+                          Detail about groom / bride <span className="text-meta-1">*</span>
                         </label>
-                        <input
-                          type="email"
-                          name="email"
-                          value={formData.email || ""}
+                        <textarea
+                          rows={6}
+                          name="bride_groom_detail"
+                          value={formData.bride_groom_detail || ""}
                           onChange={handleChange}
-                          readOnly
-                          placeholder="Enter your email address"
-                          className=" list-text w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark"
-                        />
-                      </div>
-
-                      <div className="mb-4.5 text-black">
-                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Phone Number <span className="text-meta-1">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          name="phonenumber"
-                          value={formData.phonenumber || ""}
-                          onChange={handleChange}
-                          placeholder="Enter your phone number"
-                          className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent ${formErrors?.phonenumber
-                            ? "border-red-500 focus:border-red-500"
-                            : "border-stroke focus:border-primary"
-                            } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                        />
-                        {formErrors?.phonenumber && (
-                          <p className="mt-1 text-sm text-red-500">{formErrors.phonenumber}</p>
+                          className="w-full rounded-lg border-[1.5px] bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:text-white"
+                        ></textarea>
+                        {formErrors?.bride_groom_detail && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.bride_groom_detail}</p>
                         )}
                       </div>
-
+                      <div className="mb-4.5 text-black">
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          Gender for (Bride / Groom)  <span className="text-meta-1">*</span>
+                        </label>
+                        <RadioButtonGroup
+                          name="gender"
+                          options={genderOptions}
+                          selectedValue={formData.gender}
+                          onChange={handleChange}
+                        />
+                        {formErrors?.gender && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.gender}</p>
+                        )}
+                      </div>
                       <div className="mb-4.5 text-black">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                           Marital Status <span className="text-meta-1">*</span>
@@ -667,7 +765,7 @@ const UserProfile = (user_data) => {
 
                       <div className="mb-4.5">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          SubCaste
+                        Subcaste in Mudaliyar
                         </label>
                         <input
                           type="text"
@@ -747,6 +845,25 @@ const UserProfile = (user_data) => {
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
+                      <div className="mb-4.5 text-black">
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          Additional Phone Number
+                        </label>
+                        <input
+                          type="text"
+                          name="profile_creator_phonenumber"
+                          value={formData.profile_creator_phonenumber || ""}
+                          onChange={handleChange}
+                          placeholder="Enter additional phone number"
+                          className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent ${formErrors?.profile_creator_phonenumber
+                            ? "border-red-500 focus:border-red-500"
+                            : "border-stroke focus:border-primary"
+                            } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                        />
+                        {formErrors?.profile_creator_phonenumber && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_phonenumber}</p>
+                        )}
+                      </div>
 
                     </div>
                   </div>
@@ -775,7 +892,7 @@ const UserProfile = (user_data) => {
 
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Complexation for Groom / Bride (Dark/Wheat/Fair)
+                          Complexion of Groom/Bride: (Dark, Wheatish, or Fair)
                         </label>
                         <input
                           type="text"
@@ -904,6 +1021,8 @@ const UserProfile = (user_data) => {
                     </div>
                   </div>
                   {/* <!-- horoscope upload end--> */}
+
+
 
                   {/* <!-- Reference start --> */}
                   <div className="rounded-sm border border-1 bg-light shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -1109,23 +1228,66 @@ const UserProfile = (user_data) => {
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
+                    </div>
+                  </div>
+                  {/* <!-- Location upload start--> */}
+                  <div className="rounded-sm border border-stroke  shadow-default dark:border-strokedark ">
+                    <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                      <h3 className="font-medium dark-text dark:text-white">
+                        Location Details
+                      </h3>
+                    </div>
+                    <div className="p-6.5">
 
-
-                      <div>
+                      <div className="mb-4.5 text-black">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Address
+                          State <span className="text-meta-1">*</span>
+                        </label>
+                        <SelectGroupStates
+                          selectedState={selectedState}
+                          onStateChange={handleStateChange}
+                        />
+                        {formErrors?.state_id && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.state_id}</p>
+                        )}
+                      </div>
+
+                      <div className="mb-4.5 text-black">
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          City <span className="text-meta-1">*</span>
+                        </label>
+                        <SelectGroupCities
+                          selectedState={selectedState}
+                          selectedCity={selectedCity}
+                          onCityChange={handleCityChange}
+                        />
+                        {formErrors?.city_id && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.city_id}</p>
+                        )}
+                      </div>
+
+                      <div className="mb-4.5 text-black">
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          Address <span className="text-meta-1">*</span>
                         </label>
                         <textarea
                           rows={6}
                           name="address"
                           value={formData.address || ""}
                           onChange={handleChange}
-                          className="w-full rounded-lg border-[1.5px] bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:text-white"
+                          className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.email
+                            ? "border-red-500 focus:border-red-500"
+                            : "border-stroke focus:border-primary"
+                            } dark:border-form-strokedark dark:bg-form-input dark:text-white bg-transparent`}
                         ></textarea>
+                        {formErrors?.address && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.address}</p>
+                        )}
                       </div>
 
                     </div>
                   </div>
+                  {/* <!-- Location upload end--> */}
                   {/* <!-- Partner Preference  --> */}
                   <div className="rounded-sm border border-1 bg-light shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
@@ -1174,15 +1336,15 @@ const UserProfile = (user_data) => {
                         <SelectGroupCaste
                           castes={castes}
                           name="partner_pref_caste"
-                          selectedcaste={formData.caste}
+                          selectedcaste={formData.partner_pref_caste}
                           oncasteChange={(e) =>
-                            setFormData({ ...formData, caste: e.target.value })
+                            setFormData({ ...formData, partner_pref_caste: e.target.value })
                           }
                         />
                       </div>
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          SubCaste
+                          Subcaste in Mudaliyar
                         </label>
                         <input
                           type="text"

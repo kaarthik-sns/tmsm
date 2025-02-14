@@ -1,5 +1,5 @@
 import React from "react";
-import FaqElements from "@/components/Faq/edit";
+import FaqElements from "@/components/Cms/Faq/edit";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 

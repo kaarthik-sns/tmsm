@@ -173,29 +173,29 @@ const Settings = () => {
   const validateForm = () => {
 
     const fieldsToValidate = [
-      { key: "banner_title", message: "Title is required." },
-      { key: "banner_img", message: "Banner Image is required." },
-      { key: "sec_one_title", message: "Title is required." },
-      { key: "sec_one_desc", message: "Description is required." },
-      { key: "sec_one_img", message: "Image is required." },
-      { key: "sec_two_title", message: "Title is required." },
-      { key: "sec_two_desc", message: "Description is required." },
-      { key: "sec_two_img", message: "Image is required." },
-      { key: "feature_one", message: "Title One is required." },
-      { key: "feature_one_img", message: "Image is required." },
-      { key: "feature_one_desc", message: "Description is required." },
+      { key: "banner_title", message: "Title cannot be empty." },
+      { key: "banner_img", message: "Banner Image cannot be empty." },
+      { key: "sec_one_title", message: "Title cannot be empty." },
+      { key: "sec_one_desc", message: "Description cannot be empty." },
+      { key: "sec_one_img", message: "Image cannot be empty." },
+      { key: "sec_two_title", message: "Title cannot be empty." },
+      { key: "sec_two_desc", message: "Description cannot be empty." },
+      { key: "sec_two_img", message: "Image cannot be empty." },
+      { key: "feature_one", message: "Title One cannot be empty." },
+      { key: "feature_one_img", message: "Image cannot be empty." },
+      { key: "feature_one_desc", message: "Description cannot be empty." },
 
-      { key: "feature_two", message: "Title Two is required." },
-      { key: "feature_two_img", message: "Image is required." },
-      { key: "feature_two_desc", message: "Description is required." },
+      { key: "feature_two", message: "Title Two cannot be empty." },
+      { key: "feature_two_img", message: "Image cannot be empty." },
+      { key: "feature_two_desc", message: "Description cannot be empty." },
 
-      { key: "feature_three", message: "Title Three is required." },
-      { key: "feature_three_img", message: "Image is required." },
-      { key: "feature_three_desc", message: "Description is required." },
+      { key: "feature_three", message: "Title Three cannot be empty." },
+      { key: "feature_three_img", message: "Image cannot be empty." },
+      { key: "feature_three_desc", message: "Description cannot be empty." },
 
-      { key: "feature_four", message: "Title Four is required." },
-      { key: "feature_four_img", message: "Image is required." },
-      { key: "feature_four_desc", message: "Description is required." }
+      { key: "feature_four", message: "Title Four cannot be empty." },
+      { key: "feature_four_img", message: "Image cannot be empty." },
+      { key: "feature_four_desc", message: "Description cannot be empty." }
     ];
 
     for (const { key, message } of fieldsToValidate) {
