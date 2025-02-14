@@ -151,7 +151,8 @@ export default function Profile({ userId }) {
               <p>
                 <FaMapMarkerAlt className="inline-block mr-2" />
                 {profileData?.city?.name ? `${profileData?.city?.name}, ` : ""}
-                {profileData?.state?.name || ""}
+                {profileData?.state?.name ? `${profileData?.state?.name}, ` : ""}
+                {profileData?.country?.name || ""}
               </p>
             </div>
           </div>

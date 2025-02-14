@@ -427,3 +427,19 @@ th.py-3.px-6.dark-text {
     background-color: rgba(16, 185, 129, .08);
     color: #10b981;
 }
+/*admin cms home page slider*/
+.home-banner-image-info{
+    position: relative;
+    height: 420px;
+  width: 70%;
+}
+.home-banner-image-info img{
+       width: 100%;
+}
+.home-banner-full{
+    justify-content: space-between;
+}
+.slider-upload-info{
+    width: 100%;
+    max-width: 26%
+}

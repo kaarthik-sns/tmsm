@@ -1,10 +1,10 @@
 'use client'
 import Breadcrumb from "@/components/Breadcrumbs/BreadcrumbCustom";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
+import ImageUpload from "@/components/FormElements/ImageUpload";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -338,38 +338,14 @@ const Settings = () => {
                 </div>
 
                 <div className="mb-4.5">
-                  <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
-                    Image <span className="mt-1 text-sm text-red-500">*</span>
-                  </label>
-                  <div className="flex items-center space-x-4">
-                    <div className={`w-25 h-25 rounded-full overflow-hidden border-[1.5px] bg-gray-200 ${formErrors.banner_img
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      }`}>
-                      {formData.banner_img && (
-                        <Image
-                          src={formData.banner_img}
-                          alt="Banner image"
-                          width={200}
-                          height={200}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-
-                    <input
-                      type="file"
-                      name="banner_img"
-                      accept="image/*"
-                      onChange={handleChange}
-                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                    />
-                  </div>
-                  {formErrors?.banner_img && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.banner_img}</p>
-                  )}
+                  <ImageUpload
+                    name="banner_img"
+                    label="Image"
+                    formData={formData}
+                    formErrors={formErrors}
+                    handleChange={handleChange}
+                    required={true}
+                  />
                 </div>
 
               </div>
@@ -388,40 +364,15 @@ const Settings = () => {
               <div className="p-6.5">
 
                 <div className="mb-4.5">
-                  <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
-                    Image <span className="mt-1 text-sm text-red-500">*</span>
-                  </label>
-                  <div className="flex items-center space-x-4">
-                    <div className={`w-25 h-25 rounded-full overflow-hidden border-[1.5px] bg-gray-200 ${formErrors.feature_one_img
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      }`}>
-                      {formData.feature_one_img && (
-                        <Image
-                          src={formData.feature_one_img}
-                          alt="Profile Preview"
-                          width={200}
-                          height={200}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-
-                    <input
-                      type="file"
-                      name="feature_one_img"
-                      accept="image/*"
-                      onChange={handleChange}
-                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                    />
-                  </div>
-                  {formErrors?.feature_one_img && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.feature_one_img}</p>
-                  )}
+                  <ImageUpload
+                    name="feature_one_img"
+                    label="Image"
+                    formData={formData}
+                    formErrors={formErrors}
+                    handleChange={handleChange}
+                    required={true}
+                  />
                 </div>
-
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
@@ -464,40 +415,15 @@ const Settings = () => {
                 </div>
 
                 <div className="mb-4.5">
-                  <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
-                    Image <span className="mt-1 text-sm text-red-500">*</span>
-                  </label>
-                  <div className="flex items-center space-x-4">
-                    <div className={`w-25 h-25 rounded-full overflow-hidden border-[1.5px] bg-gray-200 ${formErrors.feature_two_img
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      }`}>
-                      {formData.feature_two_img && (
-                        <Image
-                          src={formData.feature_two_img}
-                          alt="Profile Preview"
-                          width={200}
-                          height={200}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-
-                    <input
-                      type="file"
-                      name="feature_two_img"
-                      accept="image/*"
-                      onChange={handleChange}
-                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                    />
-                  </div>
-                  {formErrors?.feature_two_img && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.feature_two_img}</p>
-                  )}
+                  <ImageUpload
+                    name="feature_two_img"
+                    label="Image"
+                    formData={formData}
+                    formErrors={formErrors}
+                    handleChange={handleChange}
+                    required={true}
+                  />
                 </div>
-
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
@@ -539,42 +465,16 @@ const Settings = () => {
                   )}
                 </div>
 
-
                 <div className="mb-4.5">
-                  <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
-                    Image <span className="mt-1 text-sm text-red-500">*</span>
-                  </label>
-                  <div className="flex items-center space-x-4">
-                    <div className={`w-25 h-25 rounded-full overflow-hidden border-[1.5px] bg-gray-200 ${formErrors.feature_three_img
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      }`}>
-                      {formData.feature_three_img && (
-                        <Image
-                          src={formData.feature_three_img}
-                          alt="Profile Preview"
-                          width={200}
-                          height={200}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-
-                    <input
-                      type="file"
-                      name="feature_three_img"
-                      accept="image/*"
-                      onChange={handleChange}
-                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                    />
-                  </div>
-                  {formErrors?.feature_three_img && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.feature_three_img}</p>
-                  )}
+                  <ImageUpload
+                    name="feature_three_img"
+                    label="Image"
+                    formData={formData}
+                    formErrors={formErrors}
+                    handleChange={handleChange}
+                    required={true}
+                  />
                 </div>
-
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
@@ -616,42 +516,16 @@ const Settings = () => {
                   )}
                 </div>
 
-
                 <div className="mb-4.5">
-                  <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
-                    Image <span className="mt-1 text-sm text-red-500">*</span>
-                  </label>
-                  <div className="flex items-center space-x-4">
-                    <div className={`w-25 h-25 rounded-full overflow-hidden border-[1.5px] bg-gray-200 ${formErrors.feature_four_img
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      }`}>
-                      {formData.feature_four_img && (
-                        <Image
-                          src={formData.feature_four_img}
-                          alt="Profile Preview"
-                          width={200}
-                          height={200}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-
-                    <input
-                      type="file"
-                      name="feature_four_img"
-                      accept="image/*"
-                      onChange={handleChange}
-                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                    />
-                  </div>
-                  {formErrors?.feature_four_img && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.feature_four_img}</p>
-                  )}
+                  <ImageUpload
+                    name="feature_four_img"
+                    label="Image"
+                    formData={formData}
+                    formErrors={formErrors}
+                    handleChange={handleChange}
+                    required={true}
+                  />
                 </div>
-
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
@@ -692,19 +566,12 @@ const Settings = () => {
                     <p className="mt-1 text-sm text-red-500">{formErrors.feature_four_desc}</p>
                   )}
                 </div>
-
-
               </div>
-
             </div>
             {/* what we offer end */}
-
-
           </div>
 
-
           <div className="flex flex-col gap-9">
-
 
             {/* About Us Section start */}
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -716,38 +583,14 @@ const Settings = () => {
               <div className="p-6.5">
 
                 <div className="mb-4.5">
-                  <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
-                    Image <span className="mt-1 text-sm text-red-500">*</span>
-                  </label>
-                  <div className="flex items-center space-x-4">
-                    <div className={`w-25 h-25 rounded-full overflow-hidden border-[1.5px] bg-gray-200 ${formErrors.sec_one_img
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      }`}>
-                      {formData.sec_one_img && (
-                        <Image
-                          src={formData.sec_one_img}
-                          alt="Profile Preview"
-                          width={200}
-                          height={200}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-
-                    <input
-                      type="file"
-                      name="sec_one_img"
-                      accept="image/*"
-                      onChange={handleChange}
-                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                    />
-                  </div>
-                  {formErrors?.sec_one_img && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.sec_one_img}</p>
-                  )}
+                  <ImageUpload
+                    name="sec_one_img"
+                    label="Image"
+                    formData={formData}
+                    formErrors={formErrors}
+                    handleChange={handleChange}
+                    required={true}
+                  />
                 </div>
 
                 <div className="mb-4.5">
@@ -808,38 +651,14 @@ const Settings = () => {
               <div className="p-6.5">
 
                 <div className="mb-4.5">
-                  <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
-                    Image <span className="mt-1 text-sm text-red-500">*</span>
-                  </label>
-                  <div className="flex items-center space-x-4">
-                    <div className={`w-25 h-25 rounded-full overflow-hidden border-[1.5px] bg-gray-200 ${formErrors.sec_two_img
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      }`}>
-                      {formData.sec_two_img && (
-                        <Image
-                          src={formData.sec_two_img}
-                          alt="Profile Preview"
-                          width={200}
-                          height={200}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-
-                    <input
-                      type="file"
-                      name="sec_two_img"
-                      accept="image/*"
-                      onChange={handleChange}
-                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                    />
-                  </div>
-                  {formErrors?.sec_two_img && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.sec_two_img}</p>
-                  )}
+                  <ImageUpload
+                    name="sec_two_img"
+                    label="Image"
+                    formData={formData}
+                    formErrors={formErrors}
+                    handleChange={handleChange}
+                    required={true}
+                  />
                 </div>
 
                 <div className="mb-4.5">
@@ -887,7 +706,6 @@ const Settings = () => {
               </div>
             </div>
             {/* Our Story Section end */}
-
 
 
             <div className="text-right">

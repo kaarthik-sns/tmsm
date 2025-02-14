@@ -5,12 +5,13 @@ import Breadcrumb from "@/components/Breadcrumbs/UserBreadcrumb";
 import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
 import SelectGroupCaste from "@/components/SelectGroup/SelectGroupCaste";
 import SelectGroupStates from "@/components/SelectGroup/SelectGroupStates";
+import SelectGroupCountries from "@/components/SelectGroup/SelectGroupCountries";
 import SelectGroupCities from "@/components/SelectGroup/SelectGroupCities";
 import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
 import { toast } from "sonner";
-import NextImage from "next/image";
 import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
 import { useRouter } from "next/navigation";
+import ImageUpload from "@/components/FormElements/ImageUpload";
 import FileUpload from "@/components/FormElements/FileUpload";
 
 const FormElements = () => {
@@ -100,11 +101,14 @@ const FormElements = () => {
     partner_pref_caste: "",
     partner_pref_subcaste: "",
     gender: "",
-    bride_groom_detail: ""
+    bride_groom_detail: "",
+    country_id: ""
   });
+
   // Set selected state and city based on formData
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
 
   const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newState = event.target.value;
@@ -113,11 +117,20 @@ const FormElements = () => {
     setSelectedCity("");
   };
 
+  const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCountry = event.target.value;
+    setSelectedCountry(newCountry);
+    setFormData({ ...formData, country_id: newCountry, state_id: "", city_id: "" }); // Reset city when state changes
+    setSelectedCity("");
+    setSelectedState("");
+  };
+
   const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newCity = event.target.value;
     setSelectedCity(newCity);
     setFormData({ ...formData, city_id: newCity });
   };
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
@@ -233,6 +246,10 @@ const FormElements = () => {
       errors.maritalstatus = "Marital Status cannot be empty.";
     }
 
+    if (!formData.country_id) {
+      errors.country_id = "Country cannot be empty.";
+    }
+
     if (!formData.state_id) {
       errors.state_id = "State cannot be empty.";
     }
@@ -273,7 +290,7 @@ const FormElements = () => {
 
       if (formData.profile_creator_phonenumber.trim() !== "") {
         if (!formData.profile_creator_phonenumber || !/^\d{10}$/.test(formData.profile_creator_phonenumber)) {
-          errors.profile_creator_phonenumber = "A valid 10-digit phone number cannot be empty.";
+          errors.profile_creator_phonenumber = "Enter a valid 10-digit phone number.";
         }
       }
 
@@ -513,19 +530,37 @@ const FormElements = () => {
 
                 </div>
 
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Password <span className="text-meta-1">*</span>
+                  </label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password || ""}
+                    onChange={handleChange}
+                    placeholder="Enter a strong password"
+                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.password
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-stroke focus:border-primary"
+                      } `}
+                  />
+                  {formErrors?.password && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.password}</p>
+                  )}
+                </div>
 
                 {profileCreator && (
                   <>
 
                     <div className="mb-4.5">
-                      <FileUpload
+                      <ImageUpload
                         name="profile_creator_photo"
                         label="Profile creator picture"
                         formData={formData}
                         formErrors={formErrors}
                         handleChange={handleChange}
                         required={true}
-
                       />
                     </div>
 
@@ -564,7 +599,7 @@ const FormElements = () => {
               <div className="p-6.5">
 
                 <div className="mb-6.5">
-                  <FileUpload
+                  <ImageUpload
                     name="profile_photo"
                     label="Profile Picture"
                     formData={formData}
@@ -617,25 +652,7 @@ const FormElements = () => {
 
                 </div>
 
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Password <span className="text-meta-1">*</span>
-                  </label>
-                  <input
-                    type="password"
-                    name="password"
-                    value={formData.password || ""}
-                    onChange={handleChange}
-                    placeholder="Enter a strong password"
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.password
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      } `}
-                  />
-                  {formErrors?.password && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.password}</p>
-                  )}
-                </div>
+
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                     Detail about groom / bride <span className="text-meta-1">*</span>
@@ -836,9 +853,23 @@ const FormElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Country <span className="text-meta-1">*</span>
+                  </label>
+                  <SelectGroupCountries
+                    selectedCountry={selectedCountry}
+                    onCountryChange={handleCountryChange}
+                  />
+                  {formErrors?.country_id && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.country_id}</p>
+                  )}
+                </div>
+
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                     State <span className="text-meta-1">*</span>
                   </label>
                   <SelectGroupStates
+                    selectedCountry={selectedCountry}
                     selectedState={selectedState}
                     onStateChange={handleStateChange}
                   />
@@ -1024,15 +1055,13 @@ const FormElements = () => {
                 </h3>
               </div>
               <div className="flex flex-col gap-5.5 p-6.5">
-                <input
-                  type="file"
-                  accept="image/*,application/pdf"
+                <FileUpload
                   name="horoscope"
-                  onChange={handleChange}
-                  className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
+                  handleChange={handleChange}
                 />
                 {formData.horoscope && (
                   <button
+                    type="button"
                     onClick={handlePreview} style={{ width: "200px", padding: "8px 0" }}
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
                   >
@@ -1331,7 +1360,7 @@ const FormElements = () => {
               <div className="flex flex-col gap-5.5 p-6.5">
 
                 <div className="mb-4.5">
-                  <FileUpload
+                  <ImageUpload
                     name="photo1"
                     label=""
                     formData={formData}
@@ -1341,7 +1370,7 @@ const FormElements = () => {
                 </div>
 
                 <div className="mb-4.5">
-                  <FileUpload
+                  <ImageUpload
                     name="photo2"
                     label=""
                     formData={formData}
@@ -1351,7 +1380,7 @@ const FormElements = () => {
                 </div>
 
                 <div className="mb-4.5">
-                  <FileUpload
+                  <ImageUpload
                     name="photo3"
                     label=""
                     formData={formData}
@@ -1361,7 +1390,7 @@ const FormElements = () => {
                 </div>
 
                 <div className="mb-4.5">
-                  <FileUpload
+                  <ImageUpload
                     name="photo4"
                     label=""
                     formData={formData}

@@ -68,6 +68,7 @@ const FormElements = () => {
     city_id: "",
     state: { name: "" },
     city: { name: "" },
+    country: { name: "" },
     reactivate_reason: "",
     deactivate_reason: "",
     is_active:Boolean
@@ -322,6 +323,12 @@ const FormElements = () => {
               <div className="mb-2.5">
                 <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                   State :  {formData?.state?.name || ""}
+                </label>
+              </div>
+
+              <div className="mb-2.5">
+                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                  Country :  {formData?.country?.name || ""}
                 </label>
               </div>
 

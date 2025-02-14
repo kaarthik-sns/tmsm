@@ -81,6 +81,7 @@ export async function POST(request: NextRequest) {
     const place_of_birth = (formData.get('place_of_birth') as string) ?? '';
     const state_id = (formData.get('state_id') as string) ?? '';
     const city_id = (formData.get('city_id') as string) ?? '';
+    const country_id = (formData.get('country_id') as string) ?? '';
     const education = (formData.get('education') as string) ?? '';
     const complexion = (formData.get('complexion') as string) ?? '';
     const profession = (formData.get('profession') as string) ?? '';
@@ -176,6 +177,7 @@ export async function POST(request: NextRequest) {
             age,
             state_id,
             city_id,
+            country_id,
             place_of_birth,
             education,
             complexion,

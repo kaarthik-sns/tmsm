@@ -32,6 +32,7 @@ const UserSchema = new Schema({
 
   state_id: { type: String, required: false },
   city_id: { type: String, required: false },
+  country_id: { type: String, required: false },
 
   place_of_birth: { type: String, required: false },
   education: { type: String, required: false },

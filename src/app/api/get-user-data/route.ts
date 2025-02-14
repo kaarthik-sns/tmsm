@@ -21,16 +21,16 @@ export const POST = async (req: NextRequest) => {
 
             const userDataArray = await User.aggregate([
                 {
-                    $match: { _id:  new mongoose.Types.ObjectId(id) } // Match user by ID
+                    $match: { _id: new mongoose.Types.ObjectId(id) } // Match user by ID
                 },
                 {
                     $lookup: {
                         from: 'cities', // Lookup cities collection
-                        let: { cityId: { $toObjectId: '$city_id' } },
+                        let: { cityIdStr: '$city_id' }, // Pass city_id as a variable
                         pipeline: [
                             {
                                 $match: {
-                                    $expr: { $eq: ['$_id', '$$cityId'] }
+                                    $expr: { $eq: ['$id', { $toInt: '$$cityIdStr' }] } // Convert city_id (string) to number
                                 }
                             }
                         ],
@@ -40,11 +40,11 @@ export const POST = async (req: NextRequest) => {
                 {
                     $lookup: {
                         from: 'states', // Lookup states collection
-                        let: { stateId: { $toObjectId: '$state_id' } },
+                        let: { stateIdStr: '$state_id' },
                         pipeline: [
                             {
                                 $match: {
-                                    $expr: { $eq: ['$_id', '$$stateId'] }
+                                    $expr: { $eq: ['$id', { $toInt: '$$stateIdStr' }] }
                                 }
                             }
                         ],
@@ -52,15 +52,36 @@ export const POST = async (req: NextRequest) => {
                     }
                 },
                 {
+                    $lookup: {
+                        from: 'countries', // Lookup countries collection
+                        let: { countryIdStr: '$country_id' },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: { $eq: ['$id', { $toInt: '$$countryIdStr' }] }
+                                }
+                            }
+                        ],
+                        as: 'country'
+                    }
+                },
+                {
                     $unwind: { path: '$city', preserveNullAndEmptyArrays: true }
                 },
                 {
                     $unwind: { path: '$state', preserveNullAndEmptyArrays: true }
+                },
+                {
+                    $unwind: { path: '$country', preserveNullAndEmptyArrays: true }
                 }
             ]);
+            
+
 
             userData = userDataArray.length > 0 ? userDataArray[0] : {};
         }
+
+        console.log(userData);
 
         // Prepare the response with pagination meta
         return NextResponse.json({
