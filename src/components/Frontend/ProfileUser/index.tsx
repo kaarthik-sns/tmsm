@@ -172,6 +172,19 @@ const UserProfile = (user_data) => {
           setHoroscope(data.horoscope);
           setSelectedState(data.state_id);
           setSelectedCity(data.city_id);
+          setSelectedCountry(data.country_id);
+
+          setFormData((prevFormData) => ({
+            ...prevFormData, // Spread existing form data to keep other fields
+            photo1: data?.photo1 ? `/api${data.photo1}` : '',
+            photo2: data?.photo2 ? `/api${data.photo2}` : '',
+            photo3: data?.photo3 ? `/api${data.photo3}` : '',
+            photo4: data?.photo4 ? `/api${data.photo4}` : '',
+            profile_photo: data?.profile_photo ? `/api${data.profile_photo}` : '',
+            profile_creator_photo: data?.profile_creator_photo ? `/api${data.profile_creator_photo}` : '',
+            horoscope: data?.horoscope ? `/api${data.horoscope}` : ''
+          }));
+  
 
         } catch (err) {
           //console.error(err);
@@ -219,7 +232,7 @@ const UserProfile = (user_data) => {
   const handlePreview = () => {
     if (formData.horoscope) {
       // Open the file in a new tab
-      window.open(`/api${formData.horoscope}`, "_blank");
+      window.open(formData.horoscope, "_blank");
     } else {
       toast.error('No file uploaded to preview!', {
         className: "sonner-toast-success",
