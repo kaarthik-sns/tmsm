@@ -57,19 +57,14 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
 
-
     let copyright = '';
     let contactMail = '';
-    let baseUrl = process.env.BASE_URL || '';  // ✅ Get BASE_URL from .env
-    //let mail_logo = `${baseUrl}/images/logo/Flogo.svg`;  // ✅ Construct full path dynamically
-    let mail_logo = `https://searchnscore.in/tmsm/images/mail-logo.png?t=${new Date().getTime()}`;
 
     const smtpSettings = await getSMTPSettings();
     if (smtpSettings) {
         copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
         contactMail = smtpSettings.organisation_email_id;
     }
-
 
     // Extract all fields from formData
     const id = (formData.get('_id') as string) ?? '';
@@ -86,6 +81,7 @@ export async function POST(request: NextRequest) {
     const place_of_birth = (formData.get('place_of_birth') as string) ?? '';
     const state_id = (formData.get('state_id') as string) ?? '';
     const city_id = (formData.get('city_id') as string) ?? '';
+    const country_id = (formData.get('country_id') as string) ?? '';
     const education = (formData.get('education') as string) ?? '';
     const complexion = (formData.get('complexion') as string) ?? '';
     const profession = (formData.get('profession') as string) ?? '';
@@ -181,6 +177,7 @@ export async function POST(request: NextRequest) {
             age,
             state_id,
             city_id,
+            country_id,
             place_of_birth,
             education,
             complexion,
@@ -248,7 +245,7 @@ export async function POST(request: NextRequest) {
                 address: email
             }]
 
-            const htmlBody = welcomeTemplate(name, copyright,  contactMail, mail_logo);
+            const htmlBody = welcomeTemplate(name, copyright);
 
             const result = await sendEmail({
                 receipients,
@@ -256,7 +253,7 @@ export async function POST(request: NextRequest) {
                 message: htmlBody
             })
 
-            const htmlBody2 = verificationTemplate(name, verificationLink, copyright,contactMail, mail_logo);
+            const htmlBody2 = verificationTemplate(name, verificationLink, copyright,contactMail);
 
             const result2 = await sendEmail({
                 receipients,
@@ -264,7 +261,7 @@ export async function POST(request: NextRequest) {
                 message: htmlBody2
             })
 
-            const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber, copyright, mail_logo);
+            const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber, copyright);
 
             const receipients2 = [{
                 name: 'admin',

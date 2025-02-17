@@ -5,12 +5,14 @@ import Breadcrumb from "@/components/Breadcrumbs/UserBreadcrumb";
 import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
 import SelectGroupCaste from "@/components/SelectGroup/SelectGroupCaste";
 import SelectGroupStates from "@/components/SelectGroup/SelectGroupStates";
+import SelectGroupCountries from "@/components/SelectGroup/SelectGroupCountries";
 import SelectGroupCities from "@/components/SelectGroup/SelectGroupCities";
 import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
 import { toast } from "sonner";
-import NextImage from "next/image";
 import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
 import { useRouter } from "next/navigation";
+import ImageUpload from "@/components/FormElements/ImageUpload";
+import FileUpload from "@/components/FormElements/FileUpload";
 
 const FormElements = () => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
@@ -96,14 +98,17 @@ const FormElements = () => {
     lookingfor: "",
     partner_pref_age: "",
     partner_pref_education: "",
-    partner_pref_caste:"",
+    partner_pref_caste: "",
     partner_pref_subcaste: "",
     gender: "",
-    bride_groom_detail: ""
+    bride_groom_detail: "",
+    country_id: ""
   });
+
   // Set selected state and city based on formData
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
 
   const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newState = event.target.value;
@@ -112,11 +117,20 @@ const FormElements = () => {
     setSelectedCity("");
   };
 
+  const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCountry = event.target.value;
+    setSelectedCountry(newCountry);
+    setFormData({ ...formData, country_id: newCountry, state_id: "", city_id: "" }); // Reset city when state changes
+    setSelectedCity("");
+    setSelectedState("");
+  };
+
   const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newCity = event.target.value;
     setSelectedCity(newCity);
     setFormData({ ...formData, city_id: newCity });
   };
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
@@ -211,7 +225,7 @@ const FormElements = () => {
     if (!formData.email || !/^\S+@\S+\.\S+$/.test(formData.email)) {
       errors.email = "A valid email cannot be empty.";
     }
-    
+
     if (!formData.phonenumber || !/^\d{10}$/.test(formData.phonenumber)) {
       errors.phonenumber = "A valid 10-digit phone number cannot be empty.";
     }
@@ -232,6 +246,10 @@ const FormElements = () => {
       errors.maritalstatus = "Marital Status cannot be empty.";
     }
 
+    if (!formData.country_id) {
+      errors.country_id = "Country cannot be empty.";
+    }
+
     if (!formData.state_id) {
       errors.state_id = "State cannot be empty.";
     }
@@ -242,6 +260,10 @@ const FormElements = () => {
 
     if (!formData.address) {
       errors.address = "Address cannot be empty.";
+    }
+
+    if (!formData.gothram || formData.gothram.trim() === "") {
+      errors.gothram = "Gothram cannot be empty.";
     }
 
     if (!formData.profile_created_for || formData.profile_created_for.trim() === "") {
@@ -268,7 +290,7 @@ const FormElements = () => {
 
       if (formData.profile_creator_phonenumber.trim() !== "") {
         if (!formData.profile_creator_phonenumber || !/^\d{10}$/.test(formData.profile_creator_phonenumber)) {
-          errors.profile_creator_phonenumber = "A valid 10-digit phone number cannot be empty.";
+          errors.profile_creator_phonenumber = "Enter a valid 10-digit phone number.";
         }
       }
 
@@ -427,11 +449,11 @@ const FormElements = () => {
                   Profile Creator Details
                 </h3>
               </div>
-              <div className="flex flex-col gap-5.5 p-6.5">
+              <div className="flex flex-col p-6.5">
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Matrimony profile for <span className="text-meta-1">*</span>
+                    Matrimony profile for <span className="text-meta-1">*</span>
                   </label>
                   <RadioButtonGroup
                     name="profile_created_for"
@@ -459,7 +481,7 @@ const FormElements = () => {
                         className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent ${formErrors?.profile_creator_name
                           ? "border-red-500 focus:border-red-500"
                           : "border-stroke focus:border-primary"
-                          } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                          } `}
                       />
                       {formErrors?.profile_creator_name && (
                         <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_name}</p>
@@ -480,7 +502,7 @@ const FormElements = () => {
                     className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.email
                       ? "border-red-500 focus:border-red-500"
                       : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                      } `}
                   />
                   {formErrors?.email && (
                     <p className="mt-1 text-sm text-red-500">{formErrors.email}</p>
@@ -489,7 +511,7 @@ const FormElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Phone Number <span className="text-meta-1">*</span>
+                    Phone Number (Please do not enter the bride or groom's phone number.) <span className="text-meta-1">*</span>
                   </label>
                   <input
                     type="text"
@@ -500,50 +522,47 @@ const FormElements = () => {
                     className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.phonenumber
                       ? "border-red-500 focus:border-red-500"
                       : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                      } `}
                   />
                   {formErrors?.phonenumber && (
                     <p className="mt-1 text-sm text-red-500">{formErrors.phonenumber}</p>
                   )}
+
                 </div>
 
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Password <span className="text-meta-1">*</span>
+                  </label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password || ""}
+                    onChange={handleChange}
+                    placeholder="Enter a strong password"
+                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.password
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-stroke focus:border-primary"
+                      } `}
+                  />
+                  {formErrors?.password && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.password}</p>
+                  )}
+                </div>
 
                 {profileCreator && (
                   <>
-                    <div className="mb-4.5">
-                      <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                        Picture <span className="text-meta-1">*</span>
-                      </label>
-                      <div className="flex items-center space-x-4">
-                        <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                          {formData.profile_creator_photo && (
-                            <NextImage
-                              src={formData.profile_creator_photo || ""}
-                              alt="Profile Creator Picture"
-                              width={64}
-                              height={64}
-                              quality={100}
-                              unoptimized={true}
-                              className={`w-full h-full object-cover ${formErrors?.profile_creator_photo
-                                ? "border-red-500 focus:border-red-500"
-                                : "border-stroke focus:border-primary"
-                                }`}
-                            />
-                          )}
-                        </div>
-                        <input
-                          type="file"
-                          name="profile_creator_photo"
-                          accept="image/*"
-                          onChange={handleChange}
-                          className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                        />
-                      </div>
-                      {formErrors?.profile_creator_photo && (
-                        <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_photo}</p>
-                      )}
-                    </div>
 
+                    <div className="mb-4.5">
+                      <ImageUpload
+                        name="profile_creator_photo"
+                        label="Profile creator picture"
+                        formData={formData}
+                        formErrors={formErrors}
+                        handleChange={handleChange}
+                        required={true}
+                      />
+                    </div>
 
                     <div className="mb-4.5">
                       <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
@@ -558,7 +577,7 @@ const FormElements = () => {
                         className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.profile_creator_aadhar
                           ? "border-red-500 focus:border-red-500"
                           : "border-stroke focus:border-primary"
-                          } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                          } `}
                       />
                       {formErrors?.profile_creator_aadhar && (
                         <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_aadhar}</p>
@@ -578,38 +597,16 @@ const FormElements = () => {
                 </h3>
               </div>
               <div className="p-6.5">
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Profile Picture <span className="text-meta-1">*</span>
-                  </label>
-                  <div className="flex items-center space-x-4">
-                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                      {formData.profile_photo && (
-                        <NextImage
-                          src={formData.profile_photo || ""}
-                          alt="Profile Preview"
-                          width={64}
-                          height={64}
-                          quality={100}
-                          unoptimized={true}
-                          className={`w-full h-full object-cover ${formErrors?.profile_photo
-                            ? "border-red-500 focus:border-red-500"
-                            : "border-stroke focus:border-primary"
-                            }`}
-                        />
-                      )}
-                    </div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleChange}
-                      name="profile_photo"
-                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                    />
-                  </div>
-                  {formErrors?.profile_photo && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.profile_photo}</p>
-                  )}
+
+                <div className="mb-6.5">
+                  <ImageUpload
+                    name="profile_photo"
+                    label="Profile Picture"
+                    formData={formData}
+                    formErrors={formErrors}
+                    handleChange={handleChange}
+                    required={true}
+                  />
                 </div>
 
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
@@ -626,7 +623,7 @@ const FormElements = () => {
                       className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.name
                         ? "border-red-500 focus:border-red-500"
                         : "border-stroke focus:border-primary"
-                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                        } `}
                     />
                     {formErrors?.name && (
                       <p className="mt-1 text-sm text-red-500">{formErrors.name}</p>
@@ -646,7 +643,7 @@ const FormElements = () => {
                       className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.lastname
                         ? "border-red-500 focus:border-red-500"
                         : "border-stroke focus:border-primary"
-                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                        } `}
                     />
                     {formErrors?.lastname && (
                       <p className="mt-1 text-sm text-red-500">{formErrors.lastname}</p>
@@ -655,25 +652,7 @@ const FormElements = () => {
 
                 </div>
 
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Password <span className="text-meta-1">*</span>
-                  </label>
-                  <input
-                    type="password"
-                    name="password"
-                    value={formData.password || ""}
-                    onChange={handleChange}
-                    placeholder="Enter a strong password"
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.password
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                  />
-                  {formErrors?.password && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.password}</p>
-                  )}
-                </div>
+
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                     Detail about groom / bride <span className="text-meta-1">*</span>
@@ -692,7 +671,7 @@ const FormElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Gender  (Bride / Groom )  <span className="text-meta-1">*</span>
+                    Gender  (Bride / Groom )  <span className="text-meta-1">*</span>
                   </label>
                   <RadioButtonGroup
                     name="gender"
@@ -773,7 +752,7 @@ const FormElements = () => {
                     name="subcaste"
                     value={formData.subcaste || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
 
@@ -829,7 +808,7 @@ const FormElements = () => {
                     value={formData.age || ""} // Display the calculated age
                     readOnly // Make this input read-only since it's calculated
                     placeholder="Your age will be calculated automatically"
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary  dark:focus:border-primary"
                   />
                 </div>
 
@@ -843,30 +822,23 @@ const FormElements = () => {
                     value={formData.place_of_birth || ""}
                     onChange={handleChange}
                     placeholder="Place of birth"
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary  dark:focus:border-primary"
                   />
                 </div>
 
-                
                 <div className="mb-4.5">
-                      <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                        Additional Number <span className="text-meta-1">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="profile_creator_phonenumber"
-                        value={formData.profile_creator_phonenumber || ""}
-                        onChange={handleChange}
-                        placeholder="Enter your phone number"
-                        className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.profile_creator_phonenumber
-                          ? "border-red-500 focus:border-red-500"
-                          : "border-stroke focus:border-primary"
-                          } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                      />
-                      {formErrors?.profile_creator_phonenumber && (
-                        <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_phonenumber}</p>
-                      )}
-                    </div>
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Additional Number
+                  </label>
+                  <input
+                    type="text"
+                    name="profile_creator_phonenumber"
+                    value={formData.profile_creator_phonenumber || ""}
+                    onChange={handleChange}
+                    placeholder="Enter your phone number"
+                    className="w-full rounded border-[1.5px] px-5 py-3 outline-none transition border-stroke focus:border-primary"
+                  />
+                </div>
 
               </div>
             </div>
@@ -881,9 +853,23 @@ const FormElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                    Country <span className="text-meta-1">*</span>
+                  </label>
+                  <SelectGroupCountries
+                    selectedCountry={selectedCountry}
+                    onCountryChange={handleCountryChange}
+                  />
+                  {formErrors?.country_id && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.country_id}</p>
+                  )}
+                </div>
+
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                     State <span className="text-meta-1">*</span>
                   </label>
                   <SelectGroupStates
+                    selectedCountry={selectedCountry}
                     selectedState={selectedState}
                     onStateChange={handleStateChange}
                   />
@@ -918,7 +904,7 @@ const FormElements = () => {
                     className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.email
                       ? "border-red-500 focus:border-red-500"
                       : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                      } `}
                   ></textarea>
                   {formErrors?.address && (
                     <p className="mt-1 text-sm text-red-500">{formErrors.address}</p>
@@ -946,7 +932,7 @@ const FormElements = () => {
                     name="education"
                     value={formData.education || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
 
@@ -959,7 +945,7 @@ const FormElements = () => {
                     name="complexion"
                     value={formData.complexion || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
 
@@ -972,7 +958,7 @@ const FormElements = () => {
                     name="profession"
                     value={formData.profession || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
 
@@ -985,7 +971,7 @@ const FormElements = () => {
                     name="income"
                     value={formData.income || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
                 <div>
@@ -997,7 +983,7 @@ const FormElements = () => {
                     name="job"
                     value={formData.job || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
 
@@ -1010,7 +996,7 @@ const FormElements = () => {
                     name="place_of_work"
                     value={formData.place_of_work || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
 
@@ -1023,7 +1009,7 @@ const FormElements = () => {
                     name="kuladeivam"
                     value={formData.kuladeivam || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
                 <div>
@@ -1035,20 +1021,27 @@ const FormElements = () => {
                     name="place_of_kuladeivam_temple"
                     value={formData.place_of_kuladeivam_temple || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
+
                 <div>
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Gothram
+                    Gothram <span className="text-meta-1">*</span>
                   </label>
                   <input
                     type="text"
                     name="gothram"
                     value={formData.gothram || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.gothram
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-stroke focus:border-primary"
+                      } `}
                   />
+                  {formErrors?.gothram && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.gothram}</p>
+                  )}
                 </div>
 
               </div>
@@ -1062,15 +1055,13 @@ const FormElements = () => {
                 </h3>
               </div>
               <div className="flex flex-col gap-5.5 p-6.5">
-                <input
-                  type="file"
-                  accept="image/*,application/pdf"
+                <FileUpload
                   name="horoscope"
-                  onChange={handleChange}
-                  className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
+                  handleChange={handleChange}
                 />
                 {formData.horoscope && (
                   <button
+                    type="button"
                     onClick={handlePreview} style={{ width: "200px", padding: "8px 0" }}
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
                   >
@@ -1099,7 +1090,7 @@ const FormElements = () => {
                     name="reference1"
                     value={formData.reference1 || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
                 <div>
@@ -1111,7 +1102,7 @@ const FormElements = () => {
                     name="reference2"
                     value={formData.reference2 || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
               </div>
@@ -1142,7 +1133,7 @@ const FormElements = () => {
                     name="father_name"
                     value={formData.father_name || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
                 <div>
@@ -1154,7 +1145,7 @@ const FormElements = () => {
                     name="father_phonenumber"
                     value={formData.father_phonenumber || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
 
@@ -1168,7 +1159,7 @@ const FormElements = () => {
                     value={formData.father_occupation || ""}
                     onChange={handleChange}
                     placeholder=""
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
                 <div>
@@ -1194,7 +1185,7 @@ const FormElements = () => {
                     name="father_profession"
                     value={formData.father_profession || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
                 <div>
@@ -1207,7 +1198,7 @@ const FormElements = () => {
                     name="father_placeOfWork"
                     value={formData.father_placeOfWork || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
                 <div>
@@ -1219,7 +1210,7 @@ const FormElements = () => {
                     name="mother_name"
                     value={formData.mother_name || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
                 <div>
@@ -1231,7 +1222,7 @@ const FormElements = () => {
                     name="mother_phonenumber"
                     value={formData.mother_phonenumber || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
 
@@ -1244,7 +1235,7 @@ const FormElements = () => {
                     name="mother_occupation"
                     value={formData.mother_occupation || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
                 <div>
@@ -1270,7 +1261,7 @@ const FormElements = () => {
                     name="mother_profession"
                     value={formData.mother_profession || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
                 <div>
@@ -1283,7 +1274,7 @@ const FormElements = () => {
                     name="mother_placeOfWork"
                     value={formData.mother_placeOfWork || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
 
@@ -1306,7 +1297,7 @@ const FormElements = () => {
                     name="partner_pref_education"
                     value={formData.partner_pref_education || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
                 <div>
@@ -1327,7 +1318,7 @@ const FormElements = () => {
                       }
                     }}
                     placeholder="Enter your age"
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary  dark:focus:border-primary"
                   />
                 </div>
                 <div>
@@ -1352,7 +1343,7 @@ const FormElements = () => {
                     name="partner_pref_subcaste"
                     value={formData.partner_pref_subcaste || ""}
                     onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter  dark:focus:border-primary"
                   />
                 </div>
               </div>
@@ -1367,118 +1358,47 @@ const FormElements = () => {
               </div>
 
               <div className="flex flex-col gap-5.5 p-6.5">
+
                 <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Picture1
-                  </label>
-                  <div className="flex items-center space-x-4">
-                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                      {formData.photo1 && (
-                        <NextImage
-                          src={formData.photo1 || ""}
-                          alt="Profile Preview"
-                          width={64}
-                          height={64}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      name="photo1"
-                      onChange={handleChange}
-                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                    />
-                  </div>
+                  <ImageUpload
+                    name="photo1"
+                    label=""
+                    formData={formData}
+                    formErrors={formErrors}
+                    handleChange={handleChange}
+                  />
                 </div>
 
                 <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Picture2
-                  </label>
-                  <div className="flex items-center space-x-4">
-                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                      {formData.photo2 && (
-                        <NextImage
-                          src={formData.photo2 || ""}
-                          alt="Profile Preview"
-                          width={64}
-                          height={64}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      name="photo2"
-                      onChange={handleChange}
-                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                    />
-                  </div>
+                  <ImageUpload
+                    name="photo2"
+                    label=""
+                    formData={formData}
+                    formErrors={formErrors}
+                    handleChange={handleChange}
+                  />
                 </div>
 
                 <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Picture3
-                  </label>
-                  <div className="flex items-center space-x-4">
-                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                      {formData.photo3 && (
-                        <NextImage
-                          src={formData.photo3 || ""}
-                          alt="Profile Preview"
-                          width={64}
-                          height={64}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      name="photo3"
-                      onChange={handleChange}
-                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                    />
-                  </div>
+                  <ImageUpload
+                    name="photo3"
+                    label=""
+                    formData={formData}
+                    formErrors={formErrors}
+                    handleChange={handleChange}
+                  />
                 </div>
-
 
                 <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Picture4
-                  </label>
-                  <div className="flex items-center space-x-4">
-                    <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                      {formData.photo4 && (
-                        <NextImage
-                          src={formData.photo4 || ""}
-                          alt="Profile Preview"
-                          width={64}
-                          height={64}
-                          quality={100}
-                          unoptimized={true}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      name="photo4"
-                      onChange={handleChange}
-                      className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                    />
-                  </div>
+                  <ImageUpload
+                    name="photo4"
+                    label=""
+                    formData={formData}
+                    formErrors={formErrors}
+                    handleChange={handleChange}
+                  />
                 </div>
+
               </div>
             </div>
             {/* <!-- Photo upload end--> */}

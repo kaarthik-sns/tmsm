@@ -12,10 +12,6 @@ export async function POST(request: NextRequest) {
 
     let copyright = '';
     let contactMail = '';
-    let baseUrl = process.env.BASE_URL || '';  // ✅ Get BASE_URL from .env
-    //let mail_logo = `${baseUrl}/images/logo/Flogo.svg`;  // ✅ Construct full path dynamically
-    let mail_logo = `https://searchnscore.in/tmsm/images/mail-logo.png?t=${new Date().getTime()}`;
-
 
     const smtpSettings = await getSMTPSettings();
     if (smtpSettings) {
@@ -63,7 +59,7 @@ export async function POST(request: NextRequest) {
 
     const homePage = process.env.BASE_URL+'/login';
 
-    const htmlBody = profileViewRequestTemplate(recName, sentName, homePage, copyright, mail_logo, contactMail);
+    const htmlBody = profileViewRequestTemplate(recName, sentName, homePage, copyright,contactMail);
 
     const result = await sendEmail({
       receipients,

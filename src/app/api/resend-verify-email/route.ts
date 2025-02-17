@@ -34,10 +34,7 @@ export async function POST(request: Request) {
 
         let copyright = '';
         let contactMail = '';
-        let baseUrl = process.env.BASE_URL || '';  // ✅ Get BASE_URL from .env
-        //let mail_logo = `${baseUrl}/images/logo/Flogo.svg`;  // ✅ Construct full path dynamically
-        let mail_logo = `https://searchnscore.in/tmsm/images/mail-logo.png?t=${new Date().getTime()}`;
-    
+
         const smtpSettings = await getSMTPSettings();
         if (smtpSettings) {
             copyright = `© ${new Date().getFullYear()} ${smtpSettings.copyright}`;
@@ -48,7 +45,7 @@ export async function POST(request: Request) {
 
         const recipients = [{ name: user.name, address: user.email }];
 
-        const emailBody = verificationTemplate(user.name, verificationLink, copyright, contactMail, mail_logo);
+        const emailBody = verificationTemplate(user.name, verificationLink, copyright, contactMail);
 
         await sendEmail({
             receipients: recipients,

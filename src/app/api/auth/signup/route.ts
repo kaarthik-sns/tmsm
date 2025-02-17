@@ -16,9 +16,6 @@ export async function POST(request: Request) {
 
     let copyright = '';
     let contactMail = '';
-    let baseUrl = process.env.BASE_URL || '';  // ✅ Get BASE_URL from .env
-    //let mail_logo = `${baseUrl}/images/logo/Flogo.svg`;  // ✅ Construct full path dynamically
-    let mail_logo = `https://searchnscore.in/tmsm/images/mail-logo.png?t=${new Date().getTime()}`;
 
     const smtpSettings = await getSMTPSettings();
     if (smtpSettings) {
@@ -77,7 +74,7 @@ export async function POST(request: Request) {
             address: email
         }]
 
-        const htmlBody = welcomeTemplate(name, copyright, contactMail, mail_logo);
+        const htmlBody = welcomeTemplate(name, copyright);
 
         const result = await sendEmail({
             receipients,
@@ -85,7 +82,7 @@ export async function POST(request: Request) {
             message: htmlBody
         })
 
-        const htmlBody2 = verificationTemplate(name, verificationLink, copyright, contactMail, mail_logo);
+        const htmlBody2 = verificationTemplate(name, verificationLink, copyright, contactMail);
 
         const result2 = await sendEmail({
             receipients,
@@ -93,7 +90,7 @@ export async function POST(request: Request) {
             message: htmlBody2
         })
 
-        const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber, copyright, mail_logo);
+        const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber, copyright);
 
         const receipients2 = [{
             name: 'admin',

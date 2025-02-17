@@ -21,9 +21,6 @@ export async function PATCH(req: NextRequest) {
 
         let copyright = '';
         let contactMail = '';
-        let baseUrl = process.env.BASE_URL || '';  // ✅ Get BASE_URL from .env
-        //let mail_logo = `${baseUrl}/images/logo/Flogo.svg`;  // ✅ Construct full path dynamically
-        let mail_logo = `https://searchnscore.in/tmsm/images/mail-logo.png?t=${new Date().getTime()}`;
 
         const smtpSettings = await getSMTPSettings();
         if (smtpSettings) {
@@ -79,7 +76,7 @@ export async function PATCH(req: NextRequest) {
         let name = '';
         let email = '';
         let name2 = '';
-        const link = process.env.BASE_URL+'/login';
+        const link = process.env.BASE_URL + '/login';
         let content = '';
         let subjects = '';
         let name3 = '';
@@ -97,7 +94,7 @@ export async function PATCH(req: NextRequest) {
                 name3 = reqData.sender.name;
 
                 subjects = `TMSM - ${name3} Has Canceled Their Profile View Request`;
-                
+
                 content = `We wanted to inform you that <b>${name3}</b> has <b style="color:red">canceled</b> their profile view request. <p>We sincerely apologize for any inconvenience this may have caused. However, you can still explore other profiles and send new requests to connect with potential matches.</p>`;
                 //content = `The profile view request from ${name2} has been <b>canceled</b>.<p>If you were interested, you can explore more profiles and connect with others on TMSM.</p>`;
 
@@ -106,7 +103,7 @@ export async function PATCH(req: NextRequest) {
                     address: email
                 }]
 
-                htmlBody = replyProfileRequestTemplate(name, link, content, copyright, contactMail, mail_logo, status);
+                htmlBody = replyProfileRequestTemplate(name, link, content, copyright, contactMail, status);
 
             } else if (status === 'accepted') {
 
@@ -125,7 +122,7 @@ export async function PATCH(req: NextRequest) {
                     address: email
                 }]
 
-                htmlBody = replyProfileRequestTemplate(name, link, content, copyright, contactMail, mail_logo, status);
+                htmlBody = replyProfileRequestTemplate(name, link, content, copyright, contactMail, status);
 
             } else if (status === 'rejected') {
 
@@ -144,7 +141,7 @@ export async function PATCH(req: NextRequest) {
                     address: email
                 }]
 
-                htmlBody = replyProfileRequestTemplate(name, link, content, copyright, contactMail, mail_logo, status);
+                htmlBody = replyProfileRequestTemplate(name, link, content, copyright, contactMail, status);
 
             }
 
