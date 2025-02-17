@@ -17,8 +17,8 @@ type UploadedFile = {
     arrayBuffer: () => Promise<ArrayBuffer>;
 };
 
-const UPLOAD_PIC_DIR = path.join(process.cwd(), 'public', 'uploads', 'photos'); // Save in the public directory
-const UPLOAD_HORO_DIR = path.join(process.cwd(), 'public', 'uploads', 'horoscope'); // Save in the public directory
+const UPLOAD_PIC_DIR = path.join(process.cwd(), 'uploads', 'photos'); // Save in the public directory
+const UPLOAD_HORO_DIR = path.join(process.cwd(), 'uploads', 'horoscope'); // Save in the public directory
 
 const uploadFile = async (file: UploadedFile | undefined, uploadDir: string): Promise<string | null> => {
 

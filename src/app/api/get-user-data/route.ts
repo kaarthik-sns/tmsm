@@ -81,8 +81,6 @@ export const POST = async (req: NextRequest) => {
             userData = userDataArray.length > 0 ? userDataArray[0] : {};
         }
 
-        console.log(userData);
-
         // Prepare the response with pagination meta
         return NextResponse.json({
             data: userData,
