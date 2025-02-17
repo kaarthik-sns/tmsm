@@ -10,6 +10,8 @@ const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { data: session } = useSession();
   const [profile, setProfile] = useState("");
+  const [name, setName] = useState("");
+
   const router = useRouter();
   
   useEffect(() => {
@@ -29,7 +31,8 @@ const DropdownUser = () => {
 
         if (res.ok) {
           const data = await res.json();
-          setProfile(data.data.image);
+          setProfile(data?.data?.image ? `/api${data.data.image}` : '');
+          setName(data?.data?.name ? data.data.name : 'Admin');
 
         } else {
           console.error("Failed to fetch user data");
@@ -51,7 +54,7 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            {(session?.user?.name ?? 'guest').toLowerCase().replace(/^\w/, (c) => c.toUpperCase())}
+            {(name ?? 'Admin').toLowerCase().replace(/^\w/, (c) => c.toUpperCase())}
           </span>
           <span className="block text-xs">Welcome</span>
         </span>

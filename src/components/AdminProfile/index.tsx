@@ -41,7 +41,7 @@ const AdminProfile = () => {
           const data = await res.json();
           setName(data.data.name);
           setEmail(data.data.email);
-          setPreview(data.data.image);
+          setPreview(data?.data?.image ? `/api${data.data.image}` : '');
 
         } else {
           console.error("Failed to fetch user data");
@@ -207,6 +207,7 @@ const AdminProfile = () => {
                     <input
                       type="file"
                       accept="image/*"
+                      onChange={handleFileChange}
                       name="profilePic"
                       className="absolute inset-0 z-50 h-full w-full cursor-pointer opacity-0"
                     />

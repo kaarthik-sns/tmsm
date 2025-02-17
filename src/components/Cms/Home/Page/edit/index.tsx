@@ -113,6 +113,16 @@ const Settings = () => {
         setFeatureThreeImg(data.feature_three_img);
         setFeatureFourImg(data.feature_four_img);
 
+        setFormData((prevFormData) => ({
+          ...prevFormData, // Spread existing form data to keep other fields
+          sec_one_img: data?.sec_one_img ? `/api${data.sec_one_img}` : '',
+          sec_two_img: data?.sec_two_img ? `/api${data.sec_two_img}` : '',
+          feature_one_img: data?.feature_one_img ? `/api${data.feature_one_img}` : '',
+          feature_two_img: data?.feature_two_img ? `/api${data.feature_two_img}` : '',
+          feature_three_img: data?.feature_three_img ? `/api${data.feature_three_img}` : '',
+          feature_four_img: data?.feature_four_img ? `/api${data.feature_four_img}` : ''
+        }));
+
       } catch (err) {
         console.error(err);
         setError(err.message);

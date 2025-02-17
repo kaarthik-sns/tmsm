@@ -1,14 +1,9 @@
 'use-client'
 
 import Link from "next/link";
-// import DarkModeSwitcher from "./DarkModeSwitcher";
-// import DropdownMessage from "./DropdownMessage";
 import DropdownNotification from "./DropdownNotification";
 import DropdownUser from "./DropdownUser";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
-import { signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 
 const Header = (props: {
@@ -16,8 +11,6 @@ const Header = (props: {
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
 
-  const router = useRouter();
-  const { data: session } = useSession();
 
   return (
 
