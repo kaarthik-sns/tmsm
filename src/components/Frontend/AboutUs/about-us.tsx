@@ -34,7 +34,7 @@ const AboutUs = (data) => {
       <section className="inner-page-top-banner">
         <div className="relative in-banner-bg">
           <Image
-            src={AboutData.banner_img}
+           src={`/api${AboutData.banner_img}`}
             alt="Happy Couple"
             layout="fill"
           />
@@ -53,7 +53,7 @@ const AboutUs = (data) => {
             <div className="w-full md:w-1/2 px-7.5">
               <div className="about-left-media relative media-relative ">
                 <Image
-                  src={AboutData.sec_one_img}
+                  src={`/api${AboutData.sec_one_img}`}
                   alt="Happy Couple"
                   layout="fill"
                 />
@@ -75,7 +75,7 @@ const AboutUs = (data) => {
             <div className="w-full md:w-1/2 px-7.5">
               <div className="story-left-media relative media-relative">
                 <Image
-                  src={AboutData.sec_two_img}
+                  src={`/api${AboutData.sec_two_img}`}
                   alt="Happy Couple"
                   layout="fill"
                 />
@@ -106,7 +106,7 @@ const AboutUs = (data) => {
                     <div className="offer-icon relative">
 
                       <Image
-                        src={list.icon}
+                        src={`/api${list.icon}`}
                         alt={list.title}
                         fill
                         style={{ objectFit: "contain" }}

@@ -58,7 +58,7 @@ const TwoRowTwoColumnSlider = (data) => {
               <div className="flex flex-col md:flex-row items-center gap-6 p-6">
                 {/* Image - Centered Above on Mobile */}
                 <img
-                  src={couple.image}
+                  src={`/api${couple.image}`}
                   alt={couple.name}
                   className="w-40 h-40 md:w-60 md:h-60 rounded-full object-cover"
                    loading="lazy"

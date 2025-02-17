@@ -1,18 +1,17 @@
-'use client';
+"use client";
 
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export function FooterWithCustomDesign() {
-
   const [copyright, setCopyright] = useState('TMSMMatrimony.com. All rights reserved.');
   const [settings, setSettings] = useState<Record<string, any>>({});
-
+  const pathname = usePathname(); // Get the current path
 
   useEffect(() => {
-
     const fetchSettings = async () => {
       try {
         const response = await fetch("/api/get-settings-data", {
@@ -28,20 +27,19 @@ export function FooterWithCustomDesign() {
 
         setCopyright(data.copyright);
         setSettings(data);
-
       } catch (err) {
         console.error(err);
       }
     };
 
     fetchSettings();
-
   }, []);
+
+  const isActive = (href: string) => pathname === href; // Check if link is active
 
   return (
     <footer className="dark-bg text-white py-8">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-[50%_30%_20%] gap-y-8 md:gap-x-8 md:text-left pl-2 pr-2 footer-text">
-
         {/* Left Column - Logo and Description */}
         <div className="flex flex-col items-center md:items-start">
           <Link className="flex-shrink-0 lg:block" href="/">
@@ -51,7 +49,8 @@ export function FooterWithCustomDesign() {
               width="400"
               height="50"
               className="mx-auto md:mx-0"
-              src="/images/logo/Footer-logo.svg" />
+              src="/images/logo/Footer-logo.svg"
+            />
           </Link>
           <div className="flex justify-center md:justify-start space-x-4 mt-4 items-center  md:block  hidden">
             <div className="flex justify-center md:justify-start space-x-4">
@@ -95,17 +94,17 @@ export function FooterWithCustomDesign() {
         <div className="text-center md:text-left">
           <ul className="space-y-4">
             <li>
-              <Link href="/" className="hover:text-white">
+              <Link href="/" className={`hover:text-white ${isActive("/") ? "active-footer" : ""}`}>
                 Home
               </Link>
             </li>
             <li>
-              <Link href="/about" className="hover:text-white">
+              <Link href="/about" className={`hover:text-white ${isActive("/about") ? "active-footer" : ""}`}>
                 About
               </Link>
             </li>
             <li>
-              <Link href="/terms" className="hover:text-white">
+              <Link href="/terms" className={`hover:text-white ${isActive("/terms") ? "active-footer" : ""}`}>
                 Terms and Conditions
               </Link>
             </li>
@@ -116,17 +115,17 @@ export function FooterWithCustomDesign() {
         <div className="text-center md:text-left">
           <ul className="space-y-4">
             <li>
-              <Link href="/faq" className="text-gray-400 hover:text-white">
+              <Link href="/faq" className={`text-gray-400 hover:text-white ${isActive("/faq") ? "active-footer" : ""}`}>
                 FAQ
               </Link>
             </li>
             <li>
-              <Link href="/privacy-policy" className="hover:text-white">
+              <Link href="/privacy-policy" className={`hover:text-white ${isActive("/privacy-policy") ? "active-footer" : ""}`}>
                 Privacy Policy
               </Link>
             </li>
             <li>
-              <Link href="/contact" className="text-gray-400 hover:text-white">
+              <Link href="/contact" className={`text-gray-400 hover:text-white ${isActive("/contact") ? "active-footer" : ""}`}>
                 Contact
               </Link>
             </li>

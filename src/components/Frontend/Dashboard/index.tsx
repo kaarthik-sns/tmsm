@@ -280,7 +280,7 @@ const RequestStatus = () => {
 const ProfileCard = ({ profile, activeTab, onViewProfile, onHandleRequest, onRedirectProfile }) => (
 
   <div className="bg-white rounded-lg p-4 sm:p-6 shadow-md flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 mb-4">
-    <img src={profile.user.profile_photo} alt={profile.user.name} className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border cursor-pointer" onClick={() => onViewProfile(profile)} />
+    <img  src={`/api${profile.user.profile_photo}`} alt={profile.user.name} className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border cursor-pointer" onClick={() => onViewProfile(profile)} />
     <div className="flex-1 text-center sm:text-left">
       <h2 className="dash-heading mb-2">{profile.user.name}</h2>
       <p className="text-gray-600 text-sm">{profile.user.profession} | Age: {profile.user.age}</p>
@@ -356,7 +356,7 @@ const ProfileModal = ({ profile, onClose }) => (
         </svg>
       </button>
       <div className="flex flex-col items-center text-center">
-        <img src={profile.user.profile_photo} alt={profile.user.name} className="w-20 h-20 rounded-full border mb-4" />
+        <img src={`/api${profile.user.profile_photo}`} alt={profile.user.name} className="w-20 h-20 rounded-full border mb-4" />
         <h2 className="dash-heading">{profile.user.name}</h2>
         <p className="text-gray-600">{profile.user.profession}</p>
         <p className="text-gray-500 text-sm">Age: {profile.user.age}</p>

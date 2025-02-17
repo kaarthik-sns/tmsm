@@ -94,7 +94,7 @@ export default function Profile({ userId }) {
   const handlePreview = () => {
     if (profileData.horoscope) {
       // Open the file in a new tab
-      window.open(profileData.horoscope, "_blank");
+      window.open(`/api${profileData.horoscope}`, "_blank");
     } else {
       toast.error('No file uploaded to preview!', {
         className: "sonner-toast-success",
@@ -384,7 +384,7 @@ export default function Profile({ userId }) {
                   .map((photo, index) => (
                     <Image
                       key={index}
-                      src={photo}
+                      src={`/api${photo}`}
                       alt={`Profile Picture ${index + 1}`}
                       width={150}
                       height={150}
@@ -421,7 +421,7 @@ export default function Profile({ userId }) {
                     </button>
                     <div className="flex justify-center items-center">
                       <img
-                        src={popupImage}
+                        src={`/api${popupImage}`}
                         alt="Enlarged Profile Picture"
                         className="max-w-full max-h-screen rounded-lg"
                       />

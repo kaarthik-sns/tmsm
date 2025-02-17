@@ -89,7 +89,7 @@ body {
 }
 
 .footer-text a:hover {
-    color: #D13333;
+    color: #ffd16c;
 }
 
 /*slider */
@@ -1561,3 +1561,6 @@ input[type="radio"] {
 }
 
 
+.active-footer {
+    color: #ffd16c !important;
+}
