@@ -9,7 +9,7 @@ import crypto from 'crypto';
 
 export async function POST(req: NextRequest) {
 
-  const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads', 'admin'); // Save in the public directory
+  const UPLOAD_DIR = path.join(process.cwd(), 'uploads', 'admin'); // Save in the public directory
 
   try {
     // Connect to the database

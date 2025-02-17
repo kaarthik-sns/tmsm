@@ -5,7 +5,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 
-const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads', 'cms'); // Directory to save uploads
+const UPLOAD_DIR = path.join(process.cwd(), 'uploads', 'cms'); // Directory to save uploads
 
 // Handle POST requests: Create a new entry
 export async function POST(request: NextRequest) {
