@@ -75,9 +75,6 @@ export const GET = async (req: NextRequest) => {
             ProfileRequestsRecData = await ProfileRequests.find(ReqRecQuery);
         }
 
-
-        console.log(users);
-
         // Prepare the response with pagination meta
         return NextResponse.json({
             data: users,
