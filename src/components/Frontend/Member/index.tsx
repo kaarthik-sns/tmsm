@@ -398,7 +398,7 @@ const PaginatedUsers = () => {
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between px-6 py-2 bg-member">
                   <div className="">
                     <div className='h-25 w-25 mb-3'>
-                      <img src={user.profile_photo ? user.profile_photo : '/images/user/dummy.png'} alt="Profile Picture" className="rounded-full w-full h-full object-cover" />
+                      <img src={user.profile_photo ? `/api${user.profile_photo}` : '/images/user/dummy.png'} alt="Profile Picture" className="rounded-full w-full h-full object-cover" />
                     </div>
                     <h4 className="member-title">
                       {user.name}

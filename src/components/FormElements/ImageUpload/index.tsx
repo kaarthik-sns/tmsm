@@ -11,7 +11,7 @@ const ImageUpload = ({ name, label, formData, formErrors, handleChange, required
                 <div className="w-24 h-24 flex-shrink-0 rounded-full overflow-hidden bg-gray-200 border border-gray-300">
                     {formData[name] ? (
                         <NextImage
-                            src={formData[name]}
+                            src={`/api${formData[name]}`}
                             alt="Preview"
                             width={96}
                             height={96}

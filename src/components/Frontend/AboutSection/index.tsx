@@ -46,7 +46,7 @@ const AboutUs = (data) => {
             <div className="w-full md:w-1/2 py-6 md:py-12">
               <div className="relative w-full rounded-full h-[300px] md:h-[500px] overflow-hidden border-0">
                 <Image
-                  src={homeData.sec_one_img}
+                  src={`/api${homeData.sec_one_img}`}
                   alt="Happy Couple"
                   layout="fill"
                   objectFit="contain"
@@ -79,7 +79,7 @@ const AboutUs = (data) => {
             <div className="w-full md:w-1/2 py-6 md:py-12">
               <div className="relative w-full h-[300px] md:h-[600px] overflow-hidden border-0">
                 <Image
-                  src={homeData.sec_two_img}
+                  src={`/api${homeData.sec_two_img}`}
                   alt="Happy Couple"
                   layout="fill"
                   objectFit="contain"
@@ -98,7 +98,7 @@ const AboutUs = (data) => {
               <div key={index} className="flex flex-col items-center sm:flex-row gap-4">
                 {/* Icon */}
                 <div className="flex-shrink-0 w-20 h-20 flex items-center justify-center rounded-full">
-                  <img src={feature.icon} alt={feature.title} className="w-20 h-20" loading="lazy" />
+                  <img src={`/api${feature.icon}`} alt={feature.title} className="w-20 h-20" loading="lazy" />
                 </div>
                 {/* Title */}
                 <h3 className="flex-1 icon-text text-lg">{feature.title}</h3>

@@ -12,7 +12,7 @@ const Slider = (data) => {
   const slides = data_array.map((item, idx) => ({
     image: (
       <Image
-        src={item.image} // Assuming item.image contains the image URL
+        src={`/api${item.image}`}
         alt={item.title} // Assuming item.title contains the title
         width={800}
         height={400}

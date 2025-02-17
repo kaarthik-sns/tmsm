@@ -219,7 +219,7 @@ const UserProfile = (user_data) => {
   const handlePreview = () => {
     if (formData.horoscope) {
       // Open the file in a new tab
-      window.open(formData.horoscope, "_blank");
+      window.open(`/api${formData.horoscope}`, "_blank");
     } else {
       toast.error('No file uploaded to preview!', {
         className: "sonner-toast-success",
