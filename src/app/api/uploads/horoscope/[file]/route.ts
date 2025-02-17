@@ -10,24 +10,35 @@ export async function GET(req: NextRequest, { params }: { params: { file: string
     }
 
     const file = params.file;
-    const filePath = path.join(process.cwd(), 'uploads','horoscope', file);
+    const filePath = path.join(process.cwd(), 'uploads', 'horoscope', file);
 
-    // Check if file exists
-    if (!fs.existsSync(filePath)) {
+    try {
+        // Check if file exists asynchronously
+        await fs.promises.access(filePath, fs.constants.F_OK);
+    } catch (err) {
+        // File doesn't exist
         return NextResponse.json({ error: 'File not found' }, { status: 404 });
     }
 
     // Determine the content type
     const ext = path.extname(file).toLowerCase();
-    const contentType = ext === '.jpg' || ext === '.jpeg' ? 'image/jpeg' :
-        ext === '.png' ? 'image/png' :
-            ext === '.gif' ? 'image/gif' :
-                ext === '.webp' ? 'image/webp' :
-                    ext === '.svg' ? 'image/svg+xml' :
-                        ext === '.pdf' ? 'application/pdf' : 'application/octet-stream';
+    const contentType =
+        ext === '.jpg' || ext === '.jpeg'
+            ? 'image/jpeg'
+            : ext === '.png'
+                ? 'image/png'
+                : ext === '.gif'
+                    ? 'image/gif'
+                    : ext === '.webp'
+                        ? 'image/webp'
+                        : ext === '.svg'
+                            ? 'image/svg+xml'
+                            : ext === '.pdf'
+                                ? 'application/pdf'
+                                : 'application/octet-stream';
 
-    // Read the file
-    const fileBuffer = fs.readFileSync(filePath);
+    // Read the file asynchronously
+    const fileBuffer = await fs.promises.readFile(filePath);
 
     return new NextResponse(fileBuffer, {
         headers: {

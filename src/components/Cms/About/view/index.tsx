@@ -110,7 +110,7 @@ const Settings = () => {
                 <div className="w-25 h-25 flex-shrink-0 rounded-full overflow-hidden border-[1.5px] bg-gray-200 border-stroke">
                   {formData.banner_img && (
                     <Image
-                      src={formData.banner_img}
+                      src={`/api${formData.banner_img}`}
                       alt="Profile Preview"
                       width={200}
                       height={200}
@@ -144,7 +144,7 @@ const Settings = () => {
                 <div className={`w-25 h-25 rounded-full overflow-hidden border-[1.5px] bg-gray-200 border-stroke focus:border-primary`}>
                   {formData.feature_one_img && (
                     <Image
-                      src={formData.feature_one_img}
+                      src={`/api${formData.feature_one_img}`}
                       alt="Profile Preview"
                       width={200}
                       height={200}
@@ -169,7 +169,7 @@ const Settings = () => {
                 <div className={`w-25 h-25 rounded-full overflow-hidden border-[1.5px] bg-gray-200border-stroke focus:border-primary`}>
                   {formData.feature_two_img && (
                     <Image
-                      src={formData.feature_two_img}
+                      src={`/api${formData.feature_two_img}`}
                       alt="Profile Preview"
                       width={200}
                       height={200}
@@ -192,7 +192,7 @@ const Settings = () => {
                 <div className={`w-25 h-25 rounded-full overflow-hidden border-[1.5px] bg-gray-200border-stroke focus:border-primary`}>
                   {formData.feature_three_img && (
                     <Image
-                      src={formData.feature_three_img}
+                      src={`/api${formData.feature_three_img}`}
                       alt="Profile Preview"
                       width={200}
                       height={200}
@@ -215,7 +215,7 @@ const Settings = () => {
                 <div className={`w-25 h-25 rounded-full overflow-hidden border-[1.5px] bg-gray-200border-stroke focus:border-primary`}>
                   {formData.feature_four_img && (
                     <Image
-                      src={formData.feature_four_img}
+                      src={`/api${formData.feature_four_img}`}
                       alt="Profile Preview"
                       width={200}
                       height={200}
@@ -260,7 +260,7 @@ const Settings = () => {
                 <div className={`w-25 h-25 rounded-full overflow-hidden border-[1.5px] bg-gray-200border-stroke focus:border-primary`}>
                   {formData.sec_one_img && (
                     <Image
-                      src={formData.sec_one_img}
+                      src={`/api${formData.sec_one_img}`}
                       alt="Profile Preview"
                       width={200}
                       height={200}
@@ -300,7 +300,7 @@ const Settings = () => {
                 <div className={`w-25 h-25 rounded-full overflow-hidden border-[1.5px] bg-gray-200border-stroke focus:border-primary`}>
                   {formData.sec_two_img && (
                     <Image
-                      src={formData.sec_two_img}
+                      src={`/api${formData.sec_two_img}`}
                       alt="Profile Preview"
                       width={200}
                       height={200}

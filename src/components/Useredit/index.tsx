@@ -17,13 +17,13 @@ const FormElements = () => {
 
   const searchParams = useSearchParams();
   const userId = searchParams.get("userId");
-  const [profilePic, setProfilePic] = useState<File | null>(null);
-  const [profileCreatorPic, setProfileCreatorPic] = useState<File | null>(null);
-  const [photo1, setPhoto1] = useState<File | null>(null);
-  const [photo2, setPhoto2] = useState<File | null>(null);
-  const [photo3, setPhoto3] = useState<File | null>(null);
-  const [photo4, setPhoto4] = useState<File | null>(null);
-  const [horoscope, setHoroscope] = useState<File | null>(null);
+  const [profilePic, setProfilePic] = useState(null);
+  const [profileCreatorPic, setProfileCreatorPic] = useState(null);
+  const [photo1, setPhoto1] = useState(null);
+  const [photo2, setPhoto2] = useState(null);
+  const [photo3, setPhoto3] = useState(null);
+  const [photo4, setPhoto4] = useState(null);
+  const [horoscope, setHoroscope] = useState(null);
   const [error, setError] = useState(null);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [profileCreator, setProfileCreator] = useState(false);
@@ -134,46 +134,58 @@ const FormElements = () => {
   };
 
   useEffect(() => {
-    if (userId) {
-      const fetchUserData = async () => {
-        try {
-          const response = await fetch("/api/get-user-data", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id: userId }),
-          });
 
-          if (!response.ok) {
-            throw new Error("Failed to fetch user data.");
-          }
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch("/api/get-user-data", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: userId }),
+        });
 
-          const { data } = await response.json();
-
-          setFormData(data);
-          setSelectedState(data.state_id);
-          setSelectedCity(data.city_id);
-          if (data?.profile_created_for != 'myself') {
-            setProfileCreator(true);
-          }
-
-          setProfilePic(data.profile_photo);
-          setPhoto1(data.photo1);
-          setPhoto2(data.photo2);
-          setPhoto3(data.photo3);
-          setPhoto4(data.photo4);
-          setProfileCreatorPic(data.profile_creator_photo);
-          setHoroscope(data.horoscope);
-
-        } catch (err) {
-          console.error(err);
-          setError(err.message);
-        } finally {
-          setIsLoading(false);
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data.");
         }
-      };
 
-      fetchUserData();
-    }
+        const { data } = await response.json();
+
+        setFormData(data);
+        setSelectedState(data.state_id);
+        setSelectedCity(data.city_id);
+        if (data?.profile_created_for != 'myself') {
+          setProfileCreator(true);
+        }
+
+        setProfilePic(data.profile_photo);
+        setPhoto1(data.photo1);
+        setPhoto2(data.photo2);
+        setPhoto3(data.photo3);
+        setPhoto4(data.photo4);
+        setProfileCreatorPic(data.profile_creator_photo);
+        setHoroscope(data.horoscope);
+
+        setFormData((prevFormData) => ({
+          ...prevFormData, // Spread existing form data to keep other fields
+          photo1: data?.photo1 ? `/api${data.photo1}` : '',
+          photo2: data?.photo2 ? `/api${data.photo2}` : '',
+          photo3: data?.photo3 ? `/api${data.photo3}` : '',
+          photo4: data?.photo4 ? `/api${data.photo4}` : '',
+          profile_photo: data?.profile_photo ? `/api${data.profile_photo}` : '',
+          profile_creator_photo: data?.profile_creator_photo ? `/api${data.profile_creator_photo}` : '',
+          horoscope: data?.horoscope ? `/api${data.horoscope}` : ''
+        }));
+
+
+      } catch (err) {
+        console.error(err);
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserData();
+
   }, [userId]);
 
   const handleChange = (e) => {
