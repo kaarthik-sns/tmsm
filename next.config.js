@@ -7,6 +7,7 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
+        source: "/uploads/:path*",
         headers: [
           { key: "Access-Control-Allow-Credentials", value: "true" },
           { key: "Access-Control-Allow-Origin", value: "*" },

@@ -6,9 +6,15 @@ export async function middleware(req) {
     const url = req.nextUrl;
     const pathname = url.pathname;
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+
     // Rewrite `/` to serve content from `/frontend` but keep `/` in the browser's address bar
     if (pathname === '' || pathname === '/' ) {
         return NextResponse.rewrite(new URL('/', req.url));
+    }
+
+    // Allow static assets in /uploads/ and /images/
+    if (pathname.startsWith('/uploads/') || pathname.startsWith('/images/')) {
+        return NextResponse.next();
     }
 
     // Allow access to forgot-password page
