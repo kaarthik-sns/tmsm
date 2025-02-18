@@ -299,7 +299,7 @@ const Settings = () => {
 
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="text-title-md2 font-semibold text-black dark:text-white dark-text">
+                <h3 className="font-medium dark-text dark:text-white">
                   About
                 </h3>
               </div>
