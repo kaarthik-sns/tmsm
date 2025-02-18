@@ -467,7 +467,7 @@ const PaginatedUsers = () => {
                       </p>
                       <p className="flex pb-4">
                         <span className="label w-26 text-black flex-shrink-0">Religion:</span>
-                        <span className="value">{user.mother_religion ? user.mother_religion : '-'}</span>
+                        <span className="value">{user.religion ? user.religion : '-'}</span>
                       </p>
                       <p className="flex pb-4">
                         <span className="label w-26 text-black flex-shrink-0">Caste:</span>

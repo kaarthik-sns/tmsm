@@ -283,8 +283,8 @@ const ProfileCard = ({ profile, activeTab, onViewProfile, onHandleRequest, onRed
     <img  src={`/api${profile.user.profile_photo}`} alt={profile.user.name} className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border cursor-pointer" onClick={() => onViewProfile(profile)} />
     <div className="flex-1 text-center sm:text-left">
       <h2 className="dash-heading mb-2">{profile.user.name}</h2>
-      <p className="text-gray-600 text-sm">{profile.user.profession} | Age: {profile.user.age}</p>
-      <p className="text-xs text-gray-700 md:block hidden">Caste: {profile.user.caste} | SubCaste: {profile.user.subcaste}</p>
+      <p className="text-xs text-gray-700 ">Profession: {profile.user.profession} | Education: {profile.user.education} </p>
+      <p className="text-xs text-gray-700 md:block hidden">Religion: {profile.user.religion} |  Caste: {profile.user.caste} | SubCaste: {profile.user.subcaste}</p>
     </div>
     <div className="flex flex-wrap gap-2 sm:gap-4 justify-center sm:justify-start">
 
@@ -358,9 +358,9 @@ const ProfileModal = ({ profile, onClose }) => (
       <div className="flex flex-col items-center text-center">
         <img src={`/api${profile.user.profile_photo}`} alt={profile.user.name} className="w-20 h-20 rounded-full border mb-4" />
         <h2 className="dash-heading">{profile.user.name}</h2>
-        <p className="text-gray-600">{profile.user.profession}</p>
         <p className="text-gray-500 text-sm">Age: {profile.user.age}</p>
-        <p className="text-gray-500 text-sm">Caste: {profile.user.caste} | SubCaste: {profile.user.subcaste}</p>
+        <p className="text-gray-500">Profession: {profile.user.profession}</p>
+        <p className="text-gray-500 text-sm">Religion: {profile.user.religion} | Caste: {profile.user.caste} | SubCaste: {profile.user.subcaste}</p>
         {/* <div className="flex flex-wrap gap-2 sm:gap-4 justify-center sm:justify-start mt-5">
           <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm accept">Accept</button>
           <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm decline">Decline</button>

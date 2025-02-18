@@ -99,13 +99,18 @@ export function FooterWithCustomDesign() {
               </Link>
             </li>
             <li>
+              <Link href="/member" className={`hover:text-white ${isActive("/member") ? "active-footer" : ""}`}>
+                Member
+              </Link>
+            </li>
+            <li>
               <Link href="/about" className={`hover:text-white ${isActive("/about") ? "active-footer" : ""}`}>
                 About
               </Link>
             </li>
             <li>
-              <Link href="/terms" className={`hover:text-white ${isActive("/terms") ? "active-footer" : ""}`}>
-                Terms and Conditions
+              <Link href="/contact" className={`text-gray-400 hover:text-white ${isActive("/contact") ? "active-footer" : ""}`}>
+                Contact
               </Link>
             </li>
           </ul>
@@ -125,8 +130,8 @@ export function FooterWithCustomDesign() {
               </Link>
             </li>
             <li>
-              <Link href="/contact" className={`text-gray-400 hover:text-white ${isActive("/contact") ? "active-footer" : ""}`}>
-                Contact
+              <Link href="/terms" className={`hover:text-white ${isActive("/terms") ? "active-footer" : ""}`}>
+                Terms and Conditions
               </Link>
             </li>
           </ul>
