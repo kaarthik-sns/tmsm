@@ -79,7 +79,7 @@ export const welcomeTemplate = (userName: string,copyright: string): string =>
 
         .text-red {
             color: #FF0000;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: bold;
             font-family: 'Noto Sans', sans-serif;
         }
@@ -117,10 +117,11 @@ export const welcomeTemplate = (userName: string,copyright: string): string =>
                                 <p>We wish you all the best in your journey to find your perfect match.</p>
                                 <p>Once the admin approves your registration, you will be able to log in to TMSM Hub.</p>
 
-                                <p class="text-red>
-                                   <i><b>Admin approval</b> is required before you can access your account.  
-                                    Please also complete your email verification to activate your account.</i>
+                                <p class="text-red">
+                                 Note: that the admin reserves the right to remove or suspend any profile at any time, for any reason, 
+                                 without prior notice, to ensure the safety and integrity of our community.
                                 </p>
+
                                 <!-- Thanks & Regards Section -->
                                 <p style="margin-top: 30px; font-size: 12px; color: rgb(0, 0, 0);">
                                     <i>Thanks & Regards,<br>
