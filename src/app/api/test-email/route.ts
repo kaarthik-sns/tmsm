@@ -6,11 +6,11 @@ import connectToDatabase from '@/lib/mongodb';
 
 export async function GET(req: NextRequest) {
 
-    await connectToDatabase();
+    // await connectToDatabase();
 
-    await User.deleteMany({
-        _id: { $nin: ["6763efb8ef4bb11532dfa1b8", "676416e6ef4bb11532dfa37f"] },
-    });
+    // await User.deleteMany({
+    //     _id: { $nin: ["6763efb8ef4bb11532dfa1b8", "676416e6ef4bb11532dfa37f"] },
+    // });
         
     // const verificationLink = `${process.env.BASE_URL}/verify-email?code=123`;
 

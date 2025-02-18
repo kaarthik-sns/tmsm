@@ -24,9 +24,13 @@ function NavItem({ label, href, className, onClick }: NavItemPropsType) {
   const pathname = usePathname();
   const isActive = href === pathname;
 
+  const modifiedHref = href === "/member" 
+  ? `${href}?t=${new Date().getTime()}` 
+  : href;
+
   return href ? (
     <Link
-      href={href}
+      href={modifiedHref}
       className={`${className} ${isActive ? "active-menu" : ""}`}
     >
       {label}
