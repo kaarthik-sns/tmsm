@@ -639,7 +639,7 @@ const FormElements = () => {
 
                 <div className="mb-4.5 text-black">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Gender for (Bride / Groom)  <span className="text-meta-1">*</span>
+                    Gender (Bride / Groom)  <span className="text-meta-1">*</span>
                   </label>
                   <RadioButtonGroup
                     name="gender"

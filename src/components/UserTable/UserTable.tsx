@@ -205,12 +205,13 @@ const UserTable = () => {
         const updatedValue = !tableItems[index][key];
     
         let reactivate_reason = "";
-        
-        // Prompt for reason when reactivating a user
-        if (key === "is_active" && updatedValue) {
+        let reason = "";
+    
+        // Prompt for reason when activating OR deactivating a user
+        if (key === "is_active") {
             const { value } = await Swal.fire({
                 icon: "warning",
-                title: "Reason for Reactivation",
+                title: updatedValue ? "Reason for Reactivation" : "Reason for Deactivation",
                 input: "textarea",
                 inputPlaceholder: "Enter the reason...",
                 showCancelButton: true,
@@ -224,12 +225,14 @@ const UserTable = () => {
             });
     
             if (!value) return; // Stop if no reason is provided
-            reactivate_reason = value;
+    
+            if (updatedValue) {
+                reactivate_reason = value; // Store reason in reactivate_reason when activating
+            } else {
+                reason = value; // Store reason in reason when deactivating
+            }
         }
     
-
-
-        
         // Show confirmation alert
         const result = await Swal.fire({
             title: "Are you sure?",
@@ -258,7 +261,7 @@ const UserTable = () => {
             const response = await axios.patch(`/api/update-user-status`, {
                 id: tableItems[index]._id,
                 [key]: updatedValue,
-                reactivate_reason, // Include the reason for reactivation
+                ...(updatedValue ? { reactivate_reason } : { reason }), // Send the appropriate field
             });
     
             if (response.status !== 200) {
@@ -268,7 +271,10 @@ const UserTable = () => {
             toast.success(
                 key === "is_active"
                     ? `User ${updatedValue ? "activated" : "deactivated"} successfully!`
-                    : `User ${updatedValue ? "approved" : "disapproved"} successfully!`
+                    : `User ${updatedValue ? "approved" : "disapproved"} successfully!`,
+                {
+                    className: "sonner-toast-success",
+                }
             );
     
         } catch (error) {
@@ -289,8 +295,6 @@ const UserTable = () => {
         }
     };
     
-
-
 
     const handleEdit = (userId) => {
         // Navigate to the edit page with the user ID as a query parameter
