@@ -288,8 +288,8 @@ const FormElements = () => {
         errors.profile_creator_aadhar = "Aadhar number cannot be empty.";
       }
 
-      if (formData.profile_creator_phonenumber.trim() !== "") {
-        if (!formData.profile_creator_phonenumber || !/^\d{10}$/.test(formData.profile_creator_phonenumber)) {
+      if (formData.profile_creator_phonenumber && formData.profile_creator_phonenumber.trim() !== "") {
+        if (!/^\d{10}$/.test(formData.profile_creator_phonenumber)) {
           errors.profile_creator_phonenumber = "Enter a valid 10-digit phone number.";
         }
       }

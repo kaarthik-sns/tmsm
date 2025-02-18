@@ -327,11 +327,13 @@ const FormElements = () => {
         errors.profile_creator_aadhar = "A valid 16-digit adhar number cannot be empty.";
       }
     }
-    if (formData.profile_creator_phonenumber.trim() !== "") {
-      if (!formData.profile_creator_phonenumber || !/^\d{10}$/.test(formData.profile_creator_phonenumber)) {
+
+    if (formData.profile_creator_phonenumber && formData.profile_creator_phonenumber.trim() !== "") {
+      if (!/^\d{10}$/.test(formData.profile_creator_phonenumber)) {
         errors.profile_creator_phonenumber = "Enter a valid 10-digit phone number.";
       }
     }
+    
     // If there are validation errors, show error messages and stop submission
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors); // Assume `setError` updates the UI to display error messages

@@ -274,6 +274,10 @@ const UserTable = () => {
                     : `User ${updatedValue ? "approved" : "disapproved"} successfully!`,
                 {
                     className: "sonner-toast-success",
+                    cancel: {
+                        label: 'Close',
+                        onClick: () => console.log('Close'),
+                    }
                 }
             );
     
@@ -290,8 +294,16 @@ const UserTable = () => {
             toast.error(
                 key === "is_active"
                     ? "Failed to update activation status."
-                    : "Failed to update approval status."
+                    : "Failed to update approval status.",
+                {
+                    className: "sonner-toast-error",
+                    cancel: {
+                        label: 'Close',
+                        onClick: () => console.log('Close'),
+                    }
+                }
             );
+
         }
     };
     
