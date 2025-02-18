@@ -384,6 +384,11 @@ const SignUp: React.FC = () => {
               </div>
 
               <div className="mb-4">
+              {form.profile_created_for !== "myself" && (
+                  <label className="mb-1 block text-sm font-medium dark-text dark:text-white">
+                    <b className="no_text">Don't mention the bride/groom's phone number.</b>
+                  </label>
+                )}
                 <input
                   type="text"
                   disabled={pending}
