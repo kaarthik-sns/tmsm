@@ -21,6 +21,8 @@ const UserTable = () => {
     const [switchStates2, setSwitchStates2] = useState<boolean[]>([]);
     const router = useRouter(); // Initialize Next.js router
     const [isLoading, setIsLoading] = useState(false);
+    const [triggerFetch, setTriggerFetch] = useState(false);
+
 
     const [formState, setFormState] = useState({
         name: "",
@@ -52,6 +54,7 @@ const UserTable = () => {
         } else {
             fetchTableItems(); // Directly fetch items if already on page 1
         }
+        setTriggerFetch(false); // Reset trigger
     };
 
     // Handle form reset
@@ -62,12 +65,22 @@ const UserTable = () => {
             selectOne: "",
             selectTwo: "",
         });
-        if (currentPage !== 1) {
-            setCurrentPage(1); // Reset page to 1; useEffect will trigger fetchTableItems
-        } else {
-            fetchTableItems(); // Directly fetch items if already on page 1
-        }
+        setTriggerFetch(true);
     };
+
+    useEffect(() => {
+        if (triggerFetch) {
+
+            if (currentPage !== 1) {
+                setCurrentPage(1); // Reset page to 1; useEffect will trigger fetchTableItems
+            } else {
+                fetchTableItems(); // Directly fetch items if already on page 1
+            }
+
+            setTriggerFetch(false); // Reset trigger
+        }
+    }, [triggerFetch]);
+
 
     // Fetch table items from API
     const fetchTableItems = async () => {
