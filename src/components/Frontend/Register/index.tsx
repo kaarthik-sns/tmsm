@@ -127,7 +127,7 @@ const SignUp: React.FC = () => {
     let valid = true;
 
     if (!form.profile_created_for) {
-      newErrors.profile_created_for = "Select a Matrimony profile.";
+      newErrors.profile_created_for = "Select a matrimony profile.";
     }
 
 
@@ -173,7 +173,7 @@ const SignUp: React.FC = () => {
 
     // Validate confirm password
     if (!form.confirmPassword) {
-      setConfirmPasswordError("Confirm Password cannot be empty.");
+      setConfirmPasswordError("Confirm password cannot be empty.");
       valid = false;
     } else if (form.password !== form.confirmPassword) {
       setConfirmPasswordError("Passwords do not match.");

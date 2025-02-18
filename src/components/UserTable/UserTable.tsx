@@ -227,6 +227,9 @@ const UserTable = () => {
             reactivate_reason = value;
         }
     
+
+
+        
         // Show confirmation alert
         const result = await Swal.fire({
             title: "Are you sure?",
