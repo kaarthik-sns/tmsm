@@ -1564,3 +1564,11 @@ input[type="radio"] {
 .active-footer {
     color: #ffd16c !important;
 }
+
+.team-info-con ul li {
+    line-height: 36px;
+    color: #333;
+}
+.team-info-con ul {
+    margin-bottom: 1em;
+}
