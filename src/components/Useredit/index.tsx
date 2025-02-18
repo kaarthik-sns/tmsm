@@ -622,7 +622,7 @@ const FormElements = () => {
                 </div>
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Detail about groom / bride <span className="text-meta-1">*</span>
+                    Detail about (Bride / Groom) <span className="text-meta-1">*</span>
                   </label>
                   <textarea
                     rows={6}
@@ -639,7 +639,7 @@ const FormElements = () => {
 
                 <div className="mb-4.5 text-black">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Gender (Bride / Groom)  <span className="text-meta-1">*</span>
+                    Gender of (Bride / Groom)  <span className="text-meta-1">*</span>
                   </label>
                   <RadioButtonGroup
                     name="gender"
@@ -1290,7 +1290,7 @@ const FormElements = () => {
                         setError("");
                       }
                     }}
-                    placeholder="Enter your age"
+                    placeholder="Enter age"
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
