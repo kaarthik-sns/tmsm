@@ -362,7 +362,7 @@ const Table = () => {
                             <p className="mb-4 cms-description text-sm text-gray-600">{modalData.description}</p>
                             <div className="overflow-hidden flex items-center  mx-auto mb-4">
                                 <Image
-                                    src={modalData.image}
+                                    src={`/api${modalData.image}`}
                                     alt="Profile Preview"
                                     width={400}
                                     height={200}

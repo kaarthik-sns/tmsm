@@ -71,7 +71,7 @@ const FormElements = () => {
     country: { name: "" },
     reactivate_reason: "",
     deactivate_reason: "",
-    is_active:Boolean
+    is_active: Boolean
   });
 
   const handlePreview = () => {
@@ -105,6 +105,17 @@ const FormElements = () => {
 
           const { data } = await response.json();
           setFormData(data);
+
+          setFormData((prevFormData) => ({
+            ...prevFormData, // Spread existing form data to keep other fields
+            photo1: data?.photo1 ? `/api${data.photo1}` : '',
+            photo2: data?.photo2 ? `/api${data.photo2}` : '',
+            photo3: data?.photo3 ? `/api${data.photo3}` : '',
+            photo4: data?.photo4 ? `/api${data.photo4}` : '',
+            profile_photo: data?.profile_photo ? `/api${data.profile_photo}` : '',
+            profile_creator_photo: data?.profile_creator_photo ? `/api${data.profile_creator_photo}` : '',
+            horoscope: data?.horoscope ? `/api${data.horoscope}` : ''
+          }));
 
         } catch (err) {
           console.error(err);
