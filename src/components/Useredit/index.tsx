@@ -501,7 +501,7 @@ const FormElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Phone Number (Please do not enter the bride or groom's phone number)<span className="text-meta-1">*</span>
+                    Phone Number (Do not input the bride or groom's number)<span className="text-meta-1">*</span>
                   </label>
                   <input
                     type="text"

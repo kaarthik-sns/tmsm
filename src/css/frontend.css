@@ -1572,3 +1572,11 @@ input[type="radio"] {
 .team-info-con ul {
     margin-bottom: 1em;
 }
+.no_text {
+    font-size: 12px;
+}
+@media (min-width: 640px) {
+    .sm\:max-w-md {
+        max-width: 40rem;
+    }
+}
