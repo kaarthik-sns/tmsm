@@ -184,7 +184,7 @@ const UserProfile = (user_data) => {
             profile_creator_photo: data?.profile_creator_photo ? `/api${data.profile_creator_photo}` : '',
             horoscope: data?.horoscope ? `/api${data.horoscope}` : ''
           }));
-  
+
 
         } catch (err) {
           //console.error(err);
@@ -341,7 +341,7 @@ const UserProfile = (user_data) => {
           errors.profile_creator_phonenumber = "Enter a valid 10-digit phone number.";
         }
       }
-      
+
     }
 
     setErrorMessage("");
@@ -547,8 +547,8 @@ const UserProfile = (user_data) => {
                       </div>
 
                       <div className="mb-4.5">
-                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Phone Number (Do not input the bride or groom's number) <span className="text-meta-1">*</span>
+                        <label className="mb-1 block text-sm font-medium dark-text dark:text-white">
+                          Phone Number <span><b className="no_text">(Don't mention the bride/groom's phone number.)</b></span> <span className="text-meta-1">*</span>
                         </label>
                         <input
                           type="text"
