@@ -33,7 +33,6 @@ const FaqElements = () => {
           }
 
           const { data } = await response.json();
-          console.log(data);
           setFormData(data);
 
         } catch (err) {
