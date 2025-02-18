@@ -610,7 +610,7 @@ const FormElements = () => {
                   {formData.photo2 && (
                     <div className="w-full xl:w-1/2">
                       <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                        Picture2
+                        Picture
                       </label>
                       <div className="flex items-center space-x-4">
                         <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
@@ -630,7 +630,7 @@ const FormElements = () => {
                   {formData.photo2 && (
                     <div className="w-full xl:w-1/2">
                       <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                        Picture3
+                        Picture
                       </label>
                       <div className="flex items-center space-x-4">
                         <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
@@ -650,7 +650,7 @@ const FormElements = () => {
                   {formData.photo4 && (
                     <div className="w-full xl:w-1/2">
                       <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                        Picture4
+                        Picture
                       </label>
                       <div className="flex items-center space-x-4">
                         <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
