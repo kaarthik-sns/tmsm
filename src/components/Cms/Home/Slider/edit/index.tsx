@@ -37,7 +37,7 @@ const Elements = () => {
 
           const { data } = await response.json();
           setFormData(data);
-          setPreview(data.image);
+          setPreview(data?.image ? `/api${data.image}` : '');
 
         } catch (err) {
           console.error(err);

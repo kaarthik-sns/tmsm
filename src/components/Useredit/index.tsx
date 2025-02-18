@@ -152,6 +152,8 @@ const FormElements = () => {
         setFormData(data);
         setSelectedState(data.state_id);
         setSelectedCity(data.city_id);
+        setSelectedCountry(data.country_id);
+
         if (data?.profile_created_for != 'myself') {
           setProfileCreator(true);
         }
@@ -163,6 +165,7 @@ const FormElements = () => {
         setPhoto4(data.photo4);
         setProfileCreatorPic(data.profile_creator_photo);
         setHoroscope(data.horoscope);
+        
 
         setFormData((prevFormData) => ({
           ...prevFormData, // Spread existing form data to keep other fields
