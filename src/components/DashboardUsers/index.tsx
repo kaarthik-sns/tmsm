@@ -61,7 +61,7 @@ const UserTable = () => {
                                             <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200">
                                                 {item.profile_photo && (
                                                     <NextImage
-                                                        src={item.profile_photo || ""}
+                                                        src={`/api${item.profile_photo}`}
                                                         alt="Profile Preview"
                                                         width={16}
                                                         height={16}

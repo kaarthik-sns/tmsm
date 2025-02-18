@@ -11,6 +11,7 @@ export async function POST(request: NextRequest) {
     const title = (formData.get('title') as string) ?? '';
     const description = (formData.get('description') as string) ?? '';
    
+console.log(title,description);
 
     if (!id) {
         return NextResponse.json({ message: 'Faq ID cannot be empty' }, { status: 400 });
@@ -28,8 +29,9 @@ export async function POST(request: NextRequest) {
        
         // Prepare the updated fields (only fields provided will be updated)
         const updatedFields = {
-            name: title || faq.title,
+            title: title || faq.title,
             description: description || faq.description,
+            updated_at: new Date()
         };
 
         // Use findByIdAndUpdate for efficient update
