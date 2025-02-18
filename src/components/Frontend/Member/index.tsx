@@ -492,6 +492,7 @@ const PaginatedUsers = () => {
                         <span className="label text-black w-26 flex-shrink-0">Address:</span>
                         <span className="value">
                           {user.address ? user.address : '-'}
+
                         </span>
                       </p>
                     </div>
