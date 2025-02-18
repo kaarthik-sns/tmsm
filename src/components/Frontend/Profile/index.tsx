@@ -327,6 +327,9 @@ export default function Profile({ userId }) {
           <h2 className="profile-heading py-6">Address</h2>
           <div className="contact-bio">
             <p>{profileData.address || ""} </p>
+            {profileData?.city?.name ? `${profileData?.city?.name}, ` : ""}
+            {profileData?.state?.name ? `${profileData?.state?.name}, ` : ""}
+            {profileData?.country?.name || ""}
           </div>
         </div>
 
