@@ -3,15 +3,16 @@ import { verificationTemplate } from '@/lib/template/verification';
 import { sendEmail } from "@/utils/mail.util"
 import User from '@/models/User';
 import connectToDatabase from '@/lib/mongodb';
+import { welcomeTemplate } from '@/lib/template/welcome';
 
 export async function GET(req: NextRequest) {
 
-    await connectToDatabase();
+    // await connectToDatabase();
 
-    await User.deleteMany({
-        _id: { $nin: ["6763efb8ef4bb11532dfa1b8", "676416e6ef4bb11532dfa37f"] },
-    });
-        
+    // await User.deleteMany({
+    //     _id: { $nin: ["6763efb8ef4bb11532dfa1b8", "676416e6ef4bb11532dfa37f"] },
+    // });
+
     // const verificationLink = `${process.env.BASE_URL}/verify-email?code=123`;
 
     // const receipients = [{
@@ -26,6 +27,20 @@ export async function GET(req: NextRequest) {
     //     subject: 'TMSM - verification!',
     //     message: htmlBody
     // });
+
+    const receipients = [{
+        name: 'kaarthik',
+        address: 'kaarthikr@searchnscore.com'
+    }]
+    const copyright = 'All rights reserved tmsm.com.';
+
+    const htmlBody = welcomeTemplate('kaarthik', copyright);
+
+    const result = await sendEmail({
+        receipients,
+        subject: `Welcome to TMSM, kaarthik!`,
+        message: htmlBody
+    })
 
     return NextResponse.json('test');
 }
