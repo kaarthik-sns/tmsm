@@ -99,11 +99,6 @@ export function FooterWithCustomDesign() {
               </Link>
             </li>
             <li>
-              <Link href="/member" className={`hover:text-white ${isActive("/member") ? "active-footer" : ""}`}>
-                Member
-              </Link>
-            </li>
-            <li>
               <Link href="/about" className={`hover:text-white ${isActive("/about") ? "active-footer" : ""}`}>
                 About
               </Link>
