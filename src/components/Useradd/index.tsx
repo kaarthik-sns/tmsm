@@ -510,9 +510,11 @@ const FormElements = () => {
                 </div>
 
                 <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Phone Number (Please do not enter the bride or groom's phone number.) <span className="text-meta-1">*</span>
+               
+                  <label className="mb-1 block text-sm font-medium dark-text dark:text-white">
+                   Phone Number<b className="no_text">{formData.profile_created_for !== "myself" && (" (Don't mention the bride/groom's phone number.)" )}</b>
                   </label>
+              
                   <input
                     type="text"
                     name="phonenumber"

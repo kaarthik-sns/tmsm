@@ -14,22 +14,19 @@ const RadioButton: React.FC<RadioButtonProps> = ({
   onChange,
 }) => {
   return (
-    <div className="flex space-x-4">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
       {options.map((option) => (
-        <label
-          key={option.value}
-          className="cursor-pointer flex items-center space-x-2"
-        >
+        <div key={option.value} className="flex items-center">
           <input
             type="radio"
             name={name}
             value={option.value}
             checked={selectedValue === option.value}
             onChange={onChange}
-            className="form-radio text-red-500 focus:ring-red-500"
+            className="form-radio h-5 w-5 text-primary border-primary focus:ring-primary"
           />
-          <span className="block text-sm font-medium dark:text-white">{option.label}</span>
-        </label>
+          <label className="ml-2 text-sm dark-text">{option.label}</label>
+        </div>
       ))}
     </div>
   );

@@ -443,3 +443,23 @@ th.py-3.px-6.dark-text {
     width: 100%;
     max-width: 26%
 }
+
+
+/*horoscope view button*/
+.ftext-custom {
+    color: #653D27;
+    background: #FFD16C;
+    border: 1px solid #FFD16C;
+    font-weight: 800;
+    font-family: 'Noto Sans';
+}
+
+.ftext-custom:hover {
+    color: #ffd16c;
+    background: #af2c2c;
+    border: 1px solid #ffd16c;
+}
+
+.dark-text h3 {
+    font-weight: 700;
+}
