@@ -57,8 +57,36 @@ const AdminProfile = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setProfilePic(file);
-      setPreview(URL.createObjectURL(file));
+      // Check file size (2MB = 2 * 1024 * 1024 bytes)
+      if (file.size > 2 * 1024 * 1024) {
+        setError("Image size should be less than 2MB");
+        e.target.value = ''; // Reset the input
+        return;
+      }
+
+      // Check image dimensions
+      const img = document.createElement('img');
+      const objectUrl = URL.createObjectURL(file);
+      
+      img.onload = () => {
+        URL.revokeObjectURL(objectUrl);
+        if (img.width < 100 || img.height < 100) {
+          setError("Image dimensions should be at least 100x100 pixels");
+          e.target.value = ''; // Reset the input
+          return;
+        }
+        setError(null);
+        setProfilePic(file);
+        setPreview(objectUrl);
+      };
+
+      img.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        setError("Invalid image file");
+        e.target.value = ''; // Reset the input
+      };
+
+      img.src = objectUrl;
     }
   };
 

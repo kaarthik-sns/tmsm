@@ -91,23 +91,17 @@ const Settings = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
-
-        <div className="flex flex-col gap-9">
-
+        <div className="flex flex-col gap-6">
           {/* Banner Section start */}
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium dark-text dark:text-white">
+          <div className="rounded-lg border border-stroke bg-white shadow-lg transition-all duration-300 hover:shadow-xl dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-7 py-5 dark:border-strokedark">
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
                 Banner
               </h3>
             </div>
-
-            <div className="p-6.5">
-
-              <div className="mb-4.5 flex items-center space-x-4">
-
-                <div className="w-25 h-25 flex-shrink-0 rounded-full overflow-hidden border-[1.5px] bg-gray-200 border-stroke">
+            <div className="p-7">
+              <div className="flex items-center space-x-6 rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
+                <div className="h-32 w-32 flex-shrink-0 overflow-hidden rounded-lg border-2 border-indigo-100 bg-gray-200">
                   {formData.banner_img && (
                     <Image
                       src={`/api${formData.banner_img}`}
@@ -116,231 +110,198 @@ const Settings = () => {
                       height={200}
                       quality={100}
                       unoptimized={true}
-                      className="w-full h-full object-cover"
+                      className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
                     />
                   )}
                 </div>
-                <div className="mb-4.5 flex-1">
-                  <p className="text-sm dark:text-white cms-heading">{formData.sec_two_title || "N/A"}</p>
+                <div className="flex-1">
+                  <p className="text-lg font-medium text-gray-800 dark:text-white">{formData.sec_two_title || "N/A"}</p>
                 </div>
               </div>
-
             </div>
           </div>
           {/* Banner Section end */}
 
-
           {/* what we offer start */}
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium dark-text dark:text-white">
+          <div className="rounded-lg border border-stroke bg-white shadow-lg transition-all duration-300 hover:shadow-xl dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-7 py-5 dark:border-strokedark">
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
                 What we offer
               </h3>
             </div>
-
-            <div className="p-6.5">
-
-              <div className="mb-4.5 flex items-center space-x-4">
-                <div className={`w-25 h-25 rounded-full overflow-hidden border-[1.5px] bg-gray-200 border-stroke focus:border-primary`}>
-                  {formData.feature_one_img && (
-                    <Image
-                      src={`/api${formData.feature_one_img}`}
-                      alt="Profile Preview"
-                      width={200}
-                      height={200}
-                      quality={100}
-                      unoptimized={true}
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-                <div className="mb-4.5">
-                  <p className="text-sm dark:text-white cms-description">{formData.feature_one || ""}</p>
-                </div>
-              </div>
-
-
-              <div className="mb-4.5">
-                <p className="text-sm dark:text-white cms-description">{formData.feature_one_desc || ""}</p>
-              </div>
-
-              <div className="mb-4.5 flex items-center space-x-4">
-
-                <div className={`w-25 h-25 rounded-full overflow-hidden border-[1.5px] bg-gray-200border-stroke focus:border-primary`}>
-                  {formData.feature_two_img && (
-                    <Image
-                      src={`/api${formData.feature_two_img}`}
-                      alt="Profile Preview"
-                      width={200}
-                      height={200}
-                      quality={100}
-                      unoptimized={true}
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-                <div className="mb-4.5">
-                  <p className="text-sm dark:text-white cms-description">{formData.feature_two || ""}</p>
+            <div className="p-7">
+              {/* Feature One */}
+              <div className="mb-8">
+                <div className="flex items-center space-x-6 rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
+                  <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg border-2 border-indigo-100 bg-gray-200">
+                    {formData.feature_one_img && (
+                      <Image
+                        src={`/api${formData.feature_one_img}`}
+                        alt="Feature One"
+                        width={200}
+                        height={200}
+                        quality={100}
+                        unoptimized={true}
+                        className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                      />
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="mb-2 text-lg font-medium text-gray-800 dark:text-white">{formData.feature_one || ""}</h4>
+                    <p className="text-gray-600 dark:text-gray-300">{formData.feature_one_desc || ""}</p>
+                  </div>
                 </div>
               </div>
 
-              <div className="mb-4.5">
-                <p className="text-sm dark:text-white cms-description">{formData.feature_two_desc || ""}</p>
-              </div>
-
-              <div className="mb-4.5 flex items-center space-x-4">
-                <div className={`w-25 h-25 rounded-full overflow-hidden border-[1.5px] bg-gray-200border-stroke focus:border-primary`}>
-                  {formData.feature_three_img && (
-                    <Image
-                      src={`/api${formData.feature_three_img}`}
-                      alt="Profile Preview"
-                      width={200}
-                      height={200}
-                      quality={100}
-                      unoptimized={true}
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-                <div className="mb-4.5">
-                  <p className="text-sm dark:text-white cms-description">{formData.feature_three || ""}</p>
-                </div>
-              </div>
-
-              <div className="mb-4.5">
-                <p className="text-sm dark:text-white cms-description">{formData.feature_three_desc || ""}</p>
-              </div>
-
-              <div className="mb-4.5 flex items-center space-x-4">
-                <div className={`w-25 h-25 rounded-full overflow-hidden border-[1.5px] bg-gray-200border-stroke focus:border-primary`}>
-                  {formData.feature_four_img && (
-                    <Image
-                      src={`/api${formData.feature_four_img}`}
-                      alt="Profile Preview"
-                      width={200}
-                      height={200}
-                      quality={100}
-                      unoptimized={true}
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-
-                <div className="mb-4.5">
-                  <p className="text-sm dark:text-white cms-description">{formData.feature_four || ""}</p>
+              {/* Feature Two */}
+              <div className="mb-8">
+                <div className="flex items-center space-x-6 rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
+                  <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg border-2 border-indigo-100 bg-gray-200">
+                    {formData.feature_two_img && (
+                      <Image
+                        src={`/api${formData.feature_two_img}`}
+                        alt="Feature Two"
+                        width={200}
+                        height={200}
+                        quality={100}
+                        unoptimized={true}
+                        className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                      />
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="mb-2 text-lg font-medium text-gray-800 dark:text-white">{formData.feature_two || ""}</h4>
+                    <p className="text-gray-600 dark:text-gray-300">{formData.feature_two_desc || ""}</p>
+                  </div>
                 </div>
               </div>
 
-
-              <div className="mb-4.5">
-                <p className="text-sm dark:text-white cms-description">{formData.feature_four_desc || ""}</p>
+              {/* Feature Three */}
+              <div className="mb-8">
+                <div className="flex items-center space-x-6 rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
+                  <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg border-2 border-indigo-100 bg-gray-200">
+                    {formData.feature_three_img && (
+                      <Image
+                        src={`/api${formData.feature_three_img}`}
+                        alt="Feature Three"
+                        width={200}
+                        height={200}
+                        quality={100}
+                        unoptimized={true}
+                        className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                      />
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="mb-2 text-lg font-medium text-gray-800 dark:text-white">{formData.feature_three || ""}</h4>
+                    <p className="text-gray-600 dark:text-gray-300">{formData.feature_three_desc || ""}</p>
+                  </div>
+                </div>
               </div>
 
+              {/* Feature Four */}
+              <div>
+                <div className="flex items-center space-x-6 rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
+                  <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg border-2 border-indigo-100 bg-gray-200">
+                    {formData.feature_four_img && (
+                      <Image
+                        src={`/api${formData.feature_four_img}`}
+                        alt="Feature Four"
+                        width={200}
+                        height={200}
+                        quality={100}
+                        unoptimized={true}
+                        className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                      />
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="mb-2 text-lg font-medium text-gray-800 dark:text-white">{formData.feature_four || ""}</h4>
+                    <p className="text-gray-600 dark:text-gray-300">{formData.feature_four_desc || ""}</p>
+                  </div>
+                </div>
+              </div>
             </div>
-
           </div>
           {/* what we offer end */}
-
         </div>
 
-
-        <div className="flex flex-col gap-9">
-
-
+        <div className="flex flex-col gap-6">
           {/* About Us Section start */}
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium dark-text dark:text-white">
+          <div className="rounded-lg border border-stroke bg-white shadow-lg transition-all duration-300 hover:shadow-xl dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-7 py-5 dark:border-strokedark">
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
                 About Us
               </h3>
             </div>
-            <div className="p-6.5">
-
-              <div className="mb-4.5 flex items-center space-x-4">
-                <div className={`w-25 h-25 rounded-full overflow-hidden border-[1.5px] bg-gray-200border-stroke focus:border-primary`}>
+            <div className="p-7">
+              <div className="mb-6 flex items-center space-x-6 rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
+                <div className="h-32 w-32 flex-shrink-0 overflow-hidden rounded-lg border-2 border-indigo-100 bg-gray-200">
                   {formData.sec_one_img && (
                     <Image
                       src={`/api${formData.sec_one_img}`}
-                      alt="Profile Preview"
+                      alt="About Us"
                       width={200}
                       height={200}
                       quality={100}
                       unoptimized={true}
-                      className="w-full h-full object-cover"
+                      className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
                     />
                   )}
                 </div>
-                <div className="mb-4.5">
-                  <p className="text-sm dark:text-white  cms-heading ">{formData.sec_one_title || ""}</p>
+                <div>
+                  <h4 className="text-lg font-medium text-gray-800 dark:text-white">{formData.sec_one_title || ""}</h4>
                 </div>
               </div>
 
-              <div className="mb-4.5">
+              <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
                 <div
-                  className="text-sm dark:text-white cms-description"
+                  className="prose prose-sm max-w-none text-gray-600 dark:text-gray-300"
                   dangerouslySetInnerHTML={{ __html: formData.sec_one_desc || "N/A" }}
                 />
               </div>
-
             </div>
           </div>
           {/* About Us Section end */}
 
           {/* Our Story Section start */}
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium dark-text dark:text-white  ">
+          <div className="rounded-lg border border-stroke bg-white shadow-lg transition-all duration-300 hover:shadow-xl dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-7 py-5 dark:border-strokedark">
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
                 Our Story
               </h3>
             </div>
-            <div className="p-6.5">
-
-              <div className="mb-4.5 flex items-center space-x-4">
-                <div className={`w-25 h-25 rounded-full overflow-hidden border-[1.5px] bg-gray-200border-stroke focus:border-primary`}>
+            <div className="p-7">
+              <div className="mb-6 flex items-center space-x-6 rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
+                <div className="h-32 w-32 flex-shrink-0 overflow-hidden rounded-lg border-2 border-indigo-100 bg-gray-200">
                   {formData.sec_two_img && (
                     <Image
                       src={`/api${formData.sec_two_img}`}
-                      alt="Profile Preview"
+                      alt="Our Story"
                       width={200}
                       height={200}
                       quality={100}
                       unoptimized={true}
-                      className="w-full h-full object-cover"
+                      className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
                     />
                   )}
                 </div>
-                <div className="mb-4.5">
-                  <p className="text-sm dark:text-white  cms-heading ">{formData.sec_two_title || ""}</p>
+                <div>
+                  <h4 className="text-lg font-medium text-gray-800 dark:text-white">{formData.sec_two_title || ""}</h4>
                 </div>
               </div>
 
-              <div className="mb-4.5">
+              <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
                 <div
-                  className="text-sm dark:text-white cms-description"
+                  className="prose prose-sm max-w-none text-gray-600 dark:text-gray-300"
                   dangerouslySetInnerHTML={{ __html: formData.sec_two_desc || "N/A" }}
                 />
               </div>
-
             </div>
           </div>
           {/* Our Story Section end */}
-
-
-
-          {/* <div className="text-right">
-            <button
-              type="submit"
-              className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
-            >
-              Submit
-            </button>
-          </div> */}
-
         </div>
-
       </div>
-
 
     </>
 

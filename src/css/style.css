@@ -463,3 +463,14 @@ th.py-3.px-6.dark-text {
 .dark-text h3 {
     font-weight: 700;
 }
+
+.cms-heading ul li {
+    font-family: 'Noto Sans';
+    font-weight: 300;
+    text-transform: capitalize;
+    text-align: left;
+    font-size: 15px;
+    color: #653D27;
+    line-height: 25px;
+    margin-top: 1em;
+}

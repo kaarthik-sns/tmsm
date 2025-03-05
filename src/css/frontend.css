@@ -464,6 +464,18 @@ input:-internal-autofill-selected {
         margin-top: 0rem;
         margin-bottom: .5rem;
     }
+    .heading {
+        font-size: 30px;
+        line-height: 40px;
+    }
+    .join-heading {
+        font-size: 20px;
+        line-height: 30px;
+    }
+    .about-con-desc h3, .story-right-desc h3, .we-offer-title h3 {
+        font-size: 30px !important;
+        line-height: 40px !important; 
+    }
 }
 
 @media (max-width: 768px) {
@@ -1225,7 +1237,7 @@ input:-internal-autofill-selected {
     }
 
     .top-title h2 {
-        font-size: 40px;
+        font-size: 30px;
         line-height: 40px;
     }
 

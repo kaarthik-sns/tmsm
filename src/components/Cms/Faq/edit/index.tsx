@@ -131,7 +131,7 @@ const FaqElements = () => {
               <div className="p-6.5">
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark:text-white">
-                    Title
+                    Title <span className="text-meta-1">*</span>
                   </label>
                   <input
                     type="text"
@@ -151,7 +151,7 @@ const FaqElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark:text-white">
-                    Description
+                    Description <span className="text-meta-1">*</span>
                   </label>
                   <textarea
                     name="description"
@@ -168,19 +168,18 @@ const FaqElements = () => {
                     <p className="mt-1 text-sm text-red-500">{formErrors.description}</p>
                   )}
                 </div>
+                <div className="grid grid-cols-1 gap-9 sm:grid-cols-1 mt-4.5">
+                  <div className="text-right">
+                    <button
+                      type="submit"
+                      className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 gap-9 sm:grid-cols-1 mt-4.5">
-          <div className="text-right">
-            <button
-              type="submit"
-              className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
-            >
-              Submit
-            </button>
-
           </div>
         </div>
       </form>

@@ -8,18 +8,26 @@ const Elements = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    rating:""
+    rating: ""
   });
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const formData_upload = new FormData();
 
   const handleChange = (e) => {
-    const { name, value} = e.target;
+    const { name, value } = e.target;
+
+    // Special handling for rating field
+    if (name === 'rating') {
+      const numValue = parseInt(value);
+      if (value === '' || (numValue >= 1 && numValue <= 5)) {
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
+      }
+      return;
+    }
 
     // Handle regular input fields
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -31,8 +39,11 @@ const Elements = () => {
       errors.name = "Name cannot be empty.";
     }
 
+    const ratingValue = parseInt(formData.rating);
     if (!formData.rating.trim()) {
       errors.rating = "Rating cannot be empty.";
+    } else if (isNaN(ratingValue) || ratingValue < 1 || ratingValue > 5) {
+      errors.rating = "Rating must be a number between 1 and 5.";
     }
 
     if (!formData.description.trim()) {
@@ -81,7 +92,7 @@ const Elements = () => {
       setFormData({
         name: "",
         description: "",
-        rating:""
+        rating: ""
       });
 
 
@@ -106,14 +117,14 @@ const Elements = () => {
         ]}
       />
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 gap-9 sm:grid-cols-1">
-          <div className="flex flex-col gap-9">
+        <div className="grid grid-cols-1 gap-4 sm:gap-9">
+          <div className="flex flex-col gap-4 sm:gap-9">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="p-6.5">
+              <div className="p-4 sm:p-6.5">
 
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark:text-white dark-text">
-                  Name <span className="mt-1 text-sm text-red-500">*</span>
+                <div className="mb-3 sm:mb-4.5">
+                  <label className="mb-2 sm:mb-3 block text-sm font-medium dark:text-white dark-text">
+                    Name <span className="mt-1 text-sm text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -121,7 +132,7 @@ const Elements = () => {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="Enter name"
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.name
+                    className={`w-full rounded border-[1.5px] px-3 sm:px-5 py-2 sm:py-3 text-sm sm:text-base outline-none transition ${formErrors?.name
                       ? "border-red-500 focus:border-red-500"
                       : "border-stroke focus:border-primary"
                       } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
@@ -131,18 +142,19 @@ const Elements = () => {
                   )}
                 </div>
 
-
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark:text-white dark-text">
-                  Rating <span className="mt-1 text-sm text-red-500">*</span>
+                <div className="mb-3 sm:mb-4.5">
+                  <label className="mb-2 sm:mb-3 block text-sm font-medium dark:text-white dark-text">
+                    Rating <span className="mt-1 text-sm text-red-500">*</span>
                   </label>
                   <input
-                    type="text"
+                    type="number"
+                    min="1"
+                    max="5"
                     name="rating"
                     value={formData.rating}
                     onChange={handleChange}
-                    placeholder="Enter rating"
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.rating
+                    placeholder="Enter rating (1-5)"
+                    className={`w-full rounded border-[1.5px] px-3 sm:px-5 py-2 sm:py-3 text-sm sm:text-base outline-none transition ${formErrors?.rating
                       ? "border-red-500 focus:border-red-500"
                       : "border-stroke focus:border-primary"
                       } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
@@ -152,8 +164,8 @@ const Elements = () => {
                   )}
                 </div>
 
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark:text-white dark-text">
+                <div className="mb-3 sm:mb-4.5">
+                  <label className="mb-2 sm:mb-3 block text-sm font-medium dark:text-white dark-text">
                     Description <span className="mt-1 text-sm text-red-500">*</span>
                   </label>
                   <textarea
@@ -162,7 +174,7 @@ const Elements = () => {
                     onChange={handleChange}
                     rows={6}
                     placeholder="Enter description"
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.description
+                    className={`w-full rounded border-[1.5px] px-3 sm:px-5 py-2 sm:py-3 text-sm sm:text-base outline-none transition ${formErrors?.description
                       ? "border-red-500 focus:border-red-500"
                       : "border-stroke focus:border-primary"
                       } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
@@ -171,22 +183,22 @@ const Elements = () => {
                     <p className="mt-1 text-sm text-red-500">{formErrors.description}</p>
                   )}
                 </div>
-
+                <div className="grid grid-cols-1 gap-4 sm:gap-9 mt-3 sm:mt-4.5">
+                  <div className="text-right">
+                    <button
+                      type="submit"
+                      className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="grid grid-cols-1 gap-9 sm:grid-cols-1 mt-4.5">
-          <div className="text-right">
-            <button
-              type="submit"
-              className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
-            >
-              Submit
-            </button>
 
-          </div>
         </div>
+
       </form>
     </>
   );

@@ -151,6 +151,20 @@ const Settings = () => {
     if (files && files.length > 0) {
       // Handle file input
       const file = files[0];
+      
+      // Add file size validation (5MB = 5 * 1024 * 1024 bytes)
+      const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+      
+      if (file.size > maxSize) {
+        toast.error('Image size should be less than 5MB', {
+          className: "sonner-toast-error",
+          cancel: {
+            label: 'Close',
+            onClick: () => console.log('Close'),
+          },
+        });
+        return;
+      }
 
       if (name == 'sec_one_img') {
         setSecOneImg(file);
@@ -184,7 +198,6 @@ const Settings = () => {
   };
 
   const validateForm = () => {
-
     const fieldsToValidate = [
       { key: "banner_title", message: "Title cannot be empty." },
       { key: "banner_img", message: "Banner Image cannot be empty." },
@@ -197,19 +210,35 @@ const Settings = () => {
       { key: "feature_one", message: "Title One cannot be empty." },
       { key: "feature_one_img", message: "Image cannot be empty." },
       { key: "feature_one_desc", message: "Description cannot be empty." },
-
       { key: "feature_two", message: "Title Two cannot be empty." },
       { key: "feature_two_img", message: "Image cannot be empty." },
       { key: "feature_two_desc", message: "Description cannot be empty." },
-
       { key: "feature_three", message: "Title Three cannot be empty." },
       { key: "feature_three_img", message: "Image cannot be empty." },
       { key: "feature_three_desc", message: "Description cannot be empty." },
-
       { key: "feature_four", message: "Title Four cannot be empty." },
       { key: "feature_four_img", message: "Image cannot be empty." },
       { key: "feature_four_desc", message: "Description cannot be empty." }
     ];
+
+    // Add image size validation for all images
+    const imageFields = [
+      { key: 'banner_img', state: banner_img },
+      { key: 'sec_one_img', state: sec_one_img },
+      { key: 'sec_two_img', state: sec_two_img },
+      { key: 'feature_one_img', state: feature_one_img },
+      { key: 'feature_two_img', state: feature_two_img },
+      { key: 'feature_three_img', state: feature_three_img },
+      { key: 'feature_four_img', state: feature_four_img }
+    ];
+
+    const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+
+    for (const { key, state } of imageFields) {
+      if (state && state.size > maxSize) {
+        errors[key] = "Image size should be less than 5MB";
+      }
+    }
 
     for (const { key, message } of fieldsToValidate) {
       if (!formData[key]?.trim()) {
