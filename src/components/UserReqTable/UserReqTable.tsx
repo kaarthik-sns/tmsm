@@ -223,8 +223,8 @@ const UserTable = () => {
     }
 
     return (
-        <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">
-            <div className="mt-12 shadow-sm border rounded-lg overflow-x-auto">
+        <div className="rounded-sm border border-stroke bg-white px-2 sm:px-4 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark xl:pb-11 max-w-full">
+            <div className="mb-6 overflow-hidden">
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-wrap items-center gap-5.5 p-6.5">
                         <div className="w-full md:w-auto">
