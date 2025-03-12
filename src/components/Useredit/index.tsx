@@ -165,7 +165,7 @@ const FormElements = () => {
         setPhoto4(data.photo4);
         setProfileCreatorPic(data.profile_creator_photo);
         setHoroscope(data.horoscope);
-        
+
 
         setFormData((prevFormData) => ({
           ...prevFormData, // Spread existing form data to keep other fields
@@ -333,7 +333,7 @@ const FormElements = () => {
         errors.profile_creator_phonenumber = "Enter a valid 10-digit phone number.";
       }
     }
-    
+
     // If there are validation errors, show error messages and stop submission
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors); // Assume `setError` updates the UI to display error messages
@@ -500,11 +500,11 @@ const FormElements = () => {
                 </div>
 
                 <div className="mb-4.5">
-                 
+
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Phone Number {formData.profile_created_for !== "myself" && (<span><b className="no_text">(Don't mention the bride/groom's phone number.)</b></span>  )} <span className="text-meta-1">*</span>
+                    Phone Number {formData.profile_created_for !== "myself" && (<span><b className="no_text">(Don't mention the bride/groom's phone number.)</b></span>)} <span className="text-meta-1">*</span>
                   </label>
-                 
+
                   <input
                     type="text"
                     name="phonenumber"
@@ -727,673 +727,666 @@ const FormElements = () => {
                 </div>
 
                 <div>
-                  <DatePickerOne
-                    dateFormat="d-m-Y" // Format for the date
-                    placeholder="Select your birth date" // Placeholder for the date picker
-                    value={formData.birthdate} // Pass the current value of birthDate from formData
-                    onChange={(dates) => {
-                      const selectedDate = dates[0];
-                      if (selectedDate) {
-                        const birthDate = new Date(selectedDate);
-                        // Format the date manually to avoid timezone issues
-                        const localISODate = `${birthDate.getFullYear()}-${String(
-                          birthDate.getMonth() + 1
-                        ).padStart(2, "0")}-${String(birthDate.getDate()).padStart(2, "0")}`;
+                    <DatePickerOne
+                      dateFormat="dd-MM-yyyy"
+                      placeholder="Select your birth date"
+                      portalId="root" // ✅ Renders outside the form to avoid overlap
+                      value={formData.birthdate}
+                      onChange={(selectedDate) => {
+                        if (selectedDate) { // ✅ Check if selectedDate is not null
+                          const dateObject = new Date(selectedDate);
 
-                        const today = new Date();
-                        const age = today.getFullYear() - birthDate.getFullYear();
-                        const isBeforeBirthday =
-                          today.getMonth() < birthDate.getMonth() ||
-                          (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate());
+                          // Convert to YYYY-MM-DD format
+                          const localISODate = dateObject.toISOString().split("T")[0];
 
-                        const calculatedAge = isBeforeBirthday ? age - 1 : age;
+                          const today = new Date();
+                          let age = today.getFullYear() - dateObject.getFullYear();
+                          const isBeforeBirthday =
+                            today.getMonth() < dateObject.getMonth() ||
+                            (today.getMonth() === dateObject.getMonth() && today.getDate() < dateObject.getDate());
 
-                        setFormData((prevData) => ({
-                          ...prevData,
-                          birthdate: localISODate, // Use the manually formatted local date
-                          age: calculatedAge, // Update the age dynamically
-                        }));
+                          if (isBeforeBirthday) {
+                            age -= 1;
+                          }
 
-                        if (calculatedAge < 18) {
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            birthdate: localISODate,
+                            age: age,
+                          }));
+
+                          setError(age < 18 ? "Age must be at least 18 years." : "");
+                        }
+                      }}
+
+                    />
+                    {formErrors?.birthdate && <p className="mt-1 text-sm text-red-500">{formErrors.birthdate}</p>}
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">Age</label>
+                    <input
+                      type="number"
+                      name="age"
+                      value={formData.age || ""}
+                      readOnly
+                      placeholder="Your age will be calculated automatically"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Place of birth
+                    </label>
+                    <input
+                      type="text"
+                      name="place_of_birth"
+                      value={formData.place_of_birth || ""}
+                      onChange={handleChange}
+                      placeholder="Place of birth"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Additional Phone Number
+                    </label>
+                    <input
+                      type="text"
+                      name="profile_creator_phonenumber"
+                      value={formData.profile_creator_phonenumber || ""}
+                      onChange={handleChange}
+                      placeholder="Enter your phone number"
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.profile_creator_phonenumber
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.profile_creator_phonenumber && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_phonenumber}</p>
+                    )}
+                  </div>
+
+                </div>
+              </div>
+
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                  <h3 className="font-medium dark-text dark:text-white">
+                    Location Details
+                  </h3>
+                </div>
+                <div className="p-6.5">
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Country <span className="text-meta-1">*</span>
+                    </label>
+                    <SelectGroupCountries
+                      selectedCountry={selectedCountry}
+                      onCountryChange={handleCountryChange}
+                    />
+                    {formErrors?.country_id && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.country_id}</p>
+                    )}
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      State <span className="text-meta-1">*</span>
+                    </label>
+                    <SelectGroupStates
+                      selectedCountry={selectedCountry}
+                      selectedState={selectedState}
+                      onStateChange={handleStateChange}
+                    />
+                    {formErrors?.state_id && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.state_id}</p>
+                    )}
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      City <span className="text-meta-1">*</span>
+                    </label>
+                    <SelectGroupCities
+                      selectedState={selectedState}
+                      selectedCity={selectedCity}
+                      onCityChange={handleCityChange}
+                    />
+                    {formErrors?.city_id && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.city_id}</p>
+                    )}
+                  </div>
+
+
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Address <span className="text-meta-1">*</span>
+                    </label>
+                    <textarea
+                      rows={6}
+                      name="address"
+                      value={formData.address || ""}
+                      onChange={handleChange}
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.email
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    ></textarea>
+                    {formErrors?.address && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.address}</p>
+                    )}
+                  </div>
+
+                </div>
+              </div>
+
+              {/* <!-- Other Details --> */}
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                  <h3 className="font-medium dark-text dark:text-white">
+                    Other Details
+                  </h3>
+                </div>
+                <div className="flex flex-col gap-5.5 p-6.5">
+
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Education for Groom / Bride
+                    </label>
+                    <input
+                      type="text"
+                      name="education"
+                      value={formData.education || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Complexion of Groom/Bride: (Dark, Wheatish, or Fair)
+                    </label>
+                    <input
+                      type="text"
+                      name="complexion"
+                      value={formData.complexion || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Profession
+                    </label>
+                    <input
+                      type="text"
+                      name="profession"
+                      value={formData.profession || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Income
+                    </label>
+                    <input
+                      type="text"
+                      name="income"
+                      value={formData.income || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Job of Groom / Bride  (Company, job etc)
+                    </label>
+                    <input
+                      type="text"
+                      name="job"
+                      value={formData.job || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Place of work
+                    </label>
+                    <input
+                      type="text"
+                      name="place_of_work"
+                      value={formData.place_of_work || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Kuladeivam
+                    </label>
+                    <input
+                      type="text"
+                      name="kuladeivam"
+                      value={formData.kuladeivam || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Place of Kuladeivam temple
+                    </label>
+                    <input
+                      type="text"
+                      name="place_of_kuladeivam_temple"
+                      value={formData.place_of_kuladeivam_temple || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Gothram <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="gothram"
+                      value={formData.gothram || ""}
+                      onChange={handleChange}
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.gothram
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.gothram && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.gothram}</p>
+                    )}
+                  </div>
+
+                </div>
+              </div>
+
+              {/* <!-- horoscope upload start --> */}
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                  <h3 className="font-medium dark-text dark:text-white">
+                    Horoscope Upload
+                  </h3>
+                </div>
+                <div className="flex flex-col gap-5.5 p-6.5">
+
+                  <FileUpload
+                    name="horoscope"
+                    handleChange={handleChange}
+                  />
+
+                  {formData.horoscope && (
+                    <button
+                      type="button"
+                      onClick={handlePreview} style={{ width: "200px", padding: "8px 0" }}
+                      className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
+                    >
+                      Preview
+                    </button>
+                  )
+                  }
+                </div>
+              </div>
+              {/* <!-- horoscope upload end--> */}
+
+              {/* <!-- Reference start --> */}
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                  <h3 className="font-medium dark-text dark:text-white">
+                    Reference Details
+                  </h3>
+                </div>
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Reference 1
+                    </label>
+                    <input
+                      type="text"
+                      name="reference1"
+                      value={formData.reference1 || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Reference 2
+                    </label>
+                    <input
+                      type="text"
+                      name="reference2"
+                      value={formData.reference2 || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* <!-- Reference end--> */}
+
+            </div>
+
+
+
+
+            <div className="flex flex-col gap-9">
+              {/* <!-- Parents Details --> */}
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                  <h3 className="font-medium dark-text dark:text-white">
+                    Parents Details
+                  </h3>
+                </div>
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Father's Name
+                    </label>
+                    <input
+                      type="text"
+                      name="father_name"
+                      value={formData.father_name || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Father's Phone Number
+                    </label>
+                    <input
+                      type="text"
+                      name="father_phonenumber"
+                      value={formData.father_phonenumber || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Father's Occupation
+                    </label>
+                    <input
+                      type="text"
+                      name="father_occupation"
+                      value={formData.father_occupation || ""}
+                      onChange={handleChange}
+                      placeholder=""
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Father's Religion
+                    </label>
+                    {/* Render SelectGroupReligion with dynamic castes */}
+                    <SelectGroupReligion
+                      religions={freligions}
+                      name="father_religion"
+                      selectedReligion={formData.father_religion}
+                      onReligionChange={(e) =>
+                        setFormData({ ...formData, father_religion: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Father's Profession
+                    </label>
+                    <input
+                      type="text"
+                      name="father_profession"
+                      value={formData.father_profession || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Father's place of work
+
+                    </label>
+                    <input
+                      type="text"
+                      name="father_placeOfWork"
+                      value={formData.father_placeOfWork || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Mother's Name
+                    </label>
+                    <input
+                      type="text"
+                      name="mother_name"
+                      value={formData.mother_name || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Mother's Phone Number
+                    </label>
+                    <input
+                      type="text"
+                      name="mother_phonenumber"
+                      value={formData.mother_phonenumber || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Mother's Occupation
+                    </label>
+                    <input
+                      type="text"
+                      name="mother_occupation"
+                      value={formData.mother_occupation || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Mother's Religion
+                    </label>
+                    {/* Render SelectGroupReligion with dynamic castes */}
+                    <SelectGroupReligion
+                      religions={freligions}
+                      name="mother_religion"
+                      selectedReligion={formData.mother_religion}
+                      onReligionChange={(e) =>
+                        setFormData({ ...formData, mother_religion: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Mother's Profession
+                    </label>
+                    <input
+                      type="text"
+                      name="mother_profession"
+                      value={formData.mother_profession || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Mother's place of work
+
+                    </label>
+                    <input
+                      type="text"
+                      name="mother_placeOfWork"
+                      value={formData.mother_placeOfWork || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                </div>
+              </div>
+              {/* <!-- Partner Preference  --> */}
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                  <h3 className="font-medium dark-text dark:text-white">
+                    Partner Preference
+                  </h3>
+                </div>
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Education
+                    </label>
+                    <input
+                      type="text"
+                      name="partner_pref_education"
+                      value={formData.partner_pref_education || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Age
+                    </label>
+                    <input
+                      type="number"
+                      name="partner_pref_age"
+                      value={formData.partner_pref_age || ""}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setFormData({ ...formData, partner_pref_age: value });
+                        if (parseInt(value as string) < 18) {
                           setError("Age must be at least 18 years.");
                         } else {
                           setError("");
                         }
+                      }}
+                      placeholder="Enter age"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Caste
+                    </label>
+                    <SelectGroupCaste
+                      castes={castes}
+                      name="partner_pref_caste"
+                      selectedcaste={formData.partner_pref_caste}
+                      oncasteChange={(e) =>
+                        setFormData({ ...formData, partner_pref_caste: e.target.value })
                       }
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Subcaste in Mudaliyar
+                    </label>
+                    <input
+                      type="text"
+                      name="partner_pref_subcaste"
+                      value={formData.partner_pref_subcaste || ""}
+                      onChange={handleChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                </div>
+              </div>
 
-                    }}
-                  />
-                  {formErrors?.birthdate && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.birthdate}</p>
-                  )}
+              {/* <!-- Photo upload start --> */}
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                  <h3 className="font-medium dark-text dark:text-white">
+                    Additional  Pictures
+                  </h3>
                 </div>
 
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Age
-                  </label>
-                  <input
-                    type="number"
-                    name="age"
-                    value={formData.age || ""} // Display the calculated age
-                    readOnly // Make this input read-only since it's calculated
-                    placeholder="Your age will be calculated automatically"
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
+                <div className="flex flex-col gap-5.5 p-6.5">
 
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Place of birth
-                  </label>
-                  <input
-                    type="text"
-                    name="place_of_birth"
-                    value={formData.place_of_birth || ""}
-                    onChange={handleChange}
-                    placeholder="Place of birth"
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
+                  <div className="mb-4.5">
+                    <ImageUpload
+                      name="photo1"
+                      label=""
+                      formData={formData}
+                      formErrors={formErrors}
+                      handleChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="mb-4.5">
+                    <ImageUpload
+                      name="photo2"
+                      label=""
+                      formData={formData}
+                      formErrors={formErrors}
+                      handleChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="mb-4.5">
+                    <ImageUpload
+                      name="photo3"
+                      label=""
+                      formData={formData}
+                      formErrors={formErrors}
+                      handleChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="mb-4.5">
+                    <ImageUpload
+                      name="photo4"
+                      label=""
+                      formData={formData}
+                      formErrors={formErrors}
+                      handleChange={handleChange}
+                    />
+                  </div>
+
                 </div>
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Additional Phone Number
-                  </label>
-                  <input
-                    type="text"
-                    name="profile_creator_phonenumber"
-                    value={formData.profile_creator_phonenumber || ""}
-                    onChange={handleChange}
-                    placeholder="Enter your phone number"
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.profile_creator_phonenumber
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                  />
-                  {formErrors?.profile_creator_phonenumber && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_phonenumber}</p>
-                  )}
-                </div>
+              </div>
+              {/* <!-- Photo upload end--> */}
+
+              <div className="text-right">
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
+                >
+                  Submit
+                </button>
 
               </div>
             </div>
 
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="font-medium dark-text dark:text-white">
-                  Location Details
-                </h3>
-              </div>
-              <div className="p-6.5">
-
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Country <span className="text-meta-1">*</span>
-                  </label>
-                  <SelectGroupCountries
-                    selectedCountry={selectedCountry}
-                    onCountryChange={handleCountryChange}
-                  />
-                  {formErrors?.country_id && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.country_id}</p>
-                  )}
-                </div>
-
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    State <span className="text-meta-1">*</span>
-                  </label>
-                  <SelectGroupStates
-                    selectedCountry={selectedCountry}
-                    selectedState={selectedState}
-                    onStateChange={handleStateChange}
-                  />
-                  {formErrors?.state_id && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.state_id}</p>
-                  )}
-                </div>
-
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    City <span className="text-meta-1">*</span>
-                  </label>
-                  <SelectGroupCities
-                    selectedState={selectedState}
-                    selectedCity={selectedCity}
-                    onCityChange={handleCityChange}
-                  />
-                  {formErrors?.city_id && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.city_id}</p>
-                  )}
-                </div>
-
-
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Address <span className="text-meta-1">*</span>
-                  </label>
-                  <textarea
-                    rows={6}
-                    name="address"
-                    value={formData.address || ""}
-                    onChange={handleChange}
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.email
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                  ></textarea>
-                  {formErrors?.address && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.address}</p>
-                  )}
-                </div>
-
-              </div>
-            </div>
-
-            {/* <!-- Other Details --> */}
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="font-medium dark-text dark:text-white">
-                  Other Details
-                </h3>
-              </div>
-              <div className="flex flex-col gap-5.5 p-6.5">
-
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Education for Groom / Bride
-                  </label>
-                  <input
-                    type="text"
-                    name="education"
-                    value={formData.education || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Complexion of Groom/Bride: (Dark, Wheatish, or Fair)
-                  </label>
-                  <input
-                    type="text"
-                    name="complexion"
-                    value={formData.complexion || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Profession
-                  </label>
-                  <input
-                    type="text"
-                    name="profession"
-                    value={formData.profession || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Income
-                  </label>
-                  <input
-                    type="text"
-                    name="income"
-                    value={formData.income || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Job of Groom / Bride  (Company, job etc)
-                  </label>
-                  <input
-                    type="text"
-                    name="job"
-                    value={formData.job || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Place of work
-                  </label>
-                  <input
-                    type="text"
-                    name="place_of_work"
-                    value={formData.place_of_work || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Kuladeivam
-                  </label>
-                  <input
-                    type="text"
-                    name="kuladeivam"
-                    value={formData.kuladeivam || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Place of Kuladeivam temple
-                  </label>
-                  <input
-                    type="text"
-                    name="place_of_kuladeivam_temple"
-                    value={formData.place_of_kuladeivam_temple || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Gothram <span className="text-meta-1">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="gothram"
-                    value={formData.gothram || ""}
-                    onChange={handleChange}
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.gothram
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                  />
-                  {formErrors?.gothram && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.gothram}</p>
-                  )}
-                </div>
-
-              </div>
-            </div>
-
-            {/* <!-- horoscope upload start --> */}
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="font-medium dark-text dark:text-white">
-                  Horoscope Upload
-                </h3>
-              </div>
-              <div className="flex flex-col gap-5.5 p-6.5">
-
-                <FileUpload
-                  name="horoscope"
-                  handleChange={handleChange}
-                />
-
-                {formData.horoscope && (
-                  <button
-                    type="button"
-                    onClick={handlePreview} style={{ width: "200px", padding: "8px 0" }}
-                    className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
-                  >
-                    Preview
-                  </button>
-                )
-                }
-              </div>
-            </div>
-            {/* <!-- horoscope upload end--> */}
-
-            {/* <!-- Reference start --> */}
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="font-medium dark-text dark:text-white">
-                  Reference Details
-                </h3>
-              </div>
-              <div className="flex flex-col gap-5.5 p-6.5">
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Reference 1
-                  </label>
-                  <input
-                    type="text"
-                    name="reference1"
-                    value={formData.reference1 || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Reference 2
-                  </label>
-                  <input
-                    type="text"
-                    name="reference2"
-                    value={formData.reference2 || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* <!-- Reference end--> */}
 
           </div>
-
-
-
-
-          <div className="flex flex-col gap-9">
-            {/* <!-- Parents Details --> */}
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="font-medium dark-text dark:text-white">
-                  Parents Details
-                </h3>
-              </div>
-              <div className="flex flex-col gap-5.5 p-6.5">
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Father's Name
-                  </label>
-                  <input
-                    type="text"
-                    name="father_name"
-                    value={formData.father_name || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Father's Phone Number
-                  </label>
-                  <input
-                    type="text"
-                    name="father_phonenumber"
-                    value={formData.father_phonenumber || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Father's Occupation
-                  </label>
-                  <input
-                    type="text"
-                    name="father_occupation"
-                    value={formData.father_occupation || ""}
-                    onChange={handleChange}
-                    placeholder=""
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Father's Religion
-                  </label>
-                  {/* Render SelectGroupReligion with dynamic castes */}
-                  <SelectGroupReligion
-                    religions={freligions}
-                    name="father_religion"
-                    selectedReligion={formData.father_religion}
-                    onReligionChange={(e) =>
-                      setFormData({ ...formData, father_religion: e.target.value })
-                    }
-                  />
-                </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Father's Profession
-                  </label>
-                  <input
-                    type="text"
-                    name="father_profession"
-                    value={formData.father_profession || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Father's place of work
-
-                  </label>
-                  <input
-                    type="text"
-                    name="father_placeOfWork"
-                    value={formData.father_placeOfWork || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Mother's Name
-                  </label>
-                  <input
-                    type="text"
-                    name="mother_name"
-                    value={formData.mother_name || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Mother's Phone Number
-                  </label>
-                  <input
-                    type="text"
-                    name="mother_phonenumber"
-                    value={formData.mother_phonenumber || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Mother's Occupation
-                  </label>
-                  <input
-                    type="text"
-                    name="mother_occupation"
-                    value={formData.mother_occupation || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Mother's Religion
-                  </label>
-                  {/* Render SelectGroupReligion with dynamic castes */}
-                  <SelectGroupReligion
-                    religions={freligions}
-                    name="mother_religion"
-                    selectedReligion={formData.mother_religion}
-                    onReligionChange={(e) =>
-                      setFormData({ ...formData, mother_religion: e.target.value })
-                    }
-                  />
-                </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Mother's Profession
-                  </label>
-                  <input
-                    type="text"
-                    name="mother_profession"
-                    value={formData.mother_profession || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Mother's place of work
-
-                  </label>
-                  <input
-                    type="text"
-                    name="mother_placeOfWork"
-                    value={formData.mother_placeOfWork || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-              </div>
-            </div>
-            {/* <!-- Partner Preference  --> */}
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="font-medium dark-text dark:text-white">
-                  Partner Preference
-                </h3>
-              </div>
-              <div className="flex flex-col gap-5.5 p-6.5">
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Education
-                  </label>
-                  <input
-                    type="text"
-                    name="partner_pref_education"
-                    value={formData.partner_pref_education || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Age
-                  </label>
-                  <input
-                    type="number"
-                    name="partner_pref_age"
-                    value={formData.partner_pref_age || ""}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      setFormData({ ...formData, partner_pref_age: value });
-                      if (parseInt(value as string) < 18) {
-                        setError("Age must be at least 18 years.");
-                      } else {
-                        setError("");
-                      }
-                    }}
-                    placeholder="Enter age"
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Caste
-                  </label>
-                  <SelectGroupCaste
-                    castes={castes}
-                    name="partner_pref_caste"
-                    selectedcaste={formData.partner_pref_caste}
-                    oncasteChange={(e) =>
-                      setFormData({ ...formData, partner_pref_caste: e.target.value })
-                    }
-                  />
-                </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Subcaste in Mudaliyar
-                  </label>
-                  <input
-                    type="text"
-                    name="partner_pref_subcaste"
-                    value={formData.partner_pref_subcaste || ""}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* <!-- Photo upload start --> */}
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="font-medium dark-text dark:text-white">
-                  Additional  Pictures
-                </h3>
-              </div>
-
-              <div className="flex flex-col gap-5.5 p-6.5">
-
-                <div className="mb-4.5">
-                  <ImageUpload
-                    name="photo1"
-                    label=""
-                    formData={formData}
-                    formErrors={formErrors}
-                    handleChange={handleChange}
-                  />
-                </div>
-
-                <div className="mb-4.5">
-                  <ImageUpload
-                    name="photo2"
-                    label=""
-                    formData={formData}
-                    formErrors={formErrors}
-                    handleChange={handleChange}
-                  />
-                </div>
-
-                <div className="mb-4.5">
-                  <ImageUpload
-                    name="photo3"
-                    label=""
-                    formData={formData}
-                    formErrors={formErrors}
-                    handleChange={handleChange}
-                  />
-                </div>
-
-                <div className="mb-4.5">
-                  <ImageUpload
-                    name="photo4"
-                    label=""
-                    formData={formData}
-                    formErrors={formErrors}
-                    handleChange={handleChange}
-                  />
-                </div>
-
-              </div>
-            </div>
-            {/* <!-- Photo upload end--> */}
-
-            <div className="text-right">
-              <button
-                type="submit"
-                className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
-              >
-                Submit
-              </button>
-
-            </div>
-          </div>
-
-
-        </div>
-        {error && <p className="mt-4 text-red-500">{error}</p>}
+          {error && <p className="mt-4 text-red-500">{error}</p>}
       </form >
     </>
   );

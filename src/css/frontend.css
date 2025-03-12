@@ -423,6 +423,7 @@ input:-internal-autofill-selected {
     font-family: 'Noto Sans';
     font-weight: 600;
 }
+
 .active-setting {
     color: #923d27;
     font-family: 'Noto Sans';
@@ -430,7 +431,7 @@ input:-internal-autofill-selected {
 }
 
 .mt-20 {
-    margin-top:10rem;
+    margin-top: 10rem;
 }
 
 /*Responsive code*/
@@ -464,17 +465,22 @@ input:-internal-autofill-selected {
         margin-top: 0rem;
         margin-bottom: .5rem;
     }
+
     .heading {
         font-size: 30px;
         line-height: 40px;
     }
+
     .join-heading {
         font-size: 20px;
         line-height: 30px;
     }
-    .about-con-desc h3, .story-right-desc h3, .we-offer-title h3 {
+
+    .about-con-desc h3,
+    .story-right-desc h3,
+    .we-offer-title h3 {
         font-size: 30px !important;
-        line-height: 40px !important; 
+        line-height: 40px !important;
     }
 }
 
@@ -714,6 +720,7 @@ input:-internal-autofill-selected {
 .contact-bio p span {
     text-transform: capitalize;
 }
+
 /**contact page**/
 .contact-info-con {
     margin: 0;
@@ -1320,6 +1327,7 @@ input:-internal-autofill-selected {
 
         }
     }
+
     .profile-heading {
         font-size: 20px;
     }
@@ -1340,13 +1348,16 @@ input:-internal-autofill-selected {
 .inner-banner-info {
     background: rgba(216, 140, 74, 0.60);
 }
+
 .faq-info-con {
     padding: 80px 0px 40px 0;
     background-color: #ffffff;
 }
+
 .faq-list-con {
     background-color: #ffffff;
 }
+
 .title {
     color: #D13333;
     font-family: "Playfair Display";
@@ -1354,6 +1365,7 @@ input:-internal-autofill-selected {
     font-weight: 700;
     line-height: normal;
 }
+
 .faq-content .sub-title {
     color: #323232;
     font-family: "Noto Sans";
@@ -1362,6 +1374,7 @@ input:-internal-autofill-selected {
     line-height: 30px;
     line-height: normal;
 }
+
 .faq-content p {
     color: #333333;
     text-align: justify;
@@ -1370,13 +1383,16 @@ input:-internal-autofill-selected {
     font-weight: 300;
     line-height: 30px;
 }
+
 .faq-list-con {
     padding: 0px 0px 80px 0;
 }
+
 .faq-list-con .border-btm {
     border-color: rgba(33, 28, 28, 0.70);
     border-bottom-width: 1px;
 }
+
 .faq-question {
     color: rgba(33, 28, 28, 0.90);
     text-align: justify;
@@ -1386,12 +1402,14 @@ input:-internal-autofill-selected {
     font-weight: 300;
     line-height: normal;
 }
+
 .faq-answer {
     font-family: "Noto Sans";
     font-size: 16px;
-    color:#333333;
+    color: #333333;
     font-weight: 600;
 }
+
 .expand-font {
     color: rgba(33, 28, 28, 0.90);
     text-align: justify;
@@ -1401,10 +1419,12 @@ input:-internal-autofill-selected {
     font-weight: 500;
     line-height: normal;
 }
-.faq-req-btn-row  {
+
+.faq-req-btn-row {
     padding-top: 50px;
 }
-.faq-req-btn-row .req-btn{
+
+.faq-req-btn-row .req-btn {
     border-radius: 5px;
     color: #323232;
     text-align: center;
@@ -1412,104 +1432,124 @@ input:-internal-autofill-selected {
     font-size: 18px;
     font-style: normal;
     font-weight: 600;
-    line-height: 30px; /* 166.667% */
+    line-height: 30px;
+    /* 166.667% */
     background: #FFD16C;
 }
+
 .faq-req-btn-row .req-btn:hover {
     color: #ffd16c;
     background: #af2c2c;
 }
+
 .faq-req-btn-row p {
-color: rgba(0, 0, 0, 0.50);
-font-family: "Noto Sans";
-font-size: 14px;
-font-weight: 300;
-line-height: 30px;
-padding-top: 1rem;
+    color: rgba(0, 0, 0, 0.50);
+    font-family: "Noto Sans";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 30px;
+    padding-top: 1rem;
 }
 
 /* Custom class for SweetAlert2 */
-.confirm-color{
+.confirm-color {
     background-color: rgba(16, 185, 129, .08);
     color: #10b981;
 }
+
 .cancel-color {
     background-color: rgba(251, 84, 84, .08);
     color: #fb5454;
 }
+
 .confirm-color-succes {
     background-color: rgba(16, 185, 129, .08);
     color: #10b981;
 }
+
 .swal2-popup {
-    font-family: 'Noto Sans'; /* Change to your preferred font family */
-  }
-  
-  .swal2-title {
-    font-family: 'Noto Sans'; /* Change to your preferred font family */
-  }
-  
-  .swal2-content {
-    font-family: 'Noto Sans'; /* Change to your preferred font family */
-  }
-  
-  .swal2-actions button {
-    font-family: 'Noto Sans'; /* Change to your preferred font family */
-  }
-  
+    font-family: 'Noto Sans';
+    /* Change to your preferred font family */
+}
+
+.swal2-title {
+    font-family: 'Noto Sans';
+    /* Change to your preferred font family */
+}
+
+.swal2-content {
+    font-family: 'Noto Sans';
+    /* Change to your preferred font family */
+}
+
+.swal2-actions button {
+    font-family: 'Noto Sans';
+    /* Change to your preferred font family */
+}
+
 @media only screen and (min-width: 768px) {
     .faq-info-con {
         padding: 5.56vw 0px 2.78vw 0;
     }
+
     .faq-list-con {
         padding: 0px 0px 5.56vw 0;
     }
-    .faq-req-btn-row  {
+
+    .faq-req-btn-row {
         padding-top: 3.47vw;
     }
 }
+
 @media only screen and (min-width: 1600px) {
     .faq-info-con {
         padding: 80px 0px 40px 0;
     }
+
     .faq-list-con {
         padding: 0px 0px 80px 0;
     }
-    .faq-req-btn-row  {
+
+    .faq-req-btn-row {
         padding-top: 50px;
     }
 }
+
 @media (max-width: 767px) {
     .faq-info-con {
         padding: 40px 0;
     }
-    .faq-req-btn-row  {
+
+    .faq-req-btn-row {
         padding-top: 40px;
     }
 }
 
-.team-info-con{
+.team-info-con {
     display: block;
     width: 100%;
     position: relative;
     padding: 80px 0;
     background: #fff;
 }
-.team-content{
+
+.team-content {
     display: block;
     margin: 0;
     clear: both;
 
 }
+
 .team-content h2 {
-    color: #333; 
+    color: #333;
     font-family: 'Noto Sans';
-    font-size:24px;
+    font-size: 24px;
     font-weight: 700;
     line-height: normal;
     margin: 0 0 20px;
 }
-.team-content p{
+
+.team-content p {
     color: #333;
     text-align: justify;
     font-family: 'Noto Sans';
@@ -1517,49 +1557,56 @@ padding-top: 1rem;
     font-weight: 300;
     line-height: 36px;
     margin: 0 0 15px;
+}
+
+@media only screen and (min-width: 768px) {
+    .team-info-con {
+        padding: 5.56vw 0;
     }
 
-    @media only screen and (min-width: 768px) {
-        .team-info-con{      
-            padding: 5.56vw 0;
-        }
-        .team-content h2 {
-            font-size:1.67vw;      
-            margin: 0 0 1.39vw;
-        }
-        .team-content p{           
-            font-size: 1.25vw;
-            line-height: 2.5vw;
-            margin: 0 0 1.04vw;
-        }
-        
-    }
-    @media only screen and (min-width: 1600px) {
-        .team-info-con{      
-            padding: 80px 0;
-        }
-        .team-content h2 {
-            font-size:24px;     
-            margin: 0 0 20px;
-        }
-        .team-content p{           
-            font-size: 18px;
-            line-height: 36px;
-            margin: 0 0 15px;
-        }
+    .team-content h2 {
+        font-size: 1.67vw;
+        margin: 0 0 1.39vw;
     }
 
-    @media (max-width: 767px) {
-        .team-info-con{
-            padding: 40px 0;
-        }
-        .team-content h3{
-            font-size:25px;
-        }
-        .team-content h2{
-            font-size: 25px;
-        }
+    .team-content p {
+        font-size: 1.25vw;
+        line-height: 2.5vw;
+        margin: 0 0 1.04vw;
     }
+
+}
+
+@media only screen and (min-width: 1600px) {
+    .team-info-con {
+        padding: 80px 0;
+    }
+
+    .team-content h2 {
+        font-size: 24px;
+        margin: 0 0 20px;
+    }
+
+    .team-content p {
+        font-size: 18px;
+        line-height: 36px;
+        margin: 0 0 15px;
+    }
+}
+
+@media (max-width: 767px) {
+    .team-info-con {
+        padding: 40px 0;
+    }
+
+    .team-content h3 {
+        font-size: 25px;
+    }
+
+    .team-content h2 {
+        font-size: 25px;
+    }
+}
 
 /* Radio Button */
 
@@ -1581,14 +1628,38 @@ input[type="radio"] {
     line-height: 36px;
     color: #333;
 }
+
 .team-info-con ul {
     margin-bottom: 1em;
 }
+
 .no_text {
     font-size: 12px;
 }
+
 @media (min-width: 640px) {
     .sm\:max-w-md {
         max-width: 40rem;
     }
+}
+
+.react-datepicker-wrapper {
+    width: 100%;
+}
+
+.react-datepicker {
+    z-index: 9999 !important;
+    /* ✅ Ensures it's on top */
+}
+
+.react-datepicker__month-container {
+    position: relative;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.react-datepicker__header {
+    background-color: #fff;
+    /* ✅ Matches the design */
+    border-bottom: 1px solid #ddd;
 }

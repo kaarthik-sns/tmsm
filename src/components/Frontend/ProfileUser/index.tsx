@@ -767,62 +767,56 @@ const UserProfile = (user_data) => {
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
-
                       <div className="text-black">
                         <DatePickerOne
-                          dateFormat="d-m-Y" // Format for the date
-                          placeholder="Select your birth date" // Placeholder for the date picker
-                          value={formData.birthdate} // Pass the current value of birthDate from formData
-                          onChange={(dates) => {
-                            const selectedDate = dates[0];
-                            if (selectedDate) {
-                              const birthDate = new Date(selectedDate);
-                              // Format the date manually to avoid timezone issues
-                              const localISODate = `${birthDate.getFullYear()}-${String(
-                                birthDate.getMonth() + 1
-                              ).padStart(2, "0")}-${String(birthDate.getDate()).padStart(2, "0")}`;
+                          dateFormat="dd-MM-yyyy"
+                          placeholder="Select your birth date"
+                          portalId="root" // ✅ Renders outside the form to avoid overlap
+                          value={formData.birthdate}
+                          onChange={(selectedDate) => {
+                            if (selectedDate) { // ✅ Check if selectedDate is not null
+                              const dateObject = new Date(selectedDate);
+
+                              // Convert to YYYY-MM-DD format
+                              const localISODate = dateObject.toISOString().split("T")[0];
 
                               const today = new Date();
-                              const age = today.getFullYear() - birthDate.getFullYear();
+                              let age = today.getFullYear() - dateObject.getFullYear();
                               const isBeforeBirthday =
-                                today.getMonth() < birthDate.getMonth() ||
-                                (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate());
+                                today.getMonth() < dateObject.getMonth() ||
+                                (today.getMonth() === dateObject.getMonth() && today.getDate() < dateObject.getDate());
 
-                              const calculatedAge = isBeforeBirthday ? age - 1 : age;
+                              if (isBeforeBirthday) {
+                                age -= 1;
+                              }
 
                               setFormData((prevData) => ({
                                 ...prevData,
-                                birthdate: localISODate, // Use the manually formatted local date
-                                age: calculatedAge, // Update the age dynamically
+                                birthdate: localISODate,
+                                age: age,
                               }));
 
-                              if (calculatedAge < 18) {
-                                setError("Age must be at least 18 years.");
-                              } else {
-                                setError("");
-                              }
+                              setError(age < 18 ? "Age must be at least 18 years." : "");
                             }
-
                           }}
+                          
                         />
-                        {formErrors?.birthdate && (
-                          <p className="mt-1 text-sm text-red-500">{formErrors.birthdate}</p>
-                        )}
+                        {formErrors?.birthdate && <p className="mt-1 text-sm text-red-500">{formErrors.birthdate}</p>}
                       </div>
 
                       <div className="mb-4.5">
-                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Age
-                        </label>
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">Age</label>
                         <input
                           type="number"
                           name="age"
-                          value={formData.age || ""} // Display the calculated age
-                          readOnly // Make this input read-only since it's calculated
+                          value={formData.age || ""}
+                          readOnly
                           placeholder="Your age will be calculated automatically"
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
+
+
 
                       <div className="mb-4.5">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">

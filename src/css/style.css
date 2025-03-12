@@ -474,3 +474,23 @@ th.py-3.px-6.dark-text {
     line-height: 25px;
     margin-top: 1em;
 }
+.react-datepicker-wrapper {
+    width: 100%;
+}
+
+.react-datepicker {
+    z-index: 9999 !important;
+    /* ✅ Ensures it's on top */
+}
+
+.react-datepicker__month-container {
+    position: relative;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.react-datepicker__header {
+    background-color: #fff;
+    /* ✅ Matches the design */
+    border-bottom: 1px solid #ddd;
+}

@@ -222,13 +222,12 @@ export default function Profile({ userId }) {
           </div>
         </div>
 
-
         <div className="border-color mt-6 mb-6"></div>
 
         {/* Education & Occupation */}
         <div className="grid grid-cols-1 gap-4 mt-3 md:grid-cols-2">
           <div className="contact-bio">
-            <h2 className="profile-heading py-6">Family Information</h2>
+            <h2 className="profile-heading py-6">Other Information</h2>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-60">Kuladeivam</strong>
               <span>{profileData.kuladeivam || ""}</span>
