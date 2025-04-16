@@ -21,17 +21,17 @@ const FaqElements = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     const errors: Record<string, string> = {};
-  
+
     if (!formData.title.trim()) {
       errors.title = "Title cannot be empty.";
     }
-  
+
     if (!formData.description.trim()) {
       errors.description = "Description cannot be empty.";
     }
-  
+
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
       toast.error('Please fix the highlighted errors.', {
@@ -43,15 +43,15 @@ const FaqElements = () => {
       });
       return;
     }
-  
+
     setFormErrors({});
-  
+
     try {
       const formBody = new URLSearchParams({
         title: formData.title,
         description: formData.description,
       });
-  
+
       const res = await fetch("/api/cms/faq/add", {
         method: "POST",
         headers: {
@@ -59,11 +59,11 @@ const FaqElements = () => {
         },
         body: formBody.toString(),
       });
-  
+
       if (!res.ok) {
         throw new Error("Failed to add FAQ.");
       }
-  
+
       const data = await res.json();
 
       toast.success('FAQ added successfully!', {
@@ -74,7 +74,7 @@ const FaqElements = () => {
         },
       });
 
-  
+
       setFormData({
         title: "",
         description: "",
@@ -89,7 +89,7 @@ const FaqElements = () => {
       });
     }
   };
-  
+
 
   return (
     <>
@@ -101,7 +101,7 @@ const FaqElements = () => {
               <div className="p-6.5">
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark:text-white">
-                    Title
+                    Title <span className="text-meta-1">*</span>
                   </label>
                   <input
                     type="text"
@@ -121,7 +121,7 @@ const FaqElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark:text-white">
-                    Description
+                    Description <span className="text-meta-1">*</span>
                   </label>
                   <textarea
                     name="description"
@@ -138,20 +138,19 @@ const FaqElements = () => {
                     <p className="mt-1 text-sm text-red-500">{formErrors.description}</p>
                   )}
                 </div>
+                <div className="grid grid-cols-1 gap-9 sm:grid-cols-1 mt-4.5">
+                  <div className="text-right">
+                    <button
+                      type="submit"
+                      className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="grid grid-cols-1 gap-9 sm:grid-cols-1 mt-4.5">
-        <div className="text-right">
-            <button
-              type="submit"
-              className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
-            >
-              Submit
-            </button>
-
-            </div>
         </div>
       </form>
     </>

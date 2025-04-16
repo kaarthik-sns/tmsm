@@ -628,8 +628,8 @@ const Settings = () => {
             <div className="text-right">
               <button
                 type="submit"
-                className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
-              >
+                className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-5 xl:px-6 text-custom"
+                >
                 Submit
               </button>
 
