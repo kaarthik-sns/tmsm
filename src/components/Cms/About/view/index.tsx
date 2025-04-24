@@ -9,6 +9,8 @@ const Settings = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
+  const lang = localStorage.getItem('lang') || 'en';
+
   const [formData, setFormData] = useState({
     sec_one_title: '',
     sec_one_desc: '',
@@ -36,6 +38,20 @@ const Settings = () => {
 
     banner_title: '',
     banner_img: '',
+
+    sec_one_title_ta: '',
+    sec_one_desc_ta: '',
+    sec_two_title_ta: '',
+    sec_two_desc_ta: '',
+    feature_one_ta: '',
+    feature_one_desc_ta: '',
+    feature_two_ta: '',
+    feature_two_desc_ta: '',
+    feature_three_ta: '',
+    feature_three_desc_ta: '',
+    feature_four_ta: '',
+    feature_four_desc_ta: '',
+    banner_title_ta: '',
   });
 
   useEffect(() => {
@@ -115,7 +131,7 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="flex-1">
-                  <p className="text-lg font-medium text-gray-800 dark:text-white">{formData.sec_two_title || "N/A"}</p>
+                  <p className="text-lg font-medium text-gray-800 dark:text-white">{ lang === 'ta' ? formData.banner_title_ta : formData.banner_title}</p>
                 </div>
               </div>
             </div>
@@ -147,8 +163,8 @@ const Settings = () => {
                     )}
                   </div>
                   <div className="flex-1">
-                    <h4 className="mb-2 text-lg font-medium text-gray-800 dark:text-white">{formData.feature_one || ""}</h4>
-                    <p className="text-gray-600 dark:text-gray-300">{formData.feature_one_desc || ""}</p>
+                    <h4 className="mb-2 text-lg font-medium text-gray-800 dark:text-white">{  lang === 'ta' ? formData.feature_one_ta : formData.feature_one}</h4>
+                    <p className="text-gray-600 dark:text-gray-300">{lang === 'ta' ? formData.feature_one_desc_ta : formData.feature_one_desc}</p>
                   </div>
                 </div>
               </div>
@@ -170,8 +186,8 @@ const Settings = () => {
                     )}
                   </div>
                   <div className="flex-1">
-                    <h4 className="mb-2 text-lg font-medium text-gray-800 dark:text-white">{formData.feature_two || ""}</h4>
-                    <p className="text-gray-600 dark:text-gray-300">{formData.feature_two_desc || ""}</p>
+                    <h4 className="mb-2 text-lg font-medium text-gray-800 dark:text-white">{lang === 'ta' ? formData.feature_two_ta : formData.feature_two}</h4>
+                    <p className="text-gray-600 dark:text-gray-300">{lang === 'ta' ? formData.feature_two_desc_ta : formData.feature_two_desc}</p>
                   </div>
                 </div>
               </div>
@@ -193,8 +209,8 @@ const Settings = () => {
                     )}
                   </div>
                   <div className="flex-1">
-                    <h4 className="mb-2 text-lg font-medium text-gray-800 dark:text-white">{formData.feature_three || ""}</h4>
-                    <p className="text-gray-600 dark:text-gray-300">{formData.feature_three_desc || ""}</p>
+                    <h4 className="mb-2 text-lg font-medium text-gray-800 dark:text-white">{lang === 'ta' ? formData.feature_three_ta : formData.feature_three}</h4>
+                    <p className="text-gray-600 dark:text-gray-300">{lang === 'ta' ? formData.feature_three_desc_ta : formData.feature_three_desc}</p>
                   </div>
                 </div>
               </div>
@@ -216,8 +232,8 @@ const Settings = () => {
                     )}
                   </div>
                   <div className="flex-1">
-                    <h4 className="mb-2 text-lg font-medium text-gray-800 dark:text-white">{formData.feature_four || ""}</h4>
-                    <p className="text-gray-600 dark:text-gray-300">{formData.feature_four_desc || ""}</p>
+                    <h4 className="mb-2 text-lg font-medium text-gray-800 dark:text-white">{lang === 'ta' ? formData.feature_four_ta : formData.feature_four}</h4>
+                    <p className="text-gray-600 dark:text-gray-300">{lang === 'ta' ? formData.feature_four_desc_ta : formData.feature_four_desc}</p>
                   </div>
                 </div>
               </div>
@@ -250,14 +266,14 @@ const Settings = () => {
                   )}
                 </div>
                 <div>
-                  <h4 className="text-lg font-medium text-gray-800 dark:text-white">{formData.sec_one_title || ""}</h4>
+                  <h4 className="text-lg font-medium text-gray-800 dark:text-white">{lang === 'ta' ? formData.sec_one_title_ta : formData.sec_one_title}</h4>
                 </div>
               </div>
 
               <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
                 <div
                   className="prose prose-sm max-w-none text-gray-600 dark:text-gray-300"
-                  dangerouslySetInnerHTML={{ __html: formData.sec_one_desc || "N/A" }}
+                  dangerouslySetInnerHTML={{ __html: lang === 'ta' ? formData.sec_one_desc_ta : formData.sec_one_desc }}
                 />
               </div>
             </div>
@@ -287,14 +303,14 @@ const Settings = () => {
                   )}
                 </div>
                 <div>
-                  <h4 className="text-lg font-medium text-gray-800 dark:text-white">{formData.sec_two_title || ""}</h4>
+                  <h4 className="text-lg font-medium text-gray-800 dark:text-white">{lang === 'ta' ? formData.sec_two_title_ta : formData.sec_two_title}</h4>
                 </div>
               </div>
 
               <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
                 <div
                   className="prose prose-sm max-w-none text-gray-600 dark:text-gray-300"
-                  dangerouslySetInnerHTML={{ __html: formData.sec_two_desc || "N/A" }}
+                  dangerouslySetInnerHTML={{ __html: lang === 'ta' ? formData.sec_two_desc_ta : formData.sec_two_desc }}
                 />
               </div>
             </div>

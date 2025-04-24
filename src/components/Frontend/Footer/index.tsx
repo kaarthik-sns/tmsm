@@ -11,6 +11,8 @@ export function FooterWithCustomDesign() {
   const [settings, setSettings] = useState<Record<string, any>>({});
   const pathname = usePathname(); // Get the current path
 
+  const lang = localStorage.getItem('lang') || 'en';
+
   useEffect(() => {
     const fetchSettings = async () => {
       try {
@@ -95,17 +97,17 @@ export function FooterWithCustomDesign() {
           <ul className="space-y-4">
             <li>
               <Link href="/" className={`hover:text-white ${isActive("/") ? "active-footer" : ""}`}>
-                Home
+                {lang === 'ta' ? 'முகப்பு' : 'Home'}
               </Link>
             </li>
             <li>
               <Link href="/about" className={`hover:text-white ${isActive("/about") ? "active-footer" : ""}`}>
-                About
+                {lang === 'ta' ? 'எங்களை பற்றி' : 'About'}
               </Link>
             </li>
             <li>
               <Link href="/contact" className={`text-gray-400 hover:text-white ${isActive("/contact") ? "active-footer" : ""}`}>
-                Contact
+                {lang === 'ta' ? 'தொடர்புக்கு' : 'Contact'}
               </Link>
             </li>
           </ul>
@@ -116,17 +118,17 @@ export function FooterWithCustomDesign() {
           <ul className="space-y-4">
             <li>
               <Link href="/faq" className={`text-gray-400 hover:text-white ${isActive("/faq") ? "active-footer" : ""}`}>
-                FAQ
+                {lang === 'ta' ? 'அடிக்கடி கேட்கப்படும் கேள்விகள்' : 'FAQ'}
               </Link>
             </li>
             <li>
               <Link href="/privacy-policy" className={`hover:text-white ${isActive("/privacy-policy") ? "active-footer" : ""}`}>
-                Privacy Policy
+                {lang === 'ta' ? 'தனியுரிமைக் கொள்கை' : 'Privacy Policy'}
               </Link>
             </li>
             <li>
               <Link href="/terms" className={`hover:text-white ${isActive("/terms") ? "active-footer" : ""}`}>
-                Terms and Conditions
+                {lang === 'ta' ? 'விதிமுறைகள் மற்றும் நிபந்தனைகள்' : 'Terms and Conditions'}
               </Link>
             </li>
           </ul>

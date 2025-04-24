@@ -3,6 +3,9 @@
 import Image from "next/image";
 
 const ContactInnerBanner = () => {
+
+  const lang = localStorage.getItem('lang') || 'en';
+
   return (
     <>
       <section className="inner-page-top-banner">
@@ -16,7 +19,7 @@ const ContactInnerBanner = () => {
 
         <div className="inner-banner-info">
           <div className="top-title">
-            <h2>Privacy Policy</h2>
+            <h2>{lang == 'ta' ? 'தனியுரிமைக் கொள்கை' : 'Privacy Policy'}</h2>
           </div>
         </div>
       </section>

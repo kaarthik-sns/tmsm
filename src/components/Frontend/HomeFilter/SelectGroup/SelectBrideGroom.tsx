@@ -2,6 +2,9 @@
 import React from "react";
 
 const SelectBrideGroom = ({ selectedBrideGroom, name, onBrideGroomChange }) => {
+
+  const lang = localStorage.getItem('lang') || 'en';
+
   return (
     <div className="mb-4.5">
       <div className="relative z-20 bg-transparent dark:bg-form-input">
@@ -12,13 +15,13 @@ const SelectBrideGroom = ({ selectedBrideGroom, name, onBrideGroomChange }) => {
           className="relative z-20 md:w-32  w-full appearance-none rounded border border-stroke bg-white px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
         >
           <option value="" className="text-body dark:text-bodydark">
-            Select
+          {lang == 'ta' ? 'தேர்வு செய்க' : 'Select'} 
           </option>
           <option value="female" className="text-body dark:text-bodydark">
-            Bride
+          {lang == 'ta' ? 'மணமகள்' : 'Bride'}
           </option>
           <option value="male" className="text-body dark:text-bodydark">
-            Groom
+          {lang == 'ta' ? 'மணமகன்' : 'Groom'}
           </option>
         </select>
 

@@ -7,6 +7,8 @@ const FaqElements = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    description_ta: "",
+    title_ta: "",
   });
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
@@ -30,6 +32,14 @@ const FaqElements = () => {
 
     if (!formData.description.trim()) {
       errors.description = "Description cannot be empty.";
+    }
+
+    if (!formData.title_ta.trim()) {
+      errors.title_ta = "Title cannot be empty.";
+    }
+
+    if (!formData.description_ta.trim()) {
+      errors.description_ta = "Description cannot be empty.";
     }
 
     if (Object.keys(errors).length > 0) {
@@ -74,11 +84,13 @@ const FaqElements = () => {
         },
       });
 
-
       setFormData({
         title: "",
         description: "",
+        description_ta: "",
+        title_ta: "",
       });
+
     } catch (err: any) {
       toast.error('Failed to add FAQ.', {
         className: "sonner-toast-error",
@@ -99,6 +111,7 @@ const FaqElements = () => {
           <div className="flex flex-col gap-9">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="p-6.5">
+
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark:text-white">
                     Title <span className="text-meta-1">*</span>
@@ -138,6 +151,48 @@ const FaqElements = () => {
                     <p className="mt-1 text-sm text-red-500">{formErrors.description}</p>
                   )}
                 </div>
+
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark:text-white">
+                    தலைப்பு <span className="text-meta-1">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="title_ta"
+                    value={formData.title_ta}
+                    onChange={handleChange}
+                    placeholder="தலைப்பை உள்ளிடவும்"
+                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.title_ta
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-stroke focus:border-primary"
+                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                  />
+                  {formErrors?.title_ta && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.title_ta}</p>
+                  )}
+                </div>
+
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark:text-white">
+                    விவரம் <span className="text-meta-1">*</span>
+                  </label>
+                  <textarea
+                    name="description_ta"
+                    value={formData.description_ta}
+                    onChange={handleChange}
+                    rows={6}
+                    placeholder="விவரங்களை உள்ளிடவும்"
+                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.description_ta
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-stroke focus:border-primary"
+                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                  />
+                  {formErrors?.description_ta && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.description_ta}</p>
+                  )}
+                </div>
+
+
                 <div className="grid grid-cols-1 gap-9 sm:grid-cols-1 mt-4.5">
                   <div className="text-right">
                     <button
@@ -148,6 +203,7 @@ const FaqElements = () => {
                     </button>
                   </div>
                 </div>
+                
               </div>
             </div>
           </div>

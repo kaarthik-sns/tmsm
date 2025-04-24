@@ -18,6 +18,8 @@ const FilterForm = () => {
 
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
 
+  const lang = localStorage.getItem('lang') || 'en';
+
   // Example data array of subcastes
   const subcastes = [
     "Karaikkal Mudaliyar",
@@ -91,7 +93,7 @@ const FilterForm = () => {
     Object.entries(formData).forEach(([key, value]) => {
       queryParams.append(key, String(value)); // Convert value to string
     });
-    
+
     // Redirect only if there are valid query parameters
     if (queryParams.toString()) {
       router.push(`/member?${queryParams.toString()}`);
@@ -106,9 +108,10 @@ const FilterForm = () => {
       <div className="container mx-auto flex items-center fillter-text justify-center px-4 py-6 md:p-10">
         <form onSubmit={handleSubmit}>
           <div className="flex flex-wrap items-center gap-4 md:gap-9 p-4 md:p-6.5 member-search-form">
+
             <div className="w-full md:w-auto">
               <label className="mb-3 block text-sm font-medium text-white">
-                Looking For
+                {lang == 'ta' ? 'யாரைத் தேடுகிறீர்கள்' : 'Looking For'}
               </label>
               <SelectBrideGroom
                 name="lookingfor"
@@ -119,32 +122,36 @@ const FilterForm = () => {
 
             <div className="w-full md:w-auto">
               <label className="mb-3 block text-sm font-medium text-white">
-                Age
+                {lang == 'ta' ? 'வயது இருந்து' : 'From Age'}
               </label>
               <SelectAge
                 name="fromage"
                 selectedAge={formData.fromage}
                 onAgeChange={handleAgeChange}
+                placeholder={lang == 'ta' ? 'தேர்வு செய்க' : 'Select'}
               />
             </div>
             <div className="hidden w-full md:w-auto md:mt-4 md:block">
               <label className="mb-3 block text-sm font-medium text-white">
-                To
+                -
               </label>
             </div>
             <div className="w-full md:w-auto">
-              <label className="mb-3 block text-sm font-medium text-white visibility">
-                To
+              <label className="mb-3 block text-sm font-medium text-white">
+                {lang == 'ta' ? 'வயது வரை' : 'To Age'}
               </label>
               <SelectAge
                 name="toage"
                 selectedAge={formData.toage}
                 onAgeChange={handleAgeChangesto}
+                placeholder={lang == 'ta' ? 'தேர்வு செய்க' : 'Select'}
               />
             </div>
 
             <div className="w-full md:w-auto relative">
-              <label className="mb-3 block text-sm font-medium text-white">Subcaste in Mudaliyar</label>
+              <label className="mb-3 block text-sm font-medium text-white">
+                {lang == 'ta' ? 'உபகுலம்' : 'Subcaste in Mudaliyar'}
+              </label>
               <div className="mb-4.5">
                 <input
                   type="text"
@@ -175,7 +182,7 @@ const FilterForm = () => {
                 className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom"
                 type="submit"
               >
-                Search
+                {lang == 'ta' ? 'தேடு' : 'Search'}
               </button>
             </div>
           </div>

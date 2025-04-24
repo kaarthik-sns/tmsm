@@ -6,11 +6,13 @@ import { toast } from "sonner";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+
 interface FormData {
   title: string;
   description: string;
+  title_ta: string;
+  description_ta: string;
   photo: File | string;
-  image?: string;
 }
 
 const Elements = () => {
@@ -25,7 +27,9 @@ const Elements = () => {
   const [formData, setFormData] = useState<FormData>({
     title: "",
     description: "",
-    photo: "",
+    description_ta: "",
+    title_ta: "",
+    photo: ""
   });
 
   useEffect(() => {
@@ -152,6 +156,14 @@ const Elements = () => {
       errors.description = "Description cannot be empty.";
     }
 
+    if (!formData.title_ta.trim()) {
+      errors.title_ta = "Title cannot be empty.";
+    }
+
+    if (!formData.description_ta.trim()) {
+      errors.description_ta = "Description cannot be empty.";
+    }
+
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
       toast.error('Please fix the highlighted errors.', {
@@ -222,6 +234,7 @@ const Elements = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="p-4 sm:p-6.5">
               <form onSubmit={handleSubmit}>
+                
                 <div className="space-y-8">
                   {/* Image Upload Section */}
                   <div>
@@ -311,8 +324,8 @@ const Elements = () => {
                       onChange={handleChange}
                       placeholder="Enter a compelling title"
                       className={`w-full px-4 py-3 rounded-lg border ${formErrors?.title
-                          ? "border-red-500 focus:ring-red-500"
-                          : "border-gray-300 focus:ring-primary"
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-gray-300 focus:ring-primary"
                         } focus:border-transparent focus:outline-none focus:ring-2 transition-colors dark:bg-boxdark dark:text-white`}
                     />
                     {formErrors?.title && (
@@ -332,12 +345,53 @@ const Elements = () => {
                       rows={4}
                       placeholder="Enter an engaging description"
                       className={`w-full px-4 py-3 rounded-lg border ${formErrors?.description
-                          ? "border-red-500 focus:ring-red-500"
-                          : "border-gray-300 focus:ring-primary"
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-gray-300 focus:ring-primary"
                         } focus:border-transparent focus:outline-none focus:ring-2 transition-colors dark:bg-boxdark dark:text-white`}
                     />
                     {formErrors?.description && (
                       <p className="mt-2 text-sm text-red-500">{formErrors.description}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      தலைப்பு <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="title_ta"
+                      value={formData.title_ta}
+                      onChange={handleChange}
+                      placeholder="தலைப்பை உள்ளிடவும்"
+                      className={`w-full px-4 py-3 rounded-lg border ${formErrors?.title_ta
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-gray-300 focus:ring-primary"
+                        } focus:border-transparent focus:outline-none focus:ring-2 transition-colors dark:bg-boxdark dark:text-white`}
+                    />
+                    {formErrors?.title_ta && (
+                      <p className="mt-2 text-sm text-red-500">{formErrors.title_ta}</p>
+                    )}
+                  </div>
+
+                  {/* Description Input */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      விவரம் <span className="text-red-500">*</span>
+                    </label>
+                    <textarea
+                      name="description_ta"
+                      value={formData.description_ta}
+                      onChange={handleChange}
+                      rows={4}
+                      placeholder="விவரங்களை உள்ளிடவும்"
+                      className={`w-full px-4 py-3 rounded-lg border ${formErrors?.description_ta
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-gray-300 focus:ring-primary"
+                        } focus:border-transparent focus:outline-none focus:ring-2 transition-colors dark:bg-boxdark dark:text-white`}
+                    />
+                    {formErrors?.description_ta && (
+                      <p className="mt-2 text-sm text-red-500">{formErrors.description_ta}</p>
                     )}
                   </div>
                 </div>
@@ -360,4 +414,4 @@ const Elements = () => {
   );
 };
 
-        export default Elements;
+export default Elements;

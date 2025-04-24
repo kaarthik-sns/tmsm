@@ -17,23 +17,8 @@ const FaqTable = () => {
     const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
     const router = useRouter(); // Initialize Next.js router
 
-    interface FormState {
-        name: string;
-        email: string;
-        selectOne: string;
-        selectTwo: string;
-        title: string; // Add title property
-        description: string; // Add description property
-    }
+    const lang = localStorage.getItem('lang') || 'en';
 
-    const [formState, setFormState] = useState<FormState>({
-        name: "",
-        email: "",
-        selectOne: "",
-        selectTwo: "",
-        title: "",
-        description: ""
-    });
 
     useEffect(() => {
         fetchTableItems();
@@ -54,9 +39,6 @@ const FaqTable = () => {
             const response = await axios.get("/api/cms/faq/list", {
                 params: {
                     page: currentPage,
-                    title: formState.title,
-                    description: formState.description,
-
                 },
             });
 
@@ -171,15 +153,15 @@ const FaqTable = () => {
                                             </span>
                                             <div>
                                                 <h3 className="text-lg font-medium text-black dark:text-white mb-2">
-                                                    {item.title}
+                                                    {lang === 'ta' ? item.title_ta : item.title}
                                                 </h3>
                                                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                                                    {item.description}
+                                                    {lang === 'ta' ? item.description_ta : item.description}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div className="flex items-center space-x-3.5">
                                         <button
                                             onClick={() => handleEdit(item._id)}
@@ -352,9 +334,9 @@ const FaqTable = () => {
                             </button>
 
                             <div className="mt-2">
-                                <h3 className="text-xl font-semibold text-black dark:text-white mb-4">{modalData.title}</h3>
+                                <h3 className="text-xl font-semibold text-black dark:text-white mb-4">{lang === 'ta' ? modalData.title_ta : modalData.title}</h3>
                                 <div className="prose dark:prose-invert max-w-none">
-                                    <p className="text-gray-600 dark:text-gray-300">{modalData.description}</p>
+                                    <p className="text-gray-600 dark:text-gray-300">{lang === 'ta' ? modalData.description_ta : modalData.description}</p>
                                 </div>
                             </div>
                         </div>

@@ -8,7 +8,7 @@ export async function middleware(req) {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
     // Rewrite `/` to serve content from `/frontend` but keep `/` in the browser's address bar
-    if (pathname === '' || pathname === '/' ) {
+    if (pathname === '' || pathname === '/') {
         return NextResponse.rewrite(new URL('/', req.url));
     }
 
@@ -62,17 +62,23 @@ export async function middleware(req) {
     // }
 
     // Redirect unauthenticated users trying to access restricted paths
-    if (!token && (pathname.startsWith('/dashboard') || pathname.startsWith('/view-profile') || pathname.startsWith('/member') )) {
+    if (!token && (pathname.startsWith('/dashboard') || pathname.startsWith('/view-profile') || pathname.startsWith('/member'))) {
         console.log('++++6')
         return NextResponse.redirect(new URL('/login', req.url));
     }
 
     // Redirect unauthenticated users trying to access restricted paths
-    if (token && token.is_admin && (pathname.startsWith('/dashboard') || pathname.startsWith('/view-profile') || pathname.startsWith('/member') )) {
+    if (token && token.is_admin && (pathname.startsWith('/dashboard') || pathname.startsWith('/view-profile') || pathname.startsWith('/member'))) {
         console.log('++++7')
         return NextResponse.redirect(new URL('/login', req.url));
     }
-    
+
+    if (pathname == '/admin' && !token) {
+        console.log('++++8')
+        url.pathname = '/admin/auth/signin';
+        return NextResponse.redirect(url);
+    }
+
     // Create a NextResponse instance to modify headers
     const res = NextResponse.next();
 

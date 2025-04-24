@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import FrontendLayouts from "@/components/Layouts/Frontendlayout";
-import Innerbanner from "@/components/Frontend/InnerPageBanner/contact-innerbanner";
 import Contact from "@/components/Frontend/Contact/contact-info";
 
 
@@ -25,7 +24,6 @@ export default async function Home() {
   return (
     <>
       <FrontendLayouts>
-        <Innerbanner />
         <Contact data={data.data} />
       </FrontendLayouts>
     </>

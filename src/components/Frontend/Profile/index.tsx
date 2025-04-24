@@ -168,9 +168,6 @@ export default function Profile({ userId }) {
             <FaCheckCircle /> <span>Email: {profileData.is_approve === true ? "Verified" : "Not Verified"}
             </span>
           </div>
-          <div className="flex items-center gap-1">
-            <FaCheckCircle /> <span>Identity: {profileData.is_verify === true ? "Verified" : "Not Verified"}</span>
-          </div>
         </div>
 
         {/* Personal Information */}

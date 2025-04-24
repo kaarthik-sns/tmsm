@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-const SelectAge = ({ name, selectedAge, onAgeChange }) => {
+const SelectAge = ({ name, selectedAge, onAgeChange, placeholder }) => {
   return (
     <div className="mb-4.5">
       <div className="relative z-20 bg-transparent dark:bg-form-input">
@@ -17,7 +17,7 @@ const SelectAge = ({ name, selectedAge, onAgeChange }) => {
             value=''
             className="text-body dark:text-bodydark "
           >
-            Select
+            {placeholder}
           </option>
           {Array.from({ length: 33 }, (_, i) => 18 + i).map((age) => (
             <option

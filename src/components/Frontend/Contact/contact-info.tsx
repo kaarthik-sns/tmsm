@@ -2,8 +2,11 @@
 
 import React from "react";
 import { useState } from "react";
+import Image from "next/image";
 
 const ContactInfo = ({ data }) => {
+
+    const lang = localStorage.getItem('lang') || 'en';
 
     const [pending, setPending] = useState(false);
     const [msg, setMsg] = useState(null);
@@ -98,17 +101,38 @@ const ContactInfo = ({ data }) => {
 
     return (
         <>
+            <section className="inner-page-top-banner">
+                <div className="relative in-banner-bg">
+                    <Image
+                        src="/images/contact/contact-us.webp"
+                        alt="Happy Couple"
+                        layout="fill"
+                    />
+                </div>
+
+                <div className="inner-banner-info">
+                    <div className="top-title">
+                        <h2>{lang == 'ta' ? 'எங்களை தொடர்புகொள்ளுங்கள்' : 'Contact Us'}</h2>
+                    </div>
+                </div>
+            </section>
             <section className="contact-info-con">
                 <div className="container mx-auto">
                     <div className="row flex flex-col md:flex-row ">
                         <div className="con-top-title px-7.5">
-                            <h3>Get in Touch</h3>
+                            <h3>{lang == 'ta' ? 'எங்களுடன் தொடர்பு கொள்ளுங்கள்' : 'Get in Touch'}</h3>
                         </div>
                     </div>
                     <div className="row flex flex-col md:flex-row ">
                         <div className="w-full md:w-1/2 px-7.5 con-form-line-info">
                             <div className="con-message">
-                                <p>{data.contact_desc}</p>
+                                <p>
+                                    {lang == 'ta' ? `எங்கள் ஆதரவு குழு உங்கள் சேவைக்கு எப்போதும் தயாராக இருக்கிறது! 
+                                    உங்களுக்குக் கேள்விகள் இருந்தாலோ, உதவி தேவைப்பட்டாலோ, எங்களை தொலைபேசி, 
+                                    மின்னஞ்சல் அல்லது தொடர்பு படிவம் மூலம் எளிதாக அணுகலாம். உங்கள் வாழ்க்கைத் 
+                                    துணையைத் தேர்ந்தெடுக்கும் பயணத்தை சீராகவும் மகிழ்ச்சிகரமாகவும் மாற்ற எங்கள் 
+                                    குழு முழுமையாக அர்ப்பணிக்கப்பட்டுள்ளது.` : data.contact_desc}
+                                </p>
                             </div>
                             <div className="con-data-forms">
                                 <form onSubmit={handleSubmit}>
@@ -120,7 +144,7 @@ const ContactInfo = ({ data }) => {
                                                     disabled={pending}
                                                     value={form.name}
                                                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                                                    placeholder="Name"
+                                                    placeholder={lang == 'ta' ? 'பெயர்' : 'Name'}
                                                     className="w-full text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                                 />
                                                 {errors.name && (
@@ -136,7 +160,7 @@ const ContactInfo = ({ data }) => {
                                                     disabled={pending}
                                                     value={form.email}
                                                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                                                    placeholder="E-mail id"
+                                                    placeholder={lang == 'ta' ? 'மின்னஞ்சல் முகவரி' : 'E-mail address'}
                                                     className="w-full text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                                 />
                                             </div>
@@ -155,7 +179,7 @@ const ContactInfo = ({ data }) => {
                                                     disabled={pending}
                                                     value={form.phone}
                                                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                                                    placeholder="Phone Number"
+                                                    placeholder={lang == 'ta' ? 'தொலைபேசி எண்' : 'Phone Number'}
                                                     className="w-full text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                                 />
                                             </div>
@@ -174,7 +198,7 @@ const ContactInfo = ({ data }) => {
                                                     disabled={pending}
                                                     value={form.message}
                                                     onChange={(e) => setForm({ ...form, message: e.target.value })}
-                                                    placeholder="Message"
+                                                    placeholder={lang == 'ta' ? 'செய்தி' : 'Message'}
                                                     className="w-full text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                                 />
                                             </div>
@@ -189,11 +213,10 @@ const ContactInfo = ({ data }) => {
                                     <div className="mb-5">
                                         <input
                                             type="submit"
-                                            value="Submit"
+                                            value={lang == 'ta' ? 'சமர்ப்பி ' : 'Submit'}
                                             className="cta-submit cursor-pointer rounded-lg border p-4 text-white transition hover:bg-opacity-90"
                                         />
                                     </div>
-
 
                                 </form>
                             </div>
@@ -202,16 +225,23 @@ const ContactInfo = ({ data }) => {
                         <div className="w-full md:w-1/2 px-7.5">
                             <div className="right-contact-info">
                                 <div className="con-list-of-data">
-                                    <h4>Call Us</h4>
-                                    <p>Call us for any assistance or inquiries about your matrimonial journey.</p>
+
+                                    <h4>{lang == 'ta' ? 'எங்களை அழைக்கவும்' : 'Call Us'}</h4>
+                                    <p>{lang == 'ta' ? 'உங்கள் திருமண பயணத்தைப் பற்றி ஏதேனும் உதவியோ அல்லது கேள்விகளோ இருந்தால், எங்களை அழைக்கலாம்.' : 'Call us for any assistance or inquiries about your matrimonial journey.'}</p>
+
                                     <div className="call-info">
                                         <span className="icon-info"><img src="/images/contact/call-icon.svg" alt="call-icon" /></span>
                                         <a className="info-link-data" href={`tel:${data.phone_no}`} >{data.phone_no}</a>
                                     </div>
                                 </div>
                                 <div className="con-list-of-data">
-                                    <h4>E-Mail Address</h4>
-                                    <p>E-Mail us for any assistance or inquiries about your matrimonial journey.</p>
+
+                                    <h4>{lang === 'ta' ? 'மின்னஞ்சல் அனுப்பவும்' : 'Email Us'}</h4>
+                                    <p>{lang === 'ta'
+                                        ? 'உங்கள் திருமண பயணத்தைப் பற்றி ஏதேனும் உதவியோ அல்லது கேள்விகளோ இருந்தால், மின்னஞ்சல் அனுப்பலாம்.'
+                                        : 'E-Mail us for any assistance or inquiries about your matrimonial journey.'}</p>
+
+
                                     <div className="call-info">
                                         <span className="icon-info"><img src="/images/contact/mail-icon.svg" alt="call-icon" /></span>
                                         <a className="info-link-data" href={`mailto:${data.organisation_email_id}`}>{data.organisation_email_id}</a>
@@ -219,8 +249,11 @@ const ContactInfo = ({ data }) => {
                                 </div>
 
                                 <div className="con-list-of-data">
-                                    <h4>Follow Us</h4>
-                                    <p>Follow us on social media links for the latest updates and matrimonial tips.</p>
+                                    <h4>{lang === 'ta' ? 'எங்களை பின்தொடரவும்' : 'Follow Us'}</h4>
+                                    <p>{lang === 'ta'
+                                        ? 'சமூக ஊடக இணைப்புகளில் எங்களை பின்தொடர்ந்து புதிய தகவல்கள் மற்றும் திருமண குறிப்புகளுக்கான மேம்பட்ட வழிகாட்டிகளைப் பெறுங்கள்.'
+                                        : 'Follow us on social media links for the latest updates and matrimonial tips.'}</p>
+
                                     <ul className="social-media-info">
                                         <li><a href={data.twitter} target="_blank"><img src="/images/contact/twitter-icon.svg" alt="twitter" /></a></li>
                                         <li><a href={data.facebook} target="_blank"><img src="/images/contact/facebook-icon.svg" alt="facebook" /></a></li>

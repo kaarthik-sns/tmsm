@@ -16,6 +16,8 @@ export async function POST(request: NextRequest) {
         const formData = await request.formData();
         const title = (formData.get('title') as string) ?? '';
         const description = (formData.get('description') as string) ?? '';
+        const title_ta = (formData.get('title_ta') as string) ?? '';
+        const description_ta = (formData.get('description_ta') as string) ?? '';
         const photo = formData.get('photo') as File;
 
         let image = '';
@@ -30,7 +32,7 @@ export async function POST(request: NextRequest) {
             image = `/uploads/cms/${uniqueFileName}`;
         }
 
-        const newRecord = new Model({ title, description, image });
+        const newRecord = new Model({ image, title, description, title_ta, description_ta });
         await newRecord.save();
 
         return NextResponse.json({ message: 'Record created successfully.', data: newRecord });
@@ -50,9 +52,11 @@ export async function PUT(request: NextRequest) {
         const id = (formData.get('_id') as string) ?? '';
         const title = (formData.get('title') as string) ?? '';
         const description = (formData.get('description') as string) ?? '';
+        const title_ta = (formData.get('title_ta') as string) ?? '';
+        const description_ta = (formData.get('description_ta') as string) ?? '';
         const photo = formData.get('photo') as File;
 
-        let Fields: Record<string, string> = { title, description };
+        let Fields: Record<string, string> = { title, description, title_ta, description_ta };
 
         if (photo) {
             const uniqueSuffix = Date.now() + '-' + crypto.randomBytes(6).toString('hex');

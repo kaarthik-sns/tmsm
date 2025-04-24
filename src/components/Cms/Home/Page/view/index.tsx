@@ -9,6 +9,8 @@ const Settings = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
+  const lang = localStorage.getItem('lang') || 'en';
+
   const [formData, setFormData] = useState({
     sec_one_title: '',
     sec_one_desc: '',
@@ -30,6 +32,16 @@ const Settings = () => {
     banner_title: '',
     banner_btn_text: '',
     banner_btn_link: '',
+    sec_one_title_ta: '',
+    sec_one_desc_ta: '',
+    sec_two_title_ta: '',
+    sec_two_desc_ta: '',
+    feature_one_ta: '',
+    feature_two_ta: '',
+    feature_three_ta: '',
+    feature_four_ta: '',
+    banner_title_ta: '',
+    banner_btn_text_ta: '',
   });
 
   useEffect(() => {
@@ -108,14 +120,14 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="mb-4.5 flex-1">
-                  <p className="text-sm dark:text-white  cms-heading">{formData.sec_one_title || "N/A"}</p>
+                  <p className="text-sm dark:text-white  cms-heading">{lang === 'ta' ? formData.sec_one_title_ta : formData.sec_one_title}</p>
                 </div>
               </div>
 
               <div className="mb-4.5">
                 <div
                   className="text-sm dark:text-white  cms-description "
-                  dangerouslySetInnerHTML={{ __html: formData.sec_one_desc || "N/A" }}
+                  dangerouslySetInnerHTML={{ __html: lang === 'ta' ? formData.sec_one_desc_ta : formData.sec_one_desc }}
                 />
               </div>
 
@@ -130,7 +142,7 @@ const Settings = () => {
             <div className="p-6.5">
 
               <div className="mb-4.5">
-                <p className="text-sm dark:text-white cms-description">{formData.banner_title || "N/A"}</p>
+                <p className="text-sm dark:text-white cms-description">{lang === 'ta' ? formData.banner_title_ta : formData.banner_title}</p>
               </div>
 
               <div className="mb-4.5">
@@ -142,7 +154,7 @@ const Settings = () => {
                     className="text-blue-500 hover:underline"
 
                   >
-                    {formData.banner_btn_text || "N/A"}
+                    {lang === 'ta' ? formData.banner_btn_text_ta : formData.banner_btn_text}
                   </a>
                 </p>
               </div>
@@ -178,7 +190,7 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="mb-4.5 flex-1">
-                  <p className="text-sm dark:text-white cms-heading">{formData.sec_two_title || "N/A"}</p>
+                  <p className="text-sm dark:text-white cms-heading">{lang === 'ta' ? formData.sec_two_title_ta : formData.sec_two_title}</p>
                 </div>
               </div>
 
@@ -186,13 +198,13 @@ const Settings = () => {
               <div className="mb-4.5">
                 <div
                   className="text-sm dark:text-white cms-description"
-                  dangerouslySetInnerHTML={{ __html: formData.sec_two_desc || "N/A" }}
+                  dangerouslySetInnerHTML={{ __html: lang === 'ta' ? formData.sec_two_desc_ta : formData.sec_two_desc }}
                 />
               </div>
 
               <div className="mb-4.5 flex items-center space-x-4">
                 {/* Image Section */}
-                <div className="w-25 h-25 flex-shrink-0 rounded-full overflow-hidden border-[1.5px] bg-gray-200 border-stroke flex-shrink-0">
+                <div className="w-25 h-25 flex-shrink-0 rounded-full overflow-hidden border-[1.5px] bg-gray-200 border-stroke">
                   {formData.feature_one_img && (
                     <Image
                       src={`/api${formData.feature_one_img}`}
@@ -208,7 +220,7 @@ const Settings = () => {
 
                 {/* Title Section */}
                 <div className="mb-4.5 flex-1">
-                  <p className="text-sm dark:text-white cms-description">{formData.feature_one || "N/A"}</p>
+                  <p className="text-sm dark:text-white cms-description">{lang === 'ta' ? formData.feature_one_ta : formData.feature_one}</p>
                 </div>
               </div>
 
@@ -230,7 +242,7 @@ const Settings = () => {
                 </div>
 
                 <div className="mb-4.5 flex-1">
-                  <p className="text-sm dark:text-white cms-description">{formData.feature_two || "N/A"}</p>
+                  <p className="text-sm dark:text-white cms-description">{lang === 'ta' ? formData.feature_two_ta : formData.feature_two}</p>
                 </div>
               </div>
 
@@ -250,7 +262,7 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="mb-4.5 flex-1">
-                  <p className="text-sm dark:text-white cms-description">{formData.feature_three || "N/A"}</p>
+                  <p className="text-sm dark:text-white cms-description">{lang === 'ta' ? formData.feature_three_ta : formData.feature_three}</p>
                 </div>
               </div>
 
@@ -270,7 +282,7 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="mb-4.5 flex-1">
-                  <p className="text-sm dark:text-white cms-description" >{formData.feature_four || "N/A"}</p>
+                  <p className="text-sm dark:text-white cms-description" >{lang === 'ta' ? formData.feature_four_ta : formData.feature_four}</p>
                 </div>
               </div>
 

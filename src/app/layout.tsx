@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import Loader from "@/components/common/Loader";
 import SessionWrapper from "@/components/SessionWrapper";
 import { Toaster } from "@/components/ui/sonner";
+import LangSwitcher from '@/components/LangSwitcher';
 
 export default function RootLayout({
   children,
@@ -30,6 +31,7 @@ export default function RootLayout({
             {loading ? <Loader /> : <>
               <Toaster />
               {children}
+              <LangSwitcher />
             </>}
           </div>
         </body>

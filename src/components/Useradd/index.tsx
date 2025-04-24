@@ -42,7 +42,9 @@ const FormElements = () => {
   ];
   // Array for castes
   const castes = [
-    "Mudaliyar"
+    "Thondai mandala saiva mudaliyar",
+    "Mudaliyar",
+    "Saiva mudaliyar"
   ];
 
   const [formData, setFormData] = useState({

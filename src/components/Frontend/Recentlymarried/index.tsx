@@ -12,13 +12,9 @@ const TwoRowTwoColumnSlider = (data) => {
 
   const data_array = data.data;
 
-  const couples = data_array.map((item, idx) => ({
-    image: item.image,
-    name: item.name, // Assuming item.title contains the text
-    description: item.description, // Assuming item.content contains the text
-  }));
+  const lang = localStorage.getItem('lang') || 'en';
 
-  if (couples.length === 0) {
+  if (data_array.length === 0) {
     return <Loader />
   }
 
@@ -27,7 +23,7 @@ const TwoRowTwoColumnSlider = (data) => {
       <div className="absolute top-0 w-full h-screen bg-contain bg-no-repeat bg-[url('/images/couple/bg-couple.svg')]"></div>
 
       <div className="container mx-auto py-12">
-        <h2 className="text-center mb-8 heading">Recently Married</h2>
+        <h2 className="text-center mb-8 heading">{lang == 'ta' ? 'சமீபத்தில் திருமணம் செய்துகொண்டனர்' : 'Recently Married'}</h2>
         <Swiper
           className="slider-padding"
           modules={[Navigation, Pagination]}
@@ -53,7 +49,7 @@ const TwoRowTwoColumnSlider = (data) => {
             },
           }}
         >
-          {couples.map((couple, index) => (
+          {data_array.map((couple, index) => (
             <SwiperSlide key={index}>
               <div className="flex flex-col md:flex-row items-center gap-6 p-6">
                 {/* Image - Centered Above on Mobile */}
@@ -61,12 +57,12 @@ const TwoRowTwoColumnSlider = (data) => {
                   src={`/api${couple.image}`}
                   alt={couple.name}
                   className="w-40 h-40 md:w-60 md:h-60 rounded-full object-cover"
-                   loading="lazy"
+                  loading="lazy"
                 />
                 {/* Content - Below Image on Mobile, Side by Side on Desktop */}
                 <div className="text-center md:text-left">
-                  <h3 className="heading-text mb-2">{couple.name}</h3>
-                  <p className="heading-description">{couple.description}</p>
+                  <h3 className="heading-text mb-2">{lang == 'ta' ? couple.name_ta : couple.name}</h3>
+                  <p className="heading-description">{lang == 'ta' ? couple.description_ta : couple.description}</p>
                 </div>
               </div>
             </SwiperSlide>

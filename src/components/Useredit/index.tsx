@@ -45,9 +45,11 @@ const FormElements = () => {
   ];
   // Array for castes
   const castes = [
-    "Mudaliyar"
+    "Thondai mandala saiva mudaliyar",
+    "Mudaliyar",
+    "Saiva mudaliyar"
   ];
-
+  
   const [formData, setFormData] = useState({
     name: "",
     lastname: "",
@@ -730,7 +732,6 @@ const FormElements = () => {
                     <DatePickerOne
                       dateFormat="dd-MM-yyyy"
                       placeholder="Select your birth date"
-                      portalId="root" // ✅ Renders outside the form to avoid overlap
                       value={formData.birthdate}
                       onChange={(selectedDate) => {
                         if (selectedDate) { // ✅ Check if selectedDate is not null

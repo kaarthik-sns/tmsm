@@ -49,8 +49,7 @@ const Terms = ({
           </span>
         </div>
       </div>
-      <span>{label}{""}</span>
-      <span>{"  "}</span>
+      <span>{label}</span>
       <Link href={linkHref} target="_blank" className="dark-terms ml-1">
         {linkText}
       </Link>

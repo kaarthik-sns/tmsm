@@ -46,9 +46,12 @@ const UserProfile = (user_data) => {
     "Muslim",
     "Christian"
   ];
+  
   // Array for castes
   const castes = [
-    "Mudaliyar"
+    "Thondai mandala saiva mudaliyar",
+    "Mudaliyar",
+    "Saiva mudaliyar"
   ];
 
   const [formData, setFormData] = useState({
@@ -771,7 +774,6 @@ const UserProfile = (user_data) => {
                         <DatePickerOne
                           dateFormat="dd-MM-yyyy"
                           placeholder="Select your birth date"
-                          portalId="root" // ✅ Renders outside the form to avoid overlap
                           value={formData.birthdate}
                           onChange={(selectedDate) => {
                             if (selectedDate) { // ✅ Check if selectedDate is not null

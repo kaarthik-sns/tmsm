@@ -7,6 +7,8 @@ import Image from "next/image";
 interface FormData {
   title: string;
   description: string;
+  title_ta: string;
+  description_ta: string;
   photo: File | string;
 }
 
@@ -14,6 +16,8 @@ const Elements = () => {
   const [formData, setFormData] = useState<FormData>({
     title: "",
     description: "",
+    description_ta: "",
+    title_ta: "",
     photo: ""
   });
 
@@ -21,6 +25,8 @@ const Elements = () => {
   const [preview, setPreview] = useState("");
   const [isDragging, setIsDragging] = useState(false);
   const formData_upload = new FormData();
+
+  const lang = localStorage.getItem('lang') || 'en';
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -106,16 +112,24 @@ const Elements = () => {
 
     const errors: Record<string, string> = {};
 
-    if (!formData.title.trim()) {
-      errors.title = "Title cannot be empty.";
-    }
-
     if (!preview.trim()) {
       errors.preview = "Image cannot be empty.";
     }
 
+    if (!formData.title.trim()) {
+      errors.title = "Title cannot be empty.";
+    }
+
     if (!formData.description.trim()) {
       errors.description = "Description cannot be empty.";
+    }
+
+    if (!formData.title_ta.trim()) {
+      errors.title_ta = "Title cannot be empty.";
+    }
+
+    if (!formData.description_ta.trim()) {
+      errors.description_ta = "Description cannot be empty.";
     }
 
     if (Object.keys(errors).length > 0) {
@@ -161,6 +175,8 @@ const Elements = () => {
         photo: "",
         title: "",
         description: "",
+        title_ta: "",
+        description_ta: "",
       });
 
       setPreview("");
@@ -279,8 +295,8 @@ const Elements = () => {
                       onChange={handleChange}
                       placeholder="Enter a compelling title"
                       className={`w-full px-4 py-3 rounded-lg border ${formErrors?.title
-                          ? "border-red-500 focus:ring-red-500"
-                          : "border-gray-300 focus:ring-primary"
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-gray-300 focus:ring-primary"
                         } focus:border-transparent focus:outline-none focus:ring-2 transition-colors dark:bg-boxdark dark:text-white`}
                     />
                     {formErrors?.title && (
@@ -300,12 +316,54 @@ const Elements = () => {
                       rows={4}
                       placeholder="Enter an engaging description"
                       className={`w-full px-4 py-3 rounded-lg border ${formErrors?.description
-                          ? "border-red-500 focus:ring-red-500"
-                          : "border-gray-300 focus:ring-primary"
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-gray-300 focus:ring-primary"
                         } focus:border-transparent focus:outline-none focus:ring-2 transition-colors dark:bg-boxdark dark:text-white`}
                     />
                     {formErrors?.description && (
                       <p className="mt-2 text-sm text-red-500">{formErrors.description}</p>
+                    )}
+                  </div>
+
+                  {/* Title Input */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      தலைப்பு <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="title_ta"
+                      value={formData.title_ta}
+                      onChange={handleChange}
+                      placeholder="தலைப்பை உள்ளிடவும்"
+                      className={`w-full px-4 py-3 rounded-lg border ${formErrors?.title_ta
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-gray-300 focus:ring-primary"
+                        } focus:border-transparent focus:outline-none focus:ring-2 transition-colors dark:bg-boxdark dark:text-white`}
+                    />
+                    {formErrors?.title_ta && (
+                      <p className="mt-2 text-sm text-red-500">{formErrors.title_ta}</p>
+                    )}
+                  </div>
+
+                  {/* Description Input */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      விவரம் <span className="text-red-500">*</span>
+                    </label>
+                    <textarea
+                      name="description_ta"
+                      value={formData.description_ta}
+                      onChange={handleChange}
+                      rows={4}
+                      placeholder="விவரங்களை உள்ளிடவும்"
+                      className={`w-full px-4 py-3 rounded-lg border ${formErrors?.description_ta
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-gray-300 focus:ring-primary"
+                        } focus:border-transparent focus:outline-none focus:ring-2 transition-colors dark:bg-boxdark dark:text-white`}
+                    />
+                    {formErrors?.description_ta && (
+                      <p className="mt-2 text-sm text-red-500">{formErrors.description_ta}</p>
                     )}
                   </div>
                 </div>

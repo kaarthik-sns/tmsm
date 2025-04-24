@@ -1,4 +1,4 @@
-'use client'; 
+'use client';
 
 import { useState } from 'react';
 import Image from 'next/image';
@@ -8,21 +8,31 @@ const Slider = (data) => {
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const data_array = data.data;
+  const lang = localStorage.getItem('lang') || 'en';
 
-  const slides = data_array.map((item, idx) => ({
+  let slides = data_array.map((item, idx) => ({
     image: (
       <Image
         src={`/api${item.image}`}
-        alt={item.title} // Assuming item.title contains the title
+        alt={item.title}
         width={800}
         height={400}
         className="w-full h-full object-contain"
-         loading="lazy"
+        loading="lazy"
       />
     ),
-    title: <div className="slider-text">{item.title}</div>, // Assuming item.title contains the text
-    content: <div className="slider-content">{item.description}</div>, // Assuming item.content contains the text
+    title: (
+      <div className="slider-text">
+        {lang === 'ta' ? item.title_ta : item.title}
+      </div>
+    ),
+    content: (
+      <div className="slider-content">
+        {lang === 'ta' ? item.description_ta : item.description}
+      </div>
+    ),
   }));
+
 
   if (slides.length === 0) {
     return <Loader />

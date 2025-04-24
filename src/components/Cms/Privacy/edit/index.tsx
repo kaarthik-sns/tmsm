@@ -13,10 +13,13 @@ const Elements = () => {
   const searchParams = useSearchParams();
   const termId = searchParams.get("termId");
 
-  const [formData, setFormData] = useState({ description: "" });
+  const [formData, setFormData] = useState({ description: "", description_ta: "" });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const lang = localStorage.getItem('lang') || 'en';
+
 
   const toolbarOptions = [
     // Text formatting options
@@ -91,8 +94,8 @@ const Elements = () => {
 
   // Memoized handleChange function
   const handleChange = useCallback(
-    (value: string) => {
-      setFormData((prev) => ({ ...prev, description: value }));
+    (value: string, field: 'description' | 'description_ta') => {
+      setFormData((prev) => ({ ...prev, [field]: value }));
     },
     [setFormData]
   );
@@ -101,8 +104,13 @@ const Elements = () => {
     e.preventDefault();
 
     const errors: Record<string, string> = {};
+
     if (!formData.description.trim() || formData.description.trim() == '<p><br></p>') {
       errors.description = "Description cannot be empty.";
+    }
+
+    if (!formData.description_ta.trim() || formData.description_ta.trim() == '<p><br></p>') {
+      errors.description_ta = "Description cannot be empty.";
     }
 
     if (Object.keys(errors).length > 0) {
@@ -167,12 +175,13 @@ const Elements = () => {
           <div className="flex flex-col gap-9">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="p-6.5">
+
                 <div className="mb-4.5">
                   <ReactQuill
                     theme="snow"
-                    value={formData?.description}
-                    onChange={handleChange}
-                    placeholder="Enter Privacy Policy"
+                    value={formData.description}
+                    onChange={(value) => handleChange(value, 'description')}
+                    placeholder="Enter terms & conditions"
                     modules={{ toolbar: toolbarOptions }}
                     className={`react-quill ${formErrors.description ? "border-red-500" : ""
                       }`}
@@ -183,6 +192,23 @@ const Elements = () => {
                     </p>
                   )}
                 </div>
+                <div className="mb-4.5">
+                  <ReactQuill
+                    theme="snow"
+                    value={formData.description_ta}
+                    onChange={(value) => handleChange(value, 'description_ta')}
+                    placeholder=""
+                    modules={{ toolbar: toolbarOptions }}
+                    className={`react-quill ${formErrors.description_ta ? "border-red-500" : ""
+                      }`}
+                  />
+                  {formErrors.description_ta && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {formErrors.description_ta}
+                    </p>
+                  )}
+                </div>
+
               </div>
             </div>
           </div>
