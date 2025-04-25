@@ -77,7 +77,19 @@ const SignUp: React.FC = () => {
       { label: "Saiva mudaliyar", value: "Saiva mudaliyar" },
     ];
 
-
+  const profileOptions = lang === 'ta'
+    ? [
+      { label: 'எனக்காக', value: 'myself' },
+      { label: 'மகள்', value: 'daughter' },
+      { label: 'மகன்', value: 'son' },
+      { label: 'மற்றவர்கள்', value: 'others' },
+    ]
+    : [
+      { label: 'MySelf', value: 'myself' },
+      { label: 'Daughter', value: 'daughter' },
+      { label: 'Son', value: 'son' },
+      { label: 'Others', value: 'others' },
+    ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -234,8 +246,6 @@ const SignUp: React.FC = () => {
   };
 
 
-
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setPending(true);
@@ -272,21 +282,6 @@ const SignUp: React.FC = () => {
       setPending(false);
     }
   };
-
-  const profileOptions = lang === 'ta'
-    ? [
-      { label: 'எனக்காக', value: 'myself' },
-      { label: 'மகள்', value: 'daughter' },
-      { label: 'மகன்', value: 'son' },
-      { label: 'மற்றவர்கள்', value: 'others' },
-    ]
-    : [
-      { label: 'MySelf', value: 'myself' },
-      { label: 'Daughter', value: 'daughter' },
-      { label: 'Son', value: 'son' },
-      { label: 'Others', value: 'others' },
-    ];
-
 
 
   const handleReligionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -354,7 +349,7 @@ const SignUp: React.FC = () => {
             </h2>
             {successMessage && (
               <div className="bg-green-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-green-600 mb-6">
-                <p> {lang == 'ta' ? `வெற்றிகரமாக கணக்கு பதிவு செய்யப்பட்டு, உள்நுழைவுக்கு ${remainingTime} விநாடிகளில் மாற்றப்படுகிறது...` :  `${successMessage} Redirecting to login in ${remainingTime} seconds...`}</p>
+                <p> {lang == 'ta' ? `வெற்றிகரமாக கணக்கு பதிவு செய்யப்பட்டு, உள்நுழைவுக்கு ${remainingTime} விநாடிகளில் மாற்றப்படுகிறது...` : `${successMessage} Redirecting to login in ${remainingTime} seconds...`}</p>
               </div>
             )}
             {!!error && (
