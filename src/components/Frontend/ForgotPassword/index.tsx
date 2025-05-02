@@ -18,12 +18,14 @@ const ForgotPassword: React.FC = () => {
   const [emailError, setEmailError] = useState<string>("");
   const router = useRouter();
 
+  const lang = localStorage.getItem('lang') || 'en';
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setPending(true);
     // Validate email field
     if (!form.email.trim()) {
-      setEmailError("Email cannot be empty.");
+      setEmailError(lang == 'ta' ? "மின்னஞ்சல் முகவரி காலியாக இருக்க முடியாது." : "Email cannot be empty.");
       setPending(false);
       return; // Stop the form submission if email is empty
     } else {
@@ -43,7 +45,11 @@ const ForgotPassword: React.FC = () => {
       if (res.ok) {
         setError('');
         setPending(false);
-        setSuccessMessage("Your password reset request was successful. Please check your email.");
+        setSuccessMessage(
+          lang == 'ta'
+            ? "உங்கள் கடவுச்சொல் மாற்றும் கோரிக்கை வெற்றிகரமாக முடிந்தது. தயவுசெய்து உங்கள் மின்னஞ்சலை பார்க்கவும்."
+            : "Your password reset request was successful. Please check your email."
+        );
       } else {
         setError(data.message);
         setPending(false);
@@ -82,7 +88,7 @@ const ForgotPassword: React.FC = () => {
           <div className="flex items-center md:w-100">
             <div className="w-full p-4">
               <h2 className="mb-6 text-2xl font-bold text-black dark:text-white sm:text-title-xl2 heading-title">
-                Forgot Password
+                {lang == 'ta' ? 'கடவுச்சொல் மறந்துவிட்டது' : 'Forgot Password'}
               </h2>
 
               {/* Show success message */}
@@ -104,7 +110,7 @@ const ForgotPassword: React.FC = () => {
               <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Email
+                    {lang == 'ta' ? 'மின்னஞ்சல் முகவரி' : 'Email'}
                   </label>
                   <div className="relative">
                     <input
@@ -112,10 +118,9 @@ const ForgotPassword: React.FC = () => {
                       disabled={pending}
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      placeholder="E-mail id"
-                      className={`w-full rounded-lg border ${
-                        emailError ? "border-red-500" : "border-stroke"
-                      } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+                      placeholder={lang == 'ta' ? 'மின்னஞ்சல் முகவரியை உள்ளிடவும்' : 'Email'}
+                      className={`w-full rounded-lg border ${emailError ? "border-red-500" : "border-stroke"
+                        } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
                       autoComplete="off"
                     />
 
@@ -138,14 +143,14 @@ const ForgotPassword: React.FC = () => {
                     </span>
                   </div>
                   {emailError && (
-                      <p className="text-red-500 text-sm mt-1">{emailError}</p>
-                    )}
+                    <p className="text-red-500 text-sm mt-1">{emailError}</p>
+                  )}
                 </div>
 
                 <div className="mb-5">
                   <input
                     type="submit"
-                    value="Send Password Reset Link"
+                    value={lang == 'ta' ? 'அனுப்பு' : 'Send Password Reset Link'}
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
                   />
                 </div>
@@ -153,7 +158,7 @@ const ForgotPassword: React.FC = () => {
                 <div className="mt-6 text-center">
                   <p>
                     <Link href="/login" className="text-primary dark-text">
-                      Back to Sign in
+                      {lang == 'ta' ? 'உள்நுழைவு பக்கத்திற்குத் திரும்பு' : 'Back to Sign in'}
                     </Link>
                   </p>
                 </div>

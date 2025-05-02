@@ -19,6 +19,8 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null);
 
+  const lang = localStorage.getItem('lang') || 'en';
+
   const [form, setForm] = useState({
     password: "",
     confirmPassword: "",
@@ -33,23 +35,12 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
     const hasNumber = /[0-9]/.test(password);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
-    if (!password) return "Password cannot be empty.";
+    if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
+      return lang == 'ta'
+        ? "கடவுச்சொல் குறைந்தபட்சம் 6 எழுத்துகளைக் கொண்டிருக்க வேண்டும் மற்றும் பெரிய எழுத்து, சிறிய எழுத்து, எண் மற்றும் சிறப்பு எழுத்து சேர்க்கப்பட வேண்டும்."
+        : "Password must be at least 6 characters long and include uppercase, lowercase, number, and special character.";
+    }
 
-    if (password.length < minLength) {
-      return "Password must be at least 6 characters long.";
-    }
-    if (!hasUpperCase) {
-      return "Password must contain at least one uppercase letter.";
-    }
-    if (!hasLowerCase) {
-      return "Password must contain at least one lowercase letter.";
-    }
-    if (!hasNumber) {
-      return "Password must contain at least one number.";
-    }
-    if (!hasSpecialChar) {
-      return "Password must contain at least one special character.";
-    }
     return null; // Valid password
   };
 
@@ -77,10 +68,10 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
         return inputValue;
       },
     });
-  
+
     if (reason) {
       setPending(true);
-  
+
       const res = await fetch(`/api/update-user-status`, {
         method: "PATCH",
         headers: {
@@ -92,14 +83,14 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
           reason, // Send the reason to the backend
         }),
       });
-  
+
       const data = await res.json();
-  
+
       if (res.ok) {
         setPending(false);
         Swal.fire({
-          title: "Deactivated!",
-          text: "Your account has been deactivated.",
+          title: lang == 'ta' ? "செயலிழக்கப்பட்டது!" : "Deactivated!",
+          text: lang == 'ta' ? "உங்கள் கணக்கு செயலிழக்கப்பட்டது." : "Your account has been deactivated.",
           icon: "success",
           confirmButtonText: "OK",
           customClass: {
@@ -113,18 +104,18 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
       }
     }
   };
-  
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
+
     setForm((prevData) => {
       const updatedForm = { ...prevData, [name]: value };
-  
+
       // Validate password
       if (name === "password") {
         setPasswordError(validatePassword(value));
-  
+
         // Also validate confirm password when changing password
         if (updatedForm.confirmPassword && updatedForm.confirmPassword !== value) {
           setConfirmPasswordError("Passwords do not match.");
@@ -132,30 +123,30 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
           setConfirmPasswordError(null);
         }
       }
-  
+
       // Validate confirm password
       if (name === "confirmPassword") {
         setConfirmPasswordError(updatedForm.password !== value ? "Passwords do not match." : null);
       }
-  
+
       return updatedForm;
     });
   };
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setPending(true);
     setSuccessMessage("");
-  
+
     let valid = true;
-  
+
     if (!form.password) {
       setPasswordError("Password cannot be empty.");
       valid = false;
     } else {
       setPasswordError(validatePassword(form.password));
     }
-  
+
     if (!form.confirmPassword) {
       setConfirmPasswordError("Confirm Password cannot be empty.");
       valid = false;
@@ -163,25 +154,25 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
       setConfirmPasswordError("Passwords do not match.");
       valid = false;
     }
-  
+
     if (!valid) {
       setPending(false);
       return;
     }
-  
+
     try {
       const res = await fetch("/api/change-password-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-  
+
       const data = await res.json();
-  
+
       if (res.ok) {
         setPasswordError(null);
         setConfirmPasswordError(null);
-        setSuccessMessage("Your password has been updated successfully.");
+        setSuccessMessage(lang == 'ta' ? "உங்கள் கடவுச்சொல் வெற்றிகரமாக புதுப்பிக்கப்பட்டது." : "Your password has been updated successfully.");
       } else {
         setError(data.message || "Something went wrong.");
       }
@@ -191,7 +182,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
       setPending(false);
     }
   };
-  
+
   return (
     <>
       <div className="flex">
@@ -205,13 +196,13 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
                 className={`px-3 py-1 text-sm rounded-full ${activeTab === 'password' ? 'active-setting' : 'setting'}`}
                 onClick={() => setActiveTab('password')}
               >
-                Change Password
+                {lang == 'ta' ? 'கடவுச்சொல்லை மாற்றவும்' : 'Change Password'}
               </button>
               <button
                 className={`px-3 py-1 text-sm rounded-full ${activeTab === 'account' ? 'active-setting' : 'setting'}`}
                 onClick={() => setActiveTab('account')}
               >
-                Account
+                {lang == 'ta' ? 'கணக்கு அமைப்புகள்' : 'Account Settings'}
               </button>
             </div>
 
@@ -237,7 +228,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
 
                     <div className="mb-4">
                       <label className="mb-2.5 block font-medium text-black dark:text-white">
-                        Password
+                        {lang == 'ta' ? 'கடவுச்சொல்' : 'Password'}
                       </label>
                       <div className="relative">
                         <input
@@ -255,7 +246,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
 
                     <div className="mb-6">
                       <label className="mb-2.5 block font-medium text-black dark:text-white">
-                        Re-type Password
+                        {lang == 'ta' ? 'கடவுச்சொல்லை உறுதிப்படுத்தவும்' : 'Confirm Password'}
                       </label>
                       <div className="relative">
                         <input
@@ -273,7 +264,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
                     <div className="mb-5">
                       <input
                         type="submit"
-                        value="Change Password"
+                        value={lang == 'ta' ? 'கடவுச்சொல்லை மாற்றவும்' : 'Change Password'}
                         className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
                       />
                     </div>
@@ -307,13 +298,14 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
                     }}
                     className="flex items-center space-x-2 px-3 py-2 text-sm rounded-lg border border-gray-600 bg-gray-600 text-white transition hover:bg-opacity-90"
                   >
-                    <IoLogOut className="mr-2" /> Logout
+                    <IoLogOut className="mr-2" />
+                    {lang == 'ta' ? 'வெளியேறு' : 'Logout'}
                   </button>
                   <button
                     onClick={handleDeactivateAccount}
                     className="flex items-center space-x-2 px-3 py-2 text-sm rounded-lg border border-red-600 bg-red-600 text-white transition hover:bg-opacity-90 mt-5"
                   >
-                    <IoPower className="mr-2" />Deactivate Account
+                    <IoPower className="mr-2" />{lang == 'ta' ? 'கணக்கை செயலிழக்கச் செய்யவும்' : 'Deactivate Account'}
                   </button>
 
                 </div>

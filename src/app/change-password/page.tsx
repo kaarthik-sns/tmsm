@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import FrontendLayouts from "@/components/Layouts/Frontendlayout";
-import Innerbanner from "@/components/Frontend/InnerPageBanner/contact-innerbanner";
 import ChangePassword from "@/components/Frontend/Password";
 
 

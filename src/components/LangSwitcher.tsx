@@ -3,8 +3,7 @@ import { useLanguage } from '@/lib/useLanguage';
 import { ChevronDown } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-const LangSwitcher = () => {
-  const [lang, setLang] = useLanguage();
+const LangSwitcher = ({lang,setLang}) => {
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

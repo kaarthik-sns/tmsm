@@ -71,6 +71,30 @@ const UserProfile = (user_data) => {
       { label: "Saiva mudaliyar", value: "Saiva mudaliyar" },
     ];
 
+  const profileOptions = [
+    { label: lang === 'ta' ? 'எனக்காக' : 'MySelf', value: 'myself' },
+    { label: lang === 'ta' ? 'மகள்' : 'Daughter', value: 'daughter' },
+    { label: lang === 'ta' ? 'மகன்' : 'Son', value: 'son' },
+    { label: lang === 'ta' ? 'மற்றவர்கள்' : 'Others', value: 'others' },
+  ];
+
+  const maritalstatusOptions = [
+    { label: lang === 'ta' ? 'திருமணம் செய்யவில்லை' : 'Never Married', value: 'nevermarried' },
+    { label: lang === 'ta' ? 'விதவையானவர்' : 'Widowed', value: 'widowed' },
+    { label: lang === 'ta' ? 'விவாகரத்து பெற்றவர்' : 'Divorced', value: 'divorced' },
+    { label: lang === 'ta' ? 'விவாகரத்துக்காக காத்திருக்கிறேன்' : 'Awaiting Divorce', value: 'awaitingdivorce' },
+  ];
+
+  const lookingforOptions = [
+    { label: lang === 'ta' ? 'மணமகள்' : 'Bride', value: 'bride' },
+    { label: lang === 'ta' ? 'மணமகன்' : 'Groom', value: 'groom' },
+  ];
+
+  const genderOptions = [
+    { label: lang === 'ta' ? 'ஆண்' : 'Male', value: 'male' },
+    { label: lang === 'ta' ? 'பெண்' : 'Female', value: 'female' },
+  ];
+
   const [formData, setFormData] = useState({
     name: "",
     lastname: "",
@@ -447,30 +471,6 @@ const UserProfile = (user_data) => {
     }
   }, [successMessage]);
 
-  const profileOptions = [
-    { label: lang === 'ta' ? 'எனக்காக' : 'MySelf', value: 'myself' },
-    { label: lang === 'ta' ? 'மகள்' : 'Daughter', value: 'daughter' },
-    { label: lang === 'ta' ? 'மகன்' : 'Son', value: 'son' },
-    { label: lang === 'ta' ? 'மற்றவர்கள்' : 'Others', value: 'others' },
-  ];
-
-  const maritalstatusOptions = [
-    { label: lang === 'ta' ? 'திருமணம் செய்யவில்லை' : 'Never Married', value: 'nevermarried' },
-    { label: lang === 'ta' ? 'விதவையானவர்' : 'Widowed', value: 'widowed' },
-    { label: lang === 'ta' ? 'விவாகரத்து பெற்றவர்' : 'Divorced', value: 'divorced' },
-    { label: lang === 'ta' ? 'விவாகரத்துக்காக காத்திருக்கிறேன்' : 'Awaiting Divorce', value: 'awaitingdivorce' },
-  ];
-
-  const lookingforOptions = [
-    { label: lang === 'ta' ? 'மணமகள்' : 'Bride', value: 'bride' },
-    { label: lang === 'ta' ? 'மணமகன்' : 'Groom', value: 'groom' },
-  ];
-
-  const genderOptions = [
-    { label: lang === 'ta' ? 'ஆண்' : 'Male', value: 'male' },
-    { label: lang === 'ta' ? 'பெண்' : 'Female', value: 'female' },
-  ];
-
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -733,7 +733,7 @@ const UserProfile = (user_data) => {
 
                       <div className="mb-4.5 text-black">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          {lang === 'ta' ? 'தேடுபவர்' : 'Looking For'} <span className="text-meta-1">*</span>
+                          {lang === 'ta' ? 'யாரை தேடுகிறேன்' : 'Looking For'} <span className="text-meta-1">*</span>
                         </label>
                         <RadioButtonGroup
                           name="lookingfor"
@@ -1388,7 +1388,7 @@ const UserProfile = (user_data) => {
                               setError("");
                             }
                           }}
-                          placeholder={lang === 'ta' ? 'வயதைக் கொள்ளவும்' : 'Enter age'}
+                          placeholder={lang === 'ta' ? 'வயது' : 'Enter age'}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>

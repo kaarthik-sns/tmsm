@@ -98,6 +98,8 @@ const SignUp: React.FC = () => {
     setForm((prevData) => {
       const updatedForm = { ...prevData, [name]: value };
 
+      setPasswordError(null);
+
       // Validate password
       if (name === "password") {
         setPasswordError(validatePassword(value));

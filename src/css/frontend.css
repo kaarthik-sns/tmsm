@@ -1663,3 +1663,10 @@ input[type="radio"] {
     /* ✅ Matches the design */
     border-bottom: 1px solid #ddd;
 }
+
+
+.lang-ta .slider-text {
+    font-size: 3vw;
+    line-height: 4vw;
+    max-width: 70vw;
+}

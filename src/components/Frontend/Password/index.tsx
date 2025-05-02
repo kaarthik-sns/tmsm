@@ -8,7 +8,7 @@ import { TriangleAlert } from "lucide-react";
 
 const ChangePassword: React.FC = () => {
 
-  const [remainingTime, setRemainingTime] = useState(9); // 5 seconds initially
+  const [remainingTime, setRemainingTime] = useState(9);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
@@ -17,6 +17,8 @@ const ChangePassword: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [ConPasswordError, setConPasswordError] = useState<string>("");
+
+  const lang = localStorage.getItem('lang') || 'en';
 
   const [form, setForm] = useState({
     password: "",
@@ -32,24 +34,14 @@ const ChangePassword: React.FC = () => {
     const hasNumber = /[0-9]/.test(password);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
-    if (password.length < minLength) {
-      return "Password must be at least 6 characters long.";
+    if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
+      return lang == 'ta'
+        ? "கடவுச்சொல் குறைந்தபட்சம் 6 எழுத்துகளைக் கொண்டிருக்க வேண்டும் மற்றும் பெரிய எழுத்து, சிறிய எழுத்து, எண் மற்றும் சிறப்பு எழுத்து சேர்க்கப்பட வேண்டும்."
+        : "Password must be at least 6 characters long and include uppercase, lowercase, number, and special character.";
     }
-    if (!hasUpperCase) {
-      return "Password must contain at least one uppercase letter.";
-    }
-    if (!hasLowerCase) {
-      return "Password must contain at least one lowercase letter.";
-    }
-    if (!hasNumber) {
-      return "Password must contain at least one number.";
-    }
-    if (!hasSpecialChar) {
-      return "Password must contain at least one special character.";
-    }
+
     return null; // Valid password
   };
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,20 +49,21 @@ const ChangePassword: React.FC = () => {
     setSuccessMessage("");
 
     if (form.password == '') {
-      setPasswordError("Password cannot be empty.");
+      setPasswordError(lang === 'ta' ? "கடவுச்சொல் காலியாக இருக்க முடியாது." : "Password cannot be empty.");
       setPending(false);
       return;
     }
 
     if (form.confirmPassword == '') {
-      setConPasswordError("Confirm Password cannot be empty.");
+      setConPasswordError(lang === 'ta' ? "கடவுச்சொல்லை உறுதிப்படுத்தவும்." : "Confirm password cannot be empty.");
       setPending(false);
       return;
     }
 
 
     if (form.password !== form.confirmPassword) {
-      setConPasswordError("Passwords do not match.");
+      setConPasswordError(lang === 'ta' ? "கடவுச்சொற்கள் பொருந்தவில்லை." : "Passwords do not match.");
+
       setPending(false);
       return;
     }
@@ -94,7 +87,7 @@ const ChangePassword: React.FC = () => {
     const data = await res.json();
 
     if (res.ok) {
-      setError('');  
+      setError('');
       setPending(false);
       setSuccessMessage("Your password has been updated successfully.");
       setTimeout(() => {
@@ -135,7 +128,7 @@ const ChangePassword: React.FC = () => {
           <div className="flex items-center md:w-100">
             <div className="w-full p-4">
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2 heading-title">
-                Change Password
+                {lang == 'ta' ? 'கடவுச்சொல்லை மாற்றவும்' : 'Change Password'}
               </h2>
 
               {/* Show login success message */}
@@ -155,14 +148,14 @@ const ChangePassword: React.FC = () => {
 
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Password
+                    {lang == 'ta' ? 'கடவுச்சொல்' : 'Password'}
                   </label>
                   <div className="relative">
                     <input
                       type="password"
                       disabled={pending}
                       value={form.password}
-                      placeholder="Enter your password"
+                      placeholder={lang == 'ta' ? 'கடவுச்சொல்' : 'Password'}
                       onChange={(e) => setForm({ ...form, password: e.target.value })}
                       className={`w-full rounded-lg border ${passwordError ? "border-red-500" : "border-stroke"
                         } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
@@ -198,7 +191,7 @@ const ChangePassword: React.FC = () => {
 
                 <div className="mb-6">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Re-type Password
+                    {lang == 'ta' ? 'கடவுச்சொல்லை உறுதிப்படுத்தவும்' : 'Confirm Password'}
                   </label>
                   <div className="relative">
                     <input
@@ -206,11 +199,11 @@ const ChangePassword: React.FC = () => {
                       disabled={pending}
                       value={form.confirmPassword}
                       onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
-                      placeholder="Re-enter your password"
+                      placeholder={lang == 'ta' ? 'கடவுச்சொல்லை உறுதிப்படுத்து' : 'Confirm Password'}
                       className={`w-full rounded-lg border ${ConPasswordError ? "border-red-500" : "border-stroke"
-                      } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-                    autoComplete="off"
-                   />
+                        } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+                      autoComplete="off"
+                    />
 
                     <span className="absolute right-4 top-4">
                       <svg
@@ -242,7 +235,7 @@ const ChangePassword: React.FC = () => {
                 <div className="mb-5">
                   <input
                     type="submit"
-                    value="Change Password"
+                    value={lang == 'ta' ? 'கடவுச்சொல்லை மாற்றவும்' : 'Change Password'}
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
                   />
                 </div>
