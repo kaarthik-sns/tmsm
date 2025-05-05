@@ -53,11 +53,12 @@ const AboutUs = (data) => {
           <div className="row flex flex-col md:flex-row ">
             <div className="w-full md:w-1/2 px-7.5">
               <div className="about-left-media relative media-relative ">
-                <Image
+                {/* <Image
                   src={`/api${AboutData.sec_one_img}`}
                   alt="Happy Couple"
                   layout="fill"
-                />
+                /> */}
+                <img src={`/api${AboutData.sec_one_img}`} alt="Happy Couple" height='auto' width='100%' />
               </div>
             </div>
             <div className="w-full md:w-1/2 px-7.5">

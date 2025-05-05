@@ -49,7 +49,7 @@ function NavList() {
   return (
     <ul className="mb-4 mt-2 pl-2 flex flex-col gap-3 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-8 header-text">
 
-      <NavItem label={lang === 'ta' ? 'முகப்பு' : 'Home'} href="/" />
+      {lang === 'en' && (<NavItem label='Home' href="/" />)}
       <NavItem label={lang === 'ta' ? 'உறுப்பினர்கள்' : 'Members'} href="/member" />
       <NavItem label={lang === 'ta' ? 'எங்களை பற்றி' : 'About'} href="/about" />
       <NavItem label={lang === 'ta' ? 'தொடர்புக்கு' : 'Contact'} href="/contact" />
