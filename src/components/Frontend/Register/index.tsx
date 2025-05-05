@@ -79,7 +79,7 @@ const SignUp: React.FC = () => {
 
   const profileOptions = lang === 'ta'
     ? [
-      { label: 'எனக்காக', value: 'myself' },
+      { label: 'எனக்கு', value: 'myself' },
       { label: 'மகள்', value: 'daughter' },
       { label: 'மகன்', value: 'son' },
       { label: 'மற்றவர்கள்', value: 'others' },
@@ -270,7 +270,11 @@ const SignUp: React.FC = () => {
 
     if (res.ok) {
       setPending(false);
-      setSuccessMessage(data.message);  // Set the success message
+      setSuccessMessage(
+        lang == 'ta'
+          ? "பதிவுசெய்தல் வெற்றிகரமாக முடிந்தது. நிர்வாகியின் ஒப்புதலுக்கு காத்திருக்கவும். மேலும் தகவலுக்கு உங்கள் மின்னஞ்சலை பார்க்கவும்."
+          : "Registration successful. Await admin approval. Check your email for updates."
+      );
       window.scrollTo({ top: 0, behavior: "smooth" });
       // Redirect to the login page after 5 seconds
       setTimeout(() => {
@@ -363,7 +367,7 @@ const SignUp: React.FC = () => {
             <form onSubmit={handleSubmit} >
               <div className="mb-4.5">
                 <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  <b>{lang == 'ta' ? 'திருமணப் ப்ரொஃபைல் யார் சார்பில் உருவாக்கப்படுகிறது?' : 'Matrimony profile for'}</b>
+                  <b>{lang == 'ta' ? 'யாருக்காக கணக்கு உருவாக்கப்படுகிறது?' : 'Matrimony profile for'}</b>
                 </label>
                 <RadioButtonGroup
                   name="profile_created_for"
@@ -430,8 +434,8 @@ const SignUp: React.FC = () => {
                   disabled={pending}
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  placeholder={placeholders.email}
-                  autoComplete="off" // Disable browser autofill
+                  placeholder={lang == 'ta' ? 'மின்னஞ்சல் ஐடி' : placeholders.email}
+                  autoComplete="new-email"
                   className={`w-full rounded-lg border ${errors.email ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                 />
                 {errors.email && (
@@ -503,6 +507,7 @@ const SignUp: React.FC = () => {
                   name="password"
                   value={form.password}
                   onChange={handleChange}
+                  autoComplete="new-password"
                   placeholder={lang == 'ta' ? 'கடவுச்சொல்' : 'Password'}
                   className={`w-full rounded-lg border ${passwordError ? "border-red-500" : "border-stroke"
                     } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
@@ -516,6 +521,7 @@ const SignUp: React.FC = () => {
                   name="confirmPassword" // ✅ Ensure this matches state key
                   value={form.confirmPassword} // ✅ Ensure correct state binding
                   onChange={handleChange}
+                  autoComplete="new-password"
                   placeholder={lang == 'ta' ? 'கடவுச்சொல்லை உறுதிப்படுத்தவும்' : 'Confirm Password'}
                   className={`w-full rounded-lg border ${confirmPasswordError ? "border-red-500" : "border-stroke"
                     } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}

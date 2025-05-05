@@ -35,12 +35,12 @@ const SignIn: React.FC = () => {
     let valid = true;
 
     if (!email) {
-      setEmailError("Email cannot be empty.");
+      setEmailError(lang == 'ta' ? "மின்னஞ்சல் முகவரி காலியாக இருக்க முடியாது." : "Email cannot be empty.");
       valid = false;
     }
 
     if (!password) {
-      setPasswordError("Password cannot be empty");
+      setPasswordError(lang == 'ta' ? "கடவுச்சொல் காலியாக இருக்க முடியாது." : "Password cannot be empty");
       valid = false;
     }
 
@@ -57,7 +57,7 @@ const SignIn: React.FC = () => {
     });
 
     if (res?.ok) {
-      setSuccessMessage("Login Successful! Redirecting...");
+      setSuccessMessage(lang == 'ta' ? "உள்நுழைவு வெற்றிகரமாக முடிந்தது! வழியனுப்புகிறது..." : "Login Successful! Redirecting...");
       setTimeout(() => {
         router.push("/dashboard");
       }, 1000);
@@ -102,9 +102,10 @@ const SignIn: React.FC = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder={lang == 'ta' ? 'மின்னஞ்சல் முகவரி' : 'E-mail id'}
+
                     className={`w-full rounded-lg border ${emailError ? "border-red-500" : "border-stroke"
                       } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-                    autoComplete="off"
+                    autoComplete="new-email"
                   />
                 </div>
                 {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
@@ -121,7 +122,7 @@ const SignIn: React.FC = () => {
                     placeholder={lang == 'ta' ? 'கடவுச்சொல்' : 'Password'}
                     className={`w-full rounded-lg border ${passwordError ? "border-red-500" : "border-stroke"
                       } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-                    autoComplete="off"
+                    autoComplete="new-password"
                   />
                 </div>
                 {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
@@ -166,7 +167,7 @@ const SignIn: React.FC = () => {
           className="w-full h-full object-cover"
         />
       </div>
-      
+
     </div>
   );
 };
