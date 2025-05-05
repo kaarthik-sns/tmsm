@@ -15,6 +15,8 @@ const Table = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const router = useRouter();
 
+    const lang = localStorage.getItem('lang') || 'en';
+
     useEffect(() => {
         fetchTableItems();
     }, [currentPage]);
@@ -165,7 +167,7 @@ const Table = () => {
                                                 />
                                             </div>
                                             <div>
-                                                <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">{item.name}</h3>
+                                                <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">{lang === 'ta' ? item.name_ta : item.name}</h3>
                                                 <div className="text-sm text-gray-500 dark:text-gray-400">{item.designation}</div>
                                             </div>
                                         </div>
@@ -201,7 +203,7 @@ const Table = () => {
                                         </div>
                                     </div>
                                     <div className="mt-4">
-                                        <p className="text-gray-600 dark:text-gray-300 line-clamp-3">{item.description}</p>
+                                        <p className="text-gray-600 dark:text-gray-300 line-clamp-3">{lang === 'ta' ? item.description_ta : item.description}</p>
                                     </div>
                                 </div>
                             </div>
@@ -226,8 +228,8 @@ const Table = () => {
                                     <button
                                         key={i}
                                         onClick={() => handlePageChange(i + 1)}
-                                        className={`px-4 py-2 rounded-lg ${currentPage === i + 1 
-                                            ? 'bg-indigo-600 text-white' 
+                                        className={`px-4 py-2 rounded-lg ${currentPage === i + 1
+                                            ? 'bg-indigo-600 text-white'
                                             : 'text-gray-700 hover:bg-gray-50'}`}
                                     >
                                         {i + 1}
@@ -272,9 +274,9 @@ const Table = () => {
                                             className="object-cover"
                                         />
                                     </div>
-                                    <h4 className="text-lg font-medium text-gray-800 dark:text-white mb-2">{modalData.name}</h4>
+                                    <h4 className="text-lg font-medium text-gray-800 dark:text-white mb-2">{lang === 'ta' ? modalData.name_ta : modalData.name}</h4>
                                     <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">{modalData.designation}</div>
-                                    <p className="text-gray-600 dark:text-gray-300 whitespace-pre-wrap text-center">{modalData.description}</p>
+                                    <p className="text-gray-600 dark:text-gray-300 whitespace-pre-wrap text-center">{lang === 'ta' ? modalData.description_ta : modalData.description}</p>
                                 </div>
                             </div>
                             <div className="flex justify-end px-6 py-4 bg-gray-50 dark:bg-gray-800 rounded-b-xl">

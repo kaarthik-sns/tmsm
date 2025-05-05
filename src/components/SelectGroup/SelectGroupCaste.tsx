@@ -2,6 +2,9 @@
 import React from "react";
 
 const SelectGroupCaste = ({ castes, name, selectedcaste, oncasteChange }) => {
+
+  const lang = localStorage.getItem('lang') || 'en';
+
   return (
     <div className="mb-4.5">
       <div className="relative z-20 bg-transparent dark:bg-form-input">
@@ -12,15 +15,15 @@ const SelectGroupCaste = ({ castes, name, selectedcaste, oncasteChange }) => {
           className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
         >
           <option value="" disabled className="text-body dark:text-bodydark">
-            Select caste
+            {lang == 'ta' ? 'சாதியை தேர்ந்தெடுக்கவும்' : 'Select caste'}
           </option>
           {castes.map((caste, index) => (
             <option
               key={index}
-              value={caste}
+              value={caste.value}
               className="text-body dark:text-bodydark"
             >
-              {caste}
+              {caste.label}
             </option>
           ))}
         </select>

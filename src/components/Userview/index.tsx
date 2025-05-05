@@ -248,9 +248,6 @@ const FormElements = () => {
                 </div>
                 <div className="flex items-center gap-1 whitespace-nowrap">
                   <FaCheckCircle className={formData.is_verify ? "text-green-600" : "text-red-500"} />
-                  <span className={formData.is_verify ? "text-green-600" : "text-red-500"}>
-                    Identity: {formData.is_verify === true ? "Verified" : "Not Verified"}
-                  </span>
                 </div>
               </div>
             </div>

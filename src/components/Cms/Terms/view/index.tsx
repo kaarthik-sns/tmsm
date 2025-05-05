@@ -7,13 +7,17 @@ import Breadcrumb from "@/components/Breadcrumbs/TermBreadcrumb";
 const TermTable = () => {
 
     const [description, setDescription] = useState(null);
+    const [description_ta, setDescriptionta] = useState(null);
+
     const router = useRouter();
 
+    const lang = localStorage.getItem('lang') || 'en';
 
     const fetchTableItems = async () => {
         try {
             const response = await axios.post("/api/cms/terms/view");
             setDescription(response?.data?.data?.description || null);
+            setDescriptionta(response?.data?.data?.description_ta || null);
 
         } catch (error) {
             console.error("Error fetching table items:", error);
@@ -51,7 +55,7 @@ const TermTable = () => {
                             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                                 <div className="p-6.5">
                                     <div className="mb-4.5">
-                                        <div dangerouslySetInnerHTML={{ __html: description }} className="cms-heading" />
+                                        <div dangerouslySetInnerHTML={{ __html: lang === 'ta' ? description_ta : description }} className="cms-heading" />
                                     </div>
                                 </div>
                             </div>

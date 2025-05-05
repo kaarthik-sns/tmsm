@@ -30,6 +30,22 @@ export async function PATCH(request: NextRequest) {
         const feature_three_desc = (formData.get('feature_three_desc') as string) ?? '';
         const feature_four_desc = (formData.get('feature_four_desc') as string) ?? '';
 
+        const sec_one_title_ta = (formData.get('sec_one_title_ta') as string) ?? '';
+        const sec_one_desc_ta = (formData.get('sec_one_desc_ta') as string) ?? '';
+        const sec_two_title_ta = (formData.get('sec_two_title_ta') as string) ?? '';
+        const sec_two_desc_ta = (formData.get('sec_two_desc_ta') as string) ?? '';
+        const feature_one_ta = (formData.get('feature_one_ta') as string) ?? '';
+        const feature_two_ta = (formData.get('feature_two_ta') as string) ?? '';
+        const feature_three_ta = (formData.get('feature_three_ta') as string) ?? '';
+        const feature_four_ta = (formData.get('feature_four_ta') as string) ?? '';
+        const banner_title_ta = (formData.get('banner_title_ta') as string) ?? '';
+        const banner_btn_text_ta = (formData.get('banner_btn_text_ta') as string) ?? '';
+
+        const feature_one_desc_ta = (formData.get('feature_one_desc_ta') as string) ?? '';
+        const feature_two_desc_ta = (formData.get('feature_two_desc_ta') as string) ?? '';
+        const feature_three_desc_ta = (formData.get('feature_three_desc_ta') as string) ?? '';
+        const feature_four_desc_ta = (formData.get('feature_four_desc_ta') as string) ?? '';
+
         // Initialize Fields with text data
         let Fields: Record<string, string> = {
             banner_title,
@@ -45,6 +61,20 @@ export async function PATCH(request: NextRequest) {
             feature_two_desc,
             feature_three_desc,
             feature_four_desc,
+            sec_one_title_ta,
+            sec_one_desc_ta,
+            sec_two_title_ta,
+            sec_two_desc_ta,
+            feature_one_ta,
+            feature_two_ta,
+            feature_three_ta,
+            feature_four_ta,
+            banner_title_ta,
+            banner_btn_text_ta,
+            feature_one_desc_ta,
+            feature_two_desc_ta,
+            feature_three_desc_ta,
+            feature_four_desc_ta
         };
 
         // Process image fields
@@ -61,7 +91,7 @@ export async function PATCH(request: NextRequest) {
 
         for (const field of imageFields) {
             const file = formData.get(field.key);
-        
+
             if (typeof file === 'string') {
                 // If the file is a string, return it directly
                 Fields[field.pathKey] = file;
@@ -71,13 +101,13 @@ export async function PATCH(request: NextRequest) {
                 const fileExtension = path.extname(file.name);
                 const uniqueFileName = `${uniqueSuffix}${fileExtension}`;
                 const filePath = path.join(UPLOAD_DIR, uniqueFileName);
-        
+
                 const fileBuffer = Buffer.from(await file.arrayBuffer());
                 await fs.writeFile(filePath, fileBuffer);
                 Fields[field.pathKey] = `/uploads/cms/${uniqueFileName}`;
             }
         }
-        
+
 
         // Check if a record exists
         const existingRecord = await Model.findOne({});

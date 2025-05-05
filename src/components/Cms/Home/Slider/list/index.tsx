@@ -16,6 +16,8 @@ const Table = () => {
     const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
     const router = useRouter(); // Initialize Next.js router
 
+    const lang = localStorage.getItem('lang') || 'en';
+
     useEffect(() => {
         fetchTableItems();
     }, [currentPage]);
@@ -168,7 +170,7 @@ const Table = () => {
                                 tableItems.map((item, idx) => (
                                     <tr key={idx} className="odd:bg-gray-50 even:bg-white">
                                         <td className="px-2 md:px-6 py-4 whitespace-nowrap">{idx + 1}</td>
-                                        <td className="px-2 md:px-6 py-4 whitespace-normal break-words">{item.title}</td>
+                                        <td className="px-2 md:px-6 py-4 whitespace-normal break-words">{lang === 'ta' ? item.title_ta : item.title}</td>
                                         <td className="px-2 md:px-6 py-4 whitespace-nowrap">
                                             <div className="flex items-center space-x-2 md:space-x-3">
                                                 <button
@@ -327,8 +329,8 @@ const Table = () => {
                                     <line x1="6" y1="6" x2="18" y2="18" />
                                 </svg>
                             </button>
-                            <p className="mb-3 md:mb-4 cms-heading text-lg md:text-xl font-semibold">{modalData.title}</p>
-                            <p className="mb-3 md:mb-4 cms-description text-xs md:text-sm text-gray-600">{modalData.description}</p>
+                            <p className="mb-3 md:mb-4 cms-heading text-lg md:text-xl font-semibold">{lang === 'ta' ? modalData.title_ta : modalData.title}</p>
+                            <p className="mb-3 md:mb-4 cms-description text-xs md:text-sm text-gray-600">{lang === 'ta' ? modalData.description_ta : modalData.description}</p>
                             <div className="overflow-hidden flex items-center justify-center mx-auto mb-3 md:mb-4">
                                 <Image
                                     src={`/api${modalData.image}`}

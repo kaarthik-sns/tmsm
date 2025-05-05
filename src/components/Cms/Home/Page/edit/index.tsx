@@ -24,6 +24,8 @@ const Settings = () => {
   const formData_upload = new FormData();
   const [isLoading, setIsLoading] = useState(true);
 
+  const lang = localStorage.getItem('lang') || 'en';
+
   const toolbarOptions = [
     // Text formatting options
     ["bold", "italic", "underline", "strike"], // Bold, italic, underline, strikethrough
@@ -88,11 +90,27 @@ const Settings = () => {
     banner_title: '',
     banner_btn_text: '',
     banner_btn_link: '',
+
+    sec_one_title_ta: '',
+    sec_one_desc_ta: '',
+    sec_two_title_ta: '',
+    sec_two_desc_ta: '',
+    feature_one_ta: '',
+    feature_two_ta: '',
+    feature_three_ta: '',
+    feature_four_ta: '',
+    banner_title_ta: '',
+    banner_btn_text_ta: '',
   });
+
+
+
 
   useEffect(() => {
 
     const fetchSettings = async () => {
+
+
       try {
         const response = await fetch("/api/cms/home/page", {
           method: "GET",
@@ -172,7 +190,7 @@ const Settings = () => {
 
   const validateForm = () => {
 
-    const fieldsToValidate = [
+    let fieldsToValidate = [
       { key: "sec_one_title", message: "Title cannot be empty." },
       { key: "sec_one_desc", message: "Description cannot be empty." },
       { key: "sec_one_img", message: "Image cannot be empty." },
@@ -189,8 +207,31 @@ const Settings = () => {
       { key: "feature_four_img", message: "Image cannot be empty." },
       { key: "banner_title", message: "Title cannot be empty." },
       { key: "banner_btn_text", message: "Button Text cannot be empty." },
-      { key: "banner_btn_link", message: "Button Link cannot be empty." },
+      { key: "banner_btn_link", message: "Button Link cannot be empty." }
     ];
+
+    if (lang == 'ta') {
+      fieldsToValidate = [
+        { key: "sec_one_img", message: "Image cannot be empty." },
+        { key: "sec_two_img", message: "Image cannot be empty." },
+        { key: "feature_one_img", message: "Image cannot be empty." },
+        { key: "feature_two_img", message: "Image cannot be empty." },
+        { key: "feature_three_img", message: "Image cannot be empty." },
+        { key: "feature_four_img", message: "Image cannot be empty." },
+        { key: "sec_one_title_ta", message: "Title (TA) cannot be empty." },
+        { key: "sec_one_desc_ta", message: "Description (TA) cannot be empty." },
+        { key: "sec_two_title_ta", message: "Title (TA) cannot be empty." },
+        { key: "sec_two_desc_ta", message: "Description (TA) cannot be empty." },
+        { key: "feature_one_ta", message: "Feature One (TA) cannot be empty." },
+        { key: "feature_two_ta", message: "Feature Two (TA) cannot be empty." },
+        { key: "feature_three_ta", message: "Feature Three (TA) cannot be empty." },
+        { key: "feature_four_ta", message: "Feature Four (TA) cannot be empty." },
+        { key: "banner_title_ta", message: "Banner Title (TA) cannot be empty." },
+        { key: "banner_btn_text_ta", message: "Button Text (TA) cannot be empty." },
+        { key: "banner_btn_link", message: "Button Link cannot be empty." }
+
+      ];
+    }
 
     for (const { key, message } of fieldsToValidate) {
       if (!formData[key]?.trim()) {
@@ -244,7 +285,6 @@ const Settings = () => {
     if (feature_three_img) formData_upload.append('feature_three_img', feature_three_img);
     if (feature_four_img) formData_upload.append('feature_four_img', feature_four_img);
 
-
     try {
       const response = await fetch('/api/cms/home/page', {
         method: 'PATCH',
@@ -293,351 +333,695 @@ const Settings = () => {
       />
 
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
+        {lang == 'en' && (
+          <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
 
-          <div className="flex flex-col gap-9">
+            <div className="flex flex-col gap-9">
 
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="font-medium dark-text dark:text-white">
-                  About
-                </h3>
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                  <h3 className="font-medium dark-text dark:text-white">
+                    About
+                  </h3>
+                </div>
+                <div className="p-6.5">
+
+                  <div className="mb-4.5">
+                    <ImageUpload
+                      name="sec_one_img"
+                      label="Image"
+                      formData={formData}
+                      formErrors={formErrors}
+                      handleChange={handleChange}
+                      required={true}
+                    />
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Title <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="sec_one_title"
+                      value={formData.sec_one_title || ""}
+                      onChange={handleChange}
+                      placeholder="Enter your email address"
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.sec_one_title
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.sec_one_title && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.sec_one_title}</p>
+                    )}
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Description <span className="text-meta-1">*</span>
+                    </label>
+                    <ReactQuill
+                      theme="snow"
+                      value={formData.sec_one_desc}
+                      onChange={(value) =>
+                        handleChange({ target: { name: "sec_one_desc", value } })
+                      }
+                      placeholder="Enter Description"
+                      modules={{ toolbar: toolbarOptions }}
+                      className={`react-quill ${formErrors.sec_one_desc ? "border-red-500" : ""
+                        }`}
+                    />
+                    {formErrors.sec_one_desc && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {formErrors.sec_one_desc}
+                      </p>
+                    )}
+                  </div>
+
+                </div>
               </div>
-              <div className="p-6.5">
 
-                <div className="mb-4.5">
-                  <ImageUpload
-                    name="sec_one_img"
-                    label="Image"
-                    formData={formData}
-                    formErrors={formErrors}
-                    handleChange={handleChange}
-                    required={true}
-                  />
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                  <h3 className="font-medium dark-text dark:text-white">
+                    Join us
+                  </h3>
                 </div>
+                <div className="p-6.5">
 
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Title <span className="text-meta-1">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="sec_one_title"
-                    value={formData.sec_one_title || ""}
-                    onChange={handleChange}
-                    placeholder="Enter your email address"
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.sec_one_title
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                  />
-                  {formErrors?.sec_one_title && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.sec_one_title}</p>
-                  )}
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Title <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="banner_title"
+                      value={formData.banner_title || ""}
+                      onChange={handleChange}
+                      placeholder="Enter Title"
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.banner_title
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.banner_title && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.banner_title}</p>
+                    )}
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Button title <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="banner_btn_text"
+                      value={formData.banner_btn_text || ""}
+                      onChange={handleChange}
+                      placeholder="Enter Button Title"
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.banner_btn_text
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.banner_btn_text && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.banner_btn_text}</p>
+                    )}
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Button link <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="banner_btn_link"
+                      value={formData.banner_btn_link || ""}
+                      onChange={handleChange}
+                      placeholder="Enter Button Link"
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.banner_btn_link
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.banner_btn_link && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.banner_btn_link}</p>
+                    )}
+                  </div>
+
                 </div>
-
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Description <span className="text-meta-1">*</span>
-                  </label>
-                  <ReactQuill
-                    theme="snow"
-                    value={formData.sec_one_desc}
-                    onChange={(value) =>
-                      handleChange({ target: { name: "sec_one_desc", value } })
-                    }
-                    placeholder="Enter Description"
-                    modules={{ toolbar: toolbarOptions }}
-                    className={`react-quill ${formErrors.sec_one_desc ? "border-red-500" : ""
-                      }`}
-                  />
-                  {formErrors.sec_one_desc && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {formErrors.sec_one_desc}
-                    </p>
-                  )}
-                </div>
-
-              </div>
-            </div>
-
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="font-medium dark-text dark:text-white">
-                  Join us
-                </h3>
-              </div>
-              <div className="p-6.5">
-
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Title <span className="text-meta-1">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="banner_title"
-                    value={formData.banner_title || ""}
-                    onChange={handleChange}
-                    placeholder="Enter Title"
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.banner_title
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                  />
-                  {formErrors?.banner_title && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.banner_title}</p>
-                  )}
-                </div>
-
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Button title <span className="text-meta-1">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="banner_btn_text"
-                    value={formData.banner_btn_text || ""}
-                    onChange={handleChange}
-                    placeholder="Enter Button Title"
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.banner_btn_text
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                  />
-                  {formErrors?.banner_btn_text && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.banner_btn_text}</p>
-                  )}
-                </div>
-
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Button link <span className="text-meta-1">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="banner_btn_link"
-                    value={formData.banner_btn_link || ""}
-                    onChange={handleChange}
-                    placeholder="Enter Button Link"
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.banner_btn_link
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                  />
-                  {formErrors?.banner_btn_link && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.banner_btn_link}</p>
-                  )}
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-
-
-          <div className="flex flex-col gap-9">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="font-medium dark-text dark:text-white">
-                  Why Choose Us
-                </h3>
-              </div>
-              <div className="p-6.5">
-
-
-                <div className="mb-4.5">
-                  <ImageUpload
-                    name="sec_two_img"
-                    label="Image"
-                    formData={formData}
-                    formErrors={formErrors}
-                    handleChange={handleChange}
-                    required={true}
-                  />
-                </div>
-
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Title <span className="text-meta-1">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="sec_two_title"
-                    value={formData.sec_two_title || ""}
-                    onChange={handleChange}
-                    placeholder="Enter Title"
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.sec_two_title
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                  />
-                  {formErrors?.sec_two_title && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.sec_two_title}</p>
-                  )}
-                </div>
-
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Description <span className="text-meta-1">*</span>
-                  </label>
-                  <ReactQuill
-                    theme="snow"
-                    value={formData.sec_two_desc}
-                    onChange={(value) =>
-                      handleChange({ target: { name: "sec_two_desc", value } })
-                    }
-                    placeholder="Enter Description"
-                    modules={{ toolbar: toolbarOptions }}
-                    className={`react-quill ${formErrors.sec_two_desc ? "border-red-500" : ""
-                      }`}
-                  />
-                  {formErrors.sec_two_desc && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {formErrors.sec_two_desc}
-                    </p>
-                  )}
-                </div>
-
-                <div className="mb-4.5">
-                  <ImageUpload
-                    name="feature_one_img"
-                    label="Image"
-                    formData={formData}
-                    formErrors={formErrors}
-                    handleChange={handleChange}
-                    required={true}
-                  />
-                </div>
-
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Title <span className="text-meta-1">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="feature_one"
-                    value={formData.feature_one || ""}
-                    onChange={handleChange}
-                    placeholder="Enter Title"
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.feature_one
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                  />
-                  {formErrors?.feature_one && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.feature_one}</p>
-                  )}
-                </div>
-
-                <div className="mb-4.5">
-                  <ImageUpload
-                    name="feature_two_img"
-                    label="Image"
-                    formData={formData}
-                    formErrors={formErrors}
-                    handleChange={handleChange}
-                    required={true}
-                  />
-                </div>
-
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Title <span className="text-meta-1">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="feature_two"
-                    value={formData.feature_two || ""}
-                    onChange={handleChange}
-                    placeholder="Enter Title"
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.feature_two
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                  />
-                  {formErrors?.feature_two && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.feature_two}</p>
-                  )}
-                </div>
-
-                <div className="mb-4.5">
-                  <ImageUpload
-                    name="feature_three_img"
-                    label="Image"
-                    formData={formData}
-                    formErrors={formErrors}
-                    handleChange={handleChange}
-                    required={true}
-                  />
-                </div>
-
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Title <span className="text-meta-1">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="feature_three"
-                    value={formData.feature_three || ""}
-                    onChange={handleChange}
-                    placeholder="Enter Title"
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.feature_three
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                  />
-                  {formErrors?.feature_three && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.feature_three}</p>
-                  )}
-                </div>
-
-                <div className="mb-4.5">
-                  <ImageUpload
-                    name="feature_four_img"
-                    label="Image"
-                    formData={formData}
-                    formErrors={formErrors}
-                    handleChange={handleChange}
-                    required={true}
-                  />
-                </div>
-
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Title <span className="text-meta-1">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="feature_four"
-                    value={formData.feature_four || ""}
-                    onChange={handleChange}
-                    placeholder="Enter Title"
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.feature_four
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                  />
-                  {formErrors?.feature_four && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.feature_four}</p>
-                  )}
-                </div>
-
               </div>
 
             </div>
-            <div className="text-right">
-              <button
-                type="submit"
-                className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-5 xl:px-6 text-custom"
+
+
+            <div className="flex flex-col gap-9">
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                  <h3 className="font-medium dark-text dark:text-white">
+                    Why Choose Us
+                  </h3>
+                </div>
+                <div className="p-6.5">
+
+
+                  <div className="mb-4.5">
+                    <ImageUpload
+                      name="sec_two_img"
+                      label="Image"
+                      formData={formData}
+                      formErrors={formErrors}
+                      handleChange={handleChange}
+                      required={true}
+                    />
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Title <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="sec_two_title"
+                      value={formData.sec_two_title || ""}
+                      onChange={handleChange}
+                      placeholder="Enter Title"
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.sec_two_title
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.sec_two_title && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.sec_two_title}</p>
+                    )}
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Description <span className="text-meta-1">*</span>
+                    </label>
+                    <ReactQuill
+                      theme="snow"
+                      value={formData.sec_two_desc}
+                      onChange={(value) =>
+                        handleChange({ target: { name: "sec_two_desc", value } })
+                      }
+                      placeholder="Enter Description"
+                      modules={{ toolbar: toolbarOptions }}
+                      className={`react-quill ${formErrors.sec_two_desc ? "border-red-500" : ""
+                        }`}
+                    />
+                    {formErrors.sec_two_desc && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {formErrors.sec_two_desc}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="mb-4.5">
+                    <ImageUpload
+                      name="feature_one_img"
+                      label="Image"
+                      formData={formData}
+                      formErrors={formErrors}
+                      handleChange={handleChange}
+                      required={true}
+                    />
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Title <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="feature_one"
+                      value={formData.feature_one || ""}
+                      onChange={handleChange}
+                      placeholder="Enter Title"
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.feature_one
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.feature_one && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.feature_one}</p>
+                    )}
+                  </div>
+
+                  <div className="mb-4.5">
+                    <ImageUpload
+                      name="feature_two_img"
+                      label="Image"
+                      formData={formData}
+                      formErrors={formErrors}
+                      handleChange={handleChange}
+                      required={true}
+                    />
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Title <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="feature_two"
+                      value={formData.feature_two || ""}
+                      onChange={handleChange}
+                      placeholder="Enter Title"
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.feature_two
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.feature_two && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.feature_two}</p>
+                    )}
+                  </div>
+
+                  <div className="mb-4.5">
+                    <ImageUpload
+                      name="feature_three_img"
+                      label="Image"
+                      formData={formData}
+                      formErrors={formErrors}
+                      handleChange={handleChange}
+                      required={true}
+                    />
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Title <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="feature_three"
+                      value={formData.feature_three || ""}
+                      onChange={handleChange}
+                      placeholder="Enter Title"
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.feature_three
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.feature_three && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.feature_three}</p>
+                    )}
+                  </div>
+
+                  <div className="mb-4.5">
+                    <ImageUpload
+                      name="feature_four_img"
+                      label="Image"
+                      formData={formData}
+                      formErrors={formErrors}
+                      handleChange={handleChange}
+                      required={true}
+                    />
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      Title <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="feature_four"
+                      value={formData.feature_four || ""}
+                      onChange={handleChange}
+                      placeholder="Enter Title"
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.feature_four
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.feature_four && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.feature_four}</p>
+                    )}
+                  </div>
+
+                </div>
+
+              </div>
+              <div className="text-right">
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-5 xl:px-6 text-custom"
                 >
-                Submit
-              </button>
+                  Submit
+                </button>
+
+              </div>
 
             </div>
 
           </div>
+        )}
 
-        </div>
+        {lang == 'ta' && (
+          <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
+
+            <div className="flex flex-col gap-9">
+
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                  <h3 className="font-medium dark-text dark:text-white">
+                    எங்களைப் பற்றி
+                  </h3>
+                </div>
+                <div className="p-6.5">
+
+                  <div className="mb-4.5">
+                    <ImageUpload
+                      name="sec_one_img"
+                      label=""
+                      formData={formData}
+                      formErrors={formErrors}
+                      handleChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      தலைப்பு <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="sec_one_title_ta"
+                      value={formData.sec_one_title_ta || ""}
+                      onChange={handleChange}
+                      placeholder=""
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.sec_one_title_ta
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.sec_one_title_ta && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.sec_one_title_ta}</p>
+                    )}
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      விவரம் <span className="text-meta-1">*</span>
+                    </label>
+                    <ReactQuill
+                      theme="snow"
+                      value={formData.sec_one_desc_ta}
+                      onChange={(value) =>
+                        handleChange({ target: { name: "sec_one_desc_ta", value } })
+                      }
+                      placeholder=""
+                      modules={{ toolbar: toolbarOptions }}
+                      className={`react-quill ${formErrors.sec_one_desc_ta ? "border-red-500" : ""
+                        }`}
+                    />
+                    {formErrors.sec_one_desc_ta && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {formErrors.sec_one_desc_ta}
+                      </p>
+                    )}
+                  </div>
+
+                </div>
+              </div>
+
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                  <h3 className="font-medium dark-text dark:text-white">
+                    எங்களுடன் சேருங்கள்
+                  </h3>
+                </div>
+                <div className="p-6.5">
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      தலைப்பு <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="banner_title_ta"
+                      value={formData.banner_title_ta || ""}
+                      onChange={handleChange}
+                      placeholder=""
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.banner_title_ta
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.banner_title_ta && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.banner_title_ta}</p>
+                    )}
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      பொத்தான் தலைப்பு <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="banner_btn_text_ta"
+                      value={formData.banner_btn_text_ta || ""}
+                      onChange={handleChange}
+                      placeholder=""
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.banner_btn_text_ta
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.banner_btn_text_ta && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.banner_btn_text_ta}</p>
+                    )}
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      பொத்தான் இணைப்பு <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="banner_btn_link"
+                      value={formData.banner_btn_link || ""}
+                      onChange={handleChange}
+                      placeholder=""
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.banner_btn_link
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.banner_btn_link && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.banner_btn_link}</p>
+                    )}
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+
+            <div className="flex flex-col gap-9">
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                  <h3 className="font-medium dark-text dark:text-white">
+                    எங்களை ஏன் தேர்வு செய்யவும்
+                  </h3>
+                </div>
+                <div className="p-6.5">
+
+
+                  <div className="mb-4.5">
+                    <ImageUpload
+                      name="sec_two_img"
+                      label=""
+                      formData={formData}
+                      formErrors={formErrors}
+                      handleChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      தலைப்பு <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="sec_two_title_ta"
+                      value={formData.sec_two_title_ta || ""}
+                      onChange={handleChange}
+                      placeholder=""
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.sec_two_title_ta
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.sec_two_title_ta && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.sec_two_title_ta}</p>
+                    )}
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      விவரம் <span className="text-meta-1">*</span>
+                    </label>
+                    <ReactQuill
+                      theme="snow"
+                      value={formData.sec_two_desc_ta}
+                      onChange={(value) =>
+                        handleChange({ target: { name: "sec_two_desc_ta", value } })
+                      }
+                      placeholder=""
+                      modules={{ toolbar: toolbarOptions }}
+                      className={`react-quill ${formErrors.sec_two_desc_ta ? "border-red-500" : ""
+                        }`}
+                    />
+                    {formErrors.sec_two_desc_ta && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {formErrors.sec_two_desc_ta}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="mb-4.5">
+                    <ImageUpload
+                      name="feature_one_img"
+                      label=""
+                      formData={formData}
+                      formErrors={formErrors}
+                      handleChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      தலைப்பு <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="feature_one_ta"
+                      value={formData.feature_one_ta || ""}
+                      onChange={handleChange}
+                      placeholder=""
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.feature_one_ta
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.feature_one_ta && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.feature_one_ta}</p>
+                    )}
+                  </div>
+
+                  <div className="mb-4.5">
+                    <ImageUpload
+                      name="feature_two_img"
+                      label=""
+                      formData={formData}
+                      formErrors={formErrors}
+                      handleChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      தலைப்பு <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="feature_two_ta"
+                      value={formData.feature_two_ta || ""}
+                      onChange={handleChange}
+                      placeholder=""
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.feature_two_ta
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.feature_two_ta && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.feature_two_ta}</p>
+                    )}
+                  </div>
+
+                  <div className="mb-4.5">
+                    <ImageUpload
+                      name="feature_three_img"
+                      label=""
+                      formData={formData}
+                      formErrors={formErrors}
+                      handleChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      தலைப்பு <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="feature_three_ta"
+                      value={formData.feature_three_ta || ""}
+                      onChange={handleChange}
+                      placeholder=""
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.feature_three_ta
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.feature_three_ta && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.feature_three_ta}</p>
+                    )}
+                  </div>
+
+                  <div className="mb-4.5">
+                    <ImageUpload
+                      name="feature_four_img"
+                      label=""
+                      formData={formData}
+                      formErrors={formErrors}
+                      handleChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      தலைப்பு <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="feature_four_ta"
+                      value={formData.feature_four_ta || ""}
+                      onChange={handleChange}
+                      placeholder=""
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.feature_four_ta
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors?.feature_four_ta && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.feature_four_ta}</p>
+                    )}
+                  </div>
+
+                </div>
+
+              </div>
+              <div className="text-right">
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-5 xl:px-6 text-custom"
+                >
+                  Submit
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+        )}
         {error && <p className="mt-4 text-red-500">{error}</p>}
 
       </form>

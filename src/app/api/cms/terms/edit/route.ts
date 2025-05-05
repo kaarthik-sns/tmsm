@@ -8,6 +8,7 @@ export async function POST(request: NextRequest) {
 
     // Extract all fields from formData
     const description = (formData.get('description') as string) ?? '';
+    const description_ta = (formData.get('description_ta') as string) ?? '';
 
     try {
         await connectToDatabase();
@@ -15,9 +16,10 @@ export async function POST(request: NextRequest) {
         let model = await Term.findOne();
 
         if (!model) {
-            model = new Term({ description });
+            model = new Term({ description, description_ta });
         } else {
             model.description = description || model.description;
+            model.description_ta = description_ta || model.description_ta;
         }
 
         await model.save();

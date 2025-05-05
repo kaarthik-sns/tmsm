@@ -18,6 +18,8 @@ const Table = () => {
     const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
     const router = useRouter(); // Initialize Next.js router
 
+    const lang = localStorage.getItem('lang') || 'en';
+
     useEffect(() => {
         fetchTableItems();
     }, [currentPage]);
@@ -167,7 +169,7 @@ const Table = () => {
                                     <div className="flex items-start justify-between mb-4">
                                         <div className="flex items-center space-x-4">
                                             <div>
-                                                <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">{item.name}</h3>
+                                                <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">{lang === 'ta' ? item.name_ta : item.name}</h3>
                                                 <div className="text-sm text-gray-500 dark:text-gray-400">
                                                     {renderStars(item.rating)}
                                                 </div>
@@ -205,7 +207,7 @@ const Table = () => {
                                         </div>
                                     </div>
                                     <div className="mt-4">
-                                        <p className="text-gray-600 dark:text-gray-300 line-clamp-3">{item.description}</p>
+                                        <p className="text-gray-600 dark:text-gray-300 line-clamp-3">{lang === 'ta' ? item.description_ta : item.description}</p>
                                     </div>
                                 </div>
                             </div>
@@ -230,8 +232,8 @@ const Table = () => {
                                     <button
                                         key={i}
                                         onClick={() => handlePageChange(i + 1)}
-                                        className={`px-4 py-2 rounded-lg ${currentPage === i + 1 
-                                            ? 'bg-indigo-600 text-white' 
+                                        className={`px-4 py-2 rounded-lg ${currentPage === i + 1
+                                            ? 'bg-indigo-600 text-white'
                                             : 'text-gray-700 hover:bg-gray-50'}`}
                                     >
                                         {i + 1}
@@ -268,11 +270,11 @@ const Table = () => {
                             </div>
                             <div className="p-6">
                                 <div className="flex flex-col items-center mb-6">
-                                    <h4 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">{modalData.name}</h4>
+                                    <h4 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">{lang === 'ta' ? modalData.name_ta : modalData.name}</h4>
                                     <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                                         {renderStars(modalData.rating)}
                                     </div>
-                                    <p className="text-gray-600 dark:text-gray-300 whitespace-pre-wrap text-center">{modalData.description}</p>
+                                    <p className="text-gray-600 dark:text-gray-300 whitespace-pre-wrap text-center">{lang === 'ta' ? modalData.description_ta : modalData.description}</p>
                                 </div>
                             </div>
                             <div className="flex justify-end px-6 py-4 bg-gray-50 dark:bg-gray-800 rounded-b-xl">

@@ -19,7 +19,9 @@ const Elements = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    rating: ""
+    rating: "",
+    description_ta: "",
+    name_ta: ""
   });
 
   useEffect(() => {
@@ -71,10 +73,6 @@ const Elements = () => {
 
     const errors: Record<string, string> = {};
 
-    if (!formData.name.trim()) {
-      errors.name = "Name cannot be empty.";
-    }
-
     const ratingValue = parseInt(formData.rating);
     if (!formData.rating.trim()) {
       errors.rating = "Rating cannot be empty.";
@@ -82,8 +80,20 @@ const Elements = () => {
       errors.rating = "Rating must be a number between 1 and 5.";
     }
 
+    if (!formData.name.trim()) {
+      errors.name = "Name cannot be empty.";
+    }
+
     if (!formData.description.trim()) {
       errors.description = "Description cannot be empty.";
+    }
+
+    if (!formData.name_ta.trim()) {
+      errors.name_ta = "Name cannot be empty.";
+    }
+
+    if (!formData.description_ta.trim()) {
+      errors.description_ta = "Description cannot be empty.";
     }
 
     if (Object.keys(errors).length > 0) {
@@ -159,26 +169,6 @@ const Elements = () => {
 
                 <div className="mb-3 sm:mb-4.5">
                   <label className="mb-2 sm:mb-3 block text-sm font-medium dark:text-white dark-text">
-                    Name <span className="mt-1 text-sm text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Enter name"
-                    className={`w-full rounded border-[1.5px] px-3 sm:px-5 py-2 sm:py-3 text-sm sm:text-base outline-none transition ${formErrors?.name
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                  />
-                  {formErrors?.name && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.name}</p>
-                  )}
-                </div>
-
-                <div className="mb-3 sm:mb-4.5">
-                  <label className="mb-2 sm:mb-3 block text-sm font-medium dark:text-white dark-text">
                     Rating <span className="mt-1 text-sm text-red-500">*</span>
                   </label>
                   <input
@@ -201,6 +191,26 @@ const Elements = () => {
 
                 <div className="mb-3 sm:mb-4.5">
                   <label className="mb-2 sm:mb-3 block text-sm font-medium dark:text-white dark-text">
+                    Name <span className="mt-1 text-sm text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Enter name"
+                    className={`w-full rounded border-[1.5px] px-3 sm:px-5 py-2 sm:py-3 text-sm sm:text-base outline-none transition ${formErrors?.name
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-stroke focus:border-primary"
+                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                  />
+                  {formErrors?.name && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.name}</p>
+                  )}
+                </div>
+
+                <div className="mb-3 sm:mb-4.5">
+                  <label className="mb-2 sm:mb-3 block text-sm font-medium dark:text-white dark-text">
                     Description <span className="mt-1 text-sm text-red-500">*</span>
                   </label>
                   <textarea
@@ -216,6 +226,46 @@ const Elements = () => {
                   />
                   {formErrors?.description && (
                     <p className="mt-1 text-sm text-red-500">{formErrors.description}</p>
+                  )}
+                </div>
+
+                <div className="mb-3 sm:mb-4.5">
+                  <label className="mb-2 sm:mb-3 block text-sm font-medium dark:text-white dark-text">
+                    பெயர் <span className="mt-1 text-sm text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="name_ta"
+                    value={formData.name_ta}
+                    onChange={handleChange}
+                    placeholder="பெயரை உள்ளிடவும்"
+                    className={`w-full rounded border-[1.5px] px-3 sm:px-5 py-2 sm:py-3 text-sm sm:text-base outline-none transition ${formErrors?.name_ta
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-stroke focus:border-primary"
+                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                  />
+                  {formErrors?.name_ta && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.name_ta}</p>
+                  )}
+                </div>
+
+                <div className="mb-3 sm:mb-4.5">
+                  <label className="mb-2 sm:mb-3 block text-sm font-medium dark:text-white dark-text">
+                    விவரம் <span className="mt-1 text-sm text-red-500">*</span>
+                  </label>
+                  <textarea
+                    name="description_ta"
+                    value={formData.description_ta}
+                    onChange={handleChange}
+                    rows={6}
+                    placeholder="விவரங்களை உள்ளிடவும்"
+                    className={`w-full rounded border-[1.5px] px-3 sm:px-5 py-2 sm:py-3 text-sm sm:text-base outline-none transition ${formErrors?.description_ta
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-stroke focus:border-primary"
+                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                  />
+                  {formErrors?.description_ta && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.description_ta}</p>
                   )}
                 </div>
                 <div className="grid grid-cols-1 gap-4 sm:gap-9 mt-3 sm:mt-4.5">
