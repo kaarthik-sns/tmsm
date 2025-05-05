@@ -63,7 +63,7 @@ function NavList() {
           </>
         ) : (
           <>
-            <NavItem label={lang === 'ta' ? 'பதிவு செய்யவும்' : 'Register'} href="/register" className="pr-5 headertext border-r border-black headertext" />
+            <NavItem label={lang === 'ta' ? 'பதிவு செய்' : 'Register'} href="/register" className="pr-5 headertext border-r border-black headertext" />
             <NavItem label={lang === 'ta' ? 'உள்நுழை' : 'Login'} href="/login" className="pl-5" />
           </>
         )}
@@ -77,7 +77,7 @@ function NavList() {
         </>
       ) : (
         <>
-          <NavItem label={lang === 'ta' ? 'பதிவு செய்யவும்' : 'Register'} href="/register" className="block lg:hidden" />
+          <NavItem label={lang === 'ta' ? 'பதிவு செய்' : 'Register'} href="/register" className="block lg:hidden" />
           <NavItem label={lang === 'ta' ? 'உள்நுழை' : 'Login'} href="/login" className="block lg:hidden" />
         </>
       )}
@@ -89,6 +89,7 @@ function NavList() {
 export function NavbarWithSimpleLinks() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen((cur) => !cur);
+  const lang = localStorage.getItem('lang') || 'en';
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -106,7 +107,7 @@ export function NavbarWithSimpleLinks() {
       {...({} as any)}
     >
 
-      <div className="container mx-auto flex items-center justify-between mt-6">
+      <div className={`${lang == 'ta' ? 'container-header' : 'container'} mx-auto flex items-center justify-between mt-6`}>
         <Link className="hidden flex-shrink-0 lg:block" href="/">
           <img
             className="xl:w-[700px] lg:w-[400px] sm:w-[300px]"

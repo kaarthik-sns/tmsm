@@ -158,7 +158,7 @@ const FilterForm = () => {
                   name="subcaste"
                   value={formData.subcaste}
                   onChange={handleInputChange}
-                  className="relative z-20 md:w-64 w-full appearance-none rounded border border-stroke bg-white px-5 py-3 outline-none transition dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  className="relative z-20 md:w-64 w-full appearance-none rounded border border-stroke bg-white px-5 py-1.5 outline-none transition dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                 />
                 {filteredSuggestions.length > 0 && formData.subcaste.length > 0 && (
                   <ul className="absolute w-full bg-white border shadow-md z-30 max-h-60 overflow-y-auto">
