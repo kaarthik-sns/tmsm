@@ -216,13 +216,13 @@ const SignUp: React.FC = () => {
 
     const passwordValidationError = validatePassword(form.password);
     if (passwordValidationError) {
-        newErrors.password = passwordValidationError;
-        setPasswordError(passwordValidationError);
+      newErrors.password = passwordValidationError;
+      setPasswordError(passwordValidationError);
     }
 
     if (!form.confirmPassword) {
       setConfirmPasswordError(lang === 'ta' ? "கடவுச்சொல்லை உறுதிப்படுத்தவும்." : "Confirm password cannot be empty.");
-    
+
     } else if (form.password !== form.confirmPassword) {
       setConfirmPasswordError(lang === 'ta' ? "கடவுச்சொற்கள் பொருந்தவில்லை." : "Passwords do not match.");
     }
@@ -362,7 +362,7 @@ const SignUp: React.FC = () => {
                 <p>{error}</p>
               </div>
             )}
-             { lang == 'ta' && (<p className="text-sm font-medium dark-text mb-4">Please fill the form in english&nbsp;<span className="text-meta-1">*</span></p> )}
+            {lang == 'ta' && (<p className="text-sm font-medium dark-text mb-4">Please fill the form in english&nbsp;<span className="text-meta-1">*</span></p>)}
             <form onSubmit={handleSubmit} >
               <div className="mb-4.5">
                 <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
@@ -549,6 +549,9 @@ const SignUp: React.FC = () => {
                   className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-button"
                 />
               </div>
+              <p className="text-sm font-medium text-center dark-text mb-4">
+                {lang === 'ta' ? 'பதிவு கட்டணம் ₹500 ஆகும்.' : 'Registration amount is ₹500.'}
+              </p>
               <div className="mt-6 text-center">
                 <p>
                   {lang == 'ta' ? 'ஏற்கனவே கணக்கு உள்ளதா?' : 'Already have an account?'}{" "}

@@ -6,20 +6,20 @@ import Breadcrumb from "@/components/Breadcrumbs/TermBreadcrumb";
 import { toast } from "sonner";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
-import { FaAudioDescription } from "react-icons/fa";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
-const TemsElements = () => {
+const Elements = () => {
   const searchParams = useSearchParams();
   const termId = searchParams.get("termId");
 
-  const [formData, setFormData] = useState({ description: "", description_ta: '' });
+  const [formData, setFormData] = useState({ description: "", description_ta: "" });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   const lang = localStorage.getItem('lang') || 'en';
+
 
   const toolbarOptions = [
     // Text formatting options
@@ -67,12 +67,11 @@ const TemsElements = () => {
   // Fetch data when termId changes
   useEffect(() => {
     const fetchUserData = async () => {
-
       setIsLoading(true);
       try {
-        const response = await fetch("/api/cms/terms/view", {
+        const response = await fetch("/api/cms/refund/view", {
           method: "POST",
-          headers: { "Content-Type": "application/json" }
+          headers: { "Content-Type": "application/json" },
         });
 
         if (!response.ok) {
@@ -80,6 +79,7 @@ const TemsElements = () => {
         }
 
         const { data } = await response.json();
+        console.log(data);
         setFormData(data);
       } catch (err) {
         console.error(err);
@@ -128,7 +128,7 @@ const TemsElements = () => {
     }
 
     try {
-      const res = await fetch("/api/cms/terms/edit", {
+      const res = await fetch("/api/cms/refund/edit", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -137,10 +137,10 @@ const TemsElements = () => {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to update terms & conditions.");
+        throw new Error("Failed to update Refund Policy.");
       }
 
-      toast.success("Terms & conditions updated successfully!", {
+      toast.success("Refund Policy updated successfully!", {
         className: "sonner-toast-success",
         cancel: {
           label: 'Close',
@@ -151,7 +151,7 @@ const TemsElements = () => {
     } catch (err) {
       setError(err.message || "An unknown error occurred.");
 
-      toast.error("Failed to update terms & conditions.", {
+      toast.error("Failed to update refund policy.", {
         className: "sonner-toast-error",
         cancel: {
           label: 'Close',
@@ -168,7 +168,7 @@ const TemsElements = () => {
 
   return (
     <>
-      <Breadcrumb pageName="Edit  Terms & Conditions" />
+      <Breadcrumb pageName="Edit Refund Policy" />
       {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-9 sm:grid-cols-1">
@@ -181,7 +181,7 @@ const TemsElements = () => {
                     theme="snow"
                     value={formData?.description}
                     onChange={(value) => handleChange(value, 'description')}
-                    placeholder="Enter terms & conditions"
+                    placeholder="Enter Refund Policy"
                     modules={{ toolbar: toolbarOptions }}
                     className={`react-quill ${formErrors.description ? "border-red-500" : ""
                       }`}
@@ -192,13 +192,12 @@ const TemsElements = () => {
                     </p>
                   )}
                 </div>
-                
                 <div className="mb-4.5">
                   <ReactQuill
                     theme="snow"
                     value={formData?.description_ta}
                     onChange={(value) => handleChange(value, 'description_ta')}
-                    placeholder="விதிமுறைகள் & நிபந்தனைகளை உள்ளிடவும்"
+                    placeholder="பணம் திருப்பித் தரும் கொள்கையை உள்ளிடவும்"
                     modules={{ toolbar: toolbarOptions }}
                     className={`react-quill ${formErrors.description_ta ? "border-red-500" : ""
                       }`}
@@ -229,4 +228,4 @@ const TemsElements = () => {
   );
 };
 
-export default TemsElements;
+export default Elements;

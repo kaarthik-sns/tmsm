@@ -143,6 +143,7 @@ const menuGroups = [
           { label: "Faq", route: "/admin/cms/faq/list"},
           { label: "Terms", route: "/admin/cms/terms_conditions/view"},
           { label: "Privacy Policy", route: "/admin/cms/privacy-policy/view"},
+          { label: "Refund Policy", route: "/admin/cms/refund-policy/view"},
         ],
       },
       {

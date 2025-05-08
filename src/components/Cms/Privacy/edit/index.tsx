@@ -179,7 +179,7 @@ const Elements = () => {
                 <div className="mb-4.5">
                   <ReactQuill
                     theme="snow"
-                    value={formData.description}
+                    value={formData?.description}
                     onChange={(value) => handleChange(value, 'description')}
                     placeholder="Enter terms & conditions"
                     modules={{ toolbar: toolbarOptions }}
@@ -195,9 +195,9 @@ const Elements = () => {
                 <div className="mb-4.5">
                   <ReactQuill
                     theme="snow"
-                    value={formData.description_ta}
+                    value={formData?.description_ta}
                     onChange={(value) => handleChange(value, 'description_ta')}
-                    placeholder=""
+                    placeholder="தனியுரிமைக் கொள்கையை உள்ளிடவும்"
                     modules={{ toolbar: toolbarOptions }}
                     className={`react-quill ${formErrors.description_ta ? "border-red-500" : ""
                       }`}

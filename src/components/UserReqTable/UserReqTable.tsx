@@ -6,6 +6,7 @@ import UpdateStatus from "@/components/UserReqTable/Select/UpdateStatus";
 import { toast } from "sonner";
 import Swal from 'sweetalert2';
 import Loader from "@/components/common/Loader";
+import Pagination from "@/components/Pagination";
 
 const UserTable = () => {
 
@@ -218,6 +219,26 @@ const UserTable = () => {
         }
     };
 
+    // Generate pagination numbers (show only a few around current page)
+    const getPaginationNumbers = () => {
+        const pageNumbers = [];
+        const maxVisible = 2; // Show 2 pages before and after current page
+        const start = Math.max(1, currentPage - maxVisible);
+        const end = Math.min(pages, currentPage + maxVisible);
+
+        if (start > 1) pageNumbers.push(1);
+        if (start > 2) pageNumbers.push("...");
+
+        for (let i = start; i <= end; i++) {
+            pageNumbers.push(i);
+        }
+
+        if (end < pages - 1) pageNumbers.push("...");
+        if (end < pages) pageNumbers.push(pages);
+
+        return pageNumbers;
+    };
+
     if (isLoading) {
         return <Loader />
     }
@@ -385,102 +406,12 @@ const UserTable = () => {
 
             {/* Updated Pagination */}
             {pages > 1 && (
-                <div className="mt-4 px-2 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-                    <div className="flex-1 flex justify-between sm:hidden">
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                if (currentPage > 1) handlePageChange(currentPage - 1);
-                            }}
-                            disabled={currentPage === 1}
-                            className={`relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-md 
-                                ${currentPage === 1
-                                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                    : 'bg-white text-gray-700 hover:bg-gray-50'}`}
-                        >
-                            Previous
-                        </button>
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                if (currentPage < pages) handlePageChange(currentPage + 1);
-                            }}
-                            disabled={currentPage === pages}
-                            className={`relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-md 
-                                ${currentPage === pages
-                                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                    : 'bg-white text-gray-700 hover:bg-gray-50'}`}
-                        >
-                            Next
-                        </button>
-                    </div>
-                    <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-center">
-                        <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-                            {/* Previous Button */}
-                            <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    if (currentPage > 1) handlePageChange(currentPage - 1);
-                                }}
-                                disabled={currentPage === 1}
-                                className={`relative inline-flex items-center px-2 py-2 rounded-l-md border text-sm font-medium
-                                    ${currentPage === 1
-                                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                        : 'bg-white text-gray-500 hover:bg-gray-50'}`}
-                            >
-                                <svg
-                                    className="fill-current"
-                                    width="8"
-                                    height="16"
-                                    viewBox="0 0 8 16"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path d="M7.17578 15.1156C7.00703 15.1156 6.83828 15.0593 6.72578 14.9187L0.369531 8.44995C0.116406 8.19683 0.116406 7.80308 0.369531 7.54995L6.72578 1.0812C6.97891 0.828076 7.37266 0.828076 7.62578 1.0812C7.87891 1.33433 7.87891 1.72808 7.62578 1.9812L1.71953 7.99995L7.65391 14.0187C7.90703 14.2718 7.90703 14.6656 7.65391 14.9187C7.48516 15.0312 7.34453 15.1156 7.17578 15.1156Z" />
-                                </svg>
-                            </button>
-
-                            {/* Page Numbers */}
-                            {Array.from({ length: pages }, (_, i) => (
-                                <button
-                                    key={i}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handlePageChange(i + 1);
-                                    }}
-                                    className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium
-                                        ${currentPage === i + 1
-                                            ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
-                                            : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'}`}
-                                >
-                                    {i + 1}
-                                </button>
-                            ))}
-
-                            {/* Next Button */}
-                            <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    if (currentPage < pages) handlePageChange(currentPage + 1);
-                                }}
-                                disabled={currentPage === pages}
-                                className={`relative inline-flex items-center px-2 py-2 rounded-r-md border text-sm font-medium
-                                    ${currentPage === pages
-                                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                        : 'bg-white text-gray-500 hover:bg-gray-50'}`}
-                            >
-                                <svg
-                                    className="fill-current"
-                                    width="8"
-                                    height="16"
-                                    viewBox="0 0 8 16"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path d="M0.819531 15.1156C0.650781 15.1156 0.510156 15.0593 0.369531 14.9468C0.116406 14.6937 0.116406 14.3 0.369531 14.0468L6.27578 7.99995L0.369531 1.9812C0.116406 1.72808 0.116406 1.33433 0.369531 1.0812C0.622656 0.828076 1.01641 0.828076 1.26953 1.0812L7.62578 7.54995C7.87891 7.80308 7.87891 8.19683 7.62578 8.44995L1.26953 14.9187C1.15703 15.0312 0.988281 15.1156 0.819531 15.1156Z" />
-                                </svg>
-                            </button>
-                        </nav>
-                    </div>
-                </div>
+                < Pagination
+                    currentPage={currentPage}
+                    totalPages={pages}
+                    changePage={handlePageChange}
+                    getPaginationNumbers={getPaginationNumbers}
+                />
             )}
         </div>
     );
