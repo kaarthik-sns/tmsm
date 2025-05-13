@@ -110,7 +110,7 @@ export function NavbarWithSimpleLinks() {
       <div className={`${lang == 'ta' ? 'container-header' : 'container'} mx-auto flex items-center justify-between mt-6`}>
         <Link className="hidden flex-shrink-0 lg:block" href="/">
           <img
-            className="xl:w-[700px] lg:w-[400px] sm:w-[300px]"
+            className="2xl:w-[700px] xl:w-[520px] lg:w-[400px] sm:w-[300px]"
             src={"/images/logo/Flogo.svg"}
             alt="Logo"
             loading="lazy"
