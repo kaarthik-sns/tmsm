@@ -4,6 +4,7 @@ import { sendEmail } from "@/utils/mail.util"
 import User from '@/models/User';
 import connectToDatabase from '@/lib/mongodb';
 import { welcomeTemplate } from '@/lib/template/welcome';
+import Contact from '@/models/Contact';
 
 export async function GET(req: NextRequest) {
 
@@ -28,19 +29,34 @@ export async function GET(req: NextRequest) {
     //     message: htmlBody
     // });
 
-    const receipients = [{
-        name: 'kaarthik',
-        address: 'kaarthikr@searchnscore.com'
-    }]
-    const copyright = 'All rights reserved tmsm.com.';
+    // const receipients = [{
+    //     name: 'kaarthik',
+    //     address: 'kaarthikr@searchnscore.com'
+    // }]
+    // const copyright = 'All rights reserved tmsm.com.';
 
-    const htmlBody = welcomeTemplate('kaarthik', copyright);
+    // const htmlBody = welcomeTemplate('kaarthik', copyright);
 
-    const result = await sendEmail({
-        receipients,
-        subject: `Welcome to TMSM, kaarthik!`,
-        message: htmlBody
-    })
+    // const result = await sendEmail({
+    //     receipients,
+    //     subject: `Welcome to TMSM, kaarthik!`,
+    //     message: htmlBody
+    // })
+
+    const generateDummyContact = (i) => ({
+        name: `User ${i}`,
+        email: `user${i}@example.com`,
+        interested_in: ['Room Booking', 'Event', 'Conference'][i % 3],
+        phone: `9876543${100 + i}`,
+        message: `This is a test message number ${i}`,
+    });
+
+    const dummyContacts = Array.from({ length: 40 }, (_, i) =>
+        generateDummyContact(i + 1)
+    );
+
+    // Insert into the DB
+    // await Contact.insertMany(dummyContacts);
 
     return NextResponse.json('test');
 }

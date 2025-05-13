@@ -171,10 +171,9 @@ const SignUp: React.FC = () => {
 
   const validate = () => {
     let newErrors: any = {};
-    let valid = true;
 
     if (!form.profile_created_for) {
-      newErrors.profile_created_for = lang === 'ta' ? "திருமண ப்ரொஃபைலை தேர்வு செய்யவும்." : "Select a matrimony profile.";
+      newErrors.profile_created_for = lang === 'ta' ? "திருமண ப்ரொஃபைலை தேர்வு செய்யவும்." : "Select matrimony profile for.";
     }
 
     if (form.profile_created_for !== 'myself') {
@@ -217,16 +216,15 @@ const SignUp: React.FC = () => {
 
     const passwordValidationError = validatePassword(form.password);
     if (passwordValidationError) {
-      setPasswordError(lang === 'ta' ? "கடவுச்சொல் தவறாக உள்ளது." : passwordValidationError);
-      valid = false;
+      newErrors.password = passwordValidationError;
+      setPasswordError(passwordValidationError);
     }
 
     if (!form.confirmPassword) {
       setConfirmPasswordError(lang === 'ta' ? "கடவுச்சொல்லை உறுதிப்படுத்தவும்." : "Confirm password cannot be empty.");
-      valid = false;
+
     } else if (form.password !== form.confirmPassword) {
       setConfirmPasswordError(lang === 'ta' ? "கடவுச்சொற்கள் பொருந்தவில்லை." : "Passwords do not match.");
-      valid = false;
     }
 
     if (!form.religion) {
@@ -241,7 +239,7 @@ const SignUp: React.FC = () => {
     if (!selected) {
       newErrors.selected = lang === 'ta'
         ? "விதிமுறைகள் மற்றும் நிபந்தனைகளை ஏற்கவும்."
-        : "Accept the Terms and Conditions";
+        : "Please accept the Terms and Conditions";
     }
 
     return newErrors;
@@ -350,7 +348,7 @@ const SignUp: React.FC = () => {
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-6 md:p-10">
         <div className="flex items-center md:w-100">
           <div className="w-full p-4">
-            <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2 heading-title">
+            <h2 className="mb-9 text-3xl font-bold text-black  sm:text-title-xl2">
               {lang == 'ta' ? 'பதிவு செய்யவும்' : 'Register'}
             </h2>
             {successMessage && (
@@ -364,6 +362,7 @@ const SignUp: React.FC = () => {
                 <p>{error}</p>
               </div>
             )}
+            {lang == 'ta' && (<p className="text-sm font-medium dark-text mb-4">Please fill the form in english&nbsp;<span className="text-meta-1">*</span></p>)}
             <form onSubmit={handleSubmit} >
               <div className="mb-4.5">
                 <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
@@ -389,7 +388,7 @@ const SignUp: React.FC = () => {
                       value={form.profile_creator_name || ""}
                       onChange={handleChange}
                       placeholder={lang == 'ta' ? 'ப்ரொஃபைல் உருவாக்குநரின் பெயர்' : 'Profile Creator Name'}
-                      className={`w-full rounded-lg border ${errors.profile_creator_name ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
+                      className={`w-full rounded-lg border ${errors.profile_creator_name ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-6 text-black outline-none focus:border-primary`}
 
                     />
                     {errors?.profile_creator_name && (
@@ -405,7 +404,7 @@ const SignUp: React.FC = () => {
                   disabled={pending}
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  placeholder={lang == 'ta' ? 'முதல் பெயர்' : placeholders.name}
+                  placeholder={lang == 'ta' ? 'மணமகள்/மணமகன் முதல் பெயர்' : placeholders.name}
                   className={`w-full rounded-lg border ${errors.name ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
 
                 />
@@ -420,8 +419,8 @@ const SignUp: React.FC = () => {
                   disabled={pending}
                   value={form.lastname}
                   onChange={(e) => setForm({ ...form, lastname: e.target.value })}
-                  placeholder={lang == 'ta' ? 'கடைசி பெயர்' : placeholders.lastname}
-                  className={`w-full rounded-lg border ${errors.lastname ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
+                  placeholder={lang == 'ta' ? 'மணமகள்/மணமகன் கடைசி பெயர்' : placeholders.lastname}
+                  className={`w-full rounded-lg border ${errors.lastname ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-6 text-black outline-none focus:border-primary`}
                 />
                 {errors.lastname && (
                   <p className="text-red-600 text-sm">{errors.lastname}</p>
@@ -430,7 +429,7 @@ const SignUp: React.FC = () => {
 
               <div className="mb-4">
                 <input
-                  type="email"
+                  type="text"
                   disabled={pending}
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -446,7 +445,7 @@ const SignUp: React.FC = () => {
               <div className="mb-4">
                 {form.profile_created_for !== "myself" && (
                   <label className="mb-1 block text-sm font-medium dark-text dark:text-white">
-                    {lang == 'ta' ? 'மணமகனின்/மணமகளின் எண் தெரிவிக்க வேண்டாம்.' : "Don't mention the bride/groom's phone number."}
+                    {lang == 'ta' ? 'மணமகனின்/மணமகளின் தொலைபேசி எண் தெரிவிக்க வேண்டாம்.' : "Don't mention the bride/groom's phone number."}
                   </label>
                 )}
                 <input
@@ -524,7 +523,7 @@ const SignUp: React.FC = () => {
                   autoComplete="new-password"
                   placeholder={lang == 'ta' ? 'கடவுச்சொல்லை உறுதிப்படுத்தவும்' : 'Confirm Password'}
                   className={`w-full rounded-lg border ${confirmPasswordError ? "border-red-500" : "border-stroke"
-                    } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
+                    } bg-transparent py-4 pl-6 pr-6 text-black outline-none focus:border-primary`}
                 />
                 {confirmPasswordError && <p className="text-red-600 text-sm">{confirmPasswordError}</p>}
               </div>
@@ -534,7 +533,7 @@ const SignUp: React.FC = () => {
                   selected={selected}
                   setselected={setselected}
                   label={lang === 'ta' ? 'நான் ஏற்கிறேன்' : 'I accept the'}
-                  linkText={lang === 'ta' ? 'விதிமுறைகள் மற்றும் நிபந்தனைகளை' : ' Terms and Conditions'}
+                  linkText={lang === 'ta' ? 'விதிமுறைகள் மற்றும் நிபந்தனைகளை.' : 'Terms and Conditions.'}
                   linkHref="/terms"
                 />
 
@@ -550,6 +549,9 @@ const SignUp: React.FC = () => {
                   className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-button"
                 />
               </div>
+              <p className="text-sm font-medium text-center dark-text mb-4">
+                {lang === 'ta' ? 'பதிவு கட்டணம் ₹500 ஆகும்.' : 'Registration amount is ₹500.'}
+              </p>
               <div className="mt-6 text-center">
                 <p>
                   {lang == 'ta' ? 'ஏற்கனவே கணக்கு உள்ளதா?' : 'Already have an account?'}{" "}

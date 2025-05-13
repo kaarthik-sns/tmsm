@@ -10,6 +10,7 @@ import NextImage from "next/image"; // Rename the import to avoid conflict
 import { toast } from "sonner";
 import Swal from 'sweetalert2';
 import Loader from "@/components/common/Loader";
+import Pagination from "@/components/Pagination";
 
 const UserTable = () => {
 
@@ -335,6 +336,26 @@ const UserTable = () => {
         }
     };
 
+
+    // Generate pagination numbers (show only a few around current page)
+    const getPaginationNumbers = () => {
+        const pageNumbers = [];
+        const maxVisible = 2; // Show 2 pages before and after current page
+        const start = Math.max(1, currentPage - maxVisible);
+        const end = Math.min(pages, currentPage + maxVisible);
+
+        if (start > 1) pageNumbers.push(1);
+        if (start > 2) pageNumbers.push("...");
+
+        for (let i = start; i <= end; i++) {
+            pageNumbers.push(i);
+        }
+
+        if (end < pages - 1) pageNumbers.push("...");
+        if (end < pages) pageNumbers.push(pages);
+
+        return pageNumbers;
+    };
 
     if (isLoading) {
         return <Loader />
@@ -816,66 +837,12 @@ const UserTable = () => {
 
             {/* Pagination */}
             {pages > 1 && (
-                <div className="mt-4 px-2 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-                    <div className="flex-1 flex justify-between sm:hidden">
-                        <button
-                            onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                            disabled={currentPage === 1}
-                            className={`relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-md 
-                                ${currentPage === 1
-                                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                    : 'bg-white text-gray-700 hover:bg-gray-50'}`}
-                        >
-                            Previous
-                        </button>
-                        <button
-                            onClick={() => currentPage < pages && handlePageChange(currentPage + 1)}
-                            disabled={currentPage === pages}
-                            className={`relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-md 
-                                ${currentPage === pages
-                                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                    : 'bg-white text-gray-700 hover:bg-gray-50'}`}
-                        >
-                            Next
-                        </button>
-                    </div>
-                    <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-center">
-                        <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-                            <button
-                                onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                                disabled={currentPage === 1}
-                                className={`relative inline-flex items-center px-2 py-2 rounded-l-md border text-sm font-medium
-                                    ${currentPage === 1
-                                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                        : 'bg-white text-gray-500 hover:bg-gray-50'}`}
-                            >
-                                <PrevArrowIcon />
-                            </button>
-                            {Array.from({ length: pages }, (_, i) => (
-                                <button
-                                    key={i}
-                                    onClick={() => handlePageChange(i + 1)}
-                                    className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium
-                                        ${currentPage === i + 1
-                                            ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
-                                            : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'}`}
-                                >
-                                    {i + 1}
-                                </button>
-                            ))}
-                            <button
-                                onClick={() => currentPage < pages && handlePageChange(currentPage + 1)}
-                                disabled={currentPage === pages}
-                                className={`relative inline-flex items-center px-2 py-2 rounded-r-md border text-sm font-medium
-                                    ${currentPage === pages
-                                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                        : 'bg-white text-gray-500 hover:bg-gray-50'}`}
-                            >
-                                <NextArrowIcon />
-                            </button>
-                        </nav>
-                    </div>
-                </div>
+                < Pagination
+                    currentPage={currentPage}
+                    totalPages={pages}
+                    changePage={handlePageChange}
+                    getPaginationNumbers={getPaginationNumbers}
+                />
             )}
         </div>
     );

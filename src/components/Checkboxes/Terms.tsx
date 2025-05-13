@@ -27,7 +27,7 @@ const Terms = ({
       onChange={() => setselected(!selected)}
     />
     <div
-      className={`mr-2 flex h-5 w-5 items-center justify-center rounded border border-primary bg-white dark:bg-transparent ${
+      className={`mr-2 flex h-4 w-4 items-center justify-center rounded border border-primary bg-white dark:bg-transparent ${
         selected && "border-primary bg-gray dark:bg-transparent"
       }`}
     >

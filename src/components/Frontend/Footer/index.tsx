@@ -41,7 +41,7 @@ export function FooterWithCustomDesign() {
 
   return (
     <footer className="dark-bg text-white py-8">
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-[50%_30%_20%] gap-y-8 md:gap-x-8 md:text-left pl-2 pr-2 footer-text">
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-[50%_25%_25%] gap-y-8 md:gap-x-8 md:text-left pl-2 pr-2 footer-text">
         {/* Left Column - Logo and Description */}
         <div className="flex flex-col items-center md:items-start">
           <Link className="flex-shrink-0 lg:block" href="/">

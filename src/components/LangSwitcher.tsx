@@ -20,8 +20,8 @@ const LangSwitcher = ({lang,setLang}) => {
         right: 20,
         backgroundColor: 'rgba(30, 30, 30, 0.8)',
         backdropFilter: 'blur(8px)',
-        padding: '10px 16px',
-        borderRadius: '12px',
+        padding: '5px 8px',
+        borderRadius: '6px',
         boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
         zIndex: 9999,
         color: '#fff',
@@ -44,8 +44,8 @@ const LangSwitcher = ({lang,setLang}) => {
           appearance: 'none',
         }}
       >
-        <option value="en">English</option>
-        <option value="ta">தமிழ்</option>
+        <option value="en">En</option>
+        <option value="ta">த</option>
       </select>
       <ChevronDown size={16} style={{ marginLeft: '-24px', pointerEvents: 'none' }} />
     </div>

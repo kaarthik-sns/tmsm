@@ -105,7 +105,7 @@ const FilterForm = () => {
 
   return (
     <div className="dark-bg">
-      <div className="container mx-auto flex items-center fillter-text justify-center px-4 py-6 md:p-10">
+      <div className="container mx-auto flex items-center fillter-text justify-center px-4 py-6">
         <form onSubmit={handleSubmit}>
           <div className="flex flex-wrap items-center gap-4 md:gap-9 p-4 md:p-6.5 member-search-form">
 
@@ -179,7 +179,7 @@ const FilterForm = () => {
 
             <div className="w-full md:w-auto flex justify-between gap-4 mt-5 md:mt-5">
               <button
-                className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom"
+                className="inline-block px-7 py-2 text-white duration-150 rounded-full  md:text-sm ftext-custom"
                 type="submit"
               >
                 {lang == 'ta' ? 'தேடு' : 'Search'}
@@ -189,8 +189,6 @@ const FilterForm = () => {
         </form>
       </div>
     </div>
-
-
   );
 };
 
