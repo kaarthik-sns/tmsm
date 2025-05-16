@@ -58,6 +58,7 @@ const PaginatedUsers = () => {
     "Kaikolar Mudaliyar",
     "Vellalar"
   ];
+
   const [filters, setFilters] = useState({
     lookingfor: searchParams.get("lookingfor") || "",
     fromage: searchParams.get("fromage") || "",
@@ -372,13 +373,13 @@ const PaginatedUsers = () => {
 
               <div className="w-full md:w-auto flex justify-between gap-4 mt-5 md:mt-5">
                 <button
-                  className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom"
+                  className="inline-block member-search-btn text-white duration-150 rounded-full  md:text-sm ftext-custom"
                   type="submit"
                 >
                   {lang == 'ta' ? 'தேடு' : 'Search'}
                 </button>
                 <button
-                  className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom"
+                  className="inline-block member-search-btn text-white duration-150 rounded-full  md:text-sm ftext-custom"
                   type="button"
                   onClick={handleReset} // Add onClick event
 
@@ -396,7 +397,7 @@ const PaginatedUsers = () => {
 
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="title"><span> {lang == 'ta' ? 'நீங்கள்' : 'You have found'} {totalCount} </span> {lang == 'ta' ? 'தேடல் முடிவுகளை கண்டறிந்துள்ளீர்கள்' : 'search results'}  </h2>
-          <span className="text-lg font-semibold sm:ml-auto text-sm welcome"> {lang == 'ta' ? 'நல்வரவு' : 'Welcome'} , {session?.user?.name || 'Guest'}
+          <span className="font-semibold sm:ml-auto text-sm welcome"> {lang == 'ta' ? 'நல்வரவு' : 'Welcome'} , {session?.user?.name || 'Guest'}
           </span>
         </div>
 
@@ -422,7 +423,7 @@ const PaginatedUsers = () => {
                           <button
                             key={user._id}
                             onClick={() => handleViewDetails(user._id)} // Define handleViewDetails function
-                            className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom"
+                            className="inline-block member-req-btn text-white duration-150 rounded-full  md:text-sm ftext-custom"
                           >
                             {lang == 'ta' ? 'விவரங்களைக் காண்க' : 'View Details'}
                           </button>
@@ -430,7 +431,7 @@ const PaginatedUsers = () => {
                           // If status is "rejected", show "Rejected" disabled button
                           <button
                             key={user._id}
-                            className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom-rej cursor-not-allowed"
+                            className="inline-block member-req-btn text-white duration-150 rounded-full  md:text-sm ftext-custom-rej cursor-not-allowed"
                             disabled
                           >
                             {lang == 'ta' ? 'நிராகரிக்கப்பட்டது' : 'Rejected'}
@@ -440,7 +441,7 @@ const PaginatedUsers = () => {
                           // If user._id exists but status is not "accepted", show "Request Sent" buttonclass="bg-green-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-green-600 mb-6"
                           <button
                             key={user._id}
-                            className="inline-block px-10 py-4 text-white duration-150 rounded-full md:text-sm bg-green-500 cursor-not-allowed"
+                            className="inline-block member-req-btn text-white duration-150 rounded-full md:text-sm bg-green-500 cursor-not-allowed"
                             disabled
                           >
                             {
@@ -456,7 +457,7 @@ const PaginatedUsers = () => {
                         <button
                           key={user._id}
                           onClick={() => handleRequestClick(user._id)} // Define handleRequestClick function
-                          className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom"
+                          className="inline-block member-req-btn text-white duration-150 rounded-full  md:text-sm ftext-custom"
                         >
                           {lang == 'ta' ? 'கோரிக்கையை அனுப்பவும்' : ' Send Request'}
                         </button>

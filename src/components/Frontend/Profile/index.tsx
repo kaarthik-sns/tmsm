@@ -116,52 +116,61 @@ export default function Profile({ userId }) {
     <div className="bg-gray-100 min-h-screen">
       {/* Header Section */}
       <div className="profilecolor text-white py-8 relative">
-        <div className="container mx-auto flex flex-col lg:flex-row items-center lg:items-start">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center lg:items-start">
 
           {/* Left Side: Profile Info */}
-          <div className="flex flex-col items-center gap-6 lg:flex-row lg:items-start px-5">
+          <div className="flex flex-col items-center mt-5 gap-6 lg:flex-row lg:items-start w-full">
             <div className="relative">
               {/* Profile Picture */}
               <Image
                 src={profileData?.profile_photo ? `/api${profileData.profile_photo}` : "/images/user/dummy.png"}
                 alt="Profile Picture"
-                width={200} // Fixed width
-                height={200} // Fixed height
+                width={200}
+                height={200}
                 quality={100}
                 unoptimized={true}
-                className="w-40 h-40 object-cover rounded-full border-4 border-white cursor-pointer"
+                className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-full border-4 border-white cursor-pointer"
               />
             </div>
 
             <div className="text-center lg:text-left px-5">
-              <h1 className="text-2xl font-bold mb-2 text-white">{profileData.name || "No name provided"} {profileData.lastname || ""}</h1>
+              <h1 className="text-2xl font-bold mb-2 text-white">
+                {profileData.name || "No name provided"} {profileData.lastname || ""}
+              </h1>
               <p className="max-w-lg text-white text-justify">
                 {profileData.bride_groom_detail || ""}
               </p>
-              {(profileData.horoscope) && (
-                <button className="inline-block px-10 py-4 text-white duration-150 rounded-full md:text-sm ftext-custom mt-5" onClick={handlePreview} style={{ width: "200px", padding: "8px 0" }}>{lang == 'ta' ? 'ஜாதக முன்னோட்டம்' : 'View Horoscope'}</button>
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm mt-5">
+                <p className="flex items-center">
+                  <FaPhoneAlt className="inline-block mr-1" />
+                  {profileData.phonenumber || "-"}
+                </p>
+                <p className="flex items-center">
+                  <FaEnvelope className="inline-block mr-1" />
+                  {profileData.email || "-"}
+                </p>
+                <p className="flex items-center">
+                  <FaMapMarkerAlt className="inline-block mr-1" />
+                  {profileData?.city?.name ? `${profileData?.city?.name}, ` : ""}
+                  {profileData?.state?.name ? `${profileData?.state?.name}, ` : ""}
+                  {profileData?.country?.name || ""}
+                </p>
+              </div>
+
+              {profileData.horoscope && (
+                <button
+                  onClick={handlePreview}
+                  className="inline-block px-5 py-2 text-white duration-150 rounded-full md:text-sm ftext-custom mt-5"
+                >
+                  {lang === 'ta' ? 'ஜாதக முன்னோட்டம்' : 'View Horoscope'}
+                </button>
               )}
             </div>
           </div>
 
-          {/* Right Side: Contact Info */}
-          <div className="p-6 rounded-lg text-white mt-6 lg:mt-0 lg:ml-10 md:px-26">
-            <h2 className="text-lg font-bold">{lang == 'ta' ? 'தொடர்புத் தகவல்' : 'CONTACT INFO'}</h2>
-            <div className="mt-2 conatct-bio">
-              <p><FaPhoneAlt className="inline-block mr-2" /> {profileData.phonenumber || "-"}</p>
-              <p><FaEnvelope className="inline-block mr-2" /> {profileData.email || "-"}</p>
-              <p>
-                <FaMapMarkerAlt className="inline-block mr-2" />
-                {profileData?.city?.name ? `${profileData?.city?.name}, ` : ""}
-                {profileData?.state?.name ? `${profileData?.state?.name}, ` : ""}
-                {profileData?.country?.name || ""}
-              </p>
-            </div>
-          </div>
 
         </div>
       </div>
-
       {/* Information Sections */}
       <div className="container max-w-5xl mx-auto bg-light p-6 mt-6 mb-6 shadow-md rounded-lg">
         {/* Verification */}
