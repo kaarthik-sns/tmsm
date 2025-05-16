@@ -479,7 +479,14 @@ input:-internal-autofill-selected {
     .about-con-desc h3,
     .story-right-desc h3,
     .we-offer-title h3 {
-        font-size: 30px !important;
+        font-size: 28px !important;
+        line-height: 40px !important;
+    }
+
+    .lang-ta .about-con-desc h3,
+    .lang-ta .story-right-desc h3,
+    .lang-ta .we-offer-title h3 {
+        font-size: 26px !important;
         line-height: 40px !important;
     }
 }
@@ -584,6 +591,11 @@ input:-internal-autofill-selected {
     margin: 0 0 30px;
 }
 
+.lang-ta .about-con-desc p,
+.lang-ta .about-our-story p {
+    font-size: 14px;
+}
+
 .about-our-story {
     margin: 0;
     padding: 80px 0;
@@ -672,6 +684,10 @@ input:-internal-autofill-selected {
     margin: 0 0 15px;
 }
 
+.lang-ta .offer-list-itmes h4 {
+    font-size: 18px;
+}
+
 .offer-list-itmes p {
     color: #000000;
     text-align: justify;
@@ -680,6 +696,10 @@ input:-internal-autofill-selected {
     font-weight: 300;
     line-height: 24px;
     margin: 0;
+}
+
+.lang-ta .offer-list-itmes p {
+    font-size: 16px;
 }
 
 /*profile */
@@ -769,6 +789,10 @@ input:-internal-autofill-selected {
     margin: 0 0 16px;
 }
 
+.lang-ta .con-message p {
+    font-size: 14px;
+}
+
 .con-data-forms form .row {
     margin: 0 -15px;
 }
@@ -806,6 +830,11 @@ input:-internal-autofill-selected {
     padding: 13px 54px;
     border: 0;
     float: right
+}
+
+.lang-ta .cta-submit {
+    font-size: 16px;
+    padding: 11px 40px;
 }
 
 .right-contact-info {
@@ -1697,6 +1726,10 @@ input[type="radio"] {
     font-size: 15px;
 }
 
+.lang-ta .footer-text a {
+    font-size: 15px;
+}
+
 @media only screen and (min-width: 768px) {
 
     .lang-ta .top-title h2 {
@@ -1709,16 +1742,16 @@ input[type="radio"] {
     }
 
     .lang-ta .about-con-desc {
-        padding: 3.47vw;
+        padding: 3vw;
     }
 
     .lang-ta .about-con-desc h3 {
-        font-size: 3.47vw;
+        font-size: 3vw;
         margin: 0 0 1.67vw;
     }
 
     .lang-ta .about-con-desc p {
-        font-size: 1.25vw;
+        font-size: 1vw;
         line-height: 2.08vw;
         margin: 0 0 2.08vw;
     }
@@ -1728,28 +1761,25 @@ input[type="radio"] {
     }
 
     .lang-ta .story-right-desc h3 {
-        font-size: 3.47vw;
+        font-size: 3vw;
         margin: 0 0 1.67vw;
     }
 
     .lang-ta .story-right-desc p {
-        font-size: 1.25vw;
+        font-size: 1vw;
         line-height: 2.08vw;
         margin: 0 0 1.04vw;
     }
 
     .lang-ta .about-we-offer {
-        padding: 5.56vw 0;
+        padding: 5vw 0;
     }
 
     .lang-ta .we-offer-title h3 {
-        font-size: 3.47vw;
+        font-size: 3vw;
         margin: 0 0 2.08vw;
     }
 
-    .lang-ta .offer-list-itmes {
-        padding: 1.67vw;
-    }
 
     .lang-ta .offer-icon {
         width: 4.44vw;
@@ -1758,12 +1788,12 @@ input[type="radio"] {
     }
 
     .lang-ta .offer-list-itmes h4 {
-        font-size: 1.39vw;
+        font-size: 1vw;
         margin: 0 0 1.04vw;
     }
 
     .lang-ta .offer-list-itmes p {
-        font-size: 1.25vw;
+        font-size: 1vw;
         line-height: 1.67vw;
     }
 
@@ -1773,18 +1803,18 @@ input[type="radio"] {
     }
 
     .lang-ta .con-top-title h3 {
-        font-size: 3.47vw;
+        font-size: 3vw;
         margin: 0 0 2.08vw;
     }
 
     .lang-ta .con-message h4 {
-        font-size: 1.67vw;
+        font-size: 1vw;
         line-height: 2.08vw;
         margin: 0 0 1.11vw;
     }
 
     .lang-ta .con-message p {
-        font-size: 1.25vw;
+        font-size: 1vw;
         line-height: 2.08vw;
         margin: 0 0 1.11vw;
     }
@@ -1811,7 +1841,7 @@ input[type="radio"] {
     }
 
     .lang-ta .cta-submit {
-        font-size: 1.25vw;
+        font-size: 1vw;
         line-height: 2.08vw;
         margin: 2.78vw 0 0;
         padding: 0.9vw 3.75vw;
@@ -1822,13 +1852,13 @@ input[type="radio"] {
     }
 
     .lang-ta .con-list-of-data h4 {
-        font-size: 1.67vw;
+        font-size: 1.2vw;
         line-height: 2.08vw;
         margin: 0 0 1.11vw;
     }
 
     .lang-ta .con-list-of-data p {
-        font-size: 1.25vw;
+        font-size: 1vw;
         line-height: 2.08vw;
         margin: 0 0 1.11vw;
     }
@@ -1861,9 +1891,9 @@ input[type="radio"] {
 }
 
 @media only screen and (min-width: 1600px) {
-  
+
     .lang-ta .top-title h2 {
-        font-size: 70px;
+        font-size: 66px;
         line-height: 98.16px;
     }
 
@@ -2016,7 +2046,7 @@ input[type="radio"] {
     }
 
     .lang-ta .top-title h2 {
-        font-size: 30px;
+        font-size: 28px;
         line-height: 40px;
     }
 
@@ -2053,7 +2083,7 @@ input[type="radio"] {
     }
 
     .lang-ta .con-top-title h3 {
-        font-size: 30px;
+        font-size: 26px;
         margin-bottom: 20px;
     }
 
@@ -2084,7 +2114,7 @@ input[type="radio"] {
     }
 
     .lang-ta .con-list-of-data p {
-        font-size: 18px;
+        font-size: 14px;
 
         .heading {
             font-size: 30px;
