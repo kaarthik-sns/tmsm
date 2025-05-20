@@ -94,7 +94,7 @@ const ForgotPassword: React.FC = () => {
               {/* Show success message */}
               {successMessage && (
                 <div className="bg-green-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-green-600 mb-6">
-                  <p>{successMessage} Redirecting to login in {remainingTime} seconds... </p>
+                  <p> {lang == 'ta' ? `வெற்றிகரமாக கடவுச்சொல் பதிவு செய்யப்பட்டு, உள்நுழைவுக்கு ${remainingTime} விநாடிகளில் மாற்றப்படுகிறது...` : `${successMessage} Redirecting to login in ${remainingTime} seconds...`}</p>
                 </div>
               )}
 
