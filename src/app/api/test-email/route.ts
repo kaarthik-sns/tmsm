@@ -43,20 +43,22 @@ export async function GET(req: NextRequest) {
     //     message: htmlBody
     // })
 
-    const generateDummyContact = (i) => ({
-        name: `User ${i}`,
-        email: `user${i}@example.com`,
-        interested_in: ['Room Booking', 'Event', 'Conference'][i % 3],
-        phone: `9876543${100 + i}`,
-        message: `This is a test message number ${i}`,
-    });
+    // const generateDummyContact = (i) => ({
+    //     name: `User ${i}`,
+    //     email: `user${i}@example.com`,
+    //     interested_in: ['Room Booking', 'Event', 'Conference'][i % 3],
+    //     phone: `9876543${100 + i}`,
+    //     message: `This is a test message number ${i}`,
+    // });
 
-    const dummyContacts = Array.from({ length: 40 }, (_, i) =>
-        generateDummyContact(i + 1)
-    );
+    // const dummyContacts = Array.from({ length: 40 }, (_, i) =>
+    //     generateDummyContact(i + 1)
+    // );
 
     // Insert into the DB
     // await Contact.insertMany(dummyContacts);
+
+     console.log('⏰ Cron running at', new Date());
 
     return NextResponse.json('test');
 }

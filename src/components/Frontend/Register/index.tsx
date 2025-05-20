@@ -15,7 +15,6 @@ import SelectGroupCaste from "@/components/SelectGroup/SelectGroupCaste";
 import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
 
 
-
 const SignUp: React.FC = () => {
 
   const [form, setForm] = useState({
@@ -264,6 +263,7 @@ const SignUp: React.FC = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     });
+    
     const data = await res.json();
 
     if (res.ok) {
@@ -279,10 +279,10 @@ const SignUp: React.FC = () => {
         router.push("/login");
       }, 5000); // Redirect after 5 seconds
     } else if (res.status === 400) {
-      setErrors(data.message);
+      setError(data.message);
       setPending(false);
     } else if (res.status === 500) {
-      setErrors(data.message);
+      setError(data.message);
       setPending(false);
     }
   };
@@ -549,9 +549,6 @@ const SignUp: React.FC = () => {
                   className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-button"
                 />
               </div>
-              <p className="text-sm font-medium text-center dark-text mb-4">
-                {lang === 'ta' ? 'பதிவு கட்டணம் ₹500 ஆகும்.' : 'Registration amount is ₹500.'}
-              </p>
               <div className="mt-6 text-center">
                 <p>
                   {lang == 'ta' ? 'ஏற்கனவே கணக்கு உள்ளதா?' : 'Already have an account?'}{" "}
