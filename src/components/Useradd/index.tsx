@@ -549,7 +549,7 @@ const FormElements = () => {
                     name="phonenumber"
                     value={formData.phonenumber || ""}
                     onChange={handleChange}
-                    placeholder={lang === 'ta' ? 'உங்கள் தொலைபேசி எண்ணை உள்ளிடவும்' : 'Enter your phone number'}
+                    placeholder={lang === 'ta' ? 'தொலைபேசி எண்' : 'Enter your phone number'}
                     className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.phonenumber
                       ? "border-red-500 focus:border-red-500"
                       : "border-stroke focus:border-primary"
@@ -740,7 +740,7 @@ const FormElements = () => {
 
                 <div className="text-black">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    {lang === 'ta' ? 'ஜாதி' : 'Caste'}
+                    {lang === 'ta' ? 'சாதி' : 'Caste'}
                   </label>
                   <SelectGroupCaste
                     castes={castes}
@@ -754,7 +754,7 @@ const FormElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    {lang === 'ta' ? 'முதலியார் உபஜாதி' : 'Subcaste in Mudaliyar'}
+                    {lang === 'ta' ? 'முதலியார் உட்சாதி' : 'Subcaste in Mudaliyar'}
                   </label>
                   <input
                     type="text"
@@ -1013,7 +1013,7 @@ const FormElements = () => {
                     style={{ width: "200px", padding: "8px 0" }}
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
                   >
-                    {lang === 'ta' ? 'ஜாதக முன்னோட்டம்' : 'Preview'}
+                    {lang === 'ta' ? 'ஜாதகத்தை பார்க்க' : 'Preview'}
                   </button>
                 )}
               </div>
@@ -1371,7 +1371,7 @@ const FormElements = () => {
                 </div>
                 <div className="text-black">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    {lang === 'ta' ? 'குலம்' : 'Caste'}
+                    {lang === 'ta' ? 'சாதி' : 'Caste'}
                   </label>
                   <SelectGroupCaste
                     castes={castes}
@@ -1384,7 +1384,7 @@ const FormElements = () => {
                 </div>
                 <div>
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    {lang === 'ta' ? 'முதலியார் உபகுலம்' : 'Subcaste in Mudaliyar'}
+                    {lang === 'ta' ? 'முதலியார் உட்சாதி' : 'Subcaste in Mudaliyar'}
                   </label>
                   <input
                     type="text"
@@ -1458,7 +1458,7 @@ const FormElements = () => {
                 type="submit"
                 className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
               >
-                {lang == 'ta' ? 'சமர்ப்பி ' : 'Submit'}
+                {lang == 'ta' ? 'சமர்ப்பிக்கவும் ' : 'Submit'}
               </button>
 
             </div>

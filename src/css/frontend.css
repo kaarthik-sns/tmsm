@@ -341,6 +341,7 @@ input:-internal-autofill-selected {
     font-family: 'Noto Sans';
     font-weight: 700;
     padding: 13px 40px 13px 40px;
+    font-size:14px;
 }
 
 .bg-dash-button {
@@ -349,6 +350,7 @@ input:-internal-autofill-selected {
     font-family: 'Noto Sans';
     font-weight: 700;
     padding: 13px 40px 13px 40px;
+    font-size:14px;
 }
 
 .dash-heading {
@@ -422,12 +424,14 @@ input:-internal-autofill-selected {
     color: #000;
     font-family: 'Noto Sans';
     font-weight: 600;
+    font-size: 12px;
 }
 
 .active-setting {
     color: #923d27;
     font-family: 'Noto Sans';
     font-weight: 800;
+    font-size: 12px;
 }
 
 .mt-20 {
@@ -460,8 +464,9 @@ input:-internal-autofill-selected {
 }
 
 @media (max-width: 991px) {
+
     .slider-content {
-        font-size: 10px;
+        font-size: 9px;
         margin-top: 0rem;
         margin-bottom: .5rem;
     }
@@ -486,8 +491,8 @@ input:-internal-autofill-selected {
     .lang-ta .about-con-desc h3,
     .lang-ta .story-right-desc h3,
     .lang-ta .we-offer-title h3 {
-        font-size: 26px !important;
-        line-height: 40px !important;
+        font-size: 20px !important;
+        line-height: 20px !important;
     }
 }
 
@@ -640,10 +645,10 @@ input:-internal-autofill-selected {
 .we-offer-title h3 {
     color: #333;
     font-family: "Playfair Display";
-    font-size: 50px;
+    font-size: 30px;
     font-weight: 700;
     line-height: normal;
-    margin: 0 0 30px;
+    margin: 0 0 40px;
 }
 
 .offer-list-itmes {
@@ -716,7 +721,7 @@ input:-internal-autofill-selected {
 }
 
 .profile-heading {
-    font-size: 25px;
+    font-size: 18px;
     color: #93411B;
     font-family: "Playfair Display";
     font-weight: 700;
@@ -726,6 +731,7 @@ input:-internal-autofill-selected {
     font-weight: 400;
     color: #000;
     margin-bottom: 1em;
+    font-size: 12px;
 }
 
 .border-color {
@@ -739,6 +745,7 @@ input:-internal-autofill-selected {
 
 .contact-bio p span {
     text-transform: capitalize;
+    font-size: 14px;;
 }
 
 /**contact page**/
@@ -1149,8 +1156,8 @@ input:-internal-autofill-selected {
     }
 
     .we-offer-title h3 {
-        font-size: 50px;
-        margin: 0 0 30px;
+        font-size: 30px;
+        margin: 0 0 40px;
     }
 
     .offer-list-itmes {
@@ -1629,11 +1636,15 @@ input:-internal-autofill-selected {
     }
 
     .team-content h3 {
-        font-size: 25px;
+        font-size: 20px;
+        line-height: 30px;
     }
 
     .team-content h2 {
         font-size: 25px;
+    }
+    .faq-answer {
+     font-size: 14px;
     }
 }
 
@@ -1711,7 +1722,7 @@ input[type="radio"] {
 }
 
 .lang-ta .heading {
-    font-size: 40px;
+    font-size: 30px;
 }
 
 .lang-ta .description p {
@@ -1719,7 +1730,7 @@ input[type="radio"] {
 }
 
 .lang-ta .heading-description {
-    font-size: 13px;
+    font-size: 16px;
 }
 
 .lang-ta .header-text a {
@@ -1733,8 +1744,8 @@ input[type="radio"] {
 @media only screen and (min-width: 768px) {
 
     .lang-ta .top-title h2 {
-        font-size: 4.56vw;
-        line-height: 5.82vw;
+        font-size: 2.56vw;
+        line-height: 4vw;
     }
 
     .lang-ta .about-info-con {
@@ -1745,10 +1756,6 @@ input[type="radio"] {
         padding: 3vw;
     }
 
-    .lang-ta .about-con-desc h3 {
-        font-size: 3vw;
-        margin: 0 0 1.67vw;
-    }
 
     .lang-ta .about-con-desc p {
         font-size: 1vw;
@@ -1803,7 +1810,7 @@ input[type="radio"] {
     }
 
     .lang-ta .con-top-title h3 {
-        font-size: 3vw;
+        font-size: 30px;
         margin: 0 0 2.08vw;
     }
 
@@ -1893,27 +1900,26 @@ input[type="radio"] {
 @media only screen and (min-width: 1600px) {
 
     .lang-ta .top-title h2 {
-        font-size: 66px;
-        line-height: 98.16px;
+        font-size: 35px;
     }
 
     .lang-ta .about-con-desc h3 {
-        font-size: 48px;
-        margin: 0 0 24px;
+        font-size: 30px;
+        margin: 0 0 10px;
     }
 
     .lang-ta .about-con-desc p {
-        font-size: 16px;
+        font-size: 14px;
         line-height: 28px;
     }
 
     .lang-ta .story-right-desc h3 {
-        font-size: 48px;
-        margin: 0 0 24px;
+        font-size: 30px;
+        margin: 0 0 10px;
     }
 
     .lang-ta .story-right-desc p {
-        font-size: 16px;
+        font-size: 14px;
         line-height: 28px;
     }
 
@@ -1922,8 +1928,8 @@ input[type="radio"] {
     }
 
     .lang-ta .we-offer-title h3 {
-        font-size: 48px;
-        margin: 0 0 30px;
+        font-size: 30px;
+        margin: 0 0 40px;
     }
 
     .lang-ta .offer-list-itmes {
@@ -1951,10 +1957,7 @@ input[type="radio"] {
         padding: 80px 0;
     }
 
-    .lang-ta .con-top-title h3 {
-        font-size: 46px;
-        margin: 0 0 30px;
-    }
+   
 
     .lang-ta .con-message h4 {
         font-size: 24px;
@@ -2046,8 +2049,8 @@ input[type="radio"] {
     }
 
     .lang-ta .top-title h2 {
-        font-size: 28px;
-        line-height: 40px;
+        font-size: 18px;
+        line-height: 30px;
     }
 
     .lang-ta .about-left-media {
@@ -2083,7 +2086,7 @@ input[type="radio"] {
     }
 
     .lang-ta .con-top-title h3 {
-        font-size: 26px;
+        font-size: 18px;
         margin-bottom: 20px;
     }
 
@@ -2133,4 +2136,157 @@ input[type="radio"] {
     .lang-ta .profile-heading {
         font-size: 20px;
     }
+    
+}
+
+
+/*language based fontsize updated */
+
+
+.lang-ta .register h2 {
+    font-size: 18px;
+}
+
+.lang-ta .register label {
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.lang-ta .register .text-red-600 {
+    font-size: 11px;
+}
+
+.lang-ta .register 
+input::placeholder, .lang-ta .register  select{
+    font-size: 14px;
+}
+.lang-ta  label {
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.lang-ta  
+input::placeholder, .lang-ta  select{
+    font-size: 14px;
+}
+
+.lang-ta .register .leading-snug {
+    font-size: 11px;
+    line-height: 2;
+}
+.lang-ta .register .leading-snug .danger {
+    color: rgb(220, 38, 38);
+}
+.email_verfiy {
+    font-size: 12px;
+}
+.lang-ta .bg-dash-button-active, .lang-ta .bg-dash-button, .lang-ta .accept,  .lang-ta .decline,  .lang-ta .view,.lang-ta .accepted  {
+    font-size: 12px;
+}
+
+.lang-ta div#swal2-html-container, .lang-ta h2#swal2-title, .lang-ta .confirm-color,  .lang-ta .cancel-color {
+    font-size: 12px;
+}
+
+.lang-ta  .contact-bio, .contact-bio   {
+    font-size: 14px;;
+}
+.lang-ta .views h3 {
+    font-size: 14px;
+}
+.lang-ta .profile-heading {
+    font-size: 14px;
+}
+.lang-ta   .offer-list-itmes p {
+    font-size: 14px;
+    line-height: 24px;
+    text-align: left;
+ }
+ 
+ .lang-ta .con-top-title h3 {
+    font-size: 30px;
+    margin: 0 0 20px;
+}
+.lang-ta .about-con-desc h3 {
+    font-size: 30px;
+    margin: 0 0 20px;
+}
+
+@media (min-width: 768px) {
+    .register .md\:w-100 {
+        width: 30rem;
+    }
+}
+
+@media (max-width: 991px) {
+    .lang-ta .about-con-desc h3 {
+        font-size: 20px;
+        margin: 0 0 20px;
+    }
+
+    .lang-ta .description p {
+        font-size: 12px;
+        line-height: 30px;
+    }
+    .lang-ta .heading {
+      font-size: 18px;
+      line-height: 30px;
+    }
+    .icon-text {
+         font-size: 14px;
+    }
+    .lang-ta .join-heading {
+        font-size: 15px;
+    }
+    .slider-padding {
+        padding: 2rem;
+    }
+     .lang-ta .heading-description {
+        font-size: 12px;
+    }
+    .heading-text {
+        font-size: 16px;
+    }
+    .sub-heading {
+     font-size: 14px;
+    }
+    .lang-ta .member-container .title {
+       font-size: 16px  !important;
+        line-height: 30px;
+    }
+    .gap-y-4 {
+        row-gap: 0;
+    }
+    .grid p {
+        padding-bottom: 0;
+    }
+    .lang-ta .register p {
+        font-size: 12px;
+    }
+    .lang-ta .register .text-red-600  {
+        font-size: 9px;
+    }
+     .lang-ta .register .leading-snug {
+        font-size: 9px;
+        line-height: 2;
+    }
+    .lang-ta .team-content p, .faq-content p  {
+         font-size: 14px;
+         line-height: 30px;
+    }
+    .lang-ta .team-info-con ul li {
+        font-size: 14px;
+    }
+    .lang-ta .faq-answer {
+          font-size: 14px;
+    }
+    .lang-ta .faq-content .title {
+        font-size: 20px;
+    }
+     .lang-ta .con-top-title h3 {
+        font-size: 18px;
+        margin: 0 0 20px;
+    }
+
+
 }

@@ -135,7 +135,7 @@ const RequestStatus = () => {
         fetchReqData(myId);
 
         await Swal.fire({
-          title: lang == 'ta' ? 'வெற்றி' : "Success!",
+          title: lang == 'ta' ? 'வெற்றிகரமாக' : "Success!",
           text: successMessage,
           icon: "success",
           confirmButtonText: lang == 'ta' ? 'சரி' : "OK",

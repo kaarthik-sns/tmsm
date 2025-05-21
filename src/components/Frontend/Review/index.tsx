@@ -33,7 +33,7 @@ const TestimonialsSlider = (data) => {
     <section className="relative bg-[#F2F2F2] py-12">
       <div className="container mx-auto py-8">
         <h2 className="text-center sm:text-left mb-4 heading">
-          {lang == 'ta' ? 'எங்கள் வாடிக்கையாளர்கள் சொல்கிறார்கள்!' : 'Our Clients Say!'}
+          {lang == 'ta' ? 'வாடிக்கையாளர் கருத்துகள்!' : 'Our Clients Say!'}
         </h2>
         <Swiper
           className="slider-paddings"

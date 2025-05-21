@@ -122,7 +122,7 @@ const ChangePassword: React.FC = () => {
   return (
     <>
 
-      <div className="flex bg-[#fbeed5]">
+      <div className="flex bg-[#fbeed5] register">
         {/* Left Section - Login Form */}
         <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-6 md:p-10">
           <div className="flex items-center md:w-100">

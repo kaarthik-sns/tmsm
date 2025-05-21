@@ -236,7 +236,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
                           name="password"
                           value={form.password}
                           onChange={handleChange}
-                          placeholder="Password"
+                          placeholder={lang == 'ta' ? 'கடவுச்சொல்' : 'Password'}
                           className={`w-full rounded-lg border ${passwordError ? "border-red-500" : "border-stroke"
                             } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                         />
@@ -246,7 +246,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
 
                     <div className="mb-6">
                       <label className="mb-2.5 block font-medium text-black dark:text-white">
-                        {lang == 'ta' ? 'கடவுச்சொல்லை உறுதிப்படுத்தவும்' : 'Confirm Password'}
+                        {lang == 'ta' ? 'கடவுச்சொல் உறுதிப்படுத்தவும்' : 'Confirm Password'}
                       </label>
                       <div className="relative">
                         <input
@@ -254,7 +254,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
                           name="confirmPassword" // ✅ Ensure this matches state key
                           value={form.confirmPassword} // ✅ Ensure correct state binding
                           onChange={handleChange}
-                          placeholder="Confirm Password"
+                          placeholder={lang == 'ta' ? 'கடவுச்சொல் உறுதிப்படுத்தவும்' : 'Confirm Password'}
                           className={`w-full rounded-lg border ${confirmPasswordError ? "border-red-500" : "border-stroke"
                             } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                         />

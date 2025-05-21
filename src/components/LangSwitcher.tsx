@@ -13,23 +13,23 @@ const LangSwitcher = ({lang,setLang}) => {
   };
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        bottom: 20,
-        right: 20,
-        backgroundColor: 'rgba(30, 30, 30, 0.8)',
-        backdropFilter: 'blur(8px)',
-        padding: '5px 8px',
-        borderRadius: '6px',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-        zIndex: 9999,
-        color: '#fff',
-        display: 'flex',
-        alignItems: 'center',
-        transition: 'all 0.3s ease',
-      }}
-    >
+<div
+  style={{
+    position: 'fixed',
+    bottom: 20,
+    left: 20, // 🔁 Changed from right: 20
+    backgroundColor: 'rgba(30, 30, 30, 0.8)',
+    backdropFilter: 'blur(8px)',
+    padding: '5px 8px',
+    borderRadius: '6px',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+    zIndex: 9999,
+    color: '#fff',
+    display: 'flex',
+    alignItems: 'center',
+    transition: 'all 0.3s ease',
+  }}
+>
       <select
         value={lang}
         onChange={handleChange}
