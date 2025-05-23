@@ -13,39 +13,41 @@ const LangSwitcher = ({lang,setLang}) => {
   };
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        bottom: 20,
-        right: 20,
-        backgroundColor: 'rgba(30, 30, 30, 0.8)',
-        backdropFilter: 'blur(8px)',
-        padding: '5px 8px',
-        borderRadius: '6px',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-        zIndex: 9999,
-        color: '#fff',
-        display: 'flex',
-        alignItems: 'center',
-        transition: 'all 0.3s ease',
-      }}
-    >
+<div
+  style={{
+    position: 'fixed',
+    bottom: 20,
+    left: 20, // 🔁 Changed from right: 20
+    backgroundColor: 'rgb(255 209 108)',
+    backdropFilter: 'blur(8px)',
+    padding: '5px 8px',
+    borderRadius: '6px',
+    boxShadow: 'rgba(0, 0, 0, 0.2) 0px 4px 12px',
+    zIndex: 9999,
+    color: 'rgb(153 34 34)',
+    display: 'flex',
+    alignItems: 'center',
+    transition: 'all 0.3s ease',
+  }}
+>
       <select
         value={lang}
         onChange={handleChange}
         style={{
-          backgroundColor: 'transparent',
-          color: '#fff',
+          width: '80px', // 👈 Ensures fixed width
+          backgroundColor: '#ffd16c',
+          color: 'rgb(153 34 34)',
           border: 'none',
           fontSize: '1rem',
           outline: 'none',
           cursor: 'pointer',
           paddingRight: '1.5rem',
           appearance: 'none',
+          textAlign: 'center', // Optional: center the text
         }}
       >
-        <option value="en">En</option>
-        <option value="ta">த</option>
+        <option value="en">English</option>
+        <option value="ta">தமிழ் </option>
       </select>
       <ChevronDown size={16} style={{ marginLeft: '-24px', pointerEvents: 'none' }} />
     </div>

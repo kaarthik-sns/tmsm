@@ -25,7 +25,7 @@ const ForgotPassword: React.FC = () => {
     setPending(true);
     // Validate email field
     if (!form.email.trim()) {
-      setEmailError(lang == 'ta' ? "மின்னஞ்சல் முகவரி காலியாக இருக்க முடியாது." : "Email cannot be empty.");
+      setEmailError(lang == 'ta' ? "மின்னஞ்சல் கட்டாயம்" : "Email cannot be empty.");
       setPending(false);
       return; // Stop the form submission if email is empty
     } else {
@@ -82,7 +82,7 @@ const ForgotPassword: React.FC = () => {
 
   return (
     <>
-      <div className="flex bg-[#fbeed5]">
+      <div className="flex bg-[#fbeed5] register">
         {/* Left Section - Forgot Password Form */}
         <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-6 md:p-10">
           <div className="flex items-center md:w-100">
@@ -109,16 +109,16 @@ const ForgotPassword: React.FC = () => {
               {/* Forgot Password Form */}
               <form onSubmit={handleSubmit}>
                 <div className="mb-4">
-                  <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    {lang == 'ta' ? 'மின்னஞ்சல் முகவரி' : 'Email'}
-                  </label>
+                  {/* <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    {lang == 'ta' ? 'மின்னஞ்சல்' : 'Email'}
+                  </label> */}
                   <div className="relative">
                     <input
                       type="email"
                       disabled={pending}
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      placeholder={lang == 'ta' ? 'மின்னஞ்சல் முகவரியை உள்ளிடவும்' : 'Email'}
+                      placeholder={lang == 'ta' ? 'மின்னஞ்சல் உள்ளிடவும்' : 'Email'}
                       className={`w-full rounded-lg border ${emailError ? "border-red-500" : "border-stroke"
                         } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
                       autoComplete="off"

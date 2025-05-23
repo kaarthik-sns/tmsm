@@ -36,7 +36,7 @@ const ChangePassword: React.FC = () => {
 
     if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
       return lang == 'ta'
-        ? "கடவுச்சொல் குறைந்தபட்சம் 6 எழுத்துகளைக் கொண்டிருக்க வேண்டும் மற்றும் பெரிய எழுத்து, சிறிய எழுத்து, எண் மற்றும் சிறப்பு எழுத்து சேர்க்கப்பட வேண்டும்."
+        ? "குறைந்தபட்சம் 6 எழுத்துகள், பெரிய, சிறிய, எண், சிறப்பு எழுத்து வேண்டும்"
         : "Password must be at least 6 characters long and include uppercase, lowercase, number, and special character.";
     }
 
@@ -122,7 +122,7 @@ const ChangePassword: React.FC = () => {
   return (
     <>
 
-      <div className="flex bg-[#fbeed5]">
+      <div className="flex bg-[#fbeed5] register">
         {/* Left Section - Login Form */}
         <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-6 md:p-10">
           <div className="flex items-center md:w-100">

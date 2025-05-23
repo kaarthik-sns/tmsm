@@ -35,12 +35,12 @@ const SignIn: React.FC = () => {
     let valid = true;
 
     if (!email) {
-      setEmailError(lang == 'ta' ? "மின்னஞ்சல் முகவரி காலியாக இருக்க முடியாது." : "Email cannot be empty.");
+      setEmailError(lang == 'ta' ? "மின்னஞ்சல் கட்டாயம்" : "Email cannot be empty.");
       valid = false;
     }
 
     if (!password) {
-      setPasswordError(lang == 'ta' ? "கடவுச்சொல் காலியாக இருக்க முடியாது." : "Password cannot be empty");
+      setPasswordError(lang == 'ta' ? "கடவுச்சொல் கட்டாயம்" : "Password cannot be empty");
       valid = false;
     }
 
@@ -57,7 +57,7 @@ const SignIn: React.FC = () => {
     });
 
     if (res?.ok) {
-      setSuccessMessage(lang == 'ta' ? "உள்நுழைவு வெற்றிகரமாக முடிந்தது! வழியனுப்புகிறது..." : "Login Successful! Redirecting...");
+      setSuccessMessage(lang == 'ta' ? "உள்நுழைவு சரி! உங்கள் கணக்குக்கு செல்லலாம்..." : "Login Successful! Redirecting...");
       setTimeout(() => {
         router.push("/dashboard");
       }, 1000);
@@ -70,7 +70,7 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <div className="flex bg-[#fbeed5]">
+    <div className="flex bg-[#fbeed5] register">
       {/* Left Section - Login Form */}
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-6 md:p-10">
         <div className="flex items-center md:w-100">
@@ -101,7 +101,7 @@ const SignIn: React.FC = () => {
                     disabled={pending}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder={lang == 'ta' ? 'மின்னஞ்சல் முகவரி' : 'E-mail id'}
+                    placeholder={lang == 'ta' ? 'மின்னஞ்சல் உள்ளிடவும்' : 'E-mail id'}
 
                     className={`w-full rounded-lg border ${emailError ? "border-red-500" : "border-stroke"
                       } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
@@ -119,7 +119,7 @@ const SignIn: React.FC = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     type="password"
-                    placeholder={lang == 'ta' ? 'கடவுச்சொல்' : 'Password'}
+                    placeholder={lang == 'ta' ? 'கடவுச்சொல் உள்ளிடவும்' : 'Password'}
                     className={`w-full rounded-lg border ${passwordError ? "border-red-500" : "border-stroke"
                       } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
                     autoComplete="new-password"
@@ -149,7 +149,7 @@ const SignIn: React.FC = () => {
                 <p>
                   {lang == 'ta' ? 'கணக்கு இல்லையா?' : 'Don’t have an account?'}{" "}
                   <Link href="/register" className="dark-terms">
-                    {lang == 'ta' ? 'பதிவு செய்யவும்' : 'Sign Up'}
+                    {lang == 'ta' ? 'புதிய கணக்கு உருவாக்கவும்.' : 'Sign Up'}
                   </Link>
                 </p>
               </div>

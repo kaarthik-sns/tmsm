@@ -313,7 +313,7 @@ const FormElements = () => {
 
     if (!formData.phonenumber || !/^\d{10}$/.test(formData.phonenumber)) {
       errors.phonenumber = isTamil
-        ? "சரியான 10 எண்கள் கொண்ட தொலைபேசி எண்ணை உள்ளிடவும்."
+        ? "சரியான 10 எண்கள் கொண்ட தொலைபேசி எண் உள்ளிடவும்."
         : "Please enter a valid 10-digit phone number";
     }
 
@@ -322,17 +322,17 @@ const FormElements = () => {
     }
 
     if (!formData.country_id) {
-      errors.country_id = isTamil ? "நாடு தேர்வு செய்யப்படவில்லை." : "Country cannot be empty.";
+      errors.country_id = isTamil ? "நாடு தேர்வு கட்டாயம்" : "Country cannot be empty.";
     }
 
     if (!formData.profile_photo || formData.profile_photo.trim() === "") {
       errors.profile_photo = isTamil
-        ? "சுயவிவர புகைப்படம் தேவை."
+        ? "சுயவிவர புகைப்படம் கட்டாயம்"
         : "Profile Photo cannot be empty.";
     }
 
     if (!formData.birthdate || formData.birthdate.trim() === "") {
-      errors.birthdate = isTamil ? "பிறந்த தேதி தேவை." : "Date Of Birth cannot be empty.";
+      errors.birthdate = isTamil ? "பிறந்த தேதி கட்டாயம்" : "Date Of Birth cannot be empty.";
     }
 
     if (!formData.maritalstatus || formData.maritalstatus.trim() === "") {
@@ -346,20 +346,20 @@ const FormElements = () => {
     }
 
     if (!formData.state_id) {
-      errors.state_id = isTamil ? "மாநிலம் தேவை." : "State cannot be empty.";
+      errors.state_id = isTamil ? "மாநிலம் தேர்வு கட்டாயம்" : "State cannot be empty.";
     }
 
     if (!formData.city_id) {
-      errors.city_id = isTamil ? "நகரம் தேவை." : "City cannot be empty.";
+      errors.city_id = isTamil ? "நகரம் தேர்வு கட்டாயம்" : "City cannot be empty.";
     }
 
     if (!formData.address || formData.address.trim() === "") {
-      errors.address = isTamil ? "முகவரி தேவை." : "Address cannot be empty.";
+      errors.address = isTamil ? "முகவரி கட்டாயம்" : "Address cannot be empty.";
     }
 
     if (!formData.lookingfor || formData.lookingfor.trim() === "") {
       errors.lookingfor = isTamil
-        ? "யாரை தேடுகிறீர்கள் என்பதை குறிப்பிடவும்."
+        ? "யாரை தேடுகிறீர்கள் தேர்வு செய்யவும்."
         : "Looking for cannot be empty.";
     }
 
@@ -470,7 +470,7 @@ const FormElements = () => {
       <Breadcrumb pageName="Edit User" />
       {lang == 'ta' && (<p className="text-sm font-medium text-center dark-text mb-4">Please fill the form in english&nbsp;<span className="text-meta-1">*</span></p>)}
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 gap-9 sm:grid-cols-2 mt-5">
+        <div className="grid grid-cols-1 gap-9 sm:grid-cols-2 mt-5 views">
 
           <div className="flex flex-col gap-9">
 
@@ -532,7 +532,7 @@ const FormElements = () => {
                     value={formData.email || ""}
                     onChange={handleChange}
                     readOnly
-                    placeholder={lang === 'ta' ? 'உங்கள் மின்னஞ்சலை உள்ளிடவும்' : 'Enter your email address'}
+                    placeholder={lang === 'ta' ? 'மின்னஞ்சல்' : 'Enter your email address'}
                     className=" list-text w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark"
                   />
                 </div>
@@ -546,7 +546,7 @@ const FormElements = () => {
                     name="phonenumber"
                     value={formData.phonenumber || ""}
                     onChange={handleChange}
-                    placeholder={lang === 'ta' ? 'உங்கள் தொலைபேசி எண்ணை உள்ளிடவும்' : 'Enter your phone number'}
+                    placeholder={lang === 'ta' ? 'தொலைபேசி எண்' : 'Enter your phone number'}
                     className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.phonenumber
                       ? "border-red-500 focus:border-red-500"
                       : "border-stroke focus:border-primary"
@@ -707,7 +707,7 @@ const FormElements = () => {
 
                 <div className="mb-4.5 text-black">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    {lang === 'ta' ? 'யாரை தேடுகிறேன்' : 'Looking For'} <span className="text-meta-1">*</span>
+                    {lang === 'ta' ? 'யாரை தேடுகிறீர்கள்' : 'Looking For'} <span className="text-meta-1">*</span>
                   </label>
                   <RadioButtonGroup
                     name="lookingfor"
@@ -1009,7 +1009,7 @@ const FormElements = () => {
                     style={{ width: "200px", padding: "8px 0" }}
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
                   >
-                    {lang === 'ta' ? 'ஜாதக முன்னோட்டம்' : 'Preview'}
+                    {lang === 'ta' ? 'ஜாதகத்தை பார்க்க' : 'Preview'}
                   </button>
                 )}
               </div>
@@ -1077,7 +1077,7 @@ const FormElements = () => {
                     name="father_name"
                     value={formData.father_name || ""}
                     onChange={handleChange}
-                    placeholder={lang === 'ta' ? "அப்பாவின் பெயர் எழுதுக" : "Enter Father's Name"}
+                    placeholder={lang === 'ta' ? "பெயர் உள்ளிடவும்" : "Enter Father's Name"}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -1092,7 +1092,7 @@ const FormElements = () => {
                     name="father_phonenumber"
                     value={formData.father_phonenumber || ""}
                     onChange={handleChange}
-                    placeholder={lang === 'ta' ? "அப்பாவின் தொலைபேசி எண் எழுதுக" : "Enter Father's Phone Number"}
+                    placeholder={lang === 'ta' ? "தொலைபேசி எண் உள்ளிடவும்" : "Enter Father's Phone Number"}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -1107,7 +1107,7 @@ const FormElements = () => {
                     name="father_occupation"
                     value={formData.father_occupation || ""}
                     onChange={handleChange}
-                    placeholder={lang === 'ta' ? "அப்பாவின் தொழிலை எழுதுக" : "Enter Father's Occupation"}
+                    placeholder={lang === 'ta' ? "தொழிலை உள்ளிடவும்" : "Enter Father's Occupation"}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -1137,7 +1137,7 @@ const FormElements = () => {
                     name="father_profession"
                     value={formData.father_profession || ""}
                     onChange={handleChange}
-                    placeholder={lang === 'ta' ? "அப்பாவின் தொழில்முறையை எழுதுக" : "Enter Father's Profession"}
+                    placeholder={lang === 'ta' ? "தொழில்முறையை உள்ளிடவும்" : "Enter Father's Profession"}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -1152,7 +1152,7 @@ const FormElements = () => {
                     name="father_placeOfWork"
                     value={formData.father_placeOfWork || ""}
                     onChange={handleChange}
-                    placeholder={lang === 'ta' ? "அப்பாவின் வேலை இடத்தை எழுதுக" : "Enter Father's Place of Work"}
+                    placeholder={lang === 'ta' ? "வேலை இடத்தை உள்ளிடவும்" : "Enter Father's Place of Work"}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -1167,7 +1167,7 @@ const FormElements = () => {
                     name="mother_name"
                     value={formData.mother_name || ""}
                     onChange={handleChange}
-                    placeholder={lang === 'ta' ? "அம்மாவின் பெயரை எழுதுக" : "Enter Mother's Name"}
+                    placeholder={lang === 'ta' ? "பெயரை உள்ளிடவும்" : "Enter Mother's Name"}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -1182,7 +1182,7 @@ const FormElements = () => {
                     name="mother_phonenumber"
                     value={formData.mother_phonenumber || ""}
                     onChange={handleChange}
-                    placeholder={lang === 'ta' ? "அம்மாவின் தொலைபேசி எண் எழுதுக" : "Enter Mother's Phone Number"}
+                    placeholder={lang === 'ta' ? "தொலைபேசி எண் உள்ளிடவும்" : "Enter Mother's Phone Number"}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -1197,7 +1197,7 @@ const FormElements = () => {
                     name="mother_occupation"
                     value={formData.mother_occupation || ""}
                     onChange={handleChange}
-                    placeholder={lang === 'ta' ? "அம்மாவின் தொழிலை எழுதுக" : "Enter Mother's Occupation"}
+                    placeholder={lang === 'ta' ? "தொழிலை உள்ளிடவும்" : "Enter Mother's Occupation"}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -1227,7 +1227,7 @@ const FormElements = () => {
                     name="mother_profession"
                     value={formData.mother_profession || ""}
                     onChange={handleChange}
-                    placeholder={lang === 'ta' ? "அம்மாவின் தொழில்முறையை எழுதுக" : "Enter Mother's Profession"}
+                    placeholder={lang === 'ta' ? "தொழில்முறையை உள்ளிடவும்" : "Enter Mother's Profession"}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -1242,7 +1242,7 @@ const FormElements = () => {
                     name="mother_placeOfWork"
                     value={formData.mother_placeOfWork || ""}
                     onChange={handleChange}
-                    placeholder={lang === 'ta' ? "அம்மாவின் வேலை இடத்தை எழுதுக" : "Enter Mother's Place of Work"}
+                    placeholder={lang === 'ta' ? "வேலை இடத்தை உள்ளிடவும்" : "Enter Mother's Place of Work"}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -1367,7 +1367,7 @@ const FormElements = () => {
                 </div>
                 <div className="text-black">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    {lang === 'ta' ? 'குலம்' : 'Caste'}
+                    {lang === 'ta' ? 'சாதி' : 'Caste'}
                   </label>
                   <SelectGroupCaste
                     castes={castes}
@@ -1380,7 +1380,7 @@ const FormElements = () => {
                 </div>
                 <div>
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    {lang === 'ta' ? 'முதலியார் உபகுலம்' : 'Subcaste in Mudaliyar'}
+                    {lang === 'ta' ? 'முதலியார் உட்சாதி' : 'Subcaste in Mudaliyar'}
                   </label>
                   <input
                     type="text"
@@ -1454,7 +1454,7 @@ const FormElements = () => {
                 type="submit"
                 className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
               >
-                {lang == 'ta' ? 'சமர்ப்பி ' : 'Submit'}
+                {lang == 'ta' ? 'சமர்ப்பிக்கவும்' : 'Submit'}
               </button>
 
             </div>

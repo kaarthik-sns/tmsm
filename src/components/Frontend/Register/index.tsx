@@ -121,7 +121,7 @@ const SignUp: React.FC = () => {
                 name: "முதல் பெயர்",
                 lastname: "கடைசி பெயர்",
                 phonenumber: "தொலைபேசி எண்",
-                email: "மின்னஞ்சல் ஐடி",
+                email: "மின்னஞ்சல்",
               }
               : {
                 name: "First name",
@@ -134,7 +134,7 @@ const SignUp: React.FC = () => {
                 name: "மணமகன்/மணமகள் முதல் பெயர்",
                 lastname: "மணமகன்/மணமகள் கடைசி பெயர்",
                 phonenumber: "உருவாக்குனரின் தொலைபேசி எண்",
-                email: "உருவாக்குனரின் மின்னஞ்சல் ஐடி",
+                email: "உருவாக்குனரின் மின்னஞ்சல்",
               }
               : {
                 name: "Bride/Groom First name",
@@ -160,7 +160,7 @@ const SignUp: React.FC = () => {
 
     if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
       return lang == 'ta'
-        ? "கடவுச்சொல் குறைந்தபட்சம் 6 எழுத்துகளைக் கொண்டிருக்க வேண்டும் மற்றும் பெரிய எழுத்து, சிறிய எழுத்து, எண் மற்றும் சிறப்பு எழுத்து சேர்க்கப்பட வேண்டும்."
+        ? "குறைந்தபட்சம் 6 எழுத்துகள், பெரிய, சிறிய, எண், சிறப்பு எழுத்து வேண்டும்"
         : "Password must be at least 6 characters long and include uppercase, lowercase, number, and special character.";
     }
 
@@ -172,44 +172,44 @@ const SignUp: React.FC = () => {
     let newErrors: any = {};
 
     if (!form.profile_created_for) {
-      newErrors.profile_created_for = lang === 'ta' ? "திருமண ப்ரொஃபைலை தேர்வு செய்யவும்." : "Select matrimony profile for.";
+      newErrors.profile_created_for = lang === 'ta' ? "ஏதேனும் ஒன்றை தேர்வு செய்யவும்." : "Select matrimony profile for.";
     }
 
     if (form.profile_created_for !== 'myself') {
       if (!form.profile_creator_name || form.profile_creator_name.trim() === "") {
         newErrors.profile_creator_name = lang === 'ta'
-          ? "ப்ரொஃபைல் உருவாக்குநரின் பெயரை உள்ளிடவும்."
+          ? "கணக்கு உருவாக்குநரின் பெயர் கட்டாயம்."
           : "Creator Name cannot be empty.";
       }
     }
 
     if (!form.name || form.name.trim() === "") {
-      newErrors.name = lang === 'ta' ? "முதல் பெயர் காலியாக இருக்க முடியாது." : "First name cannot be empty.";
+      newErrors.name = lang === 'ta' ? "முதல் பெயர் கட்டாயம்." : "First name cannot be empty.";
     }
 
     if (!form.lastname || form.lastname.trim() === "") {
-      newErrors.lastname = lang === 'ta' ? "கடைசி பெயர் காலியாக இருக்க முடியாது." : "Last name cannot be empty.";
+      newErrors.lastname = lang === 'ta' ? "கடைசி பெயர் கட்டாயம்." : "Last name cannot be empty.";
     }
 
     if (!form.caste || form.caste.trim() === "") {
-      newErrors.caste = lang === 'ta' ? "சாதியை தேர்வு செய்யவும்." : "Caste cannot be empty.";
+      newErrors.caste = lang === 'ta' ? "சாதி தேர்வு கட்டாயம்." : "Caste cannot be empty.";
     }
 
     if (!form.subcaste || form.subcaste.trim() === "") {
-      newErrors.subcaste = lang === 'ta' ? "இனச் சேர்ந்தவை காலியாக இருக்கக்கூடாது." : "Subcaste cannot be empty.";
+      newErrors.subcaste = lang === 'ta' ? "இனச் சேர்ந்தவை கட்டாயம்." : "Subcaste cannot be empty.";
     }
 
     if (!form.email || form.email.trim() === "") {
-      newErrors.email = lang === 'ta' ? "மின்னஞ்சல் முகவரி தேவை." : "Email cannot be empty.";
+      newErrors.email = lang === 'ta' ? "மின்னஞ்சல் கட்டாயம்." : "Email cannot be empty.";
     } else if (!/\S+@\S+\.\S+/.test(form.email)) {
-      newErrors.email = lang === 'ta' ? "சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும்." : "Enter a valid email address";
+      newErrors.email = lang === 'ta' ? "சரியான மின்னஞ்சல் உள்ளிடவும்." : "Enter a valid email address";
     }
 
     if (!form.phonenumber) {
-      newErrors.phonenumber = lang === 'ta' ? "தொலைபேசி எண் தேவை." : "Phone number cannot be empty";
+      newErrors.phonenumber = lang === 'ta' ? "தொலைபேசி எண் கட்டாயம்." : "Phone number cannot be empty";
     } else if (!/^\d{10}$/.test(form.phonenumber)) {
       newErrors.phonenumber = lang === 'ta'
-        ? "சரியான 10 இலக்க தொலைபேசி எண்ணை உள்ளிடவும்."
+        ? "சரியான 10 இலக்க தொலைபேசி எண் உள்ளிடவும்."
         : "Enter a valid 10-digit phone number";
     }
 
@@ -223,11 +223,11 @@ const SignUp: React.FC = () => {
       setConfirmPasswordError(lang === 'ta' ? "கடவுச்சொல்லை உறுதிப்படுத்தவும்." : "Confirm password cannot be empty.");
 
     } else if (form.password !== form.confirmPassword) {
-      setConfirmPasswordError(lang === 'ta' ? "கடவுச்சொற்கள் பொருந்தவில்லை." : "Passwords do not match.");
+      setConfirmPasswordError(lang === 'ta' ? "கடவுச்சொல் பொருந்தவில்லை." : "Passwords do not match.");
     }
 
     if (!form.religion) {
-      newErrors.religion = lang === 'ta' ? "மதம் தேவை." : "Religion cannot be empty";
+      newErrors.religion = lang === 'ta' ? "மத தேர்வு கட்டாயம்" : "Religion cannot be empty";
     }
     if (form.religion.toLowerCase() !== "hindu" && form.religion.toLowerCase() !== "") {
       newErrors.religion = lang === 'ta'
@@ -343,13 +343,13 @@ const SignUp: React.FC = () => {
 
   return (
 
-    <div className="flex bg-[#fbeed5]">
+    <div className="flex bg-[#fbeed5] register">
       {/* Left Section - Login Form */}
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-6 md:p-10">
         <div className="flex items-center md:w-100">
           <div className="w-full p-4">
-            <h2 className="mb-9 text-3xl font-bold text-black  sm:text-title-xl2">
-              {lang == 'ta' ? 'பதிவு செய்யவும்' : 'Register'}
+            <h2 className="mb-2 text-3xl font-bold text-black  sm:text-title-xl2">
+              {lang == 'ta' ? 'புதிய கணக்கு உருவாக்குங்கள்' : 'Register'}
             </h2>
             {successMessage && (
               <div className="bg-green-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-green-600 mb-6">
@@ -387,7 +387,7 @@ const SignUp: React.FC = () => {
                       name="profile_creator_name"
                       value={form.profile_creator_name || ""}
                       onChange={handleChange}
-                      placeholder={lang == 'ta' ? 'ப்ரொஃபைல் உருவாக்குநரின் பெயர்' : 'Profile Creator Name'}
+                      placeholder={lang == 'ta' ? 'கணக்கு  உருவாக்குநரின் பெயர்' : 'Profile Creator Name'}
                       className={`w-full rounded-lg border ${errors.profile_creator_name ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-6 text-black outline-none focus:border-primary`}
 
                     />
@@ -433,7 +433,7 @@ const SignUp: React.FC = () => {
                   disabled={pending}
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  placeholder={lang == 'ta' ? 'மின்னஞ்சல் ஐடி' : placeholders.email}
+                  placeholder={lang == 'ta' ? 'மின்னஞ்சல்' : placeholders.email}
                   autoComplete="new-email"
                   className={`w-full rounded-lg border ${errors.email ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                 />
@@ -445,7 +445,7 @@ const SignUp: React.FC = () => {
               <div className="mb-4">
                 {form.profile_created_for !== "myself" && (
                   <label className="mb-1 block text-sm font-medium dark-text dark:text-white">
-                    {lang == 'ta' ? 'மணமகனின்/மணமகளின் தொலைபேசி எண் தெரிவிக்க வேண்டாம்.' : "Don't mention the bride/groom's phone number."}
+                    {lang == 'ta' ? 'மணமகள்/மணமகன் தொலைபேசி எண் தெரிவிக்க வேண்டாம்.' : "Don't mention the bride/groom's phone number."}
                   </label>
                 )}
                 <input
@@ -493,7 +493,7 @@ const SignUp: React.FC = () => {
                   name="subcaste"
                   value={form.subcaste}
                   onChange={handleChange}
-                  placeholder={lang == 'ta' ? 'உபஜாதி' : 'Subcaste'}
+                  placeholder={lang == 'ta' ? 'உட்சாதி' : 'Subcaste'}
                   className={`w-full rounded-lg border ${errors.subcaste ? "border-red-500" : "border-stroke"
                     } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                 />
@@ -550,6 +550,9 @@ const SignUp: React.FC = () => {
                 />
               </div>
               <div className="mt-6 text-center">
+              <p className="text-sm font-medium text-center dark-text mb-4">
+                {lang === 'ta' ? 'பதிவுக்கான கட்டணம் ₹500 முதல்.' : 'Registration amount is ₹500 onwards.'}
+              </p>
                 <p>
                   {lang == 'ta' ? 'ஏற்கனவே கணக்கு உள்ளதா?' : 'Already have an account?'}{" "}
                   <Link href="/login" className="text-primary dark-terms">

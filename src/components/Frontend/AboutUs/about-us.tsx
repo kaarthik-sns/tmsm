@@ -97,7 +97,7 @@ const AboutUs = (data) => {
         <div className="container mx-auto">
           <div className="row flex flex-col md:flex-row">
             <div className="we-offer-title px-7.5">
-              <h3>{lang == 'ta' ? 'நாங்கள் வழங்குவது' : 'What We Offer'}</h3>
+              <h3>{lang == 'ta' ? 'எங்கள் சேவைகள்	' : 'What We Offer'}</h3>
             </div>
           </div>
           <div className="row flex flex-wrap px-7.5">

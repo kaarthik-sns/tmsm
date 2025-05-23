@@ -113,7 +113,7 @@ export default function Profile({ userId }) {
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-100 min-h-screen views">
       {/* Header Section */}
       <div className="profilecolor text-white py-8 relative">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center lg:items-start">
@@ -162,7 +162,7 @@ export default function Profile({ userId }) {
                   onClick={handlePreview}
                   className="inline-block px-5 py-2 text-white duration-150 rounded-full md:text-sm ftext-custom mt-5"
                 >
-                  {lang === 'ta' ? 'ஜாதக முன்னோட்டம்' : 'View Horoscope'}
+                  {lang === 'ta' ? 'ஜாதகத்தை பார்க்க' : 'View Horoscope'}
                 </button>
               )}
             </div>
@@ -172,12 +172,12 @@ export default function Profile({ userId }) {
         </div>
       </div>
       {/* Information Sections */}
-      <div className="container max-w-5xl mx-auto bg-light p-6 mt-6 mb-6 shadow-md rounded-lg">
+      <div className="container max-w-5xl mx-auto bg-light p-6 mt-6 mb-6 shadow-md rounded-lg ">
         {/* Verification */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 text-green-600">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 text-green-600 mb-2">
           <div className="flex items-center gap-1">
             <FaCheckCircle />
-            <span>
+            <span className="email_verfiy">
               {lang == 'ta' ? "மின்னஞ்சல்: " : "Email: "}
               {profileData.is_approve === true
                 ? (lang == 'ta' ? "சரிபார்க்கப்பட்டது" : "Verified")
@@ -188,7 +188,7 @@ export default function Profile({ userId }) {
         </div>
 
         {/* Personal Information */}
-        <h2 className="profile-heading py-6">{lang == 'ta' ? 'தனிப்பட்ட தகவல்' : 'Personal Information'}</h2>
+        <h2 className="profile-heading py-2 mb-2">{lang == 'ta' ? 'தனிப்பட்ட தகவல்' : 'Personal Information'}</h2>
         <div className="grid grid-cols-1 md:gap-4 mt-3 md:grid-cols-2 lg:grid-cols-3">
           <div className="contact-bio">
             <p className="flex gap-x-2 text-left">
@@ -211,11 +211,11 @@ export default function Profile({ userId }) {
               <span>{profileData.religion || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">{lang == 'ta' ? 'ஜாதி' : 'Caste'}</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'சாதி' : 'Caste'}</strong>
               <span>{profileData.caste || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">{lang == 'ta' ? 'முதலியார் குழுவின் உபஜாதி' : 'Subcaste in Mudaliyar'}</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'முதலியார் உட்சாதி' : 'Subcaste in Mudaliyar'}</strong>
               <span>{profileData.subcaste || ""}</span>
             </p>
           </div>
@@ -242,7 +242,7 @@ export default function Profile({ userId }) {
         {/* Education & Occupation */}
         <div className="grid grid-cols-1 gap-4 mt-3 md:grid-cols-2">
           <div className="contact-bio">
-            <h2 className="profile-heading py-6">{lang == 'ta' ? 'பிற தகவல்' : 'Other Information'}</h2>
+            <h2 className="profile-heading py-2 mb-2">{lang == 'ta' ? 'பிற தகவல்' : 'Other Information'}</h2>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-60">{lang == 'ta' ? 'குலதெய்வம்' : 'Kuladeivam'}</strong>
               <span>{profileData.kuladeivam || ""}</span>
@@ -259,7 +259,7 @@ export default function Profile({ userId }) {
           <div className="border-color mt-3 mb-3 md:hidden"></div>
 
           <div className="contact-bio">
-            <h2 className="profile-heading py-6">{lang == 'ta' ? 'கல்வி / தொழில்' : 'Education / Occupation'}</h2>
+            <h2 className="profile-heading py-2 mb-2">{lang == 'ta' ? 'கல்வி / தொழில்' : 'Education / Occupation'}</h2>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">{lang == 'ta' ? 'கல்வி' : 'Education'}</strong>
               <span>{profileData.partner_pref_education || ""}</span>
@@ -279,7 +279,7 @@ export default function Profile({ userId }) {
         <div className="border-color mt-6 mb-6"></div>
 
         {/* Parent Details */}
-        <h2 className="profile-heading py-6">{lang == 'ta' ? 'பெற்றோர்களின் விவரங்கள்' : 'Parents Details'}</h2>
+        <h2 className="profile-heading py-2 mb-2">{lang == 'ta' ? 'பெற்றோர்களின் விவரங்கள்' : 'Parents Details'}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
           <div className="contact-bio">
             <p className="flex gap-x-2 text-left">
@@ -339,8 +339,8 @@ export default function Profile({ userId }) {
 
         <div className="border-color mt-6 mb-6"></div>
 
-        <div className="grid grid-cols-1 gap-4 mt-3">
-          <h2 className="profile-heading py-6">{lang === 'ta' ? 'முகவரி' : 'Address'}</h2>
+        <div className="grid grid-cols-1 mt-3">
+          <h2 className="profile-heading py-2">{lang === 'ta' ? 'முகவரி' : 'Address'}</h2>
           <div className="contact-bio">
             <p>{profileData.address || ""} </p>
             {profileData?.city?.name ? `${profileData?.city?.name}, ` : ""}
@@ -354,7 +354,7 @@ export default function Profile({ userId }) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
           {/* Partner Preference */}
           <div className="contact-bio">
-            <h2 className="profile-heading py-6">{lang == 'ta' ? 'திருமண இணை தேர்வு விருப்பம்' : 'Partner Preference'}</h2>
+            <h2 className="profile-heading py-2 mb-2">{lang == 'ta' ? 'திருமண இணை எதிர்பார்ப்பு' : 'Partner Preference'}</h2>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">{lang == 'ta' ? 'கல்வி' : 'Education'}</strong>
               <span>{profileData.partner_pref_education || ""}</span>
@@ -364,11 +364,11 @@ export default function Profile({ userId }) {
               <span>{profileData.partner_pref_age || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">{lang == 'ta' ? 'குலம்' : 'Caste'}</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'சாதி' : 'Caste'}</strong>
               <span>{profileData.partner_pref_caste || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">{lang == 'ta' ? 'முதலியார் குழுவின் உபஜாதி' : 'Subcaste in Mudaliyar'}</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'முதலியார் உட்சாதி' : 'Subcaste in Mudaliyar'}</strong>
               <span>{profileData.partner_pref_subcaste || ""}</span>
             </p>
           </div>
@@ -377,7 +377,7 @@ export default function Profile({ userId }) {
 
           {/* References */}
           <div className="contact-bio">
-            <h2 className="profile-heading py-6">
+            <h2 className="profile-heading py-2 mb-2">
               {lang === 'ta' ? 'பரிந்துரையாளர் விவரங்கள்' : 'Referral Details'}
             </h2>
             <p className="flex gap-x-2 text-left">
@@ -396,7 +396,7 @@ export default function Profile({ userId }) {
           <>
             <div className="border-color mt-6 mb-6"></div>
             <div className="grid grid-cols-1 gap-4 mt-3">
-              <h2 className="profile-heading py-6">{lang == 'ta' ? 'புகைப்படம்' : 'Additional Pictures'}</h2>
+              <h2 className="profile-heading py-2 mb-2">{lang == 'ta' ? 'புகைப்படம்' : 'Additional Pictures'}</h2>
               <div className="contact-bio flex flex-wrap gap-4">
                 {[profileData.photo1, profileData.photo2, profileData.photo3, profileData.photo4]
                   .filter(Boolean) // Removes `null` or `undefined` values
@@ -408,7 +408,6 @@ export default function Profile({ userId }) {
                       width={150}
                       height={150}
                       quality={100}
-                      unoptimized={true}
                       className="rounded-full border-4 border-white cursor-pointer"
                       onClick={() => openPopup(photo)}
                     />

@@ -219,16 +219,24 @@ const PaginatedUsers = () => {
       return;
     }
     // Show confirmation popup using SweetAlert2
-    const result = await Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you want to send a request to view this person\'s profile?',
+   const result = await Swal.fire({
+      title: lang === 'ta' 
+        ? 'உறுதியாக வேண்டுமா?' 
+        : 'Are you sure?',
+      text: lang === 'ta'
+        ? 'இந்த நபரின் சுயவிவரத்தை பார்ப்பதற்கான கோரிக்கையை அனுப்ப விரும்புகிறீர்களா?' 
+        : 'Do you want to send a request to view this person\'s profile?',
       icon: 'question',
       showCancelButton: true,
-      confirmButtonText: 'Yes, Request Access',
-      cancelButtonText: 'No',
+      confirmButtonText: lang === 'ta' 
+        ? 'ஆம், அனுப்பவும்' 
+        : 'Yes, Request Access',
+      cancelButtonText: lang === 'ta' 
+        ? 'இல்லை' 
+        : 'No',
       customClass: {
         confirmButton: 'confirm-color',  // Custom class for confirm button (green)
-        cancelButton: 'cancel-color'       // Custom class for cancel button (red)
+        cancelButton: 'cancel-color'     // Custom class for cancel button (red)
       },
     });
 
@@ -261,15 +269,20 @@ const PaginatedUsers = () => {
         Swal.close();
 
         // Show success message
-        Swal.fire({
-          title: 'Success!',
-          text: 'Request sent. Once approved, you wll be notified via email. You can cancel your request at anytime.',
-          icon: 'success',
-          confirmButtonText: 'OK',
-          customClass: {
-            confirmButton: 'confirm-color',  // Custom class for confirm button (green)
-          },
-        });
+          Swal.fire({
+            title: lang === 'ta' 
+              ? "இந்த கோரிக்கை அனுப்பப்பட்டது" 
+              : "Request sent",
+            text: lang === 'ta' 
+              ? "அனுமதிக்கப்பட்டவுடன், உங்கள் மின்னஞ்சல் மூலம் அறிவிக்கப்படும். நீங்கள் எப்போதும் உங்கள் கோரிக்கையை ரத்து செய்யலாம்." 
+              : "Once approved, you will be notified via email. You can cancel your request at any time.",
+            icon: 'success',
+            confirmButtonText: lang === 'ta' ? 'சரி' : 'OK',
+            customClass: {
+              confirmButton: 'confirm-color',  // Custom class for confirm button (green)
+            },
+      });
+
 
       } catch (err) {
         // Close the current modal before showing the error message
@@ -304,7 +317,7 @@ const PaginatedUsers = () => {
 
               <div className="w-full md:w-auto">
                 <label className="mb-3 block text-sm font-medium text-white">
-                  {lang == 'ta' ? 'யாரைத் தேடுகிறீர்கள்' : 'Looking For'}
+                  {lang == 'ta' ? 'துணையை தேடுகிறீர்களா' : 'Looking For'}
                 </label>
                 <SelectBrideGroom
                   name="lookingfor"
@@ -345,7 +358,7 @@ const PaginatedUsers = () => {
 
               <div className="w-full md:w-auto relative">
                 <label className="mb-3 block text-sm font-medium text-white">
-                  {lang == 'ta' ? 'உபகுலம்' : 'Subcaste in Mudaliyar'}
+                  {lang == 'ta' ? 'உட்சாதி' : 'Subcaste in Mudaliyar'}
                 </label>
                 <div className="mb-4.5">
                   <input
