@@ -17,7 +17,7 @@ const LangSwitcher = ({lang,setLang}) => {
   style={{
     position: 'fixed',
     bottom: 20,
-    left: 20, // 🔁 Changed from right: 20
+    right: 2, // 🔁 Changed from right: 20
     backgroundColor: 'rgb(255 209 108)',
     backdropFilter: 'blur(8px)',
     padding: '5px 8px',
@@ -34,11 +34,11 @@ const LangSwitcher = ({lang,setLang}) => {
         value={lang}
         onChange={handleChange}
         style={{
-          width: '80px', // 👈 Ensures fixed width
+          width: '70px', // 👈 Ensures fixed width
           backgroundColor: '#ffd16c',
           color: 'rgb(153 34 34)',
           border: 'none',
-          fontSize: '1rem',
+          fontSize: '12px',
           outline: 'none',
           cursor: 'pointer',
           paddingRight: '1.5rem',
