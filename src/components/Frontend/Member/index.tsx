@@ -328,7 +328,7 @@ const PaginatedUsers = () => {
 
               <div className="w-full md:w-auto">
                 <label className="mb-3 block text-sm font-medium text-white">
-                  {lang == 'ta' ? 'வயது இருந்து' : 'From Age'}
+                  {lang == 'ta' ? 'வயது வரம்பு' : 'From Age'}
                 </label>
                 <SelectAge
                   name="fromage"

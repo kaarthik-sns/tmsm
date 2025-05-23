@@ -2224,6 +2224,9 @@ input::placeholder, .lang-ta  select{
     margin-bottom: 20px;
 }
 
+.lang-ta .header-text a, .lang-ta .header-text button {
+    font-size: 15px;
+}
 
 @media (min-width: 768px) {
     .register .md\:w-100 {
@@ -2232,6 +2235,10 @@ input::placeholder, .lang-ta  select{
 }
 
 @media (max-width: 991px) {
+    .lang-ta .slider-text {
+        font-size: 14px;
+        line-height: 1;
+    }
     .lang-ta .about-con-desc h3 {
         font-size: 20px;
         margin: 0 0 20px;
