@@ -226,7 +226,7 @@ const ContactInfo = ({ data }) => {
                             <div className="right-contact-info">
                                 <div className="con-list-of-data">
 
-                                    <h4>{lang == 'ta' ? 'எங்களை அழைக்கவும்' : 'Call Us'}</h4>
+                                    <h4>{lang == 'ta' ? 'எங்களை அழைக்க' : 'Call Us'}</h4>
                                     <p>{lang == 'ta' ? 'உங்கள் திருமண பயணத்தைப் பற்றி ஏதேனும் உதவியோ அல்லது கேள்விகளோ இருந்தால், எங்களை அழைக்கலாம்.' : 'Call us for any assistance or inquiries about your matrimonial journey.'}</p>
 
                                     <div className="call-info">
@@ -236,7 +236,7 @@ const ContactInfo = ({ data }) => {
                                 </div>
                                 <div className="con-list-of-data">
 
-                                    <h4>{lang === 'ta' ? 'மின்னஞ்சல் அனுப்பவும்' : 'Email Us'}</h4>
+                                    <h4>{lang === 'ta' ? 'மின்னஞ்சல் அனுப்ப' : 'Email Us'}</h4>
                                     <p>{lang === 'ta'
                                         ? 'உங்கள் திருமண பயணத்தைப் பற்றி ஏதேனும் உதவியோ அல்லது கேள்விகளோ இருந்தால், மின்னஞ்சல் அனுப்பலாம்.'
                                         : 'E-Mail us for any assistance or inquiries about your matrimonial journey.'}</p>
@@ -249,7 +249,7 @@ const ContactInfo = ({ data }) => {
                                 </div>
 
                                 <div className="con-list-of-data">
-                                    <h4>{lang === 'ta' ? 'எங்களை பின்தொடரவும்' : 'Follow Us'}</h4>
+                                    <h4>{lang === 'ta' ? 'எங்களை பின்தொடர' : 'Follow Us'}</h4>
                                     <p>{lang === 'ta'
                                         ? 'சமூக ஊடக இணைப்புகளில் எங்களை பின்தொடர்ந்து புதிய தகவல்கள் மற்றும் திருமண குறிப்புகளுக்கான மேம்பட்ட வழிகாட்டிகளைப் பெறுங்கள்.'
                                         : 'Follow us on social media links for the latest updates and matrimonial tips.'}</p>

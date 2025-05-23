@@ -37,7 +37,7 @@ const FAQ = (data) => {
           <div className="row flex flex-col md:flex-row ">
             <div className="w-full md:w-1/1  px-7.5">
               <div className="faq-content">
-                <h3 className="title mb-4 md:mb-6">
+                <h3>
                   {lang === 'ta' ? 'அடிக்கடி கேட்கப்படும் கேள்விகள்' : 'Frequently Asked Questions'}
                 </h3>
                 <p>

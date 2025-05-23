@@ -317,7 +317,7 @@ const PaginatedUsers = () => {
 
               <div className="w-full md:w-auto">
                 <label className="mb-3 block text-sm font-medium text-white">
-                  {lang == 'ta' ? 'யாரைத் தேடுகிறீர்கள்' : 'Looking For'}
+                  {lang == 'ta' ? 'துணையை தேடுகிறீர்களா' : 'Looking For'}
                 </label>
                 <SelectBrideGroom
                   name="lookingfor"
@@ -358,7 +358,7 @@ const PaginatedUsers = () => {
 
               <div className="w-full md:w-auto relative">
                 <label className="mb-3 block text-sm font-medium text-white">
-                  {lang == 'ta' ? 'உபகுலம்' : 'Subcaste in Mudaliyar'}
+                  {lang == 'ta' ? 'உட்சாதி' : 'Subcaste in Mudaliyar'}
                 </label>
                 <div className="mb-4.5">
                   <input

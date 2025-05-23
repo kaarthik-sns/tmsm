@@ -374,7 +374,7 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 }
 
 .cms-heading  h2{
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 600;
     font-family: 'Noto Sans';
     text-align: left;
@@ -493,4 +493,28 @@ th.py-3.px-6.dark-text {
     background-color: #fff;
     /* ✅ Matches the design */
     border-bottom: 1px solid #ddd;
+}
+
+
+/*language based css updated */
+.lang-ta h3, .lang-ta h4  {
+    font-size: 14px;
+    font-weight: 700;
+}
+ .lang-ta .cms-heading  {
+    font-size: 20px;
+}
+.lang-ta input::placeholder, .lang-ta  select, textarea{
+    font-size: 12px;
+}
+.lang-ta  label {
+    font-size: 12px;
+    line-height: 1.5;
+}
+.lang-ta input {
+    font-size: 12px;
+}
+.lang-ta td, .lang-ta p, .lang-ta .cms-description, .lang-ta .cms-description p, .lang-ta .cms-heading ul li {
+    font-size: 12px;
+
 }

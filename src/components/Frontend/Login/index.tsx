@@ -35,12 +35,12 @@ const SignIn: React.FC = () => {
     let valid = true;
 
     if (!email) {
-      setEmailError(lang == 'ta' ? "மின்னஞ்சல் தேவை." : "Email cannot be empty.");
+      setEmailError(lang == 'ta' ? "மின்னஞ்சல் கட்டாயம்" : "Email cannot be empty.");
       valid = false;
     }
 
     if (!password) {
-      setPasswordError(lang == 'ta' ? "கடவுச்சொல் தேவை." : "Password cannot be empty");
+      setPasswordError(lang == 'ta' ? "கடவுச்சொல் கட்டாயம்" : "Password cannot be empty");
       valid = false;
     }
 

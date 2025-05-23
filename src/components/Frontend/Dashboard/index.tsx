@@ -295,7 +295,7 @@ const ProfileCard = ({ profile, activeTab, onViewProfile, onHandleRequest, onRed
       <p className="text-xs text-gray-500 md:block hidden">
         {lang == 'ta' ? 'மதம்: ' : 'Religion: '} {profile.user.religion} |
         {lang == 'ta' ? 'குலம்: ' : 'Caste: '} {profile.user.caste} |
-        {lang == 'ta' ? 'துணை சாதி: ' : 'SubCaste: '} {profile.user.subcaste}
+        {lang == 'ta' ? 'உட்சாதி: ' : 'SubCaste: '} {profile.user.subcaste}
       </p>
       <p className="text-xs text-gray-500">
         {profile.user.address ? (lang == 'ta' ? 'முகவரி: ' : 'Address: ') + profile.user.address : ""}

@@ -331,17 +331,17 @@ const UserProfile = (user_data) => {
     }
 
     if (!formData.country_id) {
-      errors.country_id = isTamil ? "நாடு தேர்வு செய்யப்படவில்லை." : "Country cannot be empty.";
+      errors.country_id = isTamil ? "நாடு தேர்வு கட்டாயம்" : "Country cannot be empty.";
     }
 
     if (!formData.profile_photo || formData.profile_photo.trim() === "") {
       errors.profile_photo = isTamil
-        ? "சுயவிவர புகைப்படம் தேவை."
+        ? "சுயவிவர புகைப்படம் கட்டாயம்"
         : "Profile Photo cannot be empty.";
     }
 
     if (!formData.birthdate || formData.birthdate.trim() === "") {
-      errors.birthdate = isTamil ? "பிறந்த தேதி தேவை." : "Date Of Birth cannot be empty.";
+      errors.birthdate = isTamil ? "பிறந்த தேதி கட்டாயம்" : "Date Of Birth cannot be empty.";
     }
 
     if (!formData.maritalstatus || formData.maritalstatus.trim() === "") {
@@ -355,20 +355,20 @@ const UserProfile = (user_data) => {
     }
 
     if (!formData.state_id) {
-      errors.state_id = isTamil ? "மாநிலம் தேவை." : "State cannot be empty.";
+      errors.state_id = isTamil ? "மாநிலம் தேர்வு கட்டாயம்" : "State cannot be empty.";
     }
 
     if (!formData.city_id) {
-      errors.city_id = isTamil ? "நகரம் தேவை." : "City cannot be empty.";
+      errors.city_id = isTamil ? "நகரம் தேர்வு கட்டாயம்" : "City cannot be empty.";
     }
 
     if (!formData.address || formData.address.trim() === "") {
-      errors.address = isTamil ? "முகவரி தேவை." : "Address cannot be empty.";
+      errors.address = isTamil ? "முகவரி கட்டாயம்" : "Address cannot be empty.";
     }
 
     if (!formData.lookingfor || formData.lookingfor.trim() === "") {
       errors.lookingfor = isTamil
-        ? "யாரை தேடுகிறீர்கள் என்பதை குறிப்பிடவும்."
+        ? "யாரை தேடுகிறீர்கள் தேர்வு செய்யவும்."
         : "Looking for cannot be empty.";
     }
 
@@ -754,7 +754,7 @@ const UserProfile = (user_data) => {
 
                       <div className="mb-4.5 text-black">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          {lang === 'ta' ? 'யாரை தேடுகிறேன்' : 'Looking For'} <span className="text-meta-1">*</span>
+                          {lang === 'ta' ? 'யாரை தேடுகிறீர்கள்' : 'Looking For'} <span className="text-meta-1">*</span>
                         </label>
                         <RadioButtonGroup
                           name="lookingfor"

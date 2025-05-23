@@ -160,7 +160,7 @@ const SignUp: React.FC = () => {
 
     if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
       return lang == 'ta'
-        ? "கடவுச்சொல் குறைந்தபட்சம் 6 எழுத்துகளைக் கொண்டிருக்க வேண்டும் மற்றும் பெரிய எழுத்து, சிறிய எழுத்து, எண் மற்றும் சிறப்பு எழுத்து சேர்க்கப்பட வேண்டும்."
+        ? "குறைந்தபட்சம் 6 எழுத்துகள், பெரிய, சிறிய, எண், சிறப்பு எழுத்து வேண்டும்"
         : "Password must be at least 6 characters long and include uppercase, lowercase, number, and special character.";
     }
 
@@ -172,44 +172,44 @@ const SignUp: React.FC = () => {
     let newErrors: any = {};
 
     if (!form.profile_created_for) {
-      newErrors.profile_created_for = lang === 'ta' ? "திருமண ப்ரொஃபைலை தேர்வு செய்யவும்." : "Select matrimony profile for.";
+      newErrors.profile_created_for = lang === 'ta' ? "ஏதேனும் ஒன்றை தேர்வு செய்யவும்." : "Select matrimony profile for.";
     }
 
     if (form.profile_created_for !== 'myself') {
       if (!form.profile_creator_name || form.profile_creator_name.trim() === "") {
         newErrors.profile_creator_name = lang === 'ta'
-          ? "கணக்கு உருவாக்குநரின் பெயர் தேவை."
+          ? "கணக்கு உருவாக்குநரின் பெயர் கட்டாயம்."
           : "Creator Name cannot be empty.";
       }
     }
 
     if (!form.name || form.name.trim() === "") {
-      newErrors.name = lang === 'ta' ? "முதல் பெயர் தேவை." : "First name cannot be empty.";
+      newErrors.name = lang === 'ta' ? "முதல் பெயர் கட்டாயம்." : "First name cannot be empty.";
     }
 
     if (!form.lastname || form.lastname.trim() === "") {
-      newErrors.lastname = lang === 'ta' ? "கடைசி பெயர் தேவை." : "Last name cannot be empty.";
+      newErrors.lastname = lang === 'ta' ? "கடைசி பெயர் கட்டாயம்." : "Last name cannot be empty.";
     }
 
     if (!form.caste || form.caste.trim() === "") {
-      newErrors.caste = lang === 'ta' ? "சாதியை தேர்வு செய்யவும்." : "Caste cannot be empty.";
+      newErrors.caste = lang === 'ta' ? "சாதி தேர்வு கட்டாயம்." : "Caste cannot be empty.";
     }
 
     if (!form.subcaste || form.subcaste.trim() === "") {
-      newErrors.subcaste = lang === 'ta' ? "இனச் சேர்ந்தவை தேவை." : "Subcaste cannot be empty.";
+      newErrors.subcaste = lang === 'ta' ? "இனச் சேர்ந்தவை கட்டாயம்." : "Subcaste cannot be empty.";
     }
 
     if (!form.email || form.email.trim() === "") {
-      newErrors.email = lang === 'ta' ? "மின்னஞ்சல் தேவை." : "Email cannot be empty.";
+      newErrors.email = lang === 'ta' ? "மின்னஞ்சல் கட்டாயம்." : "Email cannot be empty.";
     } else if (!/\S+@\S+\.\S+/.test(form.email)) {
       newErrors.email = lang === 'ta' ? "சரியான மின்னஞ்சல் உள்ளிடவும்." : "Enter a valid email address";
     }
 
     if (!form.phonenumber) {
-      newErrors.phonenumber = lang === 'ta' ? "தொலைபேசி எண் தேவை." : "Phone number cannot be empty";
+      newErrors.phonenumber = lang === 'ta' ? "தொலைபேசி எண் கட்டாயம்." : "Phone number cannot be empty";
     } else if (!/^\d{10}$/.test(form.phonenumber)) {
       newErrors.phonenumber = lang === 'ta'
-        ? "சரியான 10 இலக்க தொலைபேசி எண்ணை உள்ளிடவும்."
+        ? "சரியான 10 இலக்க தொலைபேசி எண் உள்ளிடவும்."
         : "Enter a valid 10-digit phone number";
     }
 
@@ -227,7 +227,7 @@ const SignUp: React.FC = () => {
     }
 
     if (!form.religion) {
-      newErrors.religion = lang === 'ta' ? "மதம் தேவை." : "Religion cannot be empty";
+      newErrors.religion = lang === 'ta' ? "மத தேர்வு கட்டாயம்" : "Religion cannot be empty";
     }
     if (form.religion.toLowerCase() !== "hindu" && form.religion.toLowerCase() !== "") {
       newErrors.religion = lang === 'ta'

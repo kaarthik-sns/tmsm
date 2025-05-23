@@ -1810,7 +1810,7 @@ input[type="radio"] {
     }
 
     .lang-ta .con-top-title h3 {
-        font-size: 30px;
+        font-size: 20px;
         margin: 0 0 2.08vw;
     }
 
@@ -2140,7 +2140,7 @@ input[type="radio"] {
 }
 
 
-/*language based fontsize updated */
+/*language based css updated */
 
 
 .lang-ta .register h2 {
@@ -2203,14 +2203,27 @@ input::placeholder, .lang-ta  select{
     text-align: left;
  }
  
- .lang-ta .con-top-title h3 {
-    font-size: 30px;
+ .lang-ta .con-top-title h3, .lang-ta .con-list-of-data h4 {
+    font-size: 20px;
     margin: 0 0 20px;
 }
 .lang-ta .about-con-desc h3 {
     font-size: 30px;
     margin: 0 0 20px;
 }
+.lang-ta .team-info-con ul li, .lang-ta .team-content p , .lang-ta .faq-content p, .lang-ta  .faq-answer   {
+    font-size: 14px;
+}
+
+.lang-ta .slider-text {
+    font-size: 50px;
+}
+
+.lang-ta .team-info-con h3, .lang-ta .faq-content h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
 
 @media (min-width: 768px) {
     .register .md\:w-100 {
