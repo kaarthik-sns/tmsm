@@ -447,7 +447,7 @@ const PaginatedUsers = () => {
                             className="inline-block member-req-btn text-white duration-150 rounded-full  md:text-sm ftext-custom-rej cursor-not-allowed"
                             disabled
                           >
-                            {lang == 'ta' ? 'நிராகரிக்கப்பட்டது' : 'Rejected'}
+                            {lang == 'ta' ? 'நிராகரிக்கப்பட்டது' : 'Declined'}
                           </button>
                         ) : (
 

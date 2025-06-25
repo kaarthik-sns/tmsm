@@ -176,38 +176,43 @@ const Elements = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="p-6.5">
 
-                <div className="mb-4.5">
-                  <ReactQuill
-                    theme="snow"
-                    value={formData?.description}
-                    onChange={(value) => handleChange(value, 'description')}
-                    placeholder="Enter Refund Policy"
-                    modules={{ toolbar: toolbarOptions }}
-                    className={`react-quill ${formErrors.description ? "border-red-500" : ""
-                      }`}
-                  />
-                  {formErrors.description && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {formErrors.description}
-                    </p>
-                  )}
-                </div>
-                <div className="mb-4.5">
-                  <ReactQuill
-                    theme="snow"
-                    value={formData?.description_ta}
-                    onChange={(value) => handleChange(value, 'description_ta')}
-                    placeholder="பணம் திருப்பித் தரும் கொள்கையை உள்ளிடவும்"
-                    modules={{ toolbar: toolbarOptions }}
-                    className={`react-quill ${formErrors.description_ta ? "border-red-500" : ""
-                      }`}
-                  />
-                  {formErrors.description_ta && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {formErrors.description_ta}
-                    </p>
-                  )}
-                </div>
+                {lang == 'en' && (
+                  <div className="mb-4.5">
+                    <ReactQuill
+                      theme="snow"
+                      value={formData?.description}
+                      onChange={(value) => handleChange(value, 'description')}
+                      placeholder="Enter Refund Policy"
+                      modules={{ toolbar: toolbarOptions }}
+                      className={`react-quill ${formErrors.description ? "border-red-500" : ""
+                        }`}
+                    />
+                    {formErrors.description && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {formErrors.description}
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {lang == 'ta' && (
+                  <div className="mb-4.5">
+                    <ReactQuill
+                      theme="snow"
+                      value={formData?.description_ta}
+                      onChange={(value) => handleChange(value, 'description_ta')}
+                      placeholder="பணம் திருப்பித் தரும் கொள்கையை உள்ளிடவும்"
+                      modules={{ toolbar: toolbarOptions }}
+                      className={`react-quill ${formErrors.description_ta ? "border-red-500" : ""
+                        }`}
+                    />
+                    {formErrors.description_ta && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {formErrors.description_ta}
+                      </p>
+                    )}
+                  </div>
+                )}
 
               </div>
             </div>

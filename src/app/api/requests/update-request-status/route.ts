@@ -131,9 +131,9 @@ export async function PATCH(req: NextRequest) {
 
                 name2 = reqData.receiver.name;
 
-                subjects = `TMSM - ${name2} Has Rejected Your Profile View Request`;
+                subjects = `TMSM - ${name2} Has Declined Your Profile View Request`;
 
-                content = `Unfortunately, your profile view request to <strong>${name2}</strong> has been <strong style="color:red">rejected</strong>. <p>Don't worry! Keep exploring and connecting with other profiles on TMSM.</p>`;
+                content = `Unfortunately, your profile view request to <strong>${name2}</strong> has been <strong style="color:red">Declined</strong>. <p>Don't worry! Keep exploring and connecting with other profiles on TMSM.</p>`;
 
 
                 receipients = [{

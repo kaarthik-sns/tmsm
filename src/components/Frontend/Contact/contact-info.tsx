@@ -127,11 +127,7 @@ const ContactInfo = ({ data }) => {
                         <div className="w-full md:w-1/2 px-7.5 con-form-line-info">
                             <div className="con-message">
                                 <p>
-                                    {lang == 'ta' ? `எங்கள் ஆதரவு குழு உங்கள் சேவைக்கு எப்போதும் தயாராக இருக்கிறது! 
-                                    உங்களுக்குக் கேள்விகள் இருந்தாலோ, உதவி தேவைப்பட்டாலோ, எங்களை தொலைபேசி, 
-                                    மின்னஞ்சல் அல்லது தொடர்பு படிவம் மூலம் எளிதாக அணுகலாம். உங்கள் வாழ்க்கைத் 
-                                    துணையைத் தேர்ந்தெடுக்கும் பயணத்தை சீராகவும் மகிழ்ச்சிகரமாகவும் மாற்ற எங்கள் 
-                                    குழு முழுமையாக அர்ப்பணிக்கப்பட்டுள்ளது.` : data.contact_desc}
+                                    {lang == 'ta' ? data.contact_desc_ta : data.contact_desc}
                                 </p>
                             </div>
                             <div className="con-data-forms">

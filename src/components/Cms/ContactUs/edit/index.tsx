@@ -6,7 +6,6 @@ import Breadcrumb from "@/components/Breadcrumbs/TermBreadcrumb";
 import { toast } from "sonner";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
-import { FaAudioDescription } from "react-icons/fa";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -70,13 +69,13 @@ const TemsElements = () => {
 
       setIsLoading(true);
       try {
-        const response = await fetch("/api/cms/terms/view", {
+        const response = await fetch("/api/cms/contact-us/view", {
           method: "POST",
           headers: { "Content-Type": "application/json" }
         });
 
         if (!response.ok) {
-          throw new Error("Failed to fetch terms data.");
+          throw new Error("Failed to fetch data.");
         }
 
         const { data } = await response.json();
@@ -128,7 +127,7 @@ const TemsElements = () => {
     }
 
     try {
-      const res = await fetch("/api/cms/terms/edit", {
+      const res = await fetch("/api/cms/contact-us/edit", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -137,10 +136,10 @@ const TemsElements = () => {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to update terms & conditions.");
+        throw new Error("Failed to update data.");
       }
 
-      toast.success("Terms & conditions updated successfully!", {
+      toast.success("Data updated successfully!", {
         className: "sonner-toast-success",
         cancel: {
           label: 'Close',
@@ -168,7 +167,7 @@ const TemsElements = () => {
 
   return (
     <>
-      <Breadcrumb pageName="Edit  Terms & Conditions" />
+      <Breadcrumb pageName="Edit Contact Us Email Template" />
       {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-9 sm:grid-cols-1">
@@ -182,10 +181,9 @@ const TemsElements = () => {
                       theme="snow"
                       value={formData?.description}
                       onChange={(value) => handleChange(value, 'description')}
-                      placeholder="Enter terms & conditions"
+                      placeholder="Enter data"
                       modules={{ toolbar: toolbarOptions }}
-                      className={`react-quill ${formErrors.description ? "border-red-500" : ""
-                        }`}
+                      className={`react-quill ${formErrors.description ? "border-red-500" : ""}`}
                     />
                     {formErrors.description && (
                       <p className="text-red-500 text-sm mt-1">
@@ -201,10 +199,9 @@ const TemsElements = () => {
                       theme="snow"
                       value={formData?.description_ta}
                       onChange={(value) => handleChange(value, 'description_ta')}
-                      placeholder="விதிமுறைகள் & நிபந்தனைகளை உள்ளிடவும்"
+                      placeholder="Enter data"
                       modules={{ toolbar: toolbarOptions }}
-                      className={`react-quill ${formErrors.description_ta ? "border-red-500" : ""
-                        }`}
+                      className={`react-quill ${formErrors.description_ta ? "border-red-500" : ""}`}
                     />
                     {formErrors.description_ta && (
                       <p className="text-red-500 text-sm mt-1">
@@ -213,7 +210,6 @@ const TemsElements = () => {
                     )}
                   </div>
                 )}
-
               </div>
             </div>
           </div>
