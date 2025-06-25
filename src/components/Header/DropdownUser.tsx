@@ -13,7 +13,7 @@ const DropdownUser = () => {
   const [name, setName] = useState("");
 
   const router = useRouter();
-  
+
   useEffect(() => {
     const fetchUserData = async () => {
 
@@ -150,7 +150,7 @@ const DropdownUser = () => {
           </ul>
           {session?.user.is_admin ? (
             session?.user.name ? (
-              <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out lg:text-base dark-texts"  onClick={() => signOut({ callbackUrl: "/admin/auth/signin" })}>   <svg
+              <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out lg:text-base dark-texts" onClick={() => signOut({ callbackUrl: "/admin/auth/signin" })}>   <svg
                 className="fill-current"
                 width="22"
                 height="22"
@@ -179,7 +179,7 @@ const DropdownUser = () => {
                 </>
               )}
 
-              {session?.user.name && <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out dark-texts lg:text-base" onClick={() => signOut()}>
+              {session?.user.name && <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out dark-texts lg:text-base" onClick={() => signOut({ callbackUrl: "/admin/auth/signin" })}>
                 <svg
                   className="fill-current"
                   width="22"

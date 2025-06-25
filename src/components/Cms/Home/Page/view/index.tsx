@@ -2,7 +2,7 @@
 import Breadcrumb from "@/components/Breadcrumbs/BreadcrumbCustom";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import "react-quill/dist/quill.snow.css";
+
 import Link from "next/link";
 
 const Settings = () => {

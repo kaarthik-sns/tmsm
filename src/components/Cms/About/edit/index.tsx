@@ -2,7 +2,7 @@
 import Breadcrumb from "@/components/Breadcrumbs/BreadcrumbCustom";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import "react-quill/dist/quill.snow.css";
+
 import dynamic from "next/dynamic";
 import ImageUpload from "@/components/FormElements/ImageUpload";
 

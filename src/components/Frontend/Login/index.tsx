@@ -54,6 +54,7 @@ const SignIn: React.FC = () => {
       email,
       password,
       is_admin: false,
+      lang
     });
 
     if (res?.ok) {

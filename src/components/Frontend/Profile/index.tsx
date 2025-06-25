@@ -378,7 +378,7 @@ export default function Profile({ userId }) {
           {/* References */}
           <div className="contact-bio">
             <h2 className="profile-heading py-2 mb-2">
-              {lang === 'ta' ? 'பரிந்துரையாளர் விவரங்கள்' : 'Referral Details'}
+              {lang === 'ta' ? 'TMSM HUB திருமணத் தளத்தை பரிந்துரை செய்தவர்கள் விவரங்கள்' : 'Referral Person Details'}
             </h2>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">{lang == 'ta' ? 'பரிந்துரையாளர் 1' : 'Reference 1'}</strong>

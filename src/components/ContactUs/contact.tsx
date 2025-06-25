@@ -6,7 +6,9 @@ import { toast } from "sonner";
 import Swal from 'sweetalert2';
 import Loader from "@/components/common/Loader";
 import Pagination from "@/components/Pagination";
+import dynamic from "next/dynamic";
 
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const UserTable = () => {
 
@@ -17,9 +19,54 @@ const UserTable = () => {
     const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
     const [modalData, setModalData] = useState(null); // State for modal data
     const [selectedLanguage, setSelectedLanguage] = useState('en');
+    const [message, setMessage] = useState(null); // State for modal data
+    const [message_ta, setMessageTa] = useState(null); // State for modal data
+
+
+    const toolbarOptions = [
+        // Text formatting options
+        ["bold", "italic", "underline", "strike"], // Bold, italic, underline, strikethrough
+        ["blockquote", "code-block"], // Blockquote, code block
+
+        // Embeds
+        ["link", "image", "video", "formula"], // Link, image, video, formula
+
+        // Headers
+        [{ header: 1 }, { header: 2 }], // Header 1 and 2
+        [{ header: [1, 2, 3, 4, 5, 6, false] }], // Headers 1-6 and normal text
+
+        // Lists
+        [{ list: "ordered" }, { list: "bullet" }, { list: "check" }], // Ordered, bullet, and checklist
+
+        // Scripts
+        [{ script: "sub" }, { script: "super" }], // Subscript, superscript
+
+        // Indentation
+        [{ indent: "-1" }, { indent: "+1" }], // Outdent, indent
+
+        // Text direction
+        [{ direction: "rtl" }], // Right-to-left
+
+        // Font size
+        [{ size: ["small", false, "large", "huge"] }], // Font size options
+
+        // Text color and background color
+        [{ color: [] }, { background: [] }], // Text color, background color
+
+        // Font family
+        [{ font: [] }], // Font family dropdown
+
+        // Text alignment
+        [{ align: [] }], // Text alignment options
+
+        // Inline formulas
+        ["formula"], // Formula support for inline math
+
+        // Clean formatting
+        ["clean"], // Remove formatting button
+    ];
 
     const handleView = (contactItem) => {
-        console.log(contactItem)
         setModalData(contactItem); // Set the data for the modal
         setIsModalOpen(true);  // Open the modal
     };
@@ -30,6 +77,7 @@ const UserTable = () => {
     };
 
     const sendReply = async (contactItem) => {
+
         try {
             const res = await fetch('/api/send-reply-email', {
                 method: 'POST',
@@ -80,6 +128,12 @@ const UserTable = () => {
 
             const res = await fetch(`/api/contact-us?${query}`);
             const data = await res.json();
+
+            const ressult = await fetch(`/api/cms/contact-us/view`);
+            const data2 = await ressult.json();
+
+            setMessageTa(data2.data.description_ta);
+            setMessage(data2.data.description);
 
             if (res.ok) {
                 setTableItems(data.data);
@@ -308,7 +362,7 @@ const UserTable = () => {
                     getPaginationNumbers={getPaginationNumbers}
                 />
             )}
-            {isModalOpen && modalData && (
+            {isModalOpen && modalData.mail_status === true && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
                         {/* Close Button */}
@@ -358,12 +412,25 @@ const UserTable = () => {
                                 <option value="ta">Tamil</option>
                             </select>
 
+                            <ReactQuill
+                                theme="snow"
+                                value={selectedLanguage === 'en' ? message : message_ta}
+                                onChange={(e) => {
+                                    selectedLanguage === 'en'
+                                        ? setMessage(e.target.value)
+                                        : setMessageTa(e.target.value);
+                                }}
+                                placeholder=""
+                                modules={{ toolbar: toolbarOptions }}
+                                className='react-quill'
+                            />
+
                         </div>
 
                         {/* Send Reply Button */}
                         <div className="mt-6 text-center">
                             <button
-                                onClick={() => sendReply({ ...modalData, language: selectedLanguage })}
+                                onClick={() => sendReply({ ...modalData, language: selectedLanguage, reply_message: selectedLanguage === 'en' ? message : message_ta, })}
                                 disabled={modalData.mail_status === true}
                                 className={`inline-flex items-center justify-center rounded-lg px-6 py-2.5 text-center font-medium text-white lg:px-5 xl:px-6 text-custom 
                                 ${modalData.mail_status === true ? 'bg-gray-400 cursor-not-allowed' : 'bg-primary hover:bg-opacity-90'}`}
@@ -374,6 +441,95 @@ const UserTable = () => {
                     </div>
                 </div>
             )}
+            {isModalOpen && modalData && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 px-4">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl relative">
+                        {/* Close Button */}
+                        <button
+                            onClick={closeModal}
+                            className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
+                            aria-label="Close"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="w-6 h-6"
+                            >
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                        </button>
+
+                        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Contact Us</h2>
+
+                        <div className="grid gap-x-4 gap-y-4 text-gray-700 items-start" style={{ gridTemplateColumns: 'auto 1fr' }}>
+                            <p className="font-bold">Name:</p>
+                            <p>{modalData.name}</p>
+
+                            <p className="font-bold">Email:</p>
+                            <p>{modalData.email}</p>
+
+                            <p className="font-bold">Phone:</p>
+                            <p>{modalData.phone}</p>
+
+                            <p className="font-bold">Message:</p>
+                            <p>{modalData.message}</p>
+
+                            <p className="font-bold">Language:</p>
+                            <select
+                                className="w-1/3 border border-gray-300 rounded px-3 py-1"
+                                value={selectedLanguage}
+                                onChange={(e) => setSelectedLanguage(e.target.value)}
+                            >
+                                <option value="en">English</option>
+                                <option value="ta">Tamil</option>
+                            </select>
+
+                            <p className="font-bold mt-2">Reply:</p>
+                            <div className="w-full">
+                                <ReactQuill
+                                    theme="snow"
+                                    value={selectedLanguage === 'en' ? message : message_ta}
+                                    onChange={(val) => {
+                                        selectedLanguage === 'en' ? setMessage(val) : setMessageTa(val);
+                                    }}
+                                    placeholder=""
+                                    modules={{ toolbar: toolbarOptions }}
+                                    className="w-full min-h-[200px]"
+                                />
+                            </div>
+                        </div>
+
+
+                        {/* Send Reply Button */}
+                        <div className="mt-6 text-center">
+                            <button
+                                onClick={() =>
+                                    sendReply({
+                                        ...modalData,
+                                        language: selectedLanguage,
+                                        reply_message: selectedLanguage === 'en' ? message : message_ta,
+                                    })
+                                }
+                                disabled={modalData.mail_status === true}
+                                className={`inline-flex items-center justify-center rounded-lg px-6 py-2.5 text-center font-medium text-white lg:px-5 xl:px-6 text-custom 
+                                    ${modalData.mail_status === true
+                                        ? 'bg-gray-400 cursor-not-allowed'
+                                        : 'bg-primary hover:bg-opacity-90'
+                                    }`}
+                            >
+                                {modalData.mail_status === true ? 'Reply Already Sent' : 'Send Reply'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div >
     );
 };
