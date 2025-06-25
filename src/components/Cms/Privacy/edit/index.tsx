@@ -175,39 +175,44 @@ const Elements = () => {
           <div className="flex flex-col gap-9">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="p-6.5">
+                
+                {lang == 'en' && (
+                  <div className="mb-4.5">
+                    <ReactQuill
+                      theme="snow"
+                      value={formData?.description}
+                      onChange={(value) => handleChange(value, 'description')}
+                      placeholder="Enter terms & conditions"
+                      modules={{ toolbar: toolbarOptions }}
+                      className={`react-quill ${formErrors.description ? "border-red-500" : ""
+                        }`}
+                    />
+                    {formErrors.description && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {formErrors.description}
+                      </p>
+                    )}
+                  </div>
+                )}
 
-                <div className="mb-4.5">
-                  <ReactQuill
-                    theme="snow"
-                    value={formData?.description}
-                    onChange={(value) => handleChange(value, 'description')}
-                    placeholder="Enter terms & conditions"
-                    modules={{ toolbar: toolbarOptions }}
-                    className={`react-quill ${formErrors.description ? "border-red-500" : ""
-                      }`}
-                  />
-                  {formErrors.description && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {formErrors.description}
-                    </p>
-                  )}
-                </div>
-                <div className="mb-4.5">
-                  <ReactQuill
-                    theme="snow"
-                    value={formData?.description_ta}
-                    onChange={(value) => handleChange(value, 'description_ta')}
-                    placeholder="தனியுரிமைக் கொள்கையை உள்ளிடவும்"
-                    modules={{ toolbar: toolbarOptions }}
-                    className={`react-quill ${formErrors.description_ta ? "border-red-500" : ""
-                      }`}
-                  />
-                  {formErrors.description_ta && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {formErrors.description_ta}
-                    </p>
-                  )}
-                </div>
+                {lang == 'ta' && (
+                  <div className="mb-4.5">
+                    <ReactQuill
+                      theme="snow"
+                      value={formData?.description_ta}
+                      onChange={(value) => handleChange(value, 'description_ta')}
+                      placeholder="தனியுரிமைக் கொள்கையை உள்ளிடவும்"
+                      modules={{ toolbar: toolbarOptions }}
+                      className={`react-quill ${formErrors.description_ta ? "border-red-500" : ""
+                        }`}
+                    />
+                    {formErrors.description_ta && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {formErrors.description_ta}
+                      </p>
+                    )}
+                  </div>
+                )}
 
               </div>
             </div>

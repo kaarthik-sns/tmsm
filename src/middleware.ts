@@ -42,6 +42,13 @@ export async function middleware(req) {
         return NextResponse.redirect(url);
     }
 
+    // Redirect authenticated admin users from signin to dashboard
+    if (pathname === '/admin' && token && token.is_admin) {
+        console.log('++++3.1')
+        url.pathname = '/admin/dashboard';
+        return NextResponse.redirect(url);
+    }
+
     // Restrict non-admin users from accessing admin routes
     if (pathname.startsWith('/admin') && pathname !== '/admin/auth/signin' && token && !token.is_admin) {
         console.log('++++4')

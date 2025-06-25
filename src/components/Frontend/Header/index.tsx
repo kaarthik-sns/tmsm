@@ -59,7 +59,7 @@ function NavList() {
       <div className="flex bg-white px-5 py-3 gap-5 rounded-full bg-button hidden lg:block header-text">
         {session && !session.user.is_admin ? (
           <>
-            <NavItem label={lang === 'ta' ? 'கட்டுப்பாட்டகம்' : 'Dashboard'} href="/dashboard" className="pr-5 headertext border-r border-black" />
+            <NavItem label={lang === 'ta' ? 'எனது பக்கம்' : 'Dashboard'} href="/dashboard" className="pr-5 headertext border-r border-black" />
             <NavItem label={lang === 'ta' ? 'வெளியேறு' : 'Logout'} onClick={() => signOut()} className="pl-5  headertext" />
           </>
         ) : (
@@ -73,7 +73,7 @@ function NavList() {
       {/* Mobile Navigation */}
       {session ? (
         <>
-          <NavItem label={lang === 'ta' ? 'கட்டுப்பாட்டகம்' : 'Dashboard'} href="/dashboard" className="block lg:hidden" />
+          <NavItem label={lang === 'ta' ? 'எனது பக்கம்' : 'Dashboard'} href="/dashboard" className="block lg:hidden" />
           <NavItem label={lang === 'ta' ? 'வெளியேறு' : 'Logout'} onClick={() => signOut()} className="block lg:hidden" />
         </>
       ) : (

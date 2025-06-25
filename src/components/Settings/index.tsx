@@ -14,6 +14,7 @@ const Settings = () => {
   const [error, setError] = useState(null);
   const formData_upload = new FormData();
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const lang = localStorage.getItem('lang') || 'en';
 
   const [formData, setFormData] = useState({
     organisation_description: "",
@@ -39,7 +40,9 @@ const Settings = () => {
     smtp_secure: "",
 
     profile_req_limit: "",
-    contact_desc:""
+    contact_desc: "",
+    contact_desc_ta: ""
+
   });
 
   useEffect(() => {
@@ -111,7 +114,8 @@ const Settings = () => {
     smtp_host: string;
     smtp_secure: string;
     profile_req_limit: string;
-    contact_desc:string;
+    contact_desc: string;
+    contact_desc_ta: string;
   }
 
   const validateFormData = (formData: Partial<FormDataType>): Record<string, string> => {
@@ -138,7 +142,8 @@ const Settings = () => {
       "twitter",
       "instagram",
       "youtube",
-      "contact_desc"
+      "contact_desc",
+      "contact_desc_ta"
     ];
 
     requiredFields.forEach((field) => {
@@ -633,7 +638,7 @@ const Settings = () => {
                   </div>
                 </div>
               </div>
-            </div> */}
+            </div> 
 
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark mb-3">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
@@ -670,7 +675,7 @@ const Settings = () => {
                 </div>
 
               </div>
-            </div>
+            </div> */}
 
 
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark mb-3">
@@ -818,14 +823,16 @@ const Settings = () => {
               </div>
               <div className="p-7">
 
-                <div className="mb-5.5">
-                  <label
-                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="contact_desc"
-                  >
-                    Contact Description
-                  </label>
-                  
+
+                {lang == 'en' && (
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="contact_desc"
+                    >
+                      Contact Description
+                    </label>
+
                     <div>
                       <textarea
                         className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
@@ -843,8 +850,39 @@ const Settings = () => {
                         <p className="mt-1 text-sm text-red-500">{formErrors.contact_desc}</p>
                       )}
                     </div>
-                  
-                </div>
+
+                  </div>
+                )}
+
+                {lang == 'ta' && (
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="contact_desc"
+                    >
+                      எங்களை தொடர்புகொள்ளுங்கள் விவரம்
+                    </label>
+
+                    <div>
+                      <textarea
+                        className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                        ${formErrors?.contact_desc_ta ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                        dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary
+                      `}
+                        name="contact_desc_ta"
+                        id="contact_desc_ta"
+                        rows={6}
+                        placeholder="Enter Conatct Description"
+                        value={formData.contact_desc_ta || ""}
+                        onChange={handleChange}
+                      ></textarea>
+                      {formErrors?.contact_desc_ta && (
+                        <p className="mt-1 text-sm text-red-500">{formErrors.contact_desc_ta}</p>
+                      )}
+                    </div>
+
+                  </div>
+                )}
 
               </div>
             </div>

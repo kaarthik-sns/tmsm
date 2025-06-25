@@ -16,15 +16,58 @@ const UserTable = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
     const [modalData, setModalData] = useState(null); // State for modal data
+    const [selectedLanguage, setSelectedLanguage] = useState('en');
 
-    const handleView = (faqItem) => {
-        setModalData(faqItem); // Set the data for the modal
+    const handleView = (contactItem) => {
+        console.log(contactItem)
+        setModalData(contactItem); // Set the data for the modal
         setIsModalOpen(true);  // Open the modal
     };
 
     const closeModal = () => {
         setIsModalOpen(false); // Close the modal
         setModalData(null);    // Clear modal data
+    };
+
+    const sendReply = async (contactItem) => {
+        try {
+            const res = await fetch('/api/send-reply-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(contactItem)
+            });
+
+            const result = await res.json();
+
+            if (result.success) {
+                toast.success("Reply email sent successfully!", {
+                    className: "sonner-toast-success",
+                    cancel: {
+                        label: "Close",
+                        onClick: () => console.log("Close"),
+                    },
+                });
+            } else {
+                toast.error('Failed to send reply', {
+                    className: "sonner-toast-error",
+                    cancel: {
+                        label: 'Close',
+                        onClick: () => console.log('Close'),
+                    },
+                });
+            }
+        } catch (err) {
+            console.error(err);
+            toast.error('Error sending reply', {
+                className: "sonner-toast-error",
+                cancel: {
+                    label: 'Close',
+                    onClick: () => console.log('Close'),
+                },
+            });
+        }
     };
 
     // Fetch users from the API
@@ -266,12 +309,12 @@ const UserTable = () => {
                 />
             )}
             {isModalOpen && modalData && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
                         {/* Close Button */}
                         <button
                             onClick={closeModal}
-                            className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 red-color "
+                            className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
                             aria-label="Close"
                         >
                             <svg
@@ -288,7 +331,9 @@ const UserTable = () => {
                                 <line x1="6" y1="6" x2="18" y2="18" />
                             </svg>
                         </button>
+
                         <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Contact Us</h2>
+
                         <div className="grid grid-cols-3 gap-y-4 text-gray-700">
                             <p className="font-medium">Name:</p>
                             <p className="col-span-2">{modalData.name}</p>
@@ -301,6 +346,30 @@ const UserTable = () => {
 
                             <p className="font-medium">Message:</p>
                             <p className="col-span-2">{modalData.message}</p>
+
+                            {/* Language Dropdown */}
+                            <p className="font-medium">Language:</p>
+                            <select
+                                className="col-span-2 border border-gray-300 rounded px-3 py-1"
+                                value={selectedLanguage}
+                                onChange={(e) => setSelectedLanguage(e.target.value)}
+                            >
+                                <option value="en">English</option>
+                                <option value="ta">Tamil</option>
+                            </select>
+
+                        </div>
+
+                        {/* Send Reply Button */}
+                        <div className="mt-6 text-center">
+                            <button
+                                onClick={() => sendReply({ ...modalData, language: selectedLanguage })}
+                                disabled={modalData.mail_status === true}
+                                className={`inline-flex items-center justify-center rounded-lg px-6 py-2.5 text-center font-medium text-white lg:px-5 xl:px-6 text-custom 
+                                ${modalData.mail_status === true ? 'bg-gray-400 cursor-not-allowed' : 'bg-primary hover:bg-opacity-90'}`}
+                            >
+                                {modalData.mail_status === true ? 'Reply Already Sent' : 'Send Reply'}
+                            </button>
                         </div>
                     </div>
                 </div>

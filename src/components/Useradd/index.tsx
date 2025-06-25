@@ -391,6 +391,7 @@ const FormElements = () => {
 
     // If there are validation errors, show error messages and stop submission
     if (Object.keys(errors).length > 0) {
+      console.log(errors)
       setFormErrors(errors); // Assume `setError` updates the UI to display error messages
       toast.error('Please fix the highlighted errors.', {
         className: "sonner-toast-error",
@@ -528,7 +529,7 @@ const FormElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    {lang === 'ta' ? 'மின்னஞ்சல்' : 'Email'}
+                    {lang === 'ta' ? 'மின்னஞ்சல்' : 'Email'} <span className="text-meta-1">*</span>
                   </label>
                   <input
                     type="email"
@@ -538,6 +539,26 @@ const FormElements = () => {
                     placeholder={lang === 'ta' ? 'மின்னஞ்சல்' : 'Enter your email address'}
                     className=" w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark"
                   />
+                </div>
+
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                  {lang === 'ta' ? 'கடவுச்சொல்' : 'Password'} <span className="text-meta-1">*</span>
+                  </label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password || ""}
+                    onChange={handleChange}
+                    placeholder="Enter a strong password"
+                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.password
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-stroke focus:border-primary"
+                      } `}
+                  />
+                  {formErrors?.password && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.password}</p>
+                  )}
                 </div>
 
                 <div className="mb-4.5">
