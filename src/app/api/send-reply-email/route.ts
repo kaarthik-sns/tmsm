@@ -8,7 +8,7 @@ import Contact from '@/models/Contact'; // Adjust this path based on your projec
 
 export async function POST(req: NextRequest) {
     try {
-        const { _id,name, email, phone, language } = await req.json();
+        const { _id, name, email, phone, language, reply_message } = await req.json();
 
         const smtpSettings = await getSMTPSettings();
 
@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
 
         let model = await Model.findOne();
 
-        const message = language === 'ta' ? model.description_ta : model.description;
+        const message = reply_message;
 
         const htmlBody = language === 'ta' ? sendReplyTa(name, message, copyright) : sendReply(name, message, copyright);
 

@@ -173,7 +173,7 @@ const RequestStatus = () => {
   return (
     <div className="bg-light min-h-screen flex justify-center py-10 px-4">
       <div className="container max-w-4xl p-6">
-        <h1 className="text-lg sm:text-xl font-semibold mb-4 text-gray-700">{lang == 'ta' ? 'எனது கணக்கு' : 'My Account'}</h1>
+        <h1 className="text-lg sm:text-xl font-semibold mb-4 text-gray-700">{lang == 'ta' ? 'எனது பக்கம்' : 'My Account'}</h1>
 
         {/* Tabs Navigation */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-2 sm:space-y-0">

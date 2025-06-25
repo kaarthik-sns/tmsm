@@ -60,7 +60,7 @@ function NavList() {
         {session && !session.user.is_admin ? (
           <>
             <NavItem label={lang === 'ta' ? 'எனது பக்கம்' : 'Dashboard'} href="/dashboard" className="pr-5 headertext border-r border-black" />
-            <NavItem label={lang === 'ta' ? 'வெளியேறு' : 'Logout'} onClick={() => signOut()} className="pl-5  headertext" />
+            <NavItem label={lang === 'ta' ? 'வெளியேறு' : 'Logout'} onClick={() => signOut({ callbackUrl: '/login' })} className="pl-5  headertext" />
           </>
         ) : (
           <>
@@ -71,10 +71,10 @@ function NavList() {
       </div>
 
       {/* Mobile Navigation */}
-      {session ? (
+      {session && !session.user.is_admin ? (
         <>
           <NavItem label={lang === 'ta' ? 'எனது பக்கம்' : 'Dashboard'} href="/dashboard" className="block lg:hidden" />
-          <NavItem label={lang === 'ta' ? 'வெளியேறு' : 'Logout'} onClick={() => signOut()} className="block lg:hidden" />
+          <NavItem label={lang === 'ta' ? 'வெளியேறு' : 'Logout'} onClick={() => signOut({ callbackUrl: '/login' })} className="block lg:hidden" />
         </>
       ) : (
         <>

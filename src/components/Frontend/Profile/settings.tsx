@@ -293,7 +293,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
                       });
 
                       if (result.isConfirmed) {
-                        signOut(); // Proceed with sign-out if confirmed
+                        signOut({ callbackUrl: '/login' }); // Proceed with sign-out if confirmed
                       }
                     }}
                     className="flex items-center space-x-2 px-3 py-2 text-sm rounded-lg border border-gray-600 bg-gray-600 text-white transition hover:bg-opacity-90"

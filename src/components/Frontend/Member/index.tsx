@@ -219,20 +219,20 @@ const PaginatedUsers = () => {
       return;
     }
     // Show confirmation popup using SweetAlert2
-   const result = await Swal.fire({
-      title: lang === 'ta' 
-        ? 'உறுதியாக வேண்டுமா?' 
+    const result = await Swal.fire({
+      title: lang === 'ta'
+        ? 'உறுதியாக வேண்டுமா?'
         : 'Are you sure?',
       text: lang === 'ta'
-        ? 'இந்த நபரின் சுயவிவரத்தை பார்ப்பதற்கான கோரிக்கையை அனுப்ப விரும்புகிறீர்களா?' 
+        ? 'இந்த நபரின் சுயவிவரத்தை பார்ப்பதற்கான கோரிக்கையை அனுப்ப விரும்புகிறீர்களா?'
         : 'Do you want to send a request to view this person\'s profile?',
       icon: 'question',
       showCancelButton: true,
-      confirmButtonText: lang === 'ta' 
-        ? 'ஆம், அனுப்பவும்' 
+      confirmButtonText: lang === 'ta'
+        ? 'ஆம், அனுப்பவும்'
         : 'Yes, Request Access',
-      cancelButtonText: lang === 'ta' 
-        ? 'இல்லை' 
+      cancelButtonText: lang === 'ta'
+        ? 'இல்லை'
         : 'No',
       customClass: {
         confirmButton: 'confirm-color',  // Custom class for confirm button (green)
@@ -269,19 +269,19 @@ const PaginatedUsers = () => {
         Swal.close();
 
         // Show success message
-          Swal.fire({
-            title: lang === 'ta' 
-              ? "இந்த கோரிக்கை அனுப்பப்பட்டது" 
-              : "Request sent",
-            text: lang === 'ta' 
-              ? "அனுமதிக்கப்பட்டவுடன், உங்கள் மின்னஞ்சல் மூலம் அறிவிக்கப்படும். நீங்கள் எப்போதும் உங்கள் கோரிக்கையை ரத்து செய்யலாம்." 
-              : "Once approved, you will be notified via email. You can cancel your request at any time.",
-            icon: 'success',
-            confirmButtonText: lang === 'ta' ? 'சரி' : 'OK',
-            customClass: {
-              confirmButton: 'confirm-color',  // Custom class for confirm button (green)
-            },
-      });
+        Swal.fire({
+          title: lang === 'ta'
+            ? "இந்த கோரிக்கை அனுப்பப்பட்டது"
+            : "Request sent",
+          text: lang === 'ta'
+            ? "அனுமதிக்கப்பட்டவுடன், உங்கள் மின்னஞ்சல் மூலம் அறிவிக்கப்படும். நீங்கள் எப்போதும் உங்கள் கோரிக்கையை ரத்து செய்யலாம்."
+            : "Once approved, you will be notified via email. You can cancel your request at any time.",
+          icon: 'success',
+          confirmButtonText: lang === 'ta' ? 'சரி' : 'OK',
+          customClass: {
+            confirmButton: 'confirm-color',  // Custom class for confirm button (green)
+          },
+        });
 
 
       } catch (err) {
@@ -447,7 +447,7 @@ const PaginatedUsers = () => {
                             className="inline-block member-req-btn text-white duration-150 rounded-full  md:text-sm ftext-custom-rej cursor-not-allowed"
                             disabled
                           >
-                            {lang == 'ta' ? 'நிராகரிக்கப்பட்டது' : 'Declined'}
+                            {lang == 'ta' ? 'கோரிக்கை ஏற்கப்படவில்லை' : 'Declined'}
                           </button>
                         ) : (
 
