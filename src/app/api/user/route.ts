@@ -119,6 +119,7 @@ export async function POST(request: NextRequest) {
     const lookingfor = (formData.get('lookingfor') as string) ?? '';
     const bride_groom_detail = (formData.get('bride_groom_detail') as string) ?? '';
     const gender = (formData.get('gender') as string) ?? '';
+    const relation_name = (formData.get('relation_name') as string) ?? '';
 
 
     const file = formData.get('profile_photo') as File | null;
@@ -222,7 +223,8 @@ export async function POST(request: NextRequest) {
             lookingfor,
             bride_groom_detail,
             gender,
-            updated_at: new Date()
+            updated_at: new Date(),
+            relation_name
         });
         
         if (id) {

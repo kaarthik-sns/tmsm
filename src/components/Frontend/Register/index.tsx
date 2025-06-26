@@ -28,7 +28,8 @@ const SignUp: React.FC = () => {
     profile_created_for: "",
     profile_creator_name: "",
     caste: "",
-    subcaste: ""
+    subcaste: "",
+    relation_name: ""
   });
 
   const lang = localStorage.getItem('lang') || 'en';
@@ -176,6 +177,14 @@ const SignUp: React.FC = () => {
         newErrors.profile_creator_name = lang === 'ta'
           ? "கணக்கு உருவாக்குநரின் பெயர் கட்டாயம் உள்ளிடவும்."
           : "Creator Name cannot be empty.";
+      }
+    }
+
+    if (form.profile_created_for == 'others') {
+      if (!form.relation_name || form.relation_name.trim() === "") {
+        newErrors.relation_name = lang === 'ta'
+          ? "மணமகனுடன் / மணமகளுடன் உள்ள உறவு கட்டாயம் உள்ளிடவும்."
+          : "Relationship to Bride/Groom cannot be empty.";
       }
     }
 
@@ -394,6 +403,23 @@ const SignUp: React.FC = () => {
                 </>
               )}
 
+              {form.profile_created_for == 'others' && (
+                < div className="mb-4">
+                  <input
+                    type="text"
+                    disabled={pending}
+                    value={form.relation_name}
+                    onChange={(e) => setForm({ ...form, relation_name: e.target.value })}
+                    placeholder={lang == 'ta' ? 'மணமகனுடன் / மணமகளுடன் உள்ள உறவு' : 'Relationship to Bride/Groom'}
+                    autoComplete="new-email"
+                    className={`w-full rounded-lg border ${errors.relation_name ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
+                  />
+                  {errors.relation_name && (
+                    <p className="text-red-600 text-sm">{errors.relation_name}</p>
+                  )}
+                </div>
+              )}
+
               <div className="mb-4">
                 <input
                   type="text"
@@ -586,17 +612,17 @@ const SignUp: React.FC = () => {
             </form>
           </div>
         </div>
-      </div>
+      </div >
 
       {/* Right Section - Image with Overlay */}
-      <div className="w-1/2 relative hidden md:block">
+      < div className="w-1/2 relative hidden md:block" >
         <img
           src="/images/login/login.svg"
           alt="Couple"
           className="w-full h-full object-cover"
         />
-      </div>
-    </div>
+      </div >
+    </div >
 
 
   );

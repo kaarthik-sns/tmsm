@@ -153,7 +153,8 @@ const UserProfile = (user_data) => {
     city: { name: "" },
     state_id: '',
     city_id: '',
-    country_id: ""
+    country_id: "",
+    relation_name: "",
   });
 
   // Set selected state and city based on formData
@@ -401,6 +402,14 @@ const UserProfile = (user_data) => {
       }
     }
 
+    if (formData.profile_created_for == 'others') {
+      if (!formData.relation_name || formData.relation_name.trim() === "") {
+        errors.relation_name = isTamil
+          ? "மணமகனுடன் / மணமகளுடன் உள்ள உறவு கட்டாயம் உள்ளிடவும்."
+          : "Relationship to Bride/Groom cannot be empty.";
+      }
+    }
+
 
     setErrorMessage("");
     // If there are validation errors, show error messages and stop submission
@@ -449,11 +458,11 @@ const UserProfile = (user_data) => {
       }
 
 
-      
+
       setSuccessMessage(
         lang == 'ta'
-            ? "சுயவிவரம் புதுப்பிக்கப்பட்டது!."
-            : "Profile updated successfully!."
+          ? "சுயவிவரம் புதுப்பிக்கப்பட்டது!."
+          : "Profile updated successfully!."
       );
 
       // Redirect
@@ -567,6 +576,28 @@ const UserProfile = (user_data) => {
                             )}
                           </div>
                         </>
+                      )}
+
+                      {formData.profile_created_for == 'others' && (
+                        < div className="mb-4">
+                          <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                            {lang == 'ta' ? 'மணமகனுடன் / மணமகளுடன் உள்ள உறவு' : 'Relationship to Bride/Groom'} <span className="text-meta-1">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            name="relation_name"
+                            value={formData.relation_name}
+                            onChange={handleChange}
+                            placeholder={lang == 'ta' ? 'மணமகனுடன் / மணமகளுடன் உள்ள உறவு' : 'Relationship to Bride/Groom'}
+                            className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.relation_name
+                              ? "border-red-500 focus:border-red-500"
+                              : "border-stroke focus:border-primary"
+                              } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                          />
+                          {formErrors.relation_name && (
+                            <p className="text-red-600 text-sm">{formErrors.relation_name}</p>
+                          )}
+                        </div>
                       )}
 
                       <div className="mb-4.5">

@@ -10,7 +10,7 @@ import getSMTPSettings from '@/utils/settings.util';
 
 
 export async function POST(request: Request) {
-    const { profile_created_for, profile_creator_name, name, lastname, email, password, confirmPassword, phonenumber, religion, caste, subcaste } = await request.json();
+    const { profile_created_for, profile_creator_name, name, lastname, email, password, confirmPassword, phonenumber, religion, caste, subcaste, relation_name } = await request.json();
 
     const testData = [];
 
@@ -64,7 +64,8 @@ export async function POST(request: Request) {
             caste,
             subcaste,
             password: hashedPassword,
-            created_at: new Date()
+            created_at: new Date(),
+            relation_name
         });
 
         await newUser.save();

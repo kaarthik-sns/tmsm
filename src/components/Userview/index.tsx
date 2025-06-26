@@ -91,7 +91,8 @@ const FormElements = () => {
     deactivate_reason: "",
     is_approve: false,
     is_verify: false,
-    is_active: Boolean
+    is_active: Boolean,
+    relation_name:""
   });
 
   const handlePreview = () => {
@@ -358,6 +359,12 @@ const FormElements = () => {
                   <span className="text-sm text-gray-600 dark:text-gray-400 w-[120px]">Creator Name:</span>
                   <span className="text-gray-800 dark:text-white">
                     {capitalizeFirstLetter(formData.profile_creator_name)}
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-sm text-gray-600 dark:text-gray-400 w-[120px]">Relationship to Bride/Groom:</span>
+                  <span className="text-gray-800 dark:text-white">
+                    {capitalizeFirstLetter(formData.relation_name)}
                   </span>
                 </div>
                 <div className="flex items-center">

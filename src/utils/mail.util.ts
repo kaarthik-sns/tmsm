@@ -35,8 +35,8 @@ export const sendEmail = async (dto: SendEmailDto) => {
 
     if (receipients[0].name == 'admin') {
         receipientsData = [{
-            name: 'admin',
-            address: 'kaarthikr@searchnscore.com'
+            name: smtpSettings.organisation_name,
+            address: smtpSettings.admin_to_email_id
         }]
     }
 
