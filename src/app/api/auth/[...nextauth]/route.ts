@@ -85,7 +85,7 @@ const handler = NextAuth({
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                token.id = user._id;
+                token.id = user.id;
                 token.email = user.email;
                 token.name = user.name;
                 token.is_admin = user.is_admin;
@@ -106,10 +106,10 @@ const handler = NextAuth({
         async redirect({ url, baseUrl }) {
             // Redirect to matrimony.searchnscore.com after sign-out
             if (url === "/login") {
-                return `${process.env.BASE_URL}/login`;
+                return `${process.env.DOMAIN_URL}/login`;
             }
             if (url === '/admin/auth/signin') {
-                return `${process.env.BASE_URL}/admin/auth/signin`;
+                return `${process.env.DOMAIN_URL}/admin/auth/signin`;
             }
             return url;
         },
@@ -117,10 +117,10 @@ const handler = NextAuth({
 
             await connectToDatabase();
 
-            if (user?._id) {
+            if (user?.id) {
                 try {
                     await Users_activity_log.create({
-                        user_id: user._id,
+                        user_id: user.id,
                         desc: user.name + ' Logged In',
                         created_at: new Date()
                     });
