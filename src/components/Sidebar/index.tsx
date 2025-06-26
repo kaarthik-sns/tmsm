@@ -11,11 +11,19 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
+  
 }
+
+
+
+const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+  const pathname = usePathname();
+  const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
+  const lang = localStorage.getItem('lang') || 'en';
 
 const menuGroups = [
   {
-    name: "Users",
+    name: "",
     menuItems: [
       {
         icon: (
@@ -45,7 +53,7 @@ const menuGroups = [
             />
           </svg>
         ),
-        label: "Dashboard",
+        label: lang === 'ta' ? 'மேற்பார்வை' : 'Dashbord',
         route: "/admin/dashboard",
       },
       {
@@ -69,11 +77,11 @@ const menuGroups = [
           </svg>
 
         ),
-        label: "Users",
+       label: lang === 'ta' ? 'உறுப்பினர்கள்' : 'Users',
         route: "#",
-        children: [
-          { label: "List Users", route: "/admin/users/userlist" },
-          { label: "Add Users", route: "/admin/users/useradd" },
+       children: [
+          { label: lang === 'ta' ? "உறுப்பினர்கள் பட்டியல்" : "List Users", route: "/admin/users/userlist" },
+          { label: lang === 'ta' ? "உறுப்பினர்கள் சேர்க்க" : "Add Users", route: "/admin/users/useradd" },
         ],
       },
 
@@ -93,7 +101,7 @@ const menuGroups = [
             />
           </svg>
         ),
-        label: "Profile Request",
+         label: lang === 'ta' ? 'விண்ணப்பம்' : 'Profile Request',
         route: "/admin/users/user-req-list",
       },
       {
@@ -132,20 +140,21 @@ const menuGroups = [
             </defs>
           </svg>
         ),
-        label: "CMS",
+        label: lang === 'ta' ? "உள்ளடக்கம்" : "CMS",
         route: "#",
-        children: [
-          { label: "Home ", route: "/admin/cms/home/page/view" },
-          { label: "Slider", route: "/admin/cms/home/slider/list" },
-          { label: "Testimonials", route: "/admin/cms/home/testimonial/list" },
-          { label: "Reviews", route: "/admin/cms/home/review/list" },
-          { label: "About", route: "/admin/cms/about/view" },
-          { label: "Faq", route: "/admin/cms/faq/list" },
-          { label: "Terms", route: "/admin/cms/terms_conditions/view" },
-          { label: "Privacy Policy", route: "/admin/cms/privacy-policy/view" },
-          { label: "Refund Policy", route: "/admin/cms/refund-policy/view" },
-          { label: "Contact Us Mail Template", route: "/admin/cms/contact-us/view" },
+        children:[
+          { label: lang === 'ta' ? "முகப்பு" : "Home", route: "/admin/cms/home/page/view" },
+          { label: lang === 'ta' ? "சுழற்சி" : "Slider", route: "/admin/cms/home/slider/list" },
+          { label: lang === 'ta' ? "சான்றுகள்" : "Testimonials", route: "/admin/cms/home/testimonial/list" },
+          { label: lang === 'ta' ? "மதிப்பீடு" : "Reviews", route: "/admin/cms/home/review/list" },
+          { label: lang === 'ta' ? "எங்களை பற்றி" : "About", route: "/admin/cms/about/view" },
+          { label: lang === 'ta' ? "கேள்விகள்" : "Faq", route: "/admin/cms/faq/list" },
+          { label: lang === 'ta' ? "விதிகள்" : "Terms", route: "/admin/cms/terms_conditions/view" },
+          { label: lang === 'ta' ? "தனியுரிமை" : "Privacy Policy", route: "/admin/cms/privacy-policy/view" },
+          { label: lang === 'ta' ? "திரும்ப பெறுதல்" : "Refund Policy", route: "/admin/cms/refund-policy/view" },
+          { label: lang === 'ta' ? "தொடர்பு மின்னஞ்சல்" : "Contact Us Mail Template", route: "/admin/cms/contact-us/view" },
         ],
+
       },
       {
         icon: (
@@ -165,14 +174,14 @@ const menuGroups = [
 
 
         ),
-        label: "Contact",
+       label: lang === 'ta' ? "தொடர்புக்கு" : "Contact",
         route: "/admin/contact-us",
       },
 
     ],
   },
   {
-    name: "Admin",
+    name: "",
     menuItems: [
       {
         icon: (
@@ -194,7 +203,7 @@ const menuGroups = [
             />
           </svg>
         ),
-        label: "Profile",
+        label: lang === 'ta' ? "சுயவிவரம்" : "Profile",
         route: "/admin/profile",
       },
       {
@@ -229,17 +238,13 @@ const menuGroups = [
             </defs>
           </svg>
         ),
-        label: "Settings",
+        label: lang === 'ta' ? "அமைப்புகள்" : "Settings",
         route: "/admin/settings",
       },
 
     ],
   },
 ];
-
-const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
-  const pathname = usePathname();
-  const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
 
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
