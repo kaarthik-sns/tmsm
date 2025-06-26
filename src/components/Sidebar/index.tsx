@@ -177,13 +177,7 @@ const menuGroups = [
        label: lang === 'ta' ? "தொடர்புக்கு" : "Contact",
         route: "/admin/contact-us",
       },
-
-    ],
-  },
-  {
-    name: "",
-    menuItems: [
-      {
+       {
         icon: (
           <svg
             className="fill-current"
@@ -240,10 +234,10 @@ const menuGroups = [
         ),
         label: lang === 'ta' ? "அமைப்புகள்" : "Settings",
         route: "/admin/settings",
-      },
-
+      }
     ],
   },
+
 ];
 
   return (
