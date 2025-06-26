@@ -1,6 +1,43 @@
-import mongoose, { Schema, model, models } from "mongoose";
+import mongoose, { Schema, model, models, Document, Model } from "mongoose";
 
-const CountrySchema = new Schema({
+// Define nested timezone interface
+interface ITimezone {
+  zoneName: string;
+  gmtOffset: number;
+  gmtOffsetName: string;
+  abbreviation: string;
+  tzName: string;
+}
+
+// Define Country document interface
+export interface ICountry extends Document {
+  id: number;
+  name: string;
+  iso3: string;
+  iso2: string;
+  numeric_code: string;
+  phonecode: string;
+  capital: string;
+  currency: string;
+  currency_name: string;
+  currency_symbol: string;
+  tld: string;
+  native: string;
+  region: string;
+  region_id: number;
+  subregion: string;
+  subregion_id: number;
+  nationality: string;
+  timezones: ITimezone[];
+  translations: Map<string, string>;
+  latitude: string;
+  longitude: string;
+  emoji: string;
+  emojiU: string;
+}
+
+// Create schema
+const CountrySchema = new Schema<ICountry>({
   id: { type: Number, required: true },
   name: { type: String, required: true },
   iso3: { type: String, required: true },
@@ -27,13 +64,20 @@ const CountrySchema = new Schema({
       tzName: { type: String, required: true },
     },
   ],
-  translations: { type: Map, of: String, required: true },
+  translations: {
+    type: Map,
+    of: String,
+    required: true,
+  },
   latitude: { type: String, required: true },
   longitude: { type: String, required: true },
   emoji: { type: String, required: true },
   emojiU: { type: String, required: true },
-}, { collection: "countries" });
+}, {
+  collection: "countries",
+});
 
-const Country = models.Country || model("Country", CountrySchema);
+// Export the model
+const Country: Model<ICountry> = models.Country || model<ICountry>("Country", CountrySchema);
 
 export default Country;

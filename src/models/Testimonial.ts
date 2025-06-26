@@ -1,15 +1,31 @@
-import mongoose, { Schema, model, models } from "mongoose";
+import mongoose, { Schema, model, models, Document, Model } from "mongoose";
 
-const TestimonialSchema = new Schema({
-  name: { type: String, required: false }, // name as text for full-text search
-  description: { type: String, required: false, text: true }, // description as text
-  name_ta: { type: String, required: false }, // name as text for full-text search
-  description_ta: { type: String, required: false, text: true }, // description as text
+// TypeScript interface for the testimonial document
+export interface ITestimonial extends Document {
+  name?: string;
+  description?: string;
+  name_ta?: string;
+  description_ta?: string;
+  updated_at?: Date;
+  is_delete?: boolean;
+  image: string;
+}
+
+// Schema definition
+const TestimonialSchema = new Schema<ITestimonial>({
+  name: { type: String },
+  description: { type: String, text: true },
+  name_ta: { type: String },
+  description_ta: { type: String, text: true },
   updated_at: { type: Date, default: Date.now },
-  is_delete: { type: Boolean, default: false }, // admin approved or not status
-  image: { type: String, required: true }, // name as text for full-text search
+  is_delete: { type: Boolean, default: false },
+  image: { type: String, required: true },
+}, {
+  collection: "testimonials",
 });
 
-const Testimonial = models.testimonial || model("testimonial", TestimonialSchema);
+// Create and export model
+const Testimonial: Model<ITestimonial> =
+  models.testimonial || model<ITestimonial>("testimonial", TestimonialSchema);
 
 export default Testimonial;

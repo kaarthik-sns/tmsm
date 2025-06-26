@@ -5,6 +5,8 @@ import Users_activity_log from "@/models/Users_activity_log";
 import connectToDatabase from "@/lib/mongodb";
 import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
+import type { AdapterUser } from "next-auth/adapters";
+import { Types } from "mongoose";
 
 const handler = NextAuth({
     session: {
@@ -19,6 +21,7 @@ const handler = NextAuth({
                 email: {},
                 password: {},
                 is_admin: {},
+                lang: {}
             },
             async authorize(credentials) {
                 try {
@@ -26,11 +29,15 @@ const handler = NextAuth({
 
                     const is_admin = credentials?.is_admin === "true";
                     const email = credentials?.email?.replace(/\s+/g, "").toLowerCase() || "";
-                    const lang = credentials?.lang || "en"; // Get lang from credentials
+                    const lang = credentials?.lang || "en";
 
-                    let user = is_admin
-                        ? await Admin.findOne({ email: email })
-                        : await User.findOne({ email: email });
+                    let user;
+
+                    if (is_admin) {
+                        user = await Admin.findOne({ email });
+                    } else {
+                        user = await User.findOne({ email });
+                    }
 
                     if (!user) {
                         throw new Error(lang === 'ta' ? "மின்னஞ்சல் முகவரி தவறானது. தயவுசெய்து உங்கள் விவரங்களை சரிபார்க்கவும்." : "Email address not recognized.");
@@ -59,7 +66,13 @@ const handler = NextAuth({
                         }
                     }
 
-                    return { ...user.toObject(), is_admin };
+                    return {
+                        id: (user._id as Types.ObjectId).toString(),
+                        email: user.email,
+                        name: user.name,
+                        is_admin,
+                    } as AdapterUser;
+
                 } catch (error) {
                     throw new Error(error.message || (credentials?.lang === 'ta' ? "உள்நுழைவதில் பிழை. உங்கள் விவரங்களை சரிபார்க்கவும்." : "Authentication error. Please check your login details."));
                 }

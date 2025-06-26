@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Term from '@/models/Terms'; // Adjust this path based on your project structure
+import Terms from '@/models/Terms'; // Adjust this path based on your project structure
 import connectToDatabase from '@/lib/mongodb';
 
 export async function POST(request: NextRequest) {
@@ -13,10 +13,10 @@ export async function POST(request: NextRequest) {
     try {
         await connectToDatabase();
 
-        let model = await Term.findOne();
+        let model = await Terms.findOne();
 
         if (!model) {
-            model = new Term({ description, description_ta });
+            model = new Terms({ description, description_ta });
         } else {
             model.description = description || model.description;
             model.description_ta = description_ta || model.description_ta;

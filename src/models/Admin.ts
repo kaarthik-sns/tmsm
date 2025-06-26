@@ -1,30 +1,22 @@
-import mongoose, { Schema, model, models } from "mongoose";
+import mongoose, { Schema, Document, Model, model, models } from 'mongoose';
 
-const AdminSchema = new Schema({
+interface IAdmin extends Document {
+  name: string;
+  email: string;
+  password?: string;
+  email_code?: string;
+  image?: string;
+  updated_at: Date;
+}
+
+const AdminSchema = new Schema<IAdmin>({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String },
-  email_code: { type: String, required: false },
+  email_code: { type: String },
   image: { type: String },
   updated_at: { type: Date, default: Date.now }
-}, { collection: "admin_users" });
+}, { collection: 'admin_users' });
 
-// Get Admin by name
-AdminSchema.statics.getByName = function (name: string) {
-  return this.findOne({ name });
-};
-
-// Get Admin by email
-AdminSchema.statics.getByEmail = function (email: string) {
-  return this.findOne({ email });
-};
-
-// Get Admin by email code
-AdminSchema.statics.getByEmailCode = function (email_code: string) {
-  return this.findOne({ email_code });
-};
-
-
-const Admin = models.Admin || model("Admin", AdminSchema);
-
+const Admin: Model<IAdmin> = models.Admin || model<IAdmin>('Admin', AdminSchema);
 export default Admin;

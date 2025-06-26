@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Model from '@/models/About';
+import About from '@/models/About';
 import connectToDatabase from '@/lib/mongodb';
 import { promises as fs } from 'fs';
 import path from 'path';
@@ -110,14 +110,14 @@ export async function PATCH(request: NextRequest) {
 
 
         // Check if a record exists
-        const existingRecord = await Model.findOne({});
+        const existingRecord = await About.findOne({});
 
         if (existingRecord) {
             // Update the existing record
-            await Model.findOneAndUpdate(existingRecord._id, Fields, { new: true });
+            await About.findOneAndUpdate(existingRecord._id, Fields, { new: true });
         } else {
             // Create a new record
-            await Model.create(Fields);
+            await About.create(Fields);
         }
 
         return NextResponse.json({ message: 'Record updated successfully.' });
@@ -134,7 +134,7 @@ export async function GET() {
 
         await connectToDatabase();
 
-        const record = await Model.findOne({});
+        const record = await About.findOne({});
 
         if (!record) {
             return NextResponse.json({ message: 'Record not found.' }, { status: 404 });

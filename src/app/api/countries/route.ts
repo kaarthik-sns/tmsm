@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/mongodb';
-import Model from '@/models/Countries';
+import Country from '@/models/Countries';
 
 export const GET = async (req: NextRequest) => {
     try {
@@ -17,7 +17,7 @@ export const GET = async (req: NextRequest) => {
         }
 
         // Fetch all matching states
-        const data = await Model.find(query).sort({ name: 1 });
+        const data = await Country.find(query).sort({ name: 1 });
 
         return NextResponse.json({ data: data });
     } catch (error) {
