@@ -11,6 +11,7 @@ import Swal from 'sweetalert2'; // Import SweetAlert2
 
 const RequestStatus = () => {
   const { data: session } = useSession();
+  console.log(session);
   const myId = session?.user.id;
   const [activeTab, setActiveTab] = useState("profile");
   const [selectedProfile, setSelectedProfile] = useState(null);
