@@ -3,7 +3,7 @@ import { sendEmail } from "@/utils/mail.util";
 import getSMTPSettings from '@/utils/settings.util';
 import { sendReply } from '@/lib/template/send-reply';
 import { sendReplyTa } from '@/lib/template/send-reply-ta';
-import Model from '@/models/Contact_us_template';
+import ContactUsTemplate from '@/models/Contact_us_template';
 import Contact from '@/models/Contact'; // Adjust this path based on your project structure
 
 export async function POST(req: NextRequest) {
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
         const contactMail = smtpSettings?.organisation_email_id || '';
         const copyright = `© ${new Date().getFullYear()} ${smtpSettings?.copyright || ''}`;
 
-        let model = await Model.findOne();
+        let model = await ContactUsTemplate.findOne();
 
         const message = reply_message;
 

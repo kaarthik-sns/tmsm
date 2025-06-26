@@ -415,14 +415,12 @@ const UserTable = () => {
                             <ReactQuill
                                 theme="snow"
                                 value={selectedLanguage === 'en' ? message : message_ta}
-                                onChange={(e) => {
-                                    selectedLanguage === 'en'
-                                        ? setMessage(e.target.value)
-                                        : setMessageTa(e.target.value);
+                                onChange={(content: string) => {
+                                    selectedLanguage === 'en' ? setMessage(content) : setMessageTa(content);
                                 }}
                                 placeholder=""
                                 modules={{ toolbar: toolbarOptions }}
-                                className='react-quill'
+                                className="react-quill"
                             />
 
                         </div>

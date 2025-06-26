@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/mongodb';
-import Model from '@/models/Contact_us_template';
+import ContactUsTemplate from '@/models/Contact_us_template';
 
 export const POST = async (req: NextRequest) => {
     try {
@@ -8,7 +8,7 @@ export const POST = async (req: NextRequest) => {
         // Connect to the database
         await connectToDatabase();
 
-        var data = await Model.findOne({});
+        var data = await ContactUsTemplate.findOne({});
 
         // Prepare the response with pagination meta
         return NextResponse.json({
@@ -28,8 +28,9 @@ export const GET = async (req: NextRequest) => {
         // Connect to the database
         await connectToDatabase();
 
-        var data = await Model.findOne({});
-
+        var data = await ContactUsTemplate.findOne({});
+        console.log(data);
+        
         // Prepare the response with pagination meta
         return NextResponse.json({
             data: data,

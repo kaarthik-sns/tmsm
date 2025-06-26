@@ -66,14 +66,10 @@ const SignUp: React.FC = () => {
 
   const castes = lang === 'ta'
     ? [
-      { label: "தொண்டை மண்டல சைவ முதலியார்", value: "Thondai mandala saiva mudaliyar" },
       { label: "முதலியார்", value: "Mudaliyar" },
-      { label: "சைவ முதலியார்", value: "Saiva mudaliyar" },
     ]
     : [
-      { label: "Thondai mandala saiva mudaliyar", value: "Thondai mandala saiva mudaliyar" },
       { label: "Mudaliyar", value: "Mudaliyar" },
-      { label: "Saiva mudaliyar", value: "Saiva mudaliyar" },
     ];
 
   const profileOptions = lang === 'ta'
@@ -160,7 +156,7 @@ const SignUp: React.FC = () => {
 
     if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
       return lang == 'ta'
-        ? "குறைந்தபட்சம் 6 எழுத்துகள், பெரிய, சிறிய, எண், சிறப்பு எழுத்து வேண்டும்"
+        ? "குறைந்தபட்சம் 6 எழுத்துகள், பெரிய, சிறிய, எண், சிறப்பு எழுத்து உள்ளிடவும்"
         : "Password must be at least 6 characters long and include uppercase, lowercase, number, and special character.";
     }
 
@@ -178,35 +174,35 @@ const SignUp: React.FC = () => {
     if (form.profile_created_for !== 'myself') {
       if (!form.profile_creator_name || form.profile_creator_name.trim() === "") {
         newErrors.profile_creator_name = lang === 'ta'
-          ? "கணக்கு உருவாக்குநரின் பெயர் கட்டாயம்."
+          ? "கணக்கு உருவாக்குநரின் பெயர் கட்டாயம் உள்ளிடவும்."
           : "Creator Name cannot be empty.";
       }
     }
 
     if (!form.name || form.name.trim() === "") {
-      newErrors.name = lang === 'ta' ? "முதல் பெயர் கட்டாயம்." : "First name cannot be empty.";
+      newErrors.name = lang === 'ta' ? "முதல் பெயர் கட்டாயம் உள்ளிடவும்." : "First name cannot be empty.";
     }
 
     if (!form.lastname || form.lastname.trim() === "") {
-      newErrors.lastname = lang === 'ta' ? "கடைசி பெயர் கட்டாயம்." : "Last name cannot be empty.";
+      newErrors.lastname = lang === 'ta' ? "கடைசி பெயர் கட்டாயம் உள்ளிடவும்." : "Last name cannot be empty.";
     }
 
     if (!form.caste || form.caste.trim() === "") {
-      newErrors.caste = lang === 'ta' ? "சாதி தேர்வு கட்டாயம்." : "Caste cannot be empty.";
+      newErrors.caste = lang === 'ta' ? "சாதி தேர்வு கட்டாயம் உள்ளிடவும்." : "Caste cannot be empty.";
     }
 
     if (!form.subcaste || form.subcaste.trim() === "") {
-      newErrors.subcaste = lang === 'ta' ? "இனச் சேர்ந்தவை கட்டாயம்." : "Subcaste cannot be empty.";
+      newErrors.subcaste = lang === 'ta' ? "உட்சாதி தேர்வு கட்டாயம் உள்ளிடவும்." : "Subcaste cannot be empty.";
     }
 
     if (!form.email || form.email.trim() === "") {
-      newErrors.email = lang === 'ta' ? "மின்னஞ்சல் கட்டாயம்." : "Email cannot be empty.";
+      newErrors.email = lang === 'ta' ? "மின்னஞ்சல் கட்டாயம் உள்ளிடவும்." : "Email cannot be empty.";
     } else if (!/\S+@\S+\.\S+/.test(form.email)) {
       newErrors.email = lang === 'ta' ? "சரியான மின்னஞ்சல் உள்ளிடவும்." : "Enter a valid email address";
     }
 
     if (!form.phonenumber) {
-      newErrors.phonenumber = lang === 'ta' ? "தொலைபேசி எண் கட்டாயம்." : "Phone number cannot be empty";
+      newErrors.phonenumber = lang === 'ta' ? "தொலைபேசி எண் கட்டாயம் உள்ளிடவும்." : "Phone number cannot be empty";
     } else if (!/^\d{10}$/.test(form.phonenumber)) {
       newErrors.phonenumber = lang === 'ta'
         ? "சரியான 10 இலக்க தொலைபேசி எண் உள்ளிடவும்."
@@ -263,7 +259,7 @@ const SignUp: React.FC = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     });
-    
+
     const data = await res.json();
 
     if (res.ok) {
@@ -487,17 +483,43 @@ const SignUp: React.FC = () => {
                 )}
               </div>
 
-              <div className="mb-4">
-                <input
-                  type="text"
-                  name="subcaste"
-                  value={form.subcaste}
-                  onChange={handleChange}
-                  placeholder={lang == 'ta' ? 'உட்சாதி' : 'Subcaste'}
-                  className={`w-full rounded-lg border ${errors.subcaste ? "border-red-500" : "border-stroke"
-                    } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
-                />
-                {errors.subcaste && <p className="text-red-600 text-sm">{errors.subcaste}</p>}
+
+              <div className="mb-4.5">
+                <div className="relative z-20 bg-transparent dark:bg-form-input">
+                  <select
+                    name="subcaste"
+                    value={form.subcaste}
+                    onChange={(e) => setForm({ ...form, subcaste: e.target.value })}
+                    className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  >
+                    <option value="" disabled className="text-body dark:text-bodydark">
+                      {lang == 'ta' ? 'உட்சாதியை தேர்ந்தெடுக்கவும்' : 'Select caste'}
+                    </option>
+                    <option value="Thondai mandala saiva mudaliyar" className="text-body dark:text-bodydark">
+                      {lang == 'ta' ? "தொண்டை மண்டல சைவ முதலியார்" : "Thondai mandala saiva mudaliyar"}
+                    </option>
+                  </select>
+
+                  <span className="absolute right-4 top-1/2 z-30 -translate-y-1/2">
+                    <svg
+                      className="fill-current"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g opacity="0.8">
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
+                          fill=""
+                        ></path>
+                      </g>
+                    </svg>
+                  </span>
+                </div>
               </div>
 
               <div className="mb-4">
@@ -550,9 +572,9 @@ const SignUp: React.FC = () => {
                 />
               </div>
               <div className="mt-6 text-center">
-              <p className="text-sm font-medium text-center dark-text mb-4">
-                {lang === 'ta' ? 'பதிவுக்கான கட்டணம் ₹500 முதல்.' : 'Registration amount is ₹500 onwards.'}
-              </p>
+                <p className="text-sm font-medium text-center dark-text mb-4">
+                  {lang === 'ta' ? 'பதிவுக்கான கட்டணம் ₹500 முதல்.' : 'Registration amount is ₹500 onwards.'}
+                </p>
                 <p>
                   {lang == 'ta' ? 'ஏற்கனவே கணக்கு உள்ளதா?' : 'Already have an account?'}{" "}
                   <Link href="/login" className="text-primary dark-terms">

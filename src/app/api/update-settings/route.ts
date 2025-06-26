@@ -42,7 +42,8 @@ export async function POST(req: NextRequest) {
     const smtp_password = formData.get('smtp_password') as string;
     const smtp_port = formData.get('smtp_port') as string;
     const smtp_host = formData.get('smtp_host') as string;
-    const smtp_secure = formData.get('smtp_secure') as string;
+    const smtp_secure_str = formData.get('smtp_secure')?.toString().toLowerCase();
+    const smtp_secure = smtp_secure_str == 'true';
 
     const contact_desc = formData.get('contact_desc') as string;
     const contact_desc_ta = formData.get('contact_desc_ta') as string;
@@ -72,7 +73,7 @@ export async function POST(req: NextRequest) {
     settings.smtp_password = smtp_password ?? "";
     settings.smtp_port = smtp_port ?? "";
     settings.smtp_host = smtp_host ?? "";
-    settings.smtp_secure = smtp_secure ?? "";
+    settings.smtp_secure = smtp_secure;
     settings.profile_req_limit = profile_req_limit ?? "";
     settings.contact_desc = contact_desc ?? "";
     settings.contact_desc_ta = contact_desc_ta ?? "";

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Model from '@/models/Home_page_slider';
+import Slider from '@/models/Home_page_slider';
 import connectToDatabase from '@/lib/mongodb';
 import { promises as fs } from 'fs';
 import path from 'path';
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
             image = `/uploads/cms/${uniqueFileName}`;
         }
 
-        const newRecord = new Model({ image, title, description, title_ta, description_ta });
+        const newRecord = new Slider({ image, title, description, title_ta, description_ta });
         await newRecord.save();
 
         return NextResponse.json({ message: 'Record created successfully.', data: newRecord });
@@ -69,7 +69,7 @@ export async function PUT(request: NextRequest) {
             Fields.image = `/uploads/cms/${uniqueFileName}`;
         }
 
-        const updatedRecord = await Model.findByIdAndUpdate(id, Fields, { new: true });
+        const updatedRecord = await Slider.findByIdAndUpdate(id, Fields, { new: true });
 
         if (!updatedRecord) {
             return NextResponse.json({ message: 'Record not found.' }, { status: 404 });
@@ -90,7 +90,7 @@ export async function GET(request: NextRequest) {
 
         await connectToDatabase();
 
-        const record = await Model.findById(id);
+        const record = await Slider.findById(id);
 
         if (!record) {
             return NextResponse.json({ message: 'Record not found.' }, { status: 404 });
@@ -114,7 +114,7 @@ export async function PATCH(req: NextRequest) {
     try {
         // Find user by email_code
         await connectToDatabase();
-        const dataModel = await Model.findById(id);
+        const dataModel = await Slider.findById(id);
 
         if (!dataModel) {
             return NextResponse.json({ message: 'Data not found' }, { status: 400 });

@@ -1,13 +1,27 @@
-import mongoose, { Schema, model, models } from "mongoose";
+import mongoose, { Schema, model, models, Document, Model } from "mongoose";
 
-const RefundSchema = new Schema({
-  description: { type: String, required: false, text: true }, // description as text
-  description_ta: { type: String, required: false, text: true }, // description as text
+// TypeScript interface for the document
+export interface IRefundPolicy extends Document {
+  description?: string;
+  description_ta?: string;
+  created_at?: Date;
+  updated_at?: Date;
+  is_delete?: boolean;
+}
+
+// Define the schema with types
+const RefundSchema = new Schema<IRefundPolicy>({
+  description: { type: String, required: false, text: true },
+  description_ta: { type: String, required: false, text: true },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },
-  is_delete: { type: Boolean, default: false }, // admin approved or not status
-}, { collection: "refund_plolicy" });
+  is_delete: { type: Boolean, default: false },
+}, {
+  collection: "refund_policy",
+});
 
-const Refund = models.refund_plolicy || model("refund_plolicy", RefundSchema);
+// Create and export the model
+const Refund: Model<IRefundPolicy> =
+  models.refund_policy || model<IRefundPolicy>("refund_policy", RefundSchema);
 
 export default Refund;

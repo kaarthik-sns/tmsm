@@ -1,15 +1,30 @@
-import mongoose, { Schema, model, models } from "mongoose";
+import mongoose, { Schema, model, models, Document, Model } from "mongoose";
 
-const ReviewSchema = new Schema({
-  name: { type: String, required: false }, // name as text for full-text search
-  description: { type: String, required: false, text: true }, // description as text
-  name_ta: { type: String, required: false }, // name as text for full-text search
-  description_ta: { type: String, required: false, text: true }, // description as text
+// TypeScript interface for the Review document
+export interface IReview extends Document {
+  name?: string;
+  description?: string;
+  name_ta?: string;
+  description_ta?: string;
+  rating: string;
+  updated_at?: Date;
+  is_delete?: boolean;
+}
+
+// Define the schema with proper typing
+const ReviewSchema = new Schema<IReview>({
+  name: { type: String },
+  description: { type: String, text: true },
+  name_ta: { type: String },
+  description_ta: { type: String, text: true },
   rating: { type: String, required: true },
   updated_at: { type: Date, default: Date.now },
-  is_delete: { type: Boolean, default: false }, // admin approved or not status
+  is_delete: { type: Boolean, default: false },
+}, {
+  collection: "reviews",
 });
 
-const review = models.review || model("review", ReviewSchema);
+// Create and export the model
+const Review: Model<IReview> = models.review || model<IReview>("review", ReviewSchema);
 
-export default review;
+export default Review;
