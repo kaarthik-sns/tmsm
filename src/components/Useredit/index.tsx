@@ -57,14 +57,10 @@ const FormElements = () => {
 
   const castes = lang === 'ta'
     ? [
-      { label: "தொண்டை மண்டல சைவ முதலியார்", value: "Thondai mandala saiva mudaliyar" },
       { label: "முதலியார்", value: "Mudaliyar" },
-      { label: "சைவ முதலியார்", value: "Saiva mudaliyar" },
     ]
     : [
-      { label: "Thondai mandala saiva mudaliyar", value: "Thondai mandala saiva mudaliyar" },
       { label: "Mudaliyar", value: "Mudaliyar" },
-      { label: "Saiva mudaliyar", value: "Saiva mudaliyar" },
     ];
 
   const profileOptions = [
@@ -147,7 +143,9 @@ const FormElements = () => {
     partner_pref_subcaste: "",
     gender: "",
     bride_groom_detail: "",
-    country_id: ""
+    country_id: "",
+    relation_name: "",
+
   });
 
   // Set selected state and city based on formData
@@ -392,6 +390,14 @@ const FormElements = () => {
       }
     }
 
+    if (formData.profile_created_for == 'others') {
+      if (!formData.relation_name || formData.relation_name.trim() === "") {
+        errors.relation_name = isTamil
+          ? "மணமகனுடன் / மணமகளுடன் உள்ள உறவு கட்டாயம் உள்ளிடவும்."
+          : "Relationship to Bride/Groom cannot be empty.";
+      }
+    }
+
     // If there are validation errors, show error messages and stop submission
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors); // Assume `setError` updates the UI to display error messages
@@ -520,6 +526,28 @@ const FormElements = () => {
                       )}
                     </div>
                   </>
+                )}
+
+                {formData.profile_created_for == 'others' && (
+                  < div className="mb-4">
+                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                      {lang == 'ta' ? 'மணமகனுடன் / மணமகளுடன் உள்ள உறவு' : 'Relationship to Bride/Groom'} <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="relation_name"
+                      value={formData.relation_name}
+                      onChange={handleChange}
+                      placeholder={lang == 'ta' ? 'மணமகனுடன் / மணமகளுடன் உள்ள உறவு' : 'Relationship to Bride/Groom'}
+                      className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.relation_name
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-stroke focus:border-primary"
+                        } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                    />
+                    {formErrors.relation_name && (
+                      <p className="text-red-600 text-sm">{formErrors.relation_name}</p>
+                    )}
+                  </div>
                 )}
 
                 <div className="mb-4.5">
@@ -1021,7 +1049,7 @@ const FormElements = () => {
             <div className="rounded-lg border border-1 bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                 <h3 className="font-medium dark-text dark:text-white">
-                  {lang === 'ta' ? 'பரிந்துரையாளர் விவரங்கள்' : 'Referral Details'}
+                  {lang === 'ta' ? 'TMSM HUB திருமணத் தளத்தை பரிந்துரை செய்தவர்கள் விவரங்கள்' : 'Referral Person Details'}
                 </h3>
               </div>
               <div className="flex flex-col gap-5.5 p-6.5">

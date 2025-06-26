@@ -76,7 +76,7 @@ interface IUser {
   gender?: string;
   deactivate_reason?: string;
   reactivate_reason?: string;
-  relation_type?: string;
+  relation_name?: string;
 }
 
 
@@ -158,7 +158,7 @@ const UserSchema = new Schema<IUserDocument>(
     gender: { type: String },
     deactivate_reason: { type: String },
     reactivate_reason: { type: String },
-    relation_type: { type: String },
+    relation_name: { type: String },
   },
   {
     collection: "users",

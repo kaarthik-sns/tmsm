@@ -148,7 +148,7 @@ const FilterForm = () => {
               />
             </div>
 
-            <div className="w-full md:w-auto relative">
+            {/* <div className="w-full md:w-auto relative">
               <label className="mb-3 block text-sm font-medium text-white">
                 {lang == 'ta' ? 'உட்சாதி' : 'Subcaste in Mudaliyar'}
               </label>
@@ -174,7 +174,7 @@ const FilterForm = () => {
                   </ul>
                 )}
               </div>
-            </div>
+            </div> */}
 
 
             <div className="w-full md:w-auto flex justify-between gap-4 mt-5 md:mt-5">
