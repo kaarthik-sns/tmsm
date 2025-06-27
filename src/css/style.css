@@ -528,3 +528,7 @@ th.py-3.px-6.dark-text {
 .lang-ta ul li a {
     font-size: 14px;
 }
+
+.lang-ta .forgot-password-section button {
+    font-size: 12px;
+}

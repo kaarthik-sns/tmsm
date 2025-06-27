@@ -33,6 +33,7 @@ const FormElements = () => {
   const router = useRouter();
 
   const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
 
   // Array for religions
   const religions = lang === 'ta'
@@ -283,8 +284,6 @@ const FormElements = () => {
     // Validation
     const errors: Record<string, string> = {};
 
-    const isTamil = lang === 'ta';
-
     if (!formData.bride_groom_detail || formData.bride_groom_detail.trim() === "") {
       errors.bride_groom_detail = isTamil
         ? "மணமகன்/மணமகளின் விவரங்களை பதிவு செய்யவும்."
@@ -473,7 +472,7 @@ const FormElements = () => {
 
   return (
     <>
-      <Breadcrumb pageName="Edit User" />
+      <Breadcrumb pageName={isTamil ? 'உறுப்பினர் விவரங்களைத் திருத்தவும்' : 'Edit User'} />
       {lang == 'ta' && (<p className="text-sm font-medium text-center dark-text mb-4">Please fill the form in english&nbsp;<span className="text-meta-1">*</span></p>)}
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-9 sm:grid-cols-2 mt-5 views">
@@ -779,7 +778,7 @@ const FormElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    {lang === 'ta' ? 'முதலியார் உபஜாதி' : 'Subcaste in Mudaliyar'}
+                    {lang === 'ta' ? 'முதலியார் உட்சாதி' : 'Subcaste in Mudaliyar'}
                   </label>
                   <input
                     type="text"

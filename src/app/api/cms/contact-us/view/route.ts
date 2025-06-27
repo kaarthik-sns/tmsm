@@ -29,7 +29,6 @@ export const GET = async (req: NextRequest) => {
         await connectToDatabase();
 
         var data = await ContactUsTemplate.findOne({});
-        console.log(data);
         
         // Prepare the response with pagination meta
         return NextResponse.json({

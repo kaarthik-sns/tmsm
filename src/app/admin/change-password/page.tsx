@@ -24,6 +24,9 @@ const ChangePassword: React.FC = () => {
         token: token
     });
 
+    const lang = localStorage.getItem('lang') || 'en';
+    const isTamil = lang === 'ta';
+
     const validatePassword = (password: string): string | null => {
         const minLength = 6;
         const hasUpperCase = /[A-Z]/.test(password);
@@ -31,21 +34,12 @@ const ChangePassword: React.FC = () => {
         const hasNumber = /[0-9]/.test(password);
         const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
-        if (password.length < minLength) {
-            return "Password must be at least 6 characters long.";
+        if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
+            return isTamil
+                ? "குறைந்தபட்சம் 6 எழுத்துகள், பெரிய, சிறிய, எண், சிறப்பு எழுத்து வேண்டும்"
+                : "Password must be at least 6 characters long and include uppercase, lowercase, number, and special character.";
         }
-        if (!hasUpperCase) {
-            return "Password must contain at least one uppercase letter.";
-        }
-        if (!hasLowerCase) {
-            return "Password must contain at least one lowercase letter.";
-        }
-        if (!hasNumber) {
-            return "Password must contain at least one number.";
-        }
-        if (!hasSpecialChar) {
-            return "Password must contain at least one special character.";
-        }
+
         return null; // Valid password
     };
 
@@ -122,10 +116,10 @@ const ChangePassword: React.FC = () => {
                             <div className="p-8 sm:p-12 flex items-center">
                                 <div className="w-full max-w-[360px] mx-auto">
                                     <h2 className="text-2xl sm:text-3xl font-bold text-black dark:text-white mb-4 dark-text">
-                                        Change Password
+                                        {isTamil ? 'கடவுச்சொல்லை மாற்றவும்' : 'Change Password'}
                                     </h2>
                                     <p className="text-gray-600 dark:text-gray-400 text-base mb-8">
-                                        Please enter your new password below
+                                        {isTamil ? 'உங்கள் புதிய கடவுச்சொல்லை கீழே உள்ளிடவும்.' : 'Please enter your new password below'}
                                     </p>
 
                                     {!!error && (
@@ -138,7 +132,7 @@ const ChangePassword: React.FC = () => {
                                     <form onSubmit={handleSubmit} className="space-y-6">
                                         <div>
                                             <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-                                                Password
+                                                {isTamil ? 'கடவுச்சொல்' : 'Password'}
                                             </label>
                                             <div className="relative">
                                                 <input
@@ -146,7 +140,7 @@ const ChangePassword: React.FC = () => {
                                                     disabled={pending}
                                                     value={form.password}
                                                     onChange={(e) => setForm({ ...form, password: e.target.value })}
-                                                    placeholder="Enter your password"
+                                                    placeholder={isTamil ? 'கடவுச்சொல்லை உள்ளிடவும்' : 'Enter your password'}
                                                     className="w-full h-12 px-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-transparent text-gray-900 dark:text-white text-base focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                                                 />
                                             </div>
@@ -154,7 +148,7 @@ const ChangePassword: React.FC = () => {
 
                                         <div>
                                             <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-                                                Confirm Password
+                                                {isTamil ? 'கடவுச்சொல்லை உறுதிப்படுத்தவும்' : 'Confirm Password'}
                                             </label>
                                             <div className="relative">
                                                 <input
@@ -162,7 +156,7 @@ const ChangePassword: React.FC = () => {
                                                     disabled={pending}
                                                     value={form.confirmPassword}
                                                     onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
-                                                    placeholder="Re-enter your password"
+                                                    placeholder={isTamil ? 'மீண்டும் கடவுச்சொல்லை உள்ளிடவும்' : 'Re-enter your password'}
                                                     className="w-full h-12 px-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-transparent text-gray-900 dark:text-white text-base focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                                                 />
                                             </div>
@@ -173,7 +167,10 @@ const ChangePassword: React.FC = () => {
                                             disabled={pending}
                                             className="w-full h-12 rounded-lg bg-[#ffd480] text-gray-900 font-medium text-base hover:bg-[#ffc44d] focus:outline-none focus:ring-2 focus:ring-[#ffd480]/50 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
                                         >
-                                            {pending ? "Changing..." : "Change Password"}
+                                            {pending
+                                                ? (isTamil ? "மாற்றப்படுகிறது..." : "Changing...")
+                                                : (isTamil ? "கடவுச்சொல்லை மாற்று" : "Change Password")}
+
                                         </button>
 
                                         <div className="text-center">
@@ -181,7 +178,7 @@ const ChangePassword: React.FC = () => {
                                                 href="/admin/auth/signin"
                                                 className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white font-medium transition-colors dark-text"
                                             >
-                                                Back to Sign in
+                                                {isTamil ? 'உள்நுழைவுக்குத் திரும்பு' : 'Back to Sign in'}
                                             </Link>
                                         </div>
                                     </form>

@@ -1,4 +1,3 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import  UserTable from "@/components/UserTable/UserTable";
 
 import { Metadata } from "next";
@@ -13,8 +12,6 @@ export const metadata: Metadata = {
 const TablesPage = () => {
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="List Users" />
-
       <div className="flex flex-col gap-10">
         <UserTable />
       </div>

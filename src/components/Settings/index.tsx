@@ -14,7 +14,9 @@ const Settings = () => {
   const [error, setError] = useState(null);
   const formData_upload = new FormData();
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+
   const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
 
   const [formData, setFormData] = useState({
     organisation_description: "",
@@ -241,7 +243,7 @@ const Settings = () => {
 
   return (
     <div className="mx-auto">
-      <Breadcrumb pageName="Settings" />
+      <Breadcrumb pageName={isTamil ? 'இணையதள அமைப்புகள்' : 'Settings'} />
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-5 gap-8">
 
@@ -249,7 +251,7 @@ const Settings = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
-                  Site Information
+                  {isTamil ? 'இணையதள தகவல்' : 'Site Information'}
                 </h3>
               </div>
               <div className="p-7">
@@ -266,7 +268,7 @@ const Settings = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="organisation_name"
                     >
-                      Organization Name
+                      {isTamil ? 'இணையதள பெயர்' : 'Organization Name'}
                     </label>
                     <div>
                       <input
@@ -291,7 +293,7 @@ const Settings = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="phone_no"
                     >
-                      Phone Number
+                      {isTamil ? 'இணையதள தொலைபேசி எண்' : 'Organization Phone Number'}
                     </label>
                     <input
                       className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
@@ -316,7 +318,7 @@ const Settings = () => {
                     className="mb-3 block text-sm font-medium text-black dark:text-white"
                     htmlFor="organisation_email_id"
                   >
-                    Organization Email ID
+                    {isTamil ? 'நிறுவன மின்னஞ்சல் ஐடி' : 'Organization Email ID'}
                   </label>
                   <div>
                     <input
@@ -342,7 +344,7 @@ const Settings = () => {
                     className="mb-3 block text-sm font-medium text-black dark:text-white"
                     htmlFor="admin_to_email_id"
                   >
-                    Admin To Email ID
+                    {isTamil ? 'நிர்வாகி மின்னஞ்சல் ஐடி' : 'Admin To Email ID'}
                   </label>
                   <div>
                     <input
@@ -369,7 +371,7 @@ const Settings = () => {
                     className="mb-3 block text-sm font-medium text-black dark:text-white"
                     htmlFor="admin_from_email_id"
                   >
-                    Admin From Email ID
+                    {isTamil ? 'வெளிச்செல்லும் மின்னஞ்சல் முகவரி' : 'Admin From Email ID'}
                   </label>
                   <div>
                     <input
@@ -395,7 +397,7 @@ const Settings = () => {
                     className="mb-3 block text-sm font-medium text-black dark:text-white"
                     htmlFor="domain_url"
                   >
-                    Domain URL
+                    {isTamil ? 'இணையதள இணைப்பு முகவரி' : 'Domain URL'}
                   </label>
                   <input
                     className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
@@ -419,7 +421,7 @@ const Settings = () => {
                     className="mb-3 block text-sm font-medium text-black dark:text-white"
                     htmlFor="copyright"
                   >
-                    Copyright
+                    {isTamil ? 'இணையதள காப்புரிமை' : 'Copyright'}
                   </label>
                   <input
                     className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
@@ -443,7 +445,7 @@ const Settings = () => {
                     className="mb-3 block text-sm font-medium text-black dark:text-white"
                     htmlFor="facebook"
                   >
-                    Facebook
+                    {isTamil ? 'முகநூல்' : 'Facebook'}
                   </label>
                   <input
                     className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
@@ -541,7 +543,7 @@ const Settings = () => {
                     className="mb-3 block text-sm font-medium text-black dark:text-white"
                     htmlFor="address"
                   >
-                    Address
+                    {isTamil ? 'இணையதள முகவரி' : 'Address'}  Address
                   </label>
                   <div>
                     <textarea
@@ -818,7 +820,7 @@ const Settings = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
-                  Contact Page Information
+                  {isTamil ? 'இணையதள பெயதொடர்பு பக்க தகவல்' : 'Contact Page Information'}
                 </h3>
               </div>
               <div className="p-7">

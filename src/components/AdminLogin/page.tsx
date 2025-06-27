@@ -19,9 +19,10 @@ const SignIn: React.FC = () => {
   const [error, setError] = useState("");
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
-  const lang = localStorage.getItem('lang') || 'en';
 
-  
+  const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -34,12 +35,12 @@ const SignIn: React.FC = () => {
     let valid = true;
 
     if (!email) {
-      setEmailError("Email cannot be empty.");
+      setEmailError(isTamil ? "மின்னஞ்சல் காலியாக இருக்க முடியாது." : "Email cannot be empty.");
       valid = false;
     }
 
     if (!password) {
-      setPasswordError("Password cannot be empty");
+      setPasswordError(isTamil ? "கடவுச்சொல் காலியாக இருக்க முடியாது" : "Password cannot be empty");
       valid = false;
     }
 
@@ -97,8 +98,9 @@ const SignIn: React.FC = () => {
             {/* Right side with form */}
             <div className="p-8 sm:p-12 flex items-center">
               <div className="w-full max-w-[360px] mx-auto">
+
                 <h2 className="text-2xl sm:text-3xl font-bold text-black dark:text-white mb-8 dark-text">
-                  Sign In to TMSM
+                  {isTamil ? 'TMSM Hub உள்நுழையவும்' : 'Sign In to TMSM Hub'}
                 </h2>
 
                 {!!error && (
@@ -111,7 +113,7 @@ const SignIn: React.FC = () => {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-                      Email
+                      {isTamil ? 'மின்னஞ்சல்' : 'Email'}
                     </label>
                     <div className="relative">
                       <input
@@ -119,7 +121,7 @@ const SignIn: React.FC = () => {
                         disabled={pending}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Enter your email"
+                        placeholder={isTamil ? 'உங்கள் மின்னஞ்சலை உள்ளிடவும்' : 'Enter your email'}
                         className={`w-full h-12 px-4 rounded-lg border ${emailError ? "border-red-500" : "border-gray-300 dark:border-gray-600"
                           } bg-transparent text-gray-900 dark:text-white text-base focus:outline-none focus:ring-2 
                           focus:ring-primary/20 focus:border-primary transition-colors`}
@@ -130,7 +132,7 @@ const SignIn: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-                      Password
+                      {isTamil ? 'கடவுச்சொல்' : 'Password'}
                     </label>
                     <div className="relative">
                       <input
@@ -138,7 +140,7 @@ const SignIn: React.FC = () => {
                         disabled={pending}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Enter your password"
+                        placeholder={isTamil ? 'உங்கள் கடவுச்சொல்லை உள்ளிடவும்' : 'Enter your password'}
                         className={`w-full h-12 px-4 rounded-lg border ${passwordError ? "border-red-500" : "border-gray-300 dark:border-gray-600"
                           } bg-transparent text-gray-900 dark:text-white text-base focus:outline-none focus:ring-2 
                           focus:ring-primary/20 focus:border-primary transition-colors`}
@@ -154,7 +156,7 @@ const SignIn: React.FC = () => {
                       hover:bg-[#ffc44d] focus:outline-none focus:ring-2 focus:ring-[#ffd480]/50 
                       transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
                   >
-                    {pending ? "Signing in..." : "Sign In"}
+                    {pending ? (isTamil ? "உள்நுழைகிறது..." : "Signing in...") : (isTamil ? "உள்நுழை" : "Sign In")}
                   </button>
 
                   <div className="text-center">
@@ -163,7 +165,7 @@ const SignIn: React.FC = () => {
                       className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 
                         dark:hover:text-white font-medium transition-colors dark-text"
                     >
-                      Forgot Password?
+                      {isTamil ? 'கடவுச்சொல்லை மறந்துவிட்டீர்களா' : 'Forgot Password'} ?
                     </Link>
                   </div>
                 </form>

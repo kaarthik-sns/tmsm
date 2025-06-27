@@ -27,6 +27,9 @@ const Dashboard = () => {
     fetchUserCounts();
   }, []);
 
+  const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
+
   return (
     <>
       <section className="bg-gray-100 p-6">
@@ -36,27 +39,39 @@ const Dashboard = () => {
             <div>
               <FaUsers className="text-green-500 text-2xl" />
             </div>
-            <h3 className="text-gray-600 mt-2">Active Users</h3>
-            <p className="mb-4 text-title-lg font-bold text-black dark:text-white">{activeUsers}</p>
+            <h3 className="text-gray-600 mt-2">
+              {isTamil ? "செயலில் உள்ள உறுப்பினர்கள்" : "Active Users"}
+            </h3>
+            <p className="mb-4 text-title-lg font-bold text-black dark:text-white">
+              {activeUsers}
+            </p>
           </div>
 
           <div className="bg-white p-6 rounded-xl shadow-sm">
             <div>
               <FaUsers className="text-red-500 text-2xl" />
             </div>
-            <h3 className="text-gray-600 mt-2">Waiting Approval</h3>
-            <p className="mb-4 text-title-lg font-bold text-black dark:text-white">{waitingForApproval}</p>
+            <h3 className="text-gray-600 mt-2">
+              {isTamil ? "மீளாய்விற்காக காத்திருப்போர்" : "Waiting Approval"}
+            </h3>
+            <p className="mb-4 text-title-lg font-bold text-black dark:text-white">
+              {waitingForApproval}
+            </p>
           </div>
 
           <div className="bg-white p-6 rounded-xl shadow-sm">
             <div>
               <FaUsers className="text-gray-500 text-2xl" />
             </div>
-            <h3 className="text-gray-600 mt-2">Total Users</h3>
-            <p className="mb-4 text-title-lg font-bold text-black dark:text-white">{totalUsers}</p>
+            <h3 className="text-gray-600 mt-2">
+              {isTamil ? "மொத்த உறுப்பினர்கள்" : "Total Users"}
+            </h3>
+            <p className="mb-4 text-title-lg font-bold text-black dark:text-white">
+              {totalUsers}
+            </p>
           </div>
-
         </div>
+
       </section>
     </>
   );

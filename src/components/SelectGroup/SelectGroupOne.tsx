@@ -7,27 +7,31 @@ interface SelectGroupTwoProps {
 }
 
 const SelectGroupTwo: React.FC<SelectGroupTwoProps> = ({ value, onChange }) => {
+
+  const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
+
   return (
     <div>
       <label className="mb-3 block text-sm font-medium text-black dark:text-white dark-text">
-       Account Status
+        {isTamil ? 'கணக்கின் நிலை' : 'Account Status'}
       </label>
 
       <div className="relative z-20 bg-transparent dark:bg-form-input">
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`w-full md:w-64 relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary md:text-sm ${value ? "text-black dark:text-white" : ""
-          }`}
+          className={`w-full md:w-64 relative z-20 appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary md:text-sm ${value ? "text-black dark:text-white" : ""
+            }`}
         >
           <option value="" disabled className="text-body dark:text-bodydark">
-            Select Status
+            {isTamil ? 'நிலையைத் தேர்ந்தெடு' : 'Select Status'}
           </option>
           <option value="true" className="text-body dark:text-bodydark">
-            Yes
+            {isTamil ? 'ஆம்' : 'Yes'}
           </option>
           <option value="false" className="text-body dark:text-bodydark">
-            No
+            {isTamil ? 'இல்லை' : 'No'}
           </option>
         </select>
 

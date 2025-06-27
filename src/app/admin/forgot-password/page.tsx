@@ -30,8 +30,8 @@ const ForgotPassword: React.FC = () => {
     setError("");
 
     if (!form.email) {
-      setEmailError("Email cannot be empty.");
-      return
+      setEmailError(isTamil ? "மின்னஞ்சல் காலியாக இருக்க முடியாது." : "Email cannot be empty.");
+      return;
     }
 
     setPending(true);
@@ -66,10 +66,12 @@ const ForgotPassword: React.FC = () => {
     }
   };
 
+  const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
 
   return (
     <AuthLayout>
-      <div className="min-h-screen w-full flex items-center justify-center  bg-color-custom dark:bg-boxdark">
+      <div className="min-h-screen w-full flex items-center justify-center  bg-color-custom dark:bg-boxdark forgot-password-section">
         <div className="w-full max-w-[1000px] mx-4">
           <div className="rounded-lg overflow-hidden bg-white dark:bg-boxdark">
             <div className="grid grid-cols-1 xl:grid-cols-2">
@@ -93,10 +95,13 @@ const ForgotPassword: React.FC = () => {
               <div className="p-8 sm:p-12 flex items-center">
                 <div className="w-full max-w-[360px] mx-auto">
                   <h2 className="text-2xl sm:text-3xl font-bold text-black dark:text-white mb-4 dark-text">
-                    Forgot Password
+                    {isTamil ? "கடவுச்சொல்லை மறந்துவிட்டீர்களா" : "Forgot Password"}
                   </h2>
+
                   <p className="text-gray-600 dark:text-gray-400 text-base mb-8">
-                    Please enter the email address you'd like your password reset information sent to
+                    {isTamil
+                      ? "உங்கள் கடவுச்சொல்லை மீட்டமைக்க விரும்பும் மின்னஞ்சல் முகவரியை உள்ளிடவும்"
+                      : "Please enter the email address you'd like your password reset information sent to"}
                   </p>
 
                   {!!error && (
@@ -109,7 +114,7 @@ const ForgotPassword: React.FC = () => {
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-                        Email
+                        {isTamil ? "மின்னஞ்சல் முகவரி" : "Email"}
                       </label>
                       <div className="relative">
                         <input
@@ -117,11 +122,9 @@ const ForgotPassword: React.FC = () => {
                           disabled={pending}
                           value={form.email}
                           onChange={(e) => setForm({ ...form, email: e.target.value })}
-                          placeholder="Enter your email"
-                          className={`w-full h-12 px-4 rounded-lg border ${
-                            emailError ? "border-red-500" : "border-gray-300 dark:border-gray-600"
-                          } bg-transparent text-gray-900 dark:text-white text-base focus:outline-none focus:ring-2 
-                          focus:ring-primary/20 focus:border-primary transition-colors`}
+                          placeholder={isTamil ? "உங்கள் மின்னஞ்சலை உள்ளிடவும்" : "Enter your email"}
+                          className={`w-full h-12 px-4 rounded-lg border ${emailError ? "border-red-500" : "border-gray-300 dark:border-gray-600"
+                            } bg-transparent text-gray-900 dark:text-white text-base focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors`}
                         />
                         {emailError && <p className="text-red-500 text-sm mt-1.5">{emailError}</p>}
                       </div>
@@ -130,25 +133,25 @@ const ForgotPassword: React.FC = () => {
                     <button
                       type="submit"
                       disabled={pending}
-                      className="w-full h-12 rounded-lg bg-[#ffd480] text-gray-900 font-medium text-base
-                      hover:bg-[#ffc44d] focus:outline-none focus:ring-2 focus:ring-[#ffd480]/50 
-                      transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+                      className="w-full h-12 rounded-lg bg-[#ffd480] text-gray-900 font-medium text-base hover:bg-[#ffc44d] focus:outline-none focus:ring-2 focus:ring-[#ffd480]/50  transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
                     >
-                      {pending ? "Sending..." : "Send Password Reset Link"}
+                      {pending
+                        ? isTamil ? "அனுப்புகிறது..." : "Sending..."
+                        : isTamil ? "மீட்டமைக்கும் இணையத்தை அனுப்பு" : "Send Password Reset Link"}
                     </button>
 
                     <div className="text-center">
                       <Link
                         href="/admin/auth/signin"
-                        className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 
-                        dark:hover:text-white font-medium transition-colors dark-text"
+                        className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white font-medium transition-colors dark-text"
                       >
-                        Back to Sign in
+                        {isTamil ? "உள்நுழைவுக்கு மீண்டும் திரும்பு" : "Back to Sign in"}
                       </Link>
                     </div>
                   </form>
                 </div>
               </div>
+
             </div>
           </div>
         </div>

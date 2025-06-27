@@ -23,6 +23,9 @@ const AdminProfile = () => {
   const [changePassword, setchangePassword] = useState(false);
   const [error, setError] = useState(null);
 
+  const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
+
   // Fetch user data on component mount
   useEffect(() => {
     const fetchUserData = async () => {
@@ -67,7 +70,7 @@ const AdminProfile = () => {
       // Check image dimensions
       const img = document.createElement('img');
       const objectUrl = URL.createObjectURL(file);
-      
+
       img.onload = () => {
         URL.revokeObjectURL(objectUrl);
         if (img.width < 100 || img.height < 100) {
@@ -97,21 +100,12 @@ const AdminProfile = () => {
     const hasNumber = /[0-9]/.test(password);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
-    if (password.length < minLength) {
-      return "Password must be at least 6 characters long.";
+    if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
+      return isTamil
+        ? "குறைந்தபட்சம் 6 எழுத்துகள், பெரிய, சிறிய, எண், சிறப்பு எழுத்து வேண்டும்"
+        : "Password must be at least 6 characters long and include uppercase, lowercase, number, and special character.";
     }
-    if (!hasUpperCase) {
-      return "Password must contain at least one uppercase letter.";
-    }
-    if (!hasLowerCase) {
-      return "Password must contain at least one lowercase letter.";
-    }
-    if (!hasNumber) {
-      return "Password must contain at least one number.";
-    }
-    if (!hasSpecialChar) {
-      return "Password must contain at least one special character.";
-    }
+
     return null; // Valid password
   };
 
@@ -119,13 +113,22 @@ const AdminProfile = () => {
     e.preventDefault();
 
     if (changePassword) {
-      if (password == '' || confirmPassword == '') {
-        setError("Please fill the password fileds");
+
+      if (password === '' || confirmPassword === '') {
+        setError(
+          isTamil
+            ? 'கடவுச்சொல்ளை நிரப்பவும்'
+            : 'Please fill the password fields'
+        );
         return;
       }
 
       if (password !== confirmPassword) {
-        setError("Passwords don't match");
+        setError(
+          isTamil
+            ? 'கடவுச்சொற்கள் பொருந்தவில்லை'
+            : "Passwords don't match"
+        );
         return;
       }
 
@@ -144,13 +147,13 @@ const AdminProfile = () => {
 
 
     if (!name) {
-      setError(`Name can't be empty`)
-      return
+      setError(isTamil ? 'பெயர் காலியாக இருக்கக்கூடாது' : "Name can't be empty");
+      return;
     }
 
     if (!email) {
-      setError(`Email can't be empty`)
-      return
+      setError(isTamil ? 'மின்னஞ்சல் காலியாக இருக்கக்கூடாது' : "Email can't be empty");
+      return;
     }
 
 
@@ -200,7 +203,7 @@ const AdminProfile = () => {
   return (
     <>
       <div className="mx-auto">
-        <Breadcrumb pageName="Profile" />
+        <Breadcrumb pageName={isTamil ? 'சுயவிவரம்' : 'Profile'} />
 
         <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="max-w-xl mx-auto mt-10 mb-10 p-6 ">
@@ -213,7 +216,7 @@ const AdminProfile = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
-                  Profile Picture
+                  {isTamil ? 'சுயவிவரப் படம்' : 'Profile Picture'}
                 </label>
                 <div className="flex items-center space-x-4">
                   <div className="flex-shrink-0 w-26 h-26 rounded-full overflow-hidden bg-gray-200">
@@ -280,7 +283,7 @@ const AdminProfile = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
-                  Name
+                  {isTamil ? 'பெயர்' : 'Name'}
                 </label>
                 <input
                   type="text"
@@ -292,7 +295,7 @@ const AdminProfile = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
-                  Email
+                  {isTamil ? 'மின்னஞ்சல்' : 'Email'}
                 </label>
                 <input
                   type="email"
@@ -305,14 +308,14 @@ const AdminProfile = () => {
               <CheckboxTwo
                 changePassword={changePassword}
                 setchangePassword={setchangePassword}
-                label="Change Password"
+                label={isTamil ? 'கடவுச்சொல்லை மாற்றவும்' : 'Change Password'}
               />
 
               {changePassword && (
                 <>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
-                      Password
+                      {isTamil ? 'கடவுச்சொல்' : 'Password'}
                     </label>
                     <input
                       type="password"
@@ -324,7 +327,7 @@ const AdminProfile = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
-                      Confirm Password
+                      {isTamil ? 'கடவுச்சொல்லை உறுதிப்படுத்தவும்' : 'Confirm Password'}
                     </label>
                     <input
                       type="password"
@@ -341,7 +344,7 @@ const AdminProfile = () => {
                   type="submit"
                   className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
                 >
-                  Update Profile
+                  {isTamil ? 'சுயவிவரத்தைப் புதுப்பிக்கவும்' : 'Update Profile'}
                 </button>
               </div>
             </form>

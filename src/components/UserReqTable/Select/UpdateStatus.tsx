@@ -13,6 +13,10 @@ const UpdateStatus: React.FC<UpdateStatusProps> = ({ value, onChange, className 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     onChange(e.target.value); // Pass the updated value back to the parent component
   };
+
+  const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
+
   return (
     <div className="relative z-20 bg-transparent dark:bg-form-input">
       <select
@@ -21,19 +25,19 @@ const UpdateStatus: React.FC<UpdateStatusProps> = ({ value, onChange, className 
         className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-3 pr-8 py-1.5 text-sm outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${value ? "text-black dark:text-white" : ""} ${className || ""}`}
       >
         <option value="" disabled className="text-body dark:text-bodydark">
-          Select Status
+          {isTamil ? "நிலை தேர்வுசெய்க" : "Select Status"}
         </option>
         <option value="pending" className="text-body dark:text-bodydark">
-          Request sent
+          {isTamil ? "கோரிக்கை அனுப்பப்பட்டது" : "Request sent"}
         </option>
         <option value="accepted" className="text-body dark:text-bodydark">
-          Accepted
+          {isTamil ? "ஏற்றுக்கொள்ளப்பட்டது" : "Accepted"}
         </option>
         <option value="rejected" className="text-body dark:text-bodydark">
-          Declined
+          {isTamil ? "நிராகரிக்கப்பட்டது" : "Declined"}
         </option>
         <option value="cancel" className="text-body dark:text-bodydark">
-          Cancel
+          {isTamil ? "நீக்கம்செய்" : "Cancel"}
         </option>
       </select>
 
