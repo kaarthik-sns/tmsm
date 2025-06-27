@@ -15,6 +15,7 @@ const UserTable = () => {
     const [tableItems, setTableItems] = useState([]);
     const [triggerFetch, setTriggerFetch] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const lang = localStorage.getItem('lang') || 'en';
 
     const [formState, setFormState] = useState({
         name: "",
@@ -111,26 +112,49 @@ const UserTable = () => {
 
         switch (newStatus) {
             case "accepted":
-                confirmationMessage = "Do you want to accept this request?";
-                successMessage = "Request accepted successfully.";
-                confirmButtonText = "Yes, Accept";
+                confirmationMessage =
+                    lang === "ta"
+                        ? "இந்த கோரிக்கையை ஏற்க விரும்புகிறீர்களா?"
+                        : "Do you want to accept this request?";
+                successMessage =
+                    lang === "ta"
+                        ? "கோரிக்கை வெற்றிகரமாக ஏற்கப்பட்டது."
+                        : "Request accepted successfully.";
+                confirmButtonText = lang === "ta" ? "ஆம், ஏற்கவும்" : "Yes, Accept";
+                 
                 break;
+
             case "rejected":
-                confirmationMessage = "Do you want to decline this request?";
-                successMessage = "Request has been declined.";
-                confirmButtonText = "Yes, Decline";
+                confirmationMessage =
+                    lang === "ta"
+                        ? "இந்த கோரிக்கையை நிராகரிக்க விரும்புகிறீர்களா?"
+                        : "Do you want to decline this request?";
+                successMessage =
+                    lang === "ta"
+                        ? "கோரிக்கை நிராகரிக்கப்பட்டது."
+                        : "Request has been declined.";
+                confirmButtonText = lang === "ta" ? "ஆம், நிராகரிக்கவும்" : "Yes, Decline";
                 break;
+
             case "cancel":
-                confirmationMessage = "Do you want to cancel this request?";
-                successMessage = "Request has been cancelled.";
-                confirmButtonText = "Yes, Cancel";
+                confirmationMessage =
+                    lang === "ta"
+                        ? "இந்த கோரிக்கையை ரத்துசெய்ய விரும்புகிறீர்களா?"
+                        : "Do you want to cancel this request?";
+                successMessage =
+                    lang === "ta"
+                        ? "கோரிக்கை ரத்து செய்யப்பட்டது."
+                        : "Request has been cancelled.";
+                confirmButtonText = lang === "ta" ? "ஆம், ரத்துசெய்யவும்" : "Yes, Cancel";
                 break;
+
             default:
                 return;
         }
 
+
         const result = await Swal.fire({
-            title: "Are you sure?",
+            title: lang === "ta" ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?" : "Are you sure?",
             text: confirmationMessage,
             icon: "question",
             showCancelButton: true,

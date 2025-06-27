@@ -416,17 +416,21 @@ th.py-3.px-6.dark-text {
 
 /* Custom class for SweetAlert2 */
 .confirm-color{
-    background-color: rgba(16, 185, 129, .08);
-    color: #10b981;
+    background-color: rgba(16, 185, 129, .08) !important;
+    color: #10b981 !important; 
 }
 .cancel-color {
-    background-color: rgba(251, 84, 84, .08);
-    color: #fb5454;
+    background-color: rgba(251, 84, 84, .08) !important;
+    color: #fb5454 !important;
 }
 .confirm-color-succes {
-    background-color: rgba(16, 185, 129, .08);
-    color: #10b981;
+    background-color: rgba(16, 185, 129, .08) !important;
+    color: #10b981 !important;
 }
+.swal2-styled.swal2-confirm:focus {
+    box-shadow: 0 0 0 3px rgb(236 250 245) !important;
+}
+
 /*admin cms home page slider*/
 .home-banner-image-info{
     position: relative;
@@ -519,3 +523,8 @@ th.py-3.px-6.dark-text {
 
 }
 
+
+/* Tamil Font size */
+.lang-ta ul li a {
+    font-size: 14px;
+}
