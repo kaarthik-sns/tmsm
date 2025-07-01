@@ -92,7 +92,7 @@ const FormElements = () => {
     phonenumber: "",
     religion: "",
     caste: "",
-    subcaste: "",
+    subcaste: "Thondai Mandala Saiva Mudaliyar",
     birthdate: "",
     age: 0,
     state_id: "",

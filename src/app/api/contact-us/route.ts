@@ -21,7 +21,7 @@ export async function GET(req) {
         query.is_delete = false;
 
         // Fetch filtered and paginated users from the database
-        const contacts = await Contact.find(query).skip(skip).limit(pageSize);
+        const contacts = await Contact.find(query).sort({ created_at: -1 }).skip(skip).limit(pageSize);
 
         // Count total documents for the query
         const totalUsers = await Contact.countDocuments(query);

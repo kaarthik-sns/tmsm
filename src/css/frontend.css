@@ -2319,3 +2319,6 @@ input::placeholder, .lang-ta  select{
 
 
 }
+.lang-ta input {
+    font-size: 16px;
+}

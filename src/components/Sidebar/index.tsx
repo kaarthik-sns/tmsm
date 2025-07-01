@@ -49,7 +49,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               />
             </svg>
           ),
-          label: isTamil ? 'கட்டுப்பாட்டகம்' : 'Dashbord',
+          label: isTamil ? 'கட்டுப்பாட்டகம்' : 'Dashboard',
           route: "/admin/dashboard",
         },
         {
@@ -77,7 +77,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           route: "#",
           children: [
             { label: isTamil ? "உறுப்பினர்கள் பட்டியல்" : "List Users", route: "/admin/users/userlist" },
-            { label: isTamil ? "உறுப்பினர்கள் சேர்க்க" : "Add Users", route: "/admin/users/useradd" },
+            { label: isTamil ? "உறுப்பினர் சேர்க்க" : "Add Users", route: "/admin/users/useradd" },
           ],
         },
 

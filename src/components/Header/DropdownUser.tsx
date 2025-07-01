@@ -145,7 +145,7 @@ const DropdownUser = () => {
                     fill=""
                   />
                 </svg>
-                {isTamil ? 'வலைத்தள அமைப்புகள்' : 'Site Settings'}
+                {isTamil ? 'அமைப்புகள்' : 'Site Settings'}
 
               </Link>
             </li>

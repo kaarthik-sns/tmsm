@@ -61,14 +61,10 @@ const UserProfile = (user_data) => {
 
   const castes = lang === 'ta'
     ? [
-      { label: "தொண்டை மண்டல சைவ முதலியார்", value: "Thondai mandala saiva mudaliyar" },
       { label: "முதலியார்", value: "Mudaliyar" },
-      { label: "சைவ முதலியார்", value: "Saiva mudaliyar" },
     ]
     : [
-      { label: "Thondai mandala saiva mudaliyar", value: "Thondai mandala saiva mudaliyar" },
       { label: "Mudaliyar", value: "Mudaliyar" },
-      { label: "Saiva mudaliyar", value: "Saiva mudaliyar" },
     ];
 
   const profileOptions = [
@@ -102,7 +98,7 @@ const UserProfile = (user_data) => {
     phonenumber: "",
     religion: "",
     caste: "",
-    subcaste: "",
+    subcaste: "Thondai Mandala Saiva Mudaliyar",
     birthdate: "",
     age: 0,
     place_of_birth: "",
@@ -837,6 +833,7 @@ const UserProfile = (user_data) => {
                           value={formData.subcaste || ""}
                           onChange={handleChange}
                           placeholder={lang === 'ta' ? 'உட்சாதி உள்ளிடவும்' : ''}
+                          disabled={true}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
