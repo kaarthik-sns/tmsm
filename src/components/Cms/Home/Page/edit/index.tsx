@@ -25,6 +25,7 @@ const Settings = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
 
   const toolbarOptions = [
     // Text formatting options
@@ -212,24 +213,23 @@ const Settings = () => {
 
     if (lang == 'ta') {
       fieldsToValidate = [
-        { key: "sec_one_img", message: "Image cannot be empty." },
-        { key: "sec_two_img", message: "Image cannot be empty." },
-        { key: "feature_one_img", message: "Image cannot be empty." },
-        { key: "feature_two_img", message: "Image cannot be empty." },
-        { key: "feature_three_img", message: "Image cannot be empty." },
-        { key: "feature_four_img", message: "Image cannot be empty." },
-        { key: "sec_one_title_ta", message: "Title (TA) cannot be empty." },
-        { key: "sec_one_desc_ta", message: "Description (TA) cannot be empty." },
-        { key: "sec_two_title_ta", message: "Title (TA) cannot be empty." },
-        { key: "sec_two_desc_ta", message: "Description (TA) cannot be empty." },
-        { key: "feature_one_ta", message: "Feature One (TA) cannot be empty." },
-        { key: "feature_two_ta", message: "Feature Two (TA) cannot be empty." },
-        { key: "feature_three_ta", message: "Feature Three (TA) cannot be empty." },
-        { key: "feature_four_ta", message: "Feature Four (TA) cannot be empty." },
-        { key: "banner_title_ta", message: "Banner Title (TA) cannot be empty." },
-        { key: "banner_btn_text_ta", message: "Button Text (TA) cannot be empty." },
-        { key: "banner_btn_link", message: "Button Link cannot be empty." }
-
+        { key: "sec_one_img", message: "படம் காலியாக இருக்க முடியாது." },
+        { key: "sec_two_img", message: "படம் காலியாக இருக்க முடியாது." },
+        { key: "feature_one_img", message: "படம் காலியாக இருக்க முடியாது." },
+        { key: "feature_two_img", message: "படம் காலியாக இருக்க முடியாது." },
+        { key: "feature_three_img", message: "படம் காலியாக இருக்க முடியாது." },
+        { key: "feature_four_img", message: "படம் காலியாக இருக்க முடியாது." },
+        { key: "sec_one_title_ta", message: "தலைப்பு காலியாக இருக்க முடியாது." },
+        { key: "sec_one_desc_ta", message: "விவரக்குறிப்பு காலியாக இருக்க முடியாது." },
+        { key: "sec_two_title_ta", message: "தலைப்பு காலியாக இருக்க முடியாது." },
+        { key: "sec_two_desc_ta", message: "விவரக்குறிப்பு காலியாக இருக்க முடியாது." },
+        { key: "feature_one_ta", message: "முதலாம் அம்சம் காலியாக இருக்க முடியாது." },
+        { key: "feature_two_ta", message: "இரண்டாம் அம்சம் காலியாக இருக்க முடியாது." },
+        { key: "feature_three_ta", message: "மூன்றாம் அம்சம் காலியாக இருக்க முடியாது." },
+        { key: "feature_four_ta", message: "நான்காம் அம்சம் காலியாக இருக்க முடியாது." },
+        { key: "banner_title_ta", message: "பதாகை தலைப்பு காலியாக இருக்க முடியாது." },
+        { key: "banner_btn_text_ta", message: "பொத்தான் தலைப்பு காலியாக இருக்க முடியாது." },
+        { key: "banner_btn_link", message: "பொத்தான் இணைப்பு காலியாக இருக்க முடியாது." }
       ];
     }
 
@@ -327,8 +327,13 @@ const Settings = () => {
     <>
       <Breadcrumb
         breadcrumbs={[
-          { name: "Home Page", href: "/admin/cms/home/page/view" },
-          { name: "Edit Home Page" },
+          {
+            name: isTamil ? "முகப்பு பக்கம்" : "Home Page",
+            href: "/admin/cms/home/page/view",
+          },
+          {
+            name: isTamil ? "முகப்புப் பக்கத்தைத் திருத்தவும்" : "Edit Home Page",
+          },
         ]}
       />
 
@@ -671,7 +676,7 @@ const Settings = () => {
                   type="submit"
                   className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-5 xl:px-6 text-custom"
                 >
-                  Submit
+                  {isTamil ? 'சமர்ப்பிக்கவும்' : 'Submit'}
                 </button>
 
               </div>
@@ -827,7 +832,7 @@ const Settings = () => {
               <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                   <h3 className="font-medium dark-text dark:text-white">
-                    எங்களை ஏன் தேர்வு செய்யவும்
+                    எங்களை ஏன் தேர்ந்தெடுக்க வேண்டும்
                   </h3>
                 </div>
                 <div className="p-6.5">

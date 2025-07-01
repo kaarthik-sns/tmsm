@@ -22,6 +22,7 @@ const Elements = () => {
   });
 
   const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [preview, setPreview] = useState("");
@@ -187,10 +188,16 @@ const Elements = () => {
     <>
       <Breadcrumb
         breadcrumbs={[
-          { name: "List testimonials", href: "/admin/cms/home/testimonial/list" },
-          { name: "Add testimonial" },
+          {
+            name: isTamil ? "சான்றுரைகள் பட்டியல்" : "List Testimonials",
+            href: "/admin/cms/home/testimonial/list",
+          },
+          {
+            name: isTamil ? "சான்றுரையைச் சேர்க்கவும்" : "Add Testimonial",
+          },
         ]}
       />
+
       <div className="grid grid-cols-1 gap-4 sm:gap-9">
         <div className="flex flex-col gap-4 sm:gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -370,7 +377,7 @@ const Elements = () => {
                     type="submit"
                     className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-5 xl:px-6 text-custom"
                   >
-                    Submit
+                    {isTamil ? 'சமர்ப்பிக்கவும்' : 'Submit'}
                   </button>
                 </div>
               </form>

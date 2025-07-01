@@ -19,6 +19,7 @@ const Table = () => {
     const router = useRouter(); // Initialize Next.js router
 
     const lang = localStorage.getItem('lang') || 'en';
+    const isTamil = lang === 'ta';
 
     useEffect(() => {
         fetchTableItems();
@@ -61,15 +62,16 @@ const Table = () => {
     const handleDelete = async (id) => {
 
         const result = await Swal.fire({
-            title: 'Are you sure?',
-            text: 'Do you want to Delete this data ?',
+            title: isTamil ? 'உறுதியாக இருக்கிறீர்களா?' : 'Are you sure?',
+            text: isTamil ? 'இந்த தகவலை நீக்க விரும்புகிறீர்களா?' : 'Do you want to delete this data?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, Delete it!',
-            cancelButtonText: 'No',
+            confirmButtonText: isTamil ? 'ஆம், நீக்கவும்!' : 'Yes, delete it!',
+            cancelButtonText: isTamil ? 'இல்லை' : 'No',
         });
+
 
         if (!result.isConfirmed) {
             return; // Stop submission if the user cancels
@@ -136,8 +138,8 @@ const Table = () => {
         <>
             <Breadcrumb
                 breadcrumbs={[
-                    { name: "Dashboard", href: "/admin/dashboard" },
-                    { name: "List Review" },
+                    { name: "கட்டுப்பாட்டகம்", href: "/admin/dashboard" },
+                    { name: isTamil ? "விமர்சன பட்டியல்" : "List Reviews" },
                 ]}
             />
 
@@ -150,7 +152,7 @@ const Table = () => {
                         <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
-                        Add Review
+                        {isTamil ? "விமர்சனத்தைச் சேர்க்கவும்" : "Add Review"}
                     </Link>
                 </div>
 

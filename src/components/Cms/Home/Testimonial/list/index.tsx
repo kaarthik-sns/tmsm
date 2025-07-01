@@ -16,6 +16,7 @@ const Table = () => {
     const router = useRouter();
 
     const lang = localStorage.getItem('lang') || 'en';
+    const isTamil = lang === 'ta';
 
     useEffect(() => {
         fetchTableItems();
@@ -54,15 +55,16 @@ const Table = () => {
     };
 
     const handleDelete = async (id) => {
+        
         const result = await Swal.fire({
-            title: 'Are you sure?',
-            text: 'Do you want to Delete this testimonial?',
+            title: isTamil ? 'உறுதியாக இருக்கிறீர்களா?' : 'Are you sure?',
+            text: isTamil ? 'இந்த தகவலை நீக்க விரும்புகிறீர்களா?' : 'Do you want to delete this data?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, Delete it!',
-            cancelButtonText: 'No',
+            confirmButtonText: isTamil ? 'ஆம், நீக்கவும்!' : 'Yes, delete it!',
+            cancelButtonText: isTamil ? 'இல்லை' : 'No',
         });
 
         if (!result.isConfirmed) {
@@ -126,8 +128,13 @@ const Table = () => {
         <>
             <Breadcrumb
                 breadcrumbs={[
-                    { name: "Dashboard", href: "/admin/dashboard" },
-                    { name: "Testimonials List" },
+                    {
+                        name: isTamil ? "கட்டுப்பாட்டகம்" : "Dashboard",
+                        href: "/admin/dashboard",
+                    },
+                    {
+                        name: isTamil ? "சான்றுரைகள் பட்டியல்" : "Testimonials List",
+                    },
                 ]}
             />
 
@@ -140,7 +147,7 @@ const Table = () => {
                         <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
-                        Add Testimonial
+                        {isTamil ? 'சான்றுரையைச் சேர்க்கவும்' : 'Add Testimonial'}
                     </Link>
                 </div>
 
@@ -150,7 +157,7 @@ const Table = () => {
                             <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                             </svg>
-                            <p className="mt-4 text-gray-600">No testimonials found</p>
+                            {isTamil ? 'தரவு எதுவும் கிடைக்கவில்லை' : 'No data found'}
                         </div>
                     ) : (
                         tableItems.map((item, idx) => (
@@ -254,7 +261,7 @@ const Table = () => {
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                         <div className="bg-white dark:bg-boxdark rounded-xl shadow-xl max-w-2xl w-full mx-4 transform transition-all">
                             <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-                                <h3 className="text-xl font-semibold text-gray-800 dark:text-white">Testimonial Details</h3>
+                                <h3 className="text-xl font-semibold text-gray-800 dark:text-white">{isTamil ? "சான்றுரை விவரங்கள்" : "Testimonials Details"}</h3>
                                 <button
                                     onClick={closeModal}
                                     className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"

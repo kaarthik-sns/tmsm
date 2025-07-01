@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import ContactUsTemplate from '@/models/Contact_us_template';
+import ContactUsTemplateModel from '@/models/Contact_us_template';
 import connectToDatabase from '@/lib/mongodb';
 
 export async function POST(request: NextRequest) {
@@ -13,10 +13,10 @@ export async function POST(request: NextRequest) {
     try {
         await connectToDatabase();
 
-        let model = await ContactUsTemplate.findOne();
-        
+        let model = await ContactUsTemplateModel.findOne();
+
         if (!model) {
-            model = new ContactUsTemplate({ description, description_ta });
+            model = new ContactUsTemplateModel({ description, description_ta });
         } else {
             model.description = description || model.description;
             model.description_ta = description_ta || model.description_ta;

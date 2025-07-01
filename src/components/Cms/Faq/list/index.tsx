@@ -18,6 +18,7 @@ const FaqTable = () => {
     const router = useRouter(); // Initialize Next.js router
 
     const lang = localStorage.getItem('lang') || 'en';
+    const isTamil = lang === 'ta';
 
 
     useEffect(() => {
@@ -53,14 +54,14 @@ const FaqTable = () => {
     const handleDelete = async (faqId) => {
 
         const result = await Swal.fire({
-            title: 'Are you sure?',
-            text: 'Do you want to delete this data ?',
+            title: isTamil ? 'உறுதியாக இருக்கிறீர்களா?' : 'Are you sure?',
+            text: isTamil ? 'இந்த தகவலை நீக்க விரும்புகிறீர்களா?' : 'Do you want to delete this data?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No',
+            confirmButtonText: isTamil ? 'ஆம், நீக்கவும்!' : 'Yes, delete it!',
+            cancelButtonText: isTamil ? 'இல்லை' : 'No',
         });
 
         if (!result.isConfirmed) {
@@ -123,7 +124,7 @@ const FaqTable = () => {
 
     return (
         <>
-            <Breadcrumb pageName="List Faq" />
+            <Breadcrumb pageName={isTamil ? "அடிக்கடி கேட்கப்படும் கேள்விகள் பட்டியல்" : "List Faq"} />
 
             <div className="rounded-sm border border-stroke bg-white px-4 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-6 xl:px-7.5 xl:pb-11">
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
@@ -132,7 +133,7 @@ const FaqTable = () => {
                             href="/admin/cms/faq/add"
                             className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
                         >
-                            Add Faq
+                            {isTamil ? "அடிக்கடி கேட்கப்படும் கேள்வியைச் சேர்க்கவும்" : "Add FAQ"}
                         </Link>
                     </div>
                 </div>
@@ -140,7 +141,7 @@ const FaqTable = () => {
                 <div className="grid gap-6">
                     {tableItems.length === 0 ? (
                         <div className="text-center p-8 bg-gray-50 rounded-lg">
-                            <p className="text-gray-500">No FAQs found</p>
+                            {isTamil ? 'தரவு எதுவும் கிடைக்கவில்லை' : 'No data found'}
                         </div>
                     ) : (
                         tableItems.map((item, idx) => (

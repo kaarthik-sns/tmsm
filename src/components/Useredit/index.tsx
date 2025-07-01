@@ -1481,7 +1481,7 @@ const FormElements = () => {
                 type="submit"
                 className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
               >
-                {lang == 'ta' ? 'சமர்ப்பிக்கவும்' : 'Submit'}
+                {lang == 'ta' ? 'சமர்ப்பிக்கவும்வும்' : 'Submit'}
               </button>
 
             </div>

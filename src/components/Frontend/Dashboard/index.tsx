@@ -85,43 +85,44 @@ const RequestStatus = () => {
     let successMessage = "";
     let confirmButtonText = "";
 
-   switch (newStatus) {
-  case "accepted":
-    confirmationMessage = lang === 'ta'
-      ? "இந்த கோரிக்கையை ஏற்றுக்கொள்ள விரும்புகிறீர்களா?"
-      : "Do you want to accept this request?";
-    successMessage = lang === 'ta'
-      ? "கோரிக்கை வெற்றிகரமாக ஏற்றுக்கொள்ளப்பட்டது."
-      : "Request accepted successfully.";
-    confirmButtonText = lang === 'ta' ? "ஆம், ஏற்று" : "Yes, Accept";
-    confirmButtonClass = "confirm-green";  // use your own class name
-    break;
 
-  case "rejected":
-    confirmationMessage = lang === 'ta'
-      ? "இந்த கோரிக்கையை நிராகரிக்க விரும்புகிறீர்களா?"
-      : "Do you want to decline this request?";
-    successMessage = lang === 'ta'
-      ? "கோரிக்கை நிராகரிக்கப்பட்டது."
-      : "Request has been declined.";
-    confirmButtonText = lang === 'ta' ? "ஆம், நிராகரி" : "Yes, Decline";
-    confirmButtonClass = "confirm-red";
-    break;
+    switch (newStatus) {
+      case "accepted":
+        confirmationMessage = lang === 'ta'
+          ? "இந்த கோரிக்கையை ஏற்றுக்கொள்ள விரும்புகிறீர்களா?"
+          : "Do you want to accept this request?";
+        successMessage = lang === 'ta'
+          ? "கோரிக்கை வெற்றிகரமாக ஏற்றுக்கொள்ளப்பட்டது."
+          : "Request accepted successfully.";
+        confirmButtonText = lang === 'ta' ? "ஆம், ஏற்று" : "Yes, Accept";
+        
+        break;
 
-  case "cancel":
-    confirmationMessage = lang === 'ta'
-      ? "இந்த கோரிக்கையை ரத்து செய்ய விரும்புகிறீர்களா?"
-      : "Do you want to cancel this request?";
-    successMessage = lang === 'ta'
-      ? "கோரிக்கை ரத்துசெய்யப்பட்டது."
-      : "Request has been cancelled.";
-    confirmButtonText = lang === 'ta' ? "ஆம், ரத்து செய்" : "Yes, Cancel";
-    confirmButtonClass = "confirm-yellow";
-    break;
+      case "rejected":
+        confirmationMessage = lang === 'ta'
+          ? "இந்த கோரிக்கையை நிராகரிக்க விரும்புகிறீர்களா?"
+          : "Do you want to decline this request?";
+        successMessage = lang === 'ta'
+          ? "கோரிக்கை நிராகரிக்கப்பட்டது."
+          : "Request has been declined.";
+        confirmButtonText = lang === 'ta' ? "ஆம், நிராகரி" : "Yes, Decline";
+       
+        break;
 
-  default:
-    return;
-}
+      case "cancel":
+        confirmationMessage = lang === 'ta'
+          ? "இந்த கோரிக்கையை ரத்து செய்ய விரும்புகிறீர்களா?"
+          : "Do you want to cancel this request?";
+        successMessage = lang === 'ta'
+          ? "கோரிக்கை ரத்துசெய்யப்பட்டது."
+          : "Request has been cancelled.";
+        confirmButtonText = lang === 'ta' ? "ஆம், ரத்து செய்" : "Yes, Cancel";
+      
+        break;
+
+      default:
+        return;
+    }
 
 
     const result = await Swal.fire({

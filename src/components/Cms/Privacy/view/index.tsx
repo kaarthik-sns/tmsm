@@ -11,6 +11,7 @@ const PrivacyTable = () => {
 
     const router = useRouter();
     const lang = localStorage.getItem('lang') || 'en';
+    const isTamil = lang === 'ta';
 
     const fetchTableItems = async () => {
         try {
@@ -33,7 +34,7 @@ const PrivacyTable = () => {
 
     return (
         <>
-            <Breadcrumb pageName="Privacy Policy" />
+            <Breadcrumb pageName={isTamil ? 'தனியுரிமைக் கொள்கை' : 'Privacy Policy'} />
             <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">
                 <div className="">
                     <div>
@@ -42,7 +43,7 @@ const PrivacyTable = () => {
                                 onClick={() => handleEdit()}
                                 className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
                             >
-                                Edit Privacy Policy
+                                {isTamil ? "தனியுரிமைக் கொள்கையைத் திருத்து" : "Edit Privacy Policy"}
                             </button>
                         </div>
                     </div>

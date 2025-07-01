@@ -13,7 +13,7 @@ const Breadcrumb = ({ pageName }: BreadcrumbProps) => {
       </h2>
 
       <nav>
-        <ol className="flex items-center gap-2">
+        <ol className="text-xs md:text-sm flex items-center gap-2">
           <li>
             <Link className="font-medium" href="/admin/users/userlist">
               {isTamil ? 'உறுப்பினர் பட்டியல்' : 'List Users'} /

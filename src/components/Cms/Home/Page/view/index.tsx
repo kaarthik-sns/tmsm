@@ -10,6 +10,7 @@ const Settings = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
 
   const [formData, setFormData] = useState({
     sec_one_title: '',
@@ -79,8 +80,13 @@ const Settings = () => {
     <>
       <Breadcrumb
         breadcrumbs={[
-          { name: "Dashboard", href: "/admin/dashboard" },
-          { name: "Home Page" },
+          {
+            name: isTamil ? "கட்டுப்பாட்டகம்" : "Dashboard",
+            href: "/admin/dashboard",
+          },
+          {
+            name: isTamil ? "முகப்பு பக்கம்" : "Home Page",
+          },
         ]}
       />
 
@@ -90,7 +96,7 @@ const Settings = () => {
             href="/admin/cms/home/page/edit"
             className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
           >
-            Edit Home Page
+            {isTamil ? "முகப்புப் பக்கத்தைத் திருத்தவும்" : "Edit Home Page"}
           </Link>
         </div>
       </div>
@@ -101,7 +107,7 @@ const Settings = () => {
           {/* About Section */}
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium dark-text dark:text-white">About</h3>
+              <h3 className="font-medium dark-text dark:text-white">{isTamil ? 'எங்களைப் பற்றி' : 'About'}</h3>
             </div>
             <div className="p-6.5">
 
@@ -137,7 +143,7 @@ const Settings = () => {
           {/* Banner Section */}
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium dark-text dark:text-white">Join us</h3>
+              <h3 className="font-medium dark-text dark:text-white">{isTamil ? 'எங்களுடன் சேருங்கள்' : 'Join us'}</h3>
             </div>
             <div className="p-6.5">
 
@@ -170,7 +176,7 @@ const Settings = () => {
           {/* Why Choose Us Section */}
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium dark-text dark:text-white">Why Choose Us</h3>
+              <h3 className="font-medium dark-text dark:text-white">{isTamil ? 'எங்களை ஏன் தேர்ந்தெடுக்க வேண்டும்' : 'Why Choose Us'}</h3>
             </div>
             <div className="p-6.5">
 

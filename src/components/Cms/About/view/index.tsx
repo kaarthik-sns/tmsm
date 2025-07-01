@@ -10,6 +10,7 @@ const Settings = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
 
   const [formData, setFormData] = useState({
     sec_one_title: '',
@@ -90,8 +91,8 @@ const Settings = () => {
     <>
       <Breadcrumb
         breadcrumbs={[
-          { name: "Dashboard", href: "/admin/dashboard" },
-          { name: "About Us" },
+          { name: isTamil ? "கட்டுப்பாட்டகம்" : "Dashboard", href: "/admin/dashboard" },
+          { name: isTamil ? "விமர்சன பட்டியல்" : "About Us" },
         ]}
       />
 
@@ -101,7 +102,7 @@ const Settings = () => {
             href="/admin/cms/about/edit"
             className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
           >
-            Edit About Us
+            {isTamil ? 'எங்களை பற்றி - திருத்தவும்' : 'Edit About Us'}
           </Link>
         </div>
       </div>
@@ -112,7 +113,7 @@ const Settings = () => {
           <div className="rounded-lg border border-stroke bg-white shadow-lg transition-all duration-300 hover:shadow-xl dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-7 py-5 dark:border-strokedark">
               <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
-                Banner
+                {isTamil ? 'பதாகை' : 'Banner'}
               </h3>
             </div>
             <div className="p-7">
@@ -131,7 +132,7 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="flex-1">
-                  <p className="text-lg font-medium text-gray-800 dark:text-white">{ lang === 'ta' ? formData.banner_title_ta : formData.banner_title}</p>
+                  <p className="text-lg font-medium text-gray-800 dark:text-white">{lang === 'ta' ? formData.banner_title_ta : formData.banner_title}</p>
                 </div>
               </div>
             </div>
@@ -142,7 +143,8 @@ const Settings = () => {
           <div className="rounded-lg border border-stroke bg-white shadow-lg transition-all duration-300 hover:shadow-xl dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-7 py-5 dark:border-strokedark">
               <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
-                What we offer
+                {isTamil ? 'நாங்கள் என்ன வழங்குகிறோம்' : 'What we offer'}
+
               </h3>
             </div>
             <div className="p-7">
@@ -163,7 +165,7 @@ const Settings = () => {
                     )}
                   </div>
                   <div className="flex-1">
-                    <h4 className="mb-2 text-lg font-medium text-gray-800 dark:text-white">{  lang === 'ta' ? formData.feature_one_ta : formData.feature_one}</h4>
+                    <h4 className="mb-2 text-lg font-medium text-gray-800 dark:text-white">{lang === 'ta' ? formData.feature_one_ta : formData.feature_one}</h4>
                     <p className="text-gray-600 dark:text-gray-300">{lang === 'ta' ? formData.feature_one_desc_ta : formData.feature_one_desc}</p>
                   </div>
                 </div>
@@ -247,7 +249,7 @@ const Settings = () => {
           <div className="rounded-lg border border-stroke bg-white shadow-lg transition-all duration-300 hover:shadow-xl dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-7 py-5 dark:border-strokedark">
               <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
-                About Us
+                {isTamil ? 'எங்களை பற்றி' : 'About Us'}
               </h3>
             </div>
             <div className="p-7">
@@ -284,7 +286,7 @@ const Settings = () => {
           <div className="rounded-lg border border-stroke bg-white shadow-lg transition-all duration-300 hover:shadow-xl dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-7 py-5 dark:border-strokedark">
               <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
-                Our Story
+                {isTamil ? 'எங்கள் கதை' : 'Our Story'}
               </h3>
             </div>
             <div className="p-7">

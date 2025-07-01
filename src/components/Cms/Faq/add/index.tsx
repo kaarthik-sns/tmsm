@@ -11,6 +11,9 @@ const FaqElements = () => {
     title_ta: "",
   });
 
+  const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
+
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -74,8 +77,6 @@ const FaqElements = () => {
         throw new Error("Failed to add FAQ.");
       }
 
-      const data = await res.json();
-
       toast.success('FAQ added successfully!', {
         className: "sonner-toast-success",
         cancel: {
@@ -102,10 +103,10 @@ const FaqElements = () => {
     }
   };
 
-
   return (
     <>
-      <Breadcrumb pageName="Add FAQ" />
+      <Breadcrumb pageName={isTamil ? "அடிக்கடி கேட்கப்படும் கேள்வியைச் சேர்க்கவும்" : "Add FAQ"} />
+
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-9 sm:grid-cols-1">
           <div className="flex flex-col gap-9">
@@ -192,18 +193,17 @@ const FaqElements = () => {
                   )}
                 </div>
 
-
                 <div className="grid grid-cols-1 gap-9 sm:grid-cols-1 mt-4.5">
                   <div className="text-right">
                     <button
                       type="submit"
                       className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
                     >
-                      Submit
+                      {isTamil ? 'சமர்ப்பிக்கவும்' : 'Submit'}
                     </button>
                   </div>
                 </div>
-                
+
               </div>
             </div>
           </div>

@@ -23,6 +23,8 @@ const Elements = () => {
   const [preview, setPreview] = useState("");
   const [isDragging, setIsDragging] = useState(false);
   const formData_upload = new FormData();
+  const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
 
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -222,10 +224,16 @@ const Elements = () => {
     <>
       <Breadcrumb
         breadcrumbs={[
-          { name: "List testimonials", href: "/admin/cms/home/testimonial/list" },
-          { name: "Add testimonial" },
+          {
+            name: isTamil ? "சான்றுரைகள் பட்டியல்" : "List Testimonials",
+            href: "/admin/cms/home/testimonial/list",
+          },
+          {
+            name: isTamil ? "சான்றுரையைத் திருத்து" : "Edit Testimonial",
+          },
         ]}
       />
+
       <div className="grid grid-cols-1 gap-4 sm:gap-9">
         <div className="flex flex-col gap-4 sm:gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -326,8 +334,8 @@ const Elements = () => {
                       onChange={handleChange}
                       placeholder="Enter person's name"
                       className={`w-full px-4 py-3 rounded-lg border ${formErrors?.name
-                          ? "border-red-500 focus:ring-red-500"
-                          : "border-gray-300 focus:ring-primary"
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-gray-300 focus:ring-primary"
                         } focus:border-transparent focus:outline-none focus:ring-2 transition-colors dark:bg-boxdark dark:text-white`}
                     />
                     {formErrors?.name && (
@@ -347,8 +355,8 @@ const Elements = () => {
                       rows={4}
                       placeholder="Enter testimonial content"
                       className={`w-full px-4 py-3 rounded-lg border ${formErrors?.description
-                          ? "border-red-500 focus:ring-red-500"
-                          : "border-gray-300 focus:ring-primary"
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-gray-300 focus:ring-primary"
                         } focus:border-transparent focus:outline-none focus:ring-2 transition-colors dark:bg-boxdark dark:text-white`}
                     />
                     {formErrors?.description && (
@@ -404,7 +412,7 @@ const Elements = () => {
                     type="submit"
                     className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-5 xl:px-6 text-custom"
                   >
-                    Submit
+                    {isTamil ? 'சமர்ப்பிக்கவும்' : 'Submit'}
                   </button>
                 </div>
               </form>

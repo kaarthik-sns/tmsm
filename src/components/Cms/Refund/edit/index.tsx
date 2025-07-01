@@ -19,6 +19,7 @@ const Elements = () => {
   const [error, setError] = useState("");
 
   const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
 
 
   const toolbarOptions = [
@@ -168,7 +169,7 @@ const Elements = () => {
 
   return (
     <>
-      <Breadcrumb pageName="Edit Refund Policy" />
+      <Breadcrumb pageName={isTamil ? "திருப்பியளிக்கும் கொள்கை" : "Edit Refund Policy"} />
       {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-9 sm:grid-cols-1">
@@ -224,7 +225,7 @@ const Elements = () => {
               type="submit"
               className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
             >
-              Submit
+              {isTamil ? 'சமர்ப்பிக்கவும்' : 'Submit'}
             </button>
           </div>
         </div>

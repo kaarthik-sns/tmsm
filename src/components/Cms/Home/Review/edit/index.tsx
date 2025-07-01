@@ -15,6 +15,9 @@ const Elements = () => {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(true);
 
+  const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
+
   const formData_upload = new FormData();
   const [formData, setFormData] = useState({
     name: "",
@@ -157,8 +160,8 @@ const Elements = () => {
     <>
       <Breadcrumb
         breadcrumbs={[
-          { name: "List Review", href: "/admin/cms/home/review/list" },
-          { name: "Edit Review" },
+          { name: isTamil ? "விமர்சன பட்டியல்" : "List Reviews", href: "/admin/cms/home/review/list" },
+          { name: isTamil ? "விமர்சனத்தைத் திருத்தவும்" : "Add Review" },
         ]}
       />
       <form onSubmit={handleSubmit}>
@@ -166,28 +169,6 @@ const Elements = () => {
           <div className="flex flex-col gap-4 sm:gap-9">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="p-4 sm:p-6.5">
-
-                <div className="mb-3 sm:mb-4.5">
-                  <label className="mb-2 sm:mb-3 block text-sm font-medium dark:text-white dark-text">
-                    Rating <span className="mt-1 text-sm text-red-500">*</span>
-                  </label>
-                  <input
-                    type="number"
-                    min="1"
-                    max="5"
-                    name="rating"
-                    value={formData.rating}
-                    onChange={handleChange}
-                    placeholder="Enter rating (1-5)"
-                    className={`w-full rounded border-[1.5px] px-3 sm:px-5 py-2 sm:py-3 text-sm sm:text-base outline-none transition ${formErrors?.rating
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                  />
-                  {formErrors?.rating && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.rating}</p>
-                  )}
-                </div>
 
                 <div className="mb-3 sm:mb-4.5">
                   <label className="mb-2 sm:mb-3 block text-sm font-medium dark:text-white dark-text">
@@ -226,6 +207,28 @@ const Elements = () => {
                   />
                   {formErrors?.description && (
                     <p className="mt-1 text-sm text-red-500">{formErrors.description}</p>
+                  )}
+                </div>
+
+                <div className="mb-3 sm:mb-4.5">
+                  <label className="mb-2 sm:mb-3 block text-sm font-medium dark:text-white dark-text">
+                    {isTamil ? "மதிப்பீடு" : "Rating"} <span className="mt-1 text-sm text-red-500">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    max="5"
+                    name="rating"
+                    value={formData.rating}
+                    onChange={handleChange}
+                    placeholder="Enter rating (1-5)"
+                    className={`w-full rounded border-[1.5px] px-3 sm:px-5 py-2 sm:py-3 text-sm sm:text-base outline-none transition ${formErrors?.rating
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-stroke focus:border-primary"
+                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                  />
+                  {formErrors?.rating && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.rating}</p>
                   )}
                 </div>
 
@@ -274,7 +277,7 @@ const Elements = () => {
                       type="submit"
                       className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
                     >
-                      Submit
+                      {isTamil ? 'சமர்ப்பிக்கவும்' : 'Submit'}
                     </button>
                   </div>
                 </div>

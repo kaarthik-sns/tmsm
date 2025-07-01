@@ -17,6 +17,7 @@ const Table = () => {
     const router = useRouter(); // Initialize Next.js router
 
     const lang = localStorage.getItem('lang') || 'en';
+    const isTamil = lang === 'ta';
 
     useEffect(() => {
         fetchTableItems();
@@ -59,14 +60,14 @@ const Table = () => {
     const handleDelete = async (id) => {
 
         const result = await Swal.fire({
-            title: 'Are you sure?',
-            text: 'Do you want to Delete this data ?',
+            title: isTamil ? 'உறுதியாக இருக்கிறீர்களா?' : 'Are you sure?',
+            text: isTamil ? 'இந்த தகவலை நீக்க விரும்புகிறீர்களா?' : 'Do you want to delete this data?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, Delete it!',
-            cancelButtonText: 'No',
+            confirmButtonText: isTamil ? 'ஆம், நீக்கவும்!' : 'Yes, delete it!',
+            cancelButtonText: isTamil ? 'இல்லை' : 'No',
         });
 
         if (!result.isConfirmed) {
@@ -134,8 +135,13 @@ const Table = () => {
         <>
             <Breadcrumb
                 breadcrumbs={[
-                    { name: "Dashboard", href: "/admin/dashboard" },
-                    { name: "List Slider" },
+                    {
+                        name: isTamil ? "கட்டுப்பாட்டகம்" : "Dashboard",
+                        href: "/admin/dashboard",
+                    },
+                    {
+                        name: isTamil ? "ஸ்லைடர் பட்டியல்" : "List Slider",
+                    },
                 ]}
             />
 
@@ -146,7 +152,7 @@ const Table = () => {
                             href="/admin/cms/home/slider/add"
                             className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
                         >
-                            Add Slider
+                            {isTamil ? "புதிய ஸ்லைடரை சேர்க்கவும்" : "Add Slider"}
                         </Link>
                     </div>
                 </div>
@@ -155,8 +161,8 @@ const Table = () => {
                         <thead className="text-gray-600 font-medium border-b">
                             <tr>
                                 <th className="py-3 px-2 md:px-6 dark-text">#</th>
-                                <th className="py-3 px-2 md:px-6 dark-text">Name</th>
-                                <th className="py-3 px-2 md:px-6 dark-text">Action</th>
+                                <th className="py-3 px-2 md:px-6 dark-text">{isTamil ? "பெயர்" : "Name"}</th>
+                                <th className="py-3 px-2 md:px-6 dark-text">{isTamil ? "செயல்பாடுகள்" : "Action"}</th>
                             </tr>
                         </thead>
                         <tbody className="text-gray-600 divide-y">

@@ -1,31 +1,27 @@
-import mongoose, { Schema, model, models, Document } from "mongoose";
+import mongoose, { Schema, model, models, Document, Model } from "mongoose";
 
-// Define the interface for the document
-export interface IContactUsTemplate extends Document {
+// TypeScript interface for the document
+export interface IcontactTemplate extends Document {
   description?: string;
   description_ta?: string;
   created_at?: Date;
   updated_at?: Date;
-  is_delete: boolean;
+  is_delete?: boolean;
 }
 
-// Define the schema
-const ContactUsTemplateSchema = new Schema<IContactUsTemplate>(
-  {
-    description: { type: String, required: false, text: true },
-    description_ta: { type: String, required: false, text: true },
-    created_at: { type: Date, default: Date.now },
-    updated_at: { type: Date, default: Date.now },
-    is_delete: { type: Boolean, default: false },
-  },
-  {
-    collection: "contact_us_templates", // Correct collection name
-  }
-);
+// Define the schema with types
+const contactSchema = new Schema<IcontactTemplate>({
+  description: { type: String, required: false, text: true },
+  description_ta: { type: String, required: false, text: true },
+  created_at: { type: Date, default: Date.now },
+  updated_at: { type: Date, default: Date.now },
+  is_delete: { type: Boolean, default: false },
+}, {
+  collection: "contact_us_templates",
+});
 
-// Create the model
-const ContactUsTemplate =
-  models.ContactUsTemplate ||
-  model<IContactUsTemplate>("ContactUsTemplate", ContactUsTemplateSchema);
+// Create and export the model
+const contactTemplateModel: Model<IcontactTemplate> =
+  models.contactTemplate || model<IcontactTemplate>("contactTemplate", contactSchema);
 
-export default ContactUsTemplate;
+export default contactTemplateModel;

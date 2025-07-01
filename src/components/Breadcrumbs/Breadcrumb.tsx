@@ -13,10 +13,10 @@ const Breadcrumb = ({ pageName }: BreadcrumbProps) => {
       </h2>
 
       <nav>
-        <ol className="flex items-center gap-2 text-sm sm:text-base">
+        <ol className="flex items-center gap-2 text-xs md:text-sm">
           <li>
             <Link className="font-medium" href="/admin/dashboard">
-              {isTamil ? 'மேற்பார்வை' : 'Dashboard'} /
+              {isTamil ? 'கட்டுப்பாட்டகம்' : 'Dashboard'} /
             </Link>
           </li>
           <li className="font-medium dark-text">{pageName}</li>

@@ -89,12 +89,16 @@ const UserTable = () => {
                                         <td className="px-4 sm:px-6 py-4 whitespace-nowrap">{item.phonenumber}</td>
                                         <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                                             <span className={`font-medium ${item.is_active ? 'text-green-500' : 'text-orange-500'}`}>
-                                                {item.is_active ? 'Active' : 'Inactive'}
+                                                {isTamil
+                                                    ? item.is_active ? 'செயலில் உள்ளது' : 'செயலற்றது'
+                                                    : item.is_active ? 'Active' : 'Inactive'}
                                             </span>
                                         </td>
                                         <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                                             <span className={`font-medium ${item.is_approve ? 'text-green-500' : 'text-orange-500'}`}>
-                                                {item.is_approve ? 'Approved' : 'Pending'}
+                                                {isTamil
+                                                    ? item.is_approve ? 'அனுமதிக்கப்பட்டது' : 'நிலுவையில் உள்ளது'
+                                                    : item.is_approve ? 'Approved' : 'Pending'}
                                             </span>
                                         </td>
                                     </tr>
@@ -139,18 +143,28 @@ const UserTable = () => {
                                     <div className="bg-white p-4">
                                         <div className="grid grid-cols-2 gap-4">
                                             <div>
-                                                <p className="text-sm text-gray-600">{isTamil ? 'உறுப்பினர் நிலை' : 'User Status'}</p>
+                                                <p className="text-sm text-gray-600">
+                                                    {isTamil ? 'உறுப்பினர் நிலை' : 'User Status'}
+                                                </p>
                                                 <p className={`font-medium ${item.is_active ? 'text-green-500' : 'text-orange-500'}`}>
-                                                    {item.is_active ? 'Active' : 'Inactive'}
+                                                    {isTamil
+                                                        ? item.is_active ? 'செயலில் உள்ளது' : 'செயலற்றது'
+                                                        : item.is_active ? 'Active' : 'Inactive'}
                                                 </p>
                                             </div>
+
                                             <div>
-                                                <p className="text-sm text-gray-600">{isTamil ? 'கணக்கின் நிலை' : 'Account Status'}</p>
+                                                <p className="text-sm text-gray-600">
+                                                    {isTamil ? 'கணக்கின் நிலை' : 'Account Status'}
+                                                </p>
                                                 <p className={`font-medium ${item.is_approve ? 'text-green-500' : 'text-orange-500'}`}>
-                                                    {item.is_approve ? 'Approved' : 'Pending'}
+                                                    {isTamil
+                                                        ? item.is_approve ? 'அனுமதிக்கப்பட்டது' : 'நிலுவையில் உள்ளது'
+                                                        : item.is_approve ? 'Approved' : 'Pending'}
                                                 </p>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             ))

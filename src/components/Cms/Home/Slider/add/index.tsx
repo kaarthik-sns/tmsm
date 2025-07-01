@@ -27,6 +27,7 @@ const Elements = () => {
   const formData_upload = new FormData();
 
   const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -197,10 +198,16 @@ const Elements = () => {
     <>
       <Breadcrumb
         breadcrumbs={[
-          { name: "List Slider", href: "/admin/cms/home/slider/list" },
-          { name: "Add Slider" },
+          {
+            name: isTamil ? "ஸ்லைடர் பட்டியல்" : "List Slider",
+            href: "/admin/cms/home/slider/list",
+          },
+          {
+            name: isTamil ? "ஸ்லைடரைச் சேர்க்கவும்" : "Add Slider",
+          },
         ]}
       />
+
       <div className="grid grid-cols-1 gap-4 sm:gap-9">
         <div className="flex flex-col gap-4 sm:gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -374,7 +381,7 @@ const Elements = () => {
                     type="submit"
                     className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-5 xl:px-6 text-custom"
                   >
-                    Submit
+                    {isTamil ? 'சமர்ப்பிக்கவும்' : 'Submit'}
                   </button>
                 </div>
               </form>

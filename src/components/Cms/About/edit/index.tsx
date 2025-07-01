@@ -19,6 +19,7 @@ const Settings = () => {
   const [feature_four_img, setFeatureFourImg] = useState<File | null>(null);
 
   const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const errors: Record<string, string> = {};
@@ -239,29 +240,29 @@ const Settings = () => {
       { key: "feature_four_desc", message: "Description cannot be empty." },
     ];
 
-    if(lang == 'ta') {
+    if (lang == 'ta') {
 
-       fieldsToValidate = [
-        { key: "banner_img", message: "Banner Image cannot be empty." },
-        { key: "sec_one_img", message: "Image cannot be empty." },
-        { key: "sec_two_img", message: "Image cannot be empty." },
-        { key: "feature_one_img", message: "Image cannot be empty." },
-        { key: "feature_two_img", message: "Image cannot be empty." },
-        { key: "feature_three_img", message: "Image cannot be empty." },
-        { key: "feature_four_img", message: "Image cannot be empty." },
-        { key: "sec_one_title_ta", message: "Title (TA) cannot be empty." },
-        { key: "sec_one_desc_ta", message: "Description (TA) cannot be empty." },
-        { key: "sec_two_title_ta", message: "Title (TA) cannot be empty." },
-        { key: "sec_two_desc_ta", message: "Description (TA) cannot be empty." },
-        { key: "feature_one_ta", message: "Feature One (TA) cannot be empty." },
-        { key: "feature_one_desc_ta", message: "Feature One Description (TA) cannot be empty." },
-        { key: "feature_two_ta", message: "Feature Two (TA) cannot be empty." },
-        { key: "feature_two_desc_ta", message: "Feature Two Description (TA) cannot be empty." },
-        { key: "feature_three_ta", message: "Feature Three (TA) cannot be empty." },
-        { key: "feature_three_desc_ta", message: "Feature Three Description (TA) cannot be empty." },
-        { key: "feature_four_ta", message: "Feature Four (TA) cannot be empty." },
-        { key: "feature_four_desc_ta", message: "Feature Four Description (TA) cannot be empty." },
-        { key: "banner_title_ta", message: "Banner Title (TA) cannot be empty." },
+      fieldsToValidate = [
+        { key: "banner_img", message: "பதாகை படம் காலியாக இருக்க முடியாது." },
+        { key: "sec_one_img", message: "படம் காலியாக இருக்க முடியாது." },
+        { key: "sec_two_img", message: "படம் காலியாக இருக்க முடியாது." },
+        { key: "feature_one_img", message: "படம் காலியாக இருக்க முடியாது." },
+        { key: "feature_two_img", message: "படம் காலியாக இருக்க முடியாது." },
+        { key: "feature_three_img", message: "படம் காலியாக இருக்க முடியாது." },
+        { key: "feature_four_img", message: "படம் காலியாக இருக்க முடியாது." },
+        { key: "sec_one_title_ta", message: "தலைப்பு காலியாக இருக்க முடியாது." },
+        { key: "sec_one_desc_ta", message: "விவரக்குறிப்பு காலியாக இருக்க முடியாது." },
+        { key: "sec_two_title_ta", message: "தலைப்பு காலியாக இருக்க முடியாது." },
+        { key: "sec_two_desc_ta", message: "விவரக்குறிப்பு காலியாக இருக்க முடியாது." },
+        { key: "feature_one_ta", message: "முதல் அம்சம் காலியாக இருக்க முடியாது." },
+        { key: "feature_one_desc_ta", message: "முதல் அம்ச விவரக்குறிப்பு காலியாக இருக்க முடியாது." },
+        { key: "feature_two_ta", message: "இரண்டாம் அம்சம் காலியாக இருக்க முடியாது." },
+        { key: "feature_two_desc_ta", message: "இரண்டாம் அம்ச விவரக்குறிப்பு காலியாக இருக்க முடியாது." },
+        { key: "feature_three_ta", message: "மூன்றாம் அம்சம் காலியாக இருக்க முடியாது." },
+        { key: "feature_three_desc_ta", message: "மூன்றாம் அம்ச விவரக்குறிப்பு காலியாக இருக்க முடியாது." },
+        { key: "feature_four_ta", message: "நான்காம் அம்சம் காலியாக இருக்க முடியாது." },
+        { key: "feature_four_desc_ta", message: "நான்காம் அம்ச விவரக்குறிப்பு காலியாக இருக்க முடியாது." },
+        { key: "banner_title_ta", message: "பதாகை தலைப்பு காலியாக இருக்க முடியாது." },
       ];
 
     }
@@ -384,10 +385,16 @@ const Settings = () => {
     <>
       <Breadcrumb
         breadcrumbs={[
-          { name: "About Us", href: "/admin/cms/about/view" },
-          { name: "Edit About Us" },
+          {
+            name: isTamil ? "எங்களை பற்றி" : "About Us",
+            href: "/admin/cms/about/view",
+          },
+          {
+            name: isTamil ? "எங்களைப் பற்றி - திருத்து" : "Edit About Us",
+          },
         ]}
       />
+
 
       <form onSubmit={handleSubmit}>
 
@@ -822,7 +829,7 @@ const Settings = () => {
 
                 <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                   <h3 className="font-medium dark-text dark:text-white">
-                    Banner
+                    பதாகை
                   </h3>
                 </div>
 
@@ -868,7 +875,7 @@ const Settings = () => {
               <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                   <h3 className="font-medium dark-text dark:text-white">
-                    What we offer
+                    நாங்கள் என்ன வழங்குகிறோம்
                   </h3>
                 </div>
 
@@ -1088,7 +1095,7 @@ const Settings = () => {
               <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                   <h3 className="font-medium dark-text dark:text-white">
-                    About Us
+                    எங்களை பற்றி
                   </h3>
                 </div>
                 <div className="p-6.5">
@@ -1155,7 +1162,7 @@ const Settings = () => {
 
                 <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                   <h3 className="font-medium dark-text dark:text-white">
-                    Our Story
+                    எங்கள் கதை
                   </h3>
                 </div>
 
@@ -1223,7 +1230,7 @@ const Settings = () => {
                   type="submit"
                   className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
                 >
-                  Submit
+                  {isTamil ? 'சமர்ப்பிக்கவும்' : 'Submit'}
                 </button>
               </div>
 

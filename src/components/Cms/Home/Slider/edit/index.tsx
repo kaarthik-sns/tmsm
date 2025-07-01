@@ -32,6 +32,9 @@ const Elements = () => {
     photo: ""
   });
 
+  const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
+
   useEffect(() => {
     if (id) {
       const fetchUserData = async () => {
@@ -225,16 +228,22 @@ const Elements = () => {
     <>
       <Breadcrumb
         breadcrumbs={[
-          { name: "List Slider", href: "/admin/cms/home/slider/list" },
-          { name: "Edit Slider" },
+          {
+            name: isTamil ? "ஸ்லைடர் பட்டியல்" : "List Slider",
+            href: "/admin/cms/home/slider/list",
+          },
+          {
+            name: isTamil ? "ஸ்லைடரைத் திருத்து" : "Edit Slider",
+          },
         ]}
       />
+
       <div className="grid grid-cols-1 gap-4 sm:gap-9">
         <div className="flex flex-col gap-4 sm:gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="p-4 sm:p-6.5">
               <form onSubmit={handleSubmit}>
-                
+
                 <div className="space-y-8">
                   {/* Image Upload Section */}
                   <div>
@@ -402,7 +411,7 @@ const Elements = () => {
                     type="submit"
                     className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-2.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-5 xl:px-6 text-custom"
                   >
-                    Submit
+                    {isTamil ? 'சமர்ப்பிக்கவும்' : 'Submit'}
                   </button>
                 </div>
               </form>

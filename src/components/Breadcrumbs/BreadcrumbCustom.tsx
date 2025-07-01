@@ -17,7 +17,7 @@ const Breadcrumb = ({ breadcrumbs }: BreadcrumbProps) => {
       </h2>
 
       <nav>
-        <ol className="flex items-center gap-2">
+        <ol className="text-xs md:text-sm flex items-center gap-2">
           {breadcrumbs.map((breadcrumb, index) => (
             <li key={index} className="flex items-center">
               {breadcrumb.href ? (

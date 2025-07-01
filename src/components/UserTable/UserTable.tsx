@@ -707,7 +707,7 @@ const UserTable = () => {
                                         {/* Info Cards */}
                                         <div className="p-2 grid grid-cols-2 gap-2">
                                             <div className="bg-gray-50 dark:bg-gray-800 p-2 rounded-lg">
-                                                <p className="text-xs text-gray-500 dark:text-gray-400">User Status</p>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400">{isTamil ? 'உறுப்பினர் நிலை' : 'User Status'}</p>
                                                 <div className="mt-1">
                                                     <SwitcherFour
                                                         isEnabled={switchStates[idx]}
@@ -716,7 +716,7 @@ const UserTable = () => {
                                                 </div>
                                             </div>
                                             <div className="bg-gray-50 dark:bg-gray-800 p-2 rounded-lg">
-                                                <p className="text-xs text-gray-500 dark:text-gray-400">Account Status</p>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400">{isTamil ? 'கணக்கின் நிலை' : 'Account Status'}</p>
                                                 <div className="mt-1">
                                                     <SwitcherFour
                                                         isEnabled={switchStates2[idx]}

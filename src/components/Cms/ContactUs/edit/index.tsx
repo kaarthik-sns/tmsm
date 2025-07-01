@@ -19,6 +19,7 @@ const TemsElements = () => {
   const [error, setError] = useState("");
 
   const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
 
   const toolbarOptions = [
     // Text formatting options
@@ -167,7 +168,7 @@ const TemsElements = () => {
 
   return (
     <>
-      <Breadcrumb pageName="Edit Contact Us Email Template" />
+      <Breadcrumb pageName={isTamil ? "மின்னஞ்சலைத் திருத்து" : "Edit Contact Us Email"} />
       {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-9 sm:grid-cols-1">
@@ -220,7 +221,7 @@ const TemsElements = () => {
               type="submit"
               className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
             >
-              Submit
+              {isTamil ? 'சமர்ப்பிக்கவும்' : 'Submit'}
             </button>
           </div>
         </div>

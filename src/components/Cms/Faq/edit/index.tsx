@@ -15,6 +15,9 @@ const FaqElements = () => {
     title_ta: "",
   });
 
+  const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
+
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -47,7 +50,6 @@ const FaqElements = () => {
       fetchUserData();
     }
   }, [faqId]);
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -124,14 +126,14 @@ const FaqElements = () => {
     }
   };
 
-
   if (isLoading) {
     return <p>Loading...</p>;
   }
 
   return (
     <>
-      <Breadcrumb pageName="Edit FAQ" />
+      <Breadcrumb pageName={isTamil ? "அடிக்கடி கேட்கப்படும் கேள்வியைத் திருத்து" : "Edit FAQ"} />
+
       {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-9 sm:grid-cols-1">
@@ -225,7 +227,7 @@ const FaqElements = () => {
                       type="submit"
                       className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
                     >
-                      Submit
+                      {isTamil ? 'சமர்ப்பிக்கவும்' : 'Submit'}
                     </button>
                   </div>
                 </div>
