@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import dynamic from "next/dynamic";
 
 
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 const Elements = () => {
   const searchParams = useSearchParams();

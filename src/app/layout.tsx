@@ -3,7 +3,7 @@ import "jsvectormap/dist/jsvectormap.css";
 import "flatpickr/dist/flatpickr.min.css";
 import "@/css/noto.css";
 import "@/css/style.css";
-import "react-quill/dist/quill.snow.css";
+import "quill/dist/quill.snow.css";
 import React, { useEffect, useState } from "react";
 import Loader from "@/components/common/Loader";
 import SessionWrapper from "@/components/SessionWrapper";

@@ -8,7 +8,7 @@ import dynamic from "next/dynamic";
 
 import { FaAudioDescription } from "react-icons/fa";
 
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 const TemsElements = () => {
   const searchParams = useSearchParams();

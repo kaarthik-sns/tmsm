@@ -9,7 +9,7 @@ import Pagination from "@/components/Pagination";
 import dynamic from "next/dynamic";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 const UserTable = () => {
 
