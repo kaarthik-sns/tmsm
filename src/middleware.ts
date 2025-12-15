@@ -19,46 +19,39 @@ export async function middleware(req) {
 
     // Allow access to forgot-password page
     if (pathname === '/admin/forgot-password') {
-        console.log('++++1')
         return NextResponse.next();
     }
 
     if (pathname === '/admin/change-password') {
-        console.log('++++2')
         return NextResponse.next();
     }
 
     // Redirect unauthenticated admin users to signin page
     if (pathname.startsWith('/admin') && pathname !== '/admin/auth/signin' && !token) {
-        console.log('++++3')
         url.pathname = '/admin/auth/signin';
         return NextResponse.redirect(url);
     }
 
     // Redirect authenticated admin users from signin to dashboard
     if (pathname === '/admin/auth/signin' && token && token.is_admin) {
-        console.log('++++3')
         url.pathname = '/admin/dashboard';
         return NextResponse.redirect(url);
     }
 
     // Redirect authenticated admin users from signin to dashboard
     if (pathname === '/admin' && token && token.is_admin) {
-        console.log('++++3.1')
         url.pathname = '/admin/dashboard';
         return NextResponse.redirect(url);
     }
 
     // Restrict non-admin users from accessing admin routes
     if (pathname.startsWith('/admin') && pathname !== '/admin/auth/signin' && token && !token.is_admin) {
-        console.log('++++4')
         url.pathname = '/admin/auth/signin';
         return NextResponse.redirect(url);
     }
 
     // Redirect authenticated users from signin to homepage
     if (pathname === '/login' && token && !token.is_admin) {
-        console.log('++++5')
         url.pathname = '/';
         return NextResponse.redirect(url);
     }
@@ -70,18 +63,15 @@ export async function middleware(req) {
 
     // Redirect unauthenticated users trying to access restricted paths
     if (!token && (pathname.startsWith('/dashboard') || pathname.startsWith('/view-profile') || pathname.startsWith('/member'))) {
-        console.log('++++6')
         return NextResponse.redirect(new URL('/login', req.url));
     }
 
     // Redirect unauthenticated users trying to access restricted paths
     if (token && token.is_admin && (pathname.startsWith('/dashboard') || pathname.startsWith('/view-profile') || pathname.startsWith('/member'))) {
-        console.log('++++7')
         return NextResponse.redirect(new URL('/login', req.url));
     }
 
     if (pathname == '/admin' && !token) {
-        console.log('++++8')
         url.pathname = '/admin/auth/signin';
         return NextResponse.redirect(url);
     }
