@@ -8,9 +8,9 @@ import { usePathname } from "next/navigation";
 
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
-import { Navbar, Collapse, IconButton } from "@material-tailwind/react";
 
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+
+import { Menu, X } from "lucide-react";
 
 interface NavItemPropsType {
   label: string;
@@ -102,11 +102,7 @@ export function NavbarWithSimpleLinks() {
   }, []);
 
   return (
-    <Navbar
-      className="header-bg py-6 border-0"
-      fullWidth={true}
-      {...({} as any)}
-    >
+    <nav className="header-bg py-6 border-0 w-full">
 
       <div className={`${lang == 'ta' ? 'container-header' : 'container'} mx-auto flex items-center justify-between mt-6`}>
         <Link className="hidden flex-shrink-0 lg:block" href="/">
@@ -126,29 +122,25 @@ export function NavbarWithSimpleLinks() {
           <Image width={280} height={300} src={"/images/logo/Flogo.svg"} alt="Logo" />
         </Link>
 
-        <IconButton
-          size="sm"
+        <button
           title="Click to toggle"
-          variant="text"
-          color="blue-gray"
           onClick={handleOpen}
-          className="ml-auto inline-block lg:hidden"
-          {...({} as any)}
+          className="ml-auto inline-block lg:hidden text-blue-gray-500 hover:text-blue-gray-700 focus:outline-none"
         >
           {open ? (
-            <XMarkIcon className="h-5 w-5" strokeWidth={2} />
+            <X className="h-5 w-5" strokeWidth={2} />
           ) : (
-            <Bars3Icon className="h-5 w-5" strokeWidth={2} />
+            <Menu className="h-5 w-5" strokeWidth={2} />
           )}
-        </IconButton>
+        </button>
       </div>
 
-      <Collapse open={open}>
+      <div className={`overflow-hidden transition-all duration-300 ${open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
         <div className="mt-2 rounded-xl bg-white py-2">
           <NavList />
         </div>
-      </Collapse>
-    </Navbar>
+      </div>
+    </nav>
   );
 }
 

@@ -6,8 +6,7 @@ import AboutSection from "@/components/Frontend/AboutSection";
 import Recentlymarried from "@/components/Frontend/Recentlymarried";
 import Review from "@/components/Frontend/Review";
 
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+
 
 
 export const metadata: Metadata = {
