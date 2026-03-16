@@ -120,6 +120,36 @@ body {
     background-color: #fff !important;
 }
 
+/* Custom Swiper Navigation UI */
+.swiper-button-next,
+.swiper-button-prev {
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    transition: opacity 0.3s ease !important;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+    font-size: 32px !important;
+    color: #686767 !important;
+    font-weight: 300 !important; /* Thin chevron style */
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    background: transparent !important;
+    transform: none !important;
+    opacity: 0.7 !important;
+}
+
+.swiper-button-next:hover:after,
+.swiper-button-prev:hover:after {
+    color: #686767 !important;
+}
+
 /*Fillter*/
 
 .ftext-custom {
@@ -2325,4 +2355,33 @@ input::placeholder, .lang-ta  select{
 }
 .lang-ta input {
     font-size: 16px;
+}
+
+/* Custom Swiper Navigation UI */
+:root {
+  --swiper-navigation-color: #686767;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    transition: opacity 0.3s ease !important;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+    font-size: 28px !important;
+    color: #686767 !important;
+    font-weight: 400 !important;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    background: transparent !important;
+    transform: none !important;
+    opacity: 0.7 !important;
 }
