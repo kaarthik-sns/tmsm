@@ -225,12 +225,40 @@ const ContactInfo = ({ data }) => {
                                     <h4>{lang == 'ta' ? 'எங்களை அழைக்க' : 'Call Us'}</h4>
                                     <p>{lang == 'ta' ? 'உங்கள் திருமண பயணத்தைப் பற்றி ஏதேனும் உதவியோ அல்லது கேள்விகளோ இருந்தால், எங்களை அழைக்கலாம்.' : 'Call us for any assistance or inquiries about your matrimonial journey.'}</p>
 
-                                    <div className="call-info">
-                                        <span className="icon-info"><img src="/images/contact/call-icon.svg" alt="call-icon" /></span>
-                                        <a className="info-link-data" href={`tel:${data.phone_no}`} >{data.phone_no}</a>
+                                    <div className="grid gap-4">
+                                        {data.phone_no && (
+                                            <div className={`call-info flex items-start ${data.phone_no_2 || data.phone_no_3 ? 'mb-4' : ''}`}>
+                                                <span className="icon-info mt-1"><img src="/images/contact/call-icon.svg" alt="call-icon" /></span>
+                                                <a className="info-link-data flex flex-col md:flex-row md:items-center md:gap-2" href={`tel:${data.phone_no}`} >
+                                                    {data.contact_person_name_1 && <span className="font-semibold block">{data.contact_person_name_1}</span>}
+                                                    {data.contact_person_name_1 && <span className="hidden md:inline">-</span>}
+                                                    <span className="block mt-1 md:mt-0">{data.phone_no}</span>
+                                                </a>
+                                            </div>
+                                        )}
+                                        {data.phone_no_2 && (
+                                            <div className={`call-info flex items-start ${data.phone_no_3 ? 'mb-4' : ''}`}>
+                                                <span className="icon-info mt-1"><img src="/images/contact/call-icon.svg" alt="call-icon" /></span>
+                                                <a className="info-link-data flex flex-col md:flex-row md:items-center md:gap-2" href={`tel:${data.phone_no_2}`} >
+                                                    {data.contact_person_name_2 && <span className="font-semibold block">{data.contact_person_name_2}</span>}
+                                                    {data.contact_person_name_2 && <span className="hidden md:inline">-</span>}
+                                                    <span className="block mt-1 md:mt-0">{data.phone_no_2}</span>
+                                                </a>
+                                            </div>
+                                        )}
+                                        {data.phone_no_3 && (
+                                            <div className="call-info flex items-start">
+                                                <span className="icon-info mt-1"><img src="/images/contact/call-icon.svg" alt="call-icon" /></span>
+                                                <a className="info-link-data flex flex-col md:flex-row md:items-center md:gap-2" href={`tel:${data.phone_no_3}`} >
+                                                    {data.contact_person_name_3 && <span className="font-semibold block">{data.contact_person_name_3}</span>}
+                                                    {data.contact_person_name_3 && <span className="hidden md:inline">-</span>}
+                                                    <span className="block mt-1 md:mt-0">{data.phone_no_3}</span>
+                                                </a>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
-                                <div className="con-list-of-data">
+                                {/* <div className="con-list-of-data">
 
                                     <h4>{lang === 'ta' ? 'மின்னஞ்சல் அனுப்ப' : 'Email Us'}</h4>
                                     <p>{lang === 'ta'
@@ -242,7 +270,7 @@ const ContactInfo = ({ data }) => {
                                         <span className="icon-info"><img src="/images/contact/mail-icon.svg" alt="call-icon" /></span>
                                         <a className="info-link-data" href={`mailto:${data.organisation_email_id}`}>{data.organisation_email_id}</a>
                                     </div>
-                                </div>
+                                </div> 
 
                                 <div className="con-list-of-data">
                                     <h4>{lang === 'ta' ? 'எங்களை பின்தொடர' : 'Follow Us'}</h4>
@@ -255,7 +283,8 @@ const ContactInfo = ({ data }) => {
                                         <li><a href={data.facebook} target="_blank"><img src="/images/contact/facebook-icon.svg" alt="facebook" /></a></li>
                                         <li><a href={data.instagram} target="_blank"><img src="/images/contact/instagram-icon.svg" alt="instagram" /></a></li>
                                     </ul>
-                                </div>
+                                </div> */}
+
                             </div>
                         </div>
                     </div>

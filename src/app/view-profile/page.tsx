@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   description: "",
 };
 
-export default async function Home({ searchParams }) {
-  const { id } = searchParams;
+export default async function Home({ searchParams }: { searchParams: Promise<{ id?: string }> }) {
+  const { id } = await searchParams;
 
   return (
     <FrontendLayouts>

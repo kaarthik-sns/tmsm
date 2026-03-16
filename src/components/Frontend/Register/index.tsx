@@ -519,7 +519,7 @@ const SignUp: React.FC = () => {
                     className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   >
                     <option value="" disabled className="text-body dark:text-bodydark">
-                      {lang == 'ta' ? 'உட்சாதியை தேர்ந்தெடுக்கவும்' : 'Select caste'}
+                      {lang == 'ta' ? 'உட்சாதியை தேர்ந்தெடுக்கவும்' : 'Select subcaste'}
                     </option>
                     <option value="Thondai mandala saiva mudaliyar" className="text-body dark:text-bodydark">
                       {lang == 'ta' ? "தொண்டை மண்டல சைவ முதலியார்" : "Thondai mandala saiva mudaliyar"}

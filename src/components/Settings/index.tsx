@@ -25,6 +25,11 @@ const Settings = () => {
     admin_to_email_id: "",
     admin_from_email_id: "",
     phone_no: "",
+    contact_person_name_1: "",
+    phone_no_2: "",
+    contact_person_name_2: "",
+    phone_no_3: "",
+    contact_person_name_3: "",
     address: "",
     domain_url: "",
     copyright: "",
@@ -101,6 +106,11 @@ const Settings = () => {
     admin_to_email_id: string;
     admin_from_email_id: string;
     phone_no: string;
+    contact_person_name_1?: string;
+    phone_no_2?: string;
+    contact_person_name_2?: string;
+    phone_no_3?: string;
+    contact_person_name_3?: string;
     address: string;
     domain_url: string;
     copyright: string;
@@ -167,9 +177,8 @@ const Settings = () => {
     });
 
     // Phone number validation (10digits)
-    const phoneRegex = /^\d{10}$/;
-    if (formData.phone_no && !phoneRegex.test(formData.phone_no)) {
-      errors.phone_no = "Invalid phone number. Must be 10 digits.";
+    if (!formData.phone_no || formData.phone_no.trim() === "") {
+      errors.phone_no = "Phone number is required.";
     }
 
     return errors;
@@ -291,36 +300,10 @@ const Settings = () => {
                   <div className="w-full sm:w-1/2">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="phone_no"
+                      htmlFor="organisation_email_id"
                     >
-                      {isTamil ? 'இணையதள தொலைபேசி எண்' : 'Organization Phone Number'}
+                      {isTamil ? 'நிறுவன மின்னஞ்சல் ஐடி' : 'Organization Email ID'}
                     </label>
-                    <input
-                      className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
-                        ${formErrors?.phone_no ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
-                        dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary`}
-                      type="text"
-                      name="phone_no"
-                      value={formData.phone_no || ""}
-                      onChange={handleChange}
-                      id="phone_no"
-                      placeholder="Enter Phone Number"
-                      maxLength={10}
-                    />
-                    {formErrors?.phone_no && (
-                      <p className="mt-1 text-sm text-red-500">{formErrors.phone_no}</p>
-                    )}
-                  </div>
-                </div>
-
-                <div className="mb-5.5">
-                  <label
-                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="organisation_email_id"
-                  >
-                    {isTamil ? 'நிறுவன மின்னஞ்சல் ஐடி' : 'Organization Email ID'}
-                  </label>
-                  <div>
                     <input
                       className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
                         ${formErrors?.organisation_email_id ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
@@ -335,6 +318,156 @@ const Settings = () => {
                     />
                     {formErrors?.organisation_email_id && (
                       <p className="mt-1 text-sm text-red-500">{formErrors.organisation_email_id}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                  <div className="w-full sm:w-1/2">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="contact_person_name_1"
+                    >
+                      {isTamil ? 'தொடர்பாளர் 1' : 'Contact Person 1'}
+                    </label>
+                    <div>
+                      <input
+                        className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                          ${formErrors?.contact_person_name_1 ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                          dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary`}
+                        type="text"
+                        id="contact_person_name_1"
+                        name="contact_person_name_1"
+                        value={formData.contact_person_name_1 || ""}
+                        onChange={handleChange}
+                        placeholder="Enter Contact Person 1"
+                      />
+                      {formErrors?.contact_person_name_1 && (
+                        <p className="mt-1 text-sm text-red-500">{formErrors.contact_person_name_1}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="w-full sm:w-1/2">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="phone_no"
+                    >
+                      {isTamil ? 'தொலைபேசி எண் 1' : 'Phone Number 1'}
+                    </label>
+                    <input
+                      className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                        ${formErrors?.phone_no ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                        dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary`}
+                      type="text"
+                      name="phone_no"
+                      value={formData.phone_no || ""}
+                      onChange={handleChange}
+                      id="phone_no"
+                      placeholder="Enter Phone Number 1"
+                    />
+                    {formErrors?.phone_no && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.phone_no}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                  <div className="w-full sm:w-1/2">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="contact_person_name_2"
+                    >
+                      {isTamil ? 'தொடர்பாளர் 2' : 'Contact Person 2'}
+                    </label>
+                    <div>
+                      <input
+                        className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                          ${formErrors?.contact_person_name_2 ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                          dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary`}
+                        type="text"
+                        id="contact_person_name_2"
+                        name="contact_person_name_2"
+                        value={formData.contact_person_name_2 || ""}
+                        onChange={handleChange}
+                        placeholder="Enter Contact Person 2"
+                      />
+                      {formErrors?.contact_person_name_2 && (
+                        <p className="mt-1 text-sm text-red-500">{formErrors.contact_person_name_2}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="w-full sm:w-1/2">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="phone_no_2"
+                    >
+                      {isTamil ? 'தொலைபேசி எண் 2' : 'Phone Number 2'}
+                    </label>
+                    <input
+                      className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                        ${formErrors?.phone_no_2 ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                        dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary`}
+                      type="text"
+                      name="phone_no_2"
+                      value={formData.phone_no_2 || ""}
+                      onChange={handleChange}
+                      id="phone_no_2"
+                      placeholder="Enter Phone Number 2"
+                    />
+                    {formErrors?.phone_no_2 && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.phone_no_2}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                  <div className="w-full sm:w-1/2">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="contact_person_name_3"
+                    >
+                      {isTamil ? 'தொடர்பாளர் 3' : 'Contact Person 3'}
+                    </label>
+                    <div>
+                      <input
+                        className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                          ${formErrors?.contact_person_name_3 ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                          dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary`}
+                        type="text"
+                        id="contact_person_name_3"
+                        name="contact_person_name_3"
+                        value={formData.contact_person_name_3 || ""}
+                        onChange={handleChange}
+                        placeholder="Enter Contact Person 3"
+                      />
+                      {formErrors?.contact_person_name_3 && (
+                        <p className="mt-1 text-sm text-red-500">{formErrors.contact_person_name_3}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="w-full sm:w-1/2">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="phone_no_3"
+                    >
+                      {isTamil ? 'தொலைபேசி எண் 3' : 'Phone Number 3'}
+                    </label>
+                    <input
+                      className={`w-full rounded border bg-gray px-4.5 py-3 text-black focus-visible:outline-none
+                        ${formErrors?.phone_no_3 ? "border-red-500 focus:border-red-500" : "border-stroke focus:border-primary"}
+                        dark:bg-meta-4 dark:text-white dark:border-strokedark dark:focus:border-primary`}
+                      type="text"
+                      name="phone_no_3"
+                      value={formData.phone_no_3 || ""}
+                      onChange={handleChange}
+                      id="phone_no_3"
+                      placeholder="Enter Phone Number 3"
+                    />
+                    {formErrors?.phone_no_3 && (
+                      <p className="mt-1 text-sm text-red-500">{formErrors.phone_no_3}</p>
                     )}
                   </div>
                 </div>

@@ -22,9 +22,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   }, []);
 
   return (
-    <SessionWrapper>
-      <html lang='en' className={`lang-${lang}`}>
-        <body suppressHydrationWarning={true}>
+    <html lang='en' className={`lang-${lang}`} suppressHydrationWarning>
+      <body suppressHydrationWarning={true}>
+        <SessionWrapper>
           <div className="dark:bg-boxdark-2 dark:text-bodydark">
             {loading ? <Loader /> : <>
               <Toaster />
@@ -32,8 +32,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <LangSwitcher lang={lang} setLang={setLang} />
             </>}
           </div>
-        </body>
-      </html>
-    </SessionWrapper>
+        </SessionWrapper>
+      </body>
+    </html>
   );
 }

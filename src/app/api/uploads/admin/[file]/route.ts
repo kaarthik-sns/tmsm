@@ -2,14 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest, { params }: { params: { file: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ file: string }> }) {
+    const { file } = await params;
 
     // Check if 'file' param is available
-    if (!params || !params.file) {
+    if (!file) {
         return NextResponse.json({ error: 'File parameter is missing' }, { status: 400 });
     }
 
-    const file = params.file;
     const filePath = path.join(process.cwd(), 'uploads', 'admin', file);
 
     try {

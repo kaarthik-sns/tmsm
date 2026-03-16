@@ -905,6 +905,10 @@ input:-internal-autofill-selected {
     width: 32px;
 }
 
+.info-link-data {
+    word-break: break-word;
+}
+
 .social-media-info {
     display: block;
     margin: 25px 0 0;
