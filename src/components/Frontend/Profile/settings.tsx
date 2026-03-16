@@ -16,9 +16,10 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [activeTab, setActiveTab] = useState('password'); // State for active tab
-  const [passwordError, setPasswordError] = useState<string>("");
-  const [ConPasswordError, setConPasswordError] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null);
 
+  const lang = localStorage.getItem('lang') || 'en';
 
   const [form, setForm] = useState({
     password: "",
@@ -34,39 +35,41 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
     const hasNumber = /[0-9]/.test(password);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
-    if (password.length < minLength) {
-      return "Password must be at least 6 characters long.";
+    if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
+      return lang == 'ta'
+        ? "குறைந்தபட்சம் 6 எழுத்துகள், பெரிய, சிறிய, எண், சிறப்பு எழுத்து வேண்டும்"
+        : "Password must be at least 6 characters long and include uppercase, lowercase, number, and special character.";
     }
-    if (!hasUpperCase) {
-      return "Password must contain at least one uppercase letter.";
-    }
-    if (!hasLowerCase) {
-      return "Password must contain at least one lowercase letter.";
-    }
-    if (!hasNumber) {
-      return "Password must contain at least one number.";
-    }
-    if (!hasSpecialChar) {
-      return "Password must contain at least one special character.";
-    }
+
     return null; // Valid password
   };
 
   const handleDeactivateAccount = async () => {
-    const result = await Swal.fire({
-      title: 'Are you sure?',
+    const { value: reason } = await Swal.fire({
+      title: "Are you sure?",
       text: "Once deactivated, you'll be logged out and can't log in until admin approval.",
-      icon: 'warning',
+      icon: "warning",
+      input: "textarea",
+      inputPlaceholder: "Enter the reason for deactivation...",
+      inputAttributes: {
+        required: "true",
+      },
       showCancelButton: true,
-      confirmButtonText: 'Yes, deactivate it!',
-      cancelButtonText: 'No, cancel',
+      confirmButtonText: "Yes, deactivate it!",
+      cancelButtonText: "No, cancel",
       customClass: {
-        confirmButton: 'confirm-color',  // Custom class for confirm button (green)
-        cancelButton: 'cancel-color'       // Custom class for cancel button (red)
+        confirmButton: "confirm-color", // Custom class for confirm button (green)
+        cancelButton: "cancel-color",   // Custom class for cancel button (red)
+      },
+      preConfirm: (inputValue) => {
+        if (!inputValue) {
+          Swal.showValidationMessage("You must enter a reason for deactivation.");
+        }
+        return inputValue;
       },
     });
 
-    if (result.isConfirmed) {
+    if (reason) {
       setPending(true);
 
       const res = await fetch(`/api/update-user-status`, {
@@ -77,6 +80,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
         body: JSON.stringify({
           id: myId,
           is_active: false,
+          reason, // Send the reason to the backend
         }),
       });
 
@@ -85,20 +89,48 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
       if (res.ok) {
         setPending(false);
         Swal.fire({
-          title: 'Deactivated!',
-          text: 'Deactivated, Your account has been deactivated',
-          icon: 'success',
-          confirmButtonText: 'OK',
+          title: lang == 'ta' ? "செயலிழக்கப்பட்டது!" : "Deactivated!",
+          text: lang == 'ta' ? "உங்கள் கணக்கு செயலிழக்கப்பட்டது." : "Your account has been deactivated.",
+          icon: "success",
+          confirmButtonText: "OK",
           customClass: {
-            confirmButton: 'confirm-color',  // Custom class for confirm button (green)
+            confirmButton: "confirm-color",
           },
         });
         signOut(); // Log out the user
       } else {
         setPending(false);
-        Swal.fire('Error', data.message, 'error');
+        Swal.fire("Error", data.message, "error");
       }
     }
+  };
+
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setForm((prevData) => {
+      const updatedForm = { ...prevData, [name]: value };
+
+      // Validate password
+      if (name === "password") {
+        setPasswordError(validatePassword(value));
+
+        // Also validate confirm password when changing password
+        if (updatedForm.confirmPassword && updatedForm.confirmPassword !== value) {
+          setConfirmPasswordError("Passwords do not match.");
+        } else {
+          setConfirmPasswordError(null);
+        }
+      }
+
+      // Validate confirm password
+      if (name === "confirmPassword") {
+        setConfirmPasswordError(updatedForm.password !== value ? "Passwords do not match." : null);
+      }
+
+      return updatedForm;
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -106,57 +138,54 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
     setPending(true);
     setSuccessMessage("");
 
+    let valid = true;
 
-    if (form.password == '') {
+    if (!form.password) {
       setPasswordError("Password cannot be empty.");
-      setPending(false);
-      return;
-    }
-
-    if (form.confirmPassword == '') {
-      setConPasswordError("Confirm Password cannot be empty.");
-      setPending(false);
-      return;
-    }
-
-
-    if (form.password !== form.confirmPassword) {
-      setConPasswordError("Passwords do not match.");
-      setPending(false);
-      return;
-    }
-
-    setPending(true);
-    setPasswordError('');
-    setConPasswordError('');
-    const passwordError = validatePassword(form.password || "");
-
-    if (passwordError) {
-      setError(passwordError);
-      setPending(false);
-      return;
-    }
-
-    const res = await fetch("/api/change-password-user", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
-    const data = await res.json();
-
-    if (res.ok) {
-      setError('');
-      setPending(false);
-      setSuccessMessage("Your password has been updated successfully.");
+      valid = false;
     } else {
-      setError(data.message);
+      setPasswordError(validatePassword(form.password));
+    }
+
+    if (!form.confirmPassword) {
+      setConfirmPasswordError("Confirm Password cannot be empty.");
+      valid = false;
+    } else if (form.password !== form.confirmPassword) {
+      setConfirmPasswordError("Passwords do not match.");
+      valid = false;
+    }
+
+    if (!valid) {
+      setPending(false);
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/change-password-user", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setPasswordError(null);
+        setConfirmPasswordError(null);
+        setSuccessMessage(lang == 'ta' ? "உங்கள் கடவுச்சொல் வெற்றிகரமாக புதுப்பிக்கப்பட்டது." : "Your password has been updated successfully.");
+      } else {
+        setError(data.message || "Something went wrong.");
+      }
+    } catch (error) {
+      setError("Network error, please try again.");
+    } finally {
       setPending(false);
     }
   };
 
   return (
     <>
-      <div className="flex">
+      <div className="flex ">
 
         <div className="w-full flex flex-col justify-center items-center p-6 md:p-2">
           <div className="flex flex-col w-full">
@@ -167,13 +196,13 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
                 className={`px-3 py-1 text-sm rounded-full ${activeTab === 'password' ? 'active-setting' : 'setting'}`}
                 onClick={() => setActiveTab('password')}
               >
-                Change Password
+                {lang == 'ta' ? 'கடவுச்சொல்லை மாற்றவும்' : 'Change Password'}
               </button>
               <button
                 className={`px-3 py-1 text-sm rounded-full ${activeTab === 'account' ? 'active-setting' : 'setting'}`}
                 onClick={() => setActiveTab('account')}
               >
-                Account
+                {lang == 'ta' ? 'கணக்கு அமைப்புகள்' : 'Account Settings'}
               </button>
             </div>
 
@@ -199,53 +228,47 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
 
                     <div className="mb-4">
                       <label className="mb-2.5 block font-medium text-black dark:text-white">
-                        Password
+                        {lang == 'ta' ? 'கடவுச்சொல்' : 'Password'}
                       </label>
                       <div className="relative">
                         <input
                           type="password"
-                          disabled={pending}
+                          name="password"
                           value={form.password}
-                          onChange={(e) => setForm({ ...form, password: e.target.value })}
-                          placeholder="Enter your password"
+                          onChange={handleChange}
+                          placeholder={lang == 'ta' ? 'கடவுச்சொல்' : 'Password'}
                           className={`w-full rounded-lg border ${passwordError ? "border-red-500" : "border-stroke"
-                            } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-                          autoComplete="off"
+                            } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                         />
+                        {passwordError && <p className="text-red-600 text-sm">{passwordError}</p>}
                       </div>
-                      {passwordError && (
-                        <p className="text-red-500 text-sm mt-1">{passwordError}</p>
-                      )}
                     </div>
 
                     <div className="mb-6">
                       <label className="mb-2.5 block font-medium text-black dark:text-white">
-                        Re-type Password
+                        {lang == 'ta' ? 'கடவுச்சொல் உறுதிப்படுத்தவும்' : 'Confirm Password'}
                       </label>
                       <div className="relative">
                         <input
                           type="password"
-                          disabled={pending}
-                          value={form.confirmPassword}
-                          onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
-                          placeholder="Re-enter your password"
-                          className={`w-full rounded-lg border ${ConPasswordError ? "border-red-500" : "border-stroke"
-                            } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-                          autoComplete="off"
+                          name="confirmPassword" // ✅ Ensure this matches state key
+                          value={form.confirmPassword} // ✅ Ensure correct state binding
+                          onChange={handleChange}
+                          placeholder={lang == 'ta' ? 'கடவுச்சொல் உறுதிப்படுத்தவும்' : 'Confirm Password'}
+                          className={`w-full rounded-lg border ${confirmPasswordError ? "border-red-500" : "border-stroke"
+                            } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                         />
+                        {confirmPasswordError && <p className="text-red-600 text-sm">{confirmPasswordError}</p>}
                       </div>
-                      {ConPasswordError && (
-                        <p className="text-red-500 text-sm mt-1">{ConPasswordError}</p>
-                      )}
                     </div>
-
                     <div className="mb-5">
                       <input
                         type="submit"
-                        value="Change Password"
+                        value={lang == 'ta' ? 'கடவுச்சொல்லை மாற்றவும்' : 'Change Password'}
                         className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
                       />
                     </div>
+
                   </form>
                 </div>
 
@@ -270,18 +293,19 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
                       });
 
                       if (result.isConfirmed) {
-                        signOut(); // Proceed with sign-out if confirmed
+                        signOut({ callbackUrl: '/login' }); // Proceed with sign-out if confirmed
                       }
                     }}
                     className="flex items-center space-x-2 px-3 py-2 text-sm rounded-lg border border-gray-600 bg-gray-600 text-white transition hover:bg-opacity-90"
                   >
-                    <IoLogOut className="mr-2" /> Logout
+                    <IoLogOut className="mr-2" />
+                    {lang == 'ta' ? 'வெளியேறு' : 'Logout'}
                   </button>
                   <button
                     onClick={handleDeactivateAccount}
                     className="flex items-center space-x-2 px-3 py-2 text-sm rounded-lg border border-red-600 bg-red-600 text-white transition hover:bg-opacity-90 mt-5"
                   >
-                    <IoPower className="mr-2" />Deactivate Account
+                    <IoPower className="mr-2" />{lang == 'ta' ? 'கணக்கை செயலிழக்கச் செய்யவும்' : 'Deactivate Account'}
                   </button>
 
                 </div>

@@ -27,6 +27,7 @@ export default async function Home() {
   });
 
   const data = await responseSlider.json();
+  
   const sliderData = data.data;
 
   const responseHome = await fetch(`${process.env.BASE_URL}/api/cms/home/page`, {

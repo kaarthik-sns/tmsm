@@ -10,8 +10,9 @@ import { useRouter } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
 
 import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
-import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
+import SelectGroupCaste from "@/components/SelectGroup/SelectGroupCaste";
 
+import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
 
 
 const SignUp: React.FC = () => {
@@ -25,8 +26,14 @@ const SignUp: React.FC = () => {
     phonenumber: "",
     religion: "",
     profile_created_for: "",
-    profile_creator_name:""
+    profile_creator_name: "",
+    caste: "",
+    subcaste: "",
+    relation_name: ""
   });
+
+  const lang = localStorage.getItem('lang') || 'en';
+
   const [remainingTime, setRemainingTime] = useState(9); // 5 seconds initially
   const [selected, setselected] = useState(false);
   const [pending, setPending] = useState(false);
@@ -34,26 +41,110 @@ const SignUp: React.FC = () => {
   const [errors, setErrors] = useState<any>({});
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isProfileCreator, setIsProfileCreator] = useState(false);
+  const [placeholders, setPlaceholders] = useState({
+    name: "First name",
+    lastname: "Last name",
+    phonenumber: "Phone number",
+    email: "Email ID",
+  });
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null);
 
   const router = useRouter();
 
   // Array for religions
-  const religions = [
-    "Hindu",
-    "Muslim",
-    "Christian"
-  ];
+  const religions = lang === 'ta'
+    ? [
+      { label: "இந்து", value: "Hindu" },
+      { label: "முஸ்லிம்", value: "Muslim" },
+      { label: "கிறிஸ்துவர்", value: "Christian" },
+    ]
+    : [
+      { label: "Hindu", value: "Hindu" },
+      { label: "Muslim", value: "Muslim" },
+      { label: "Christian", value: "Christian" },
+    ];
+
+  const castes = lang === 'ta'
+    ? [
+      { label: "முதலியார்", value: "Mudaliyar" },
+    ]
+    : [
+      { label: "Mudaliyar", value: "Mudaliyar" },
+    ];
+
+  const profileOptions = lang === 'ta'
+    ? [
+      { label: 'எனக்கு', value: 'myself' },
+      { label: 'மகள்', value: 'daughter' },
+      { label: 'மகன்', value: 'son' },
+      { label: 'மற்றவர்கள்', value: 'others' },
+    ]
+    : [
+      { label: 'MySelf', value: 'myself' },
+      { label: 'Daughter', value: 'daughter' },
+      { label: 'Son', value: 'son' },
+      { label: 'Others', value: 'others' },
+    ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
+
     // Update form state
-    setForm((prevData) => ({ ...prevData, [name]: value }));
-  
-    // Handle "Profile created for" specific logic
-    if (name === 'profile_created_for') {
-      setIsProfileCreator(value !== 'myself');
-    }
+    setForm((prevData) => {
+      const updatedForm = { ...prevData, [name]: value };
+
+      setPasswordError(null);
+
+      // Validate password
+      if (name === "password") {
+        setPasswordError(validatePassword(value));
+      }
+
+      // Validate confirm password
+      if (name === "confirmPassword") {
+        setConfirmPasswordError(updatedForm.password !== value ? "Passwords do not match." : null);
+      }
+
+      // Handle "Profile created for" specific logic
+      if (name === "profile_created_for") {
+        setIsProfileCreator(value !== "myself");
+
+        // Update placeholders dynamically
+        setPlaceholders(
+          value === "myself"
+            ? lang === "ta"
+              ? {
+                name: "முதல் பெயர்",
+                lastname: "கடைசி பெயர்",
+                phonenumber: "தொலைபேசி எண்",
+                email: "மின்னஞ்சல்",
+              }
+              : {
+                name: "First name",
+                lastname: "Last name",
+                phonenumber: "Phone number",
+                email: "Email ID",
+              }
+            : lang === "ta"
+              ? {
+                name: "மணமகன்/மணமகள் முதல் பெயர்",
+                lastname: "மணமகன்/மணமகள் கடைசி பெயர்",
+                phonenumber: "உருவாக்குனரின் தொலைபேசி எண்",
+                email: "உருவாக்குனரின் மின்னஞ்சல்",
+              }
+              : {
+                name: "Bride/Groom First name",
+                lastname: "Bride/Groom Last name",
+                phonenumber: "Creator Phone number",
+                email: "Creator Email ID",
+              }
+        );
+
+      }
+
+      return updatedForm;
+    });
   };
 
 
@@ -64,92 +155,99 @@ const SignUp: React.FC = () => {
     const hasNumber = /[0-9]/.test(password);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
-    if (password.length < minLength) {
-      return "Password must be at least 6 characters long.";
+    if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
+      return lang == 'ta'
+        ? "குறைந்தபட்சம் 6 எழுத்துகள், பெரிய, சிறிய, எண், சிறப்பு எழுத்து உள்ளிடவும்"
+        : "Password must be at least 6 characters long and include uppercase, lowercase, number, and special character.";
     }
-    if (!hasUpperCase) {
-      return "Password must contain at least one uppercase letter.";
-    }
-    if (!hasLowerCase) {
-      return "Password must contain at least one lowercase letter.";
-    }
-    if (!hasNumber) {
-      return "Password must contain at least one number.";
-    }
-    if (!hasSpecialChar) {
-      return "Password must contain at least one special character.";
-    }
+
     return null; // Valid password
   };
+
 
   const validate = () => {
     let newErrors: any = {};
 
     if (!form.profile_created_for) {
-      newErrors.profile_created_for = "Select a Matrimony profile.";
+      newErrors.profile_created_for = lang === 'ta' ? "ஏதேனும் ஒன்றை தேர்வு செய்யவும்." : "Select matrimony profile for.";
     }
 
-
-    if (form.profile_created_for != 'myself') {
-
+    if (form.profile_created_for !== 'myself') {
       if (!form.profile_creator_name || form.profile_creator_name.trim() === "") {
-        newErrors.profile_creator_name = "Creator Name cannot be empty..";
+        newErrors.profile_creator_name = lang === 'ta'
+          ? "கணக்கு உருவாக்குநரின் பெயர் கட்டாயம் உள்ளிடவும்."
+          : "Creator Name cannot be empty.";
       }
-
     }
 
-
-    // Name validation
-    if (!form.name  || form.name.trim() === "") {
-      newErrors.name = "First name cannot be empty.";
+    if (form.profile_created_for == 'others') {
+      if (!form.relation_name || form.relation_name.trim() === "") {
+        newErrors.relation_name = lang === 'ta'
+          ? "மணமகனுடன் / மணமகளுடன் உள்ள உறவு கட்டாயம் உள்ளிடவும்."
+          : "Relationship to Bride/Groom cannot be empty.";
+      }
     }
 
-    // Lastname validation
+    if (!form.name || form.name.trim() === "") {
+      newErrors.name = lang === 'ta' ? "முதல் பெயர் கட்டாயம் உள்ளிடவும்." : "First name cannot be empty.";
+    }
+
     if (!form.lastname || form.lastname.trim() === "") {
-      newErrors.lastname = "Last name cannot be empty.";
+      newErrors.lastname = lang === 'ta' ? "கடைசி பெயர் கட்டாயம் உள்ளிடவும்." : "Last name cannot be empty.";
     }
 
-    // Email validation
+    if (!form.caste || form.caste.trim() === "") {
+      newErrors.caste = lang === 'ta' ? "சாதி தேர்வு கட்டாயம் உள்ளிடவும்." : "Caste cannot be empty.";
+    }
+
+    if (!form.subcaste || form.subcaste.trim() === "") {
+      newErrors.subcaste = lang === 'ta' ? "உட்சாதி தேர்வு கட்டாயம் உள்ளிடவும்." : "Subcaste cannot be empty.";
+    }
+
     if (!form.email || form.email.trim() === "") {
-      newErrors.email = "Email cannot be empty.";
+      newErrors.email = lang === 'ta' ? "மின்னஞ்சல் கட்டாயம் உள்ளிடவும்." : "Email cannot be empty.";
     } else if (!/\S+@\S+\.\S+/.test(form.email)) {
-      newErrors.email = "Enter a valid email address";
+      newErrors.email = lang === 'ta' ? "சரியான மின்னஞ்சல் உள்ளிடவும்." : "Enter a valid email address";
     }
 
-    // Phone number validation
     if (!form.phonenumber) {
-      newErrors.phonenumber = "Phone number cannot be empty";
+      newErrors.phonenumber = lang === 'ta' ? "தொலைபேசி எண் கட்டாயம் உள்ளிடவும்." : "Phone number cannot be empty";
     } else if (!/^\d{10}$/.test(form.phonenumber)) {
-      newErrors.phonenumber = "Enter a valid 10-digit phone number";
+      newErrors.phonenumber = lang === 'ta'
+        ? "சரியான 10 இலக்க தொலைபேசி எண் உள்ளிடவும்."
+        : "Enter a valid 10-digit phone number";
     }
 
-    if (!form.password) {
-      newErrors.password = "Password cannot be empty";
+    const passwordValidationError = validatePassword(form.password);
+    if (passwordValidationError) {
+      newErrors.password = passwordValidationError;
+      setPasswordError(passwordValidationError);
+    }
+
+    if (!form.confirmPassword) {
+      setConfirmPasswordError(lang === 'ta' ? "கடவுச்சொல்லை உறுதிப்படுத்தவும்." : "Confirm password cannot be empty.");
+
     } else if (form.password !== form.confirmPassword) {
-      newErrors.password = "Passwords don't match";
-    } else {
-      const passwordError = validatePassword(form.password);
-      if (passwordError) {
-        newErrors.password = passwordError;
-      }
+      setConfirmPasswordError(lang === 'ta' ? "கடவுச்சொல் பொருந்தவில்லை." : "Passwords do not match.");
     }
 
-    // Religion validation
     if (!form.religion) {
-      newErrors.religion = "Religion cannot be empty";
+      newErrors.religion = lang === 'ta' ? "மத தேர்வு கட்டாயம்" : "Religion cannot be empty";
     }
     if (form.religion.toLowerCase() !== "hindu" && form.religion.toLowerCase() !== "") {
-      newErrors.religion = "Registration is not permitted at this time.";
+      newErrors.religion = lang === 'ta'
+        ? "தற்போது இந்த மதத்திற்கு பதிவு அனுமதிக்கப்படவில்லை."
+        : "Registration is not permitted at this time.";
     }
 
-    // Terms and condition check
     if (!selected) {
-      newErrors.selected = "Accept the Terms and Conditions";
+      newErrors.selected = lang === 'ta'
+        ? "விதிமுறைகள் மற்றும் நிபந்தனைகளை ஏற்கவும்."
+        : "Please accept the Terms and Conditions";
     }
 
     return newErrors;
   };
-
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -170,80 +268,97 @@ const SignUp: React.FC = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     });
+
     const data = await res.json();
 
     if (res.ok) {
       setPending(false);
-      setSuccessMessage(data.message);  // Set the success message
+      setSuccessMessage(
+        lang == 'ta'
+          ? "பதிவுசெய்தல் வெற்றிகரமாக முடிந்தது. நிர்வாகியின் ஒப்புதலுக்கு காத்திருக்கவும். மேலும் தகவலுக்கு உங்கள் மின்னஞ்சலை பார்க்கவும்."
+          : "Registration successful. Await admin approval. Check your email for updates."
+      );
       window.scrollTo({ top: 0, behavior: "smooth" });
       // Redirect to the login page after 5 seconds
       setTimeout(() => {
         router.push("/login");
       }, 5000); // Redirect after 5 seconds
     } else if (res.status === 400) {
-      setErrors(data.message);
+      setError(data.message);
       setPending(false);
     } else if (res.status === 500) {
-      setErrors(data.message);
+      setError(data.message);
       setPending(false);
     }
   };
-
-  const profileOptions = [
-    { label: 'MySelf', value: 'myself' },
-    { label: 'Daughter', value: 'daughter' },
-    { label: 'Son', value: 'son' },
-    { label: 'Others', value: 'others' },
-  ];
-
-
 
 
   const handleReligionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedReligion = e.target.value;
     setForm({ ...form, religion: selectedReligion });
-    setError('');
-    if (selectedReligion.toLowerCase() !== "hindu") {
-      setError('Registration is not permitted at this time.');
+    console.log(selectedReligion);
+
+    let newErrors = { ...errors };
+    setErrors(null);
+
+    if (!selectedReligion) {
+      newErrors.religion =
+        lang === "ta"
+          ? "மதத்தை தேர்ந்தெடுக்க வேண்டும்."
+          : "Religion cannot be empty.";
+    } else if (selectedReligion.toLowerCase() !== "hindu") {
+      newErrors.religion =
+        lang === "ta"
+          ? "தற்போது இந்த மதத்திற்கான பதிவு அனுமதிக்கப்படவில்லை."
+          : "Registration is not permitted at this time.";
     } else {
-      setError(null);
+      delete newErrors.religion;
     }
+
+    setErrors(newErrors);
   };
 
 
-    useEffect(() => {
-      let timer: NodeJS.Timeout | null = null;
-  
-      if (successMessage) {
-        timer = setInterval(() => {
-          setRemainingTime((prevTime) => {
-            if (prevTime === 1) {
-              clearInterval(timer as NodeJS.Timeout);  // Stop the timer
-              router.push("/login");  // Redirect after countdown finishes
-            }
-            return prevTime - 1;
-          });
-        }, 1000); // 1000ms = 1 second
-      }
-  
-      return () => {
-        if (timer) clearInterval(timer); // Clean up the interval if the component unmounts or successMessage changes
-      };
-    }, [successMessage, router]);
-  
+
+  const handleCasteChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedcaste = e.target.value;
+    setForm({ ...form, caste: selectedcaste });
+  };
+
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+
+    if (successMessage) {
+      timer = setInterval(() => {
+        setRemainingTime((prevTime) => {
+          if (prevTime === 1) {
+            clearInterval(timer as NodeJS.Timeout);  // Stop the timer
+            router.push("/login");  // Redirect after countdown finishes
+          }
+          return prevTime - 1;
+        });
+      }, 1000); // 1000ms = 1 second
+    }
+
+    return () => {
+      if (timer) clearInterval(timer); // Clean up the interval if the component unmounts or successMessage changes
+    };
+  }, [successMessage, router]);
+
   return (
 
-    <div className="flex bg-[#fbeed5]">
+    <div className="flex bg-[#fbeed5] register">
       {/* Left Section - Login Form */}
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-6 md:p-10">
         <div className="flex items-center md:w-100">
           <div className="w-full p-4">
-            <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2 heading-title">
-              Register
+            <h2 className="mb-2 text-3xl font-bold text-black  sm:text-title-xl2">
+              {lang == 'ta' ? 'புதிய கணக்கு உருவாக்குங்கள்' : 'Register'}
             </h2>
             {successMessage && (
               <div className="bg-green-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-green-600 mb-6">
-                <p>{successMessage} Redirecting to login in {remainingTime} seconds... </p>
+                <p> {lang == 'ta' ? `வெற்றிகரமாக கணக்கு பதிவு செய்யப்பட்டு, உள்நுழைவுக்கு ${remainingTime} விநாடிகளில் மாற்றப்படுகிறது...` : `${successMessage} Redirecting to login in ${remainingTime} seconds...`}</p>
               </div>
             )}
             {!!error && (
@@ -252,47 +367,66 @@ const SignUp: React.FC = () => {
                 <p>{error}</p>
               </div>
             )}
+            {lang == 'ta' && (<p className="text-sm font-medium dark-text mb-4">Please fill the form in english&nbsp;<span className="text-meta-1">*</span></p>)}
             <form onSubmit={handleSubmit} >
-            <div className="mb-4.5">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                   <b>Matrimony profile for</b>
-                  </label>
-                  <RadioButtonGroup
-                    name="profile_created_for"
-                    options={profileOptions}
-                    selectedValue={form.profile_created_for}
-                    onChange={handleChange}
-                  />
-                  {errors?.profile_created_for && (
-                    <p className="mt-1 text-sm text-red-500">{errors.profile_created_for}</p>
-                  )}
-                </div>  
- 
-                {isProfileCreator && (
-                   <>
-                     < div className="mb-4.5">
-                       <input
-                         type="text"
-                         name="profile_creator_name"
-                         value={form.profile_creator_name || ""}
-                         onChange={handleChange}
-                         placeholder="Enter Profile Creator Name"
-                         className={`w-full rounded-lg border ${errors.profile_creator_name ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
+              <div className="mb-4.5">
+                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                  <b>{lang == 'ta' ? 'யாருக்காக கணக்கு உருவாக்கப்படுகிறது?' : 'Matrimony profile for'}</b>
+                </label>
+                <RadioButtonGroup
+                  name="profile_created_for"
+                  options={profileOptions}
+                  selectedValue={form.profile_created_for}
+                  onChange={handleChange}
+                />
+                {errors?.profile_created_for && (
+                  <p className="mt-1 text-red-600 text-sm">{errors.profile_created_for}</p>
+                )}
+              </div>
 
-                       />
-                       {errors?.profile_creator_name && (
-                         <p className="mt-1 text-sm text-red-500">{errors.profile_creator_name}</p>
-                       )}
-                     </div>
-                   </>
-                 )}                          
+              {isProfileCreator && (
+                <>
+                  <div className="mb-4.5">
+                    <input
+                      type="text"
+                      name="profile_creator_name"
+                      value={form.profile_creator_name || ""}
+                      onChange={handleChange}
+                      placeholder={lang == 'ta' ? 'கணக்கு  உருவாக்குநரின் பெயர்' : 'Profile Creator Name'}
+                      className={`w-full rounded-lg border ${errors.profile_creator_name ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-6 text-black outline-none focus:border-primary`}
+
+                    />
+                    {errors?.profile_creator_name && (
+                      <p className="mt-1 text-sm text-red-500">{errors.profile_creator_name}</p>
+                    )}
+                  </div>
+                </>
+              )}
+
+              {form.profile_created_for == 'others' && (
+                < div className="mb-4">
+                  <input
+                    type="text"
+                    disabled={pending}
+                    value={form.relation_name}
+                    onChange={(e) => setForm({ ...form, relation_name: e.target.value })}
+                    placeholder={lang == 'ta' ? 'மணமகனுடன் / மணமகளுடன் உள்ள உறவு' : 'Relationship to Bride/Groom'}
+                    autoComplete="new-email"
+                    className={`w-full rounded-lg border ${errors.relation_name ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
+                  />
+                  {errors.relation_name && (
+                    <p className="text-red-600 text-sm">{errors.relation_name}</p>
+                  )}
+                </div>
+              )}
+
               <div className="mb-4">
                 <input
                   type="text"
                   disabled={pending}
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  placeholder="First name"
+                  placeholder={lang == 'ta' ? 'மணமகள்/மணமகன் முதல் பெயர்' : placeholders.name}
                   className={`w-full rounded-lg border ${errors.name ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
 
                 />
@@ -307,9 +441,9 @@ const SignUp: React.FC = () => {
                   disabled={pending}
                   value={form.lastname}
                   onChange={(e) => setForm({ ...form, lastname: e.target.value })}
-                  placeholder="Last name"
-                  className={`w-full rounded-lg border ${errors.lastname ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
-                  />
+                  placeholder={lang == 'ta' ? 'மணமகள்/மணமகன் கடைசி பெயர்' : placeholders.lastname}
+                  className={`w-full rounded-lg border ${errors.lastname ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-6 text-black outline-none focus:border-primary`}
+                />
                 {errors.lastname && (
                   <p className="text-red-600 text-sm">{errors.lastname}</p>
                 )}
@@ -317,12 +451,12 @@ const SignUp: React.FC = () => {
 
               <div className="mb-4">
                 <input
-                  type="email"
+                  type="text"
                   disabled={pending}
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  placeholder="Email ID"
-                  autoComplete="off" // Disable browser autofill
+                  placeholder={lang == 'ta' ? 'மின்னஞ்சல்' : placeholders.email}
+                  autoComplete="new-email"
                   className={`w-full rounded-lg border ${errors.email ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                 />
                 {errors.email && (
@@ -331,6 +465,11 @@ const SignUp: React.FC = () => {
               </div>
 
               <div className="mb-4">
+                {form.profile_created_for !== "myself" && (
+                  <label className="mb-1 block text-sm font-medium dark-text dark:text-white">
+                    {lang == 'ta' ? 'மணமகள்/மணமகன் தொலைபேசி எண் தெரிவிக்க வேண்டாம்.' : "Don't mention the bride/groom's phone number."}
+                  </label>
+                )}
                 <input
                   type="text"
                   disabled={pending}
@@ -338,7 +477,7 @@ const SignUp: React.FC = () => {
                   onChange={(e) =>
                     setForm({ ...form, phonenumber: e.target.value })
                   }
-                  placeholder="Phone number"
+                  placeholder={lang == 'ta' ? 'தொலைபேசி எண்' : placeholders.phonenumber}
                   className={`w-full rounded-lg border ${errors.phonenumber ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                 />
                 {errors.phonenumber && (
@@ -359,43 +498,93 @@ const SignUp: React.FC = () => {
               </div>
 
               <div className="mb-4">
-                <input
-                  type="password"
-                  disabled={pending}
-                  value={form.password}
-                  onChange={(e) => setForm({ ...form, password: e.target.value })}
-                  placeholder="Password"
-                  className={`w-full rounded-lg border ${errors.password ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
+                <SelectGroupCaste
+                  castes={castes}
+                  name="caste"
+                  selectedcaste={form.caste}
+                  oncasteChange={handleCasteChange}
                 />
-                {errors.password && (
-                  <p className="text-red-600 text-sm">{errors.password}</p>
+                {errors.caste && (
+                  <p className="text-red-600 text-sm">{errors.caste}</p>
                 )}
+              </div>
+
+
+              <div className="mb-4.5">
+                <div className="relative z-20 bg-transparent dark:bg-form-input">
+                  <select
+                    name="subcaste"
+                    value={form.subcaste}
+                    onChange={(e) => setForm({ ...form, subcaste: e.target.value })}
+                    className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  >
+                    <option value="" disabled className="text-body dark:text-bodydark">
+                      {lang == 'ta' ? 'உட்சாதியை தேர்ந்தெடுக்கவும்' : 'Select caste'}
+                    </option>
+                    <option value="Thondai mandala saiva mudaliyar" className="text-body dark:text-bodydark">
+                      {lang == 'ta' ? "தொண்டை மண்டல சைவ முதலியார்" : "Thondai mandala saiva mudaliyar"}
+                    </option>
+                  </select>
+
+                  <span className="absolute right-4 top-1/2 z-30 -translate-y-1/2">
+                    <svg
+                      className="fill-current"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g opacity="0.8">
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
+                          fill=""
+                        ></path>
+                      </g>
+                    </svg>
+                  </span>
+                </div>
               </div>
 
               <div className="mb-4">
                 <input
                   type="password"
-                  disabled={pending}
-                  value={form.confirmPassword}
-                  onChange={(e) =>
-                    setForm({ ...form, confirmPassword: e.target.value })
-                  }
-                  placeholder="Confirm Password"
-                  className={`w-full rounded-lg border ${errors.confirmPassword ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
+                  name="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  autoComplete="new-password"
+                  placeholder={lang == 'ta' ? 'கடவுச்சொல்' : 'Password'}
+                  className={`w-full rounded-lg border ${passwordError ? "border-red-500" : "border-stroke"
+                    } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                 />
-                {errors.confirmPassword && (
-                  <p className="text-red-600 text-sm">{errors.confirmPassword}</p>
-                )}
+                {passwordError && <p className="text-red-600 text-sm">{passwordError}</p>}
+              </div>
+              {/* Confirm Password Field */}
+              <div className="mb-4">
+                <input
+                  type="password"
+                  name="confirmPassword" // ✅ Ensure this matches state key
+                  value={form.confirmPassword} // ✅ Ensure correct state binding
+                  onChange={handleChange}
+                  autoComplete="new-password"
+                  placeholder={lang == 'ta' ? 'கடவுச்சொல்லை உறுதிப்படுத்தவும்' : 'Confirm Password'}
+                  className={`w-full rounded-lg border ${confirmPasswordError ? "border-red-500" : "border-stroke"
+                    } bg-transparent py-4 pl-6 pr-6 text-black outline-none focus:border-primary`}
+                />
+                {confirmPasswordError && <p className="text-red-600 text-sm">{confirmPasswordError}</p>}
               </div>
 
               <div className="mb-5">
                 <Terms
                   selected={selected}
                   setselected={setselected}
-                  label="I accept the"
-                  linkText=" Terms and Conditions"
+                  label={lang === 'ta' ? 'நான் ஏற்கிறேன்' : 'I accept the'}
+                  linkText={lang === 'ta' ? 'விதிமுறைகள் மற்றும் நிபந்தனைகளை.' : 'Terms and Conditions.'}
                   linkHref="/terms"
                 />
+
                 {errors.selected && (
                   <p className="text-red-600 text-sm">{errors.selected}</p>
                 )}
@@ -404,15 +593,18 @@ const SignUp: React.FC = () => {
               <div className="mb-5">
                 <input
                   type="submit"
-                  value="Create account"
+                  value={lang == 'ta' ? 'கணக்கை உருவாக்கவும்' : 'Create account'}
                   className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-button"
                 />
               </div>
               <div className="mt-6 text-center">
+                <p className="text-sm font-medium text-center dark-text mb-4">
+                  {lang === 'ta' ? 'பதிவுக்கான கட்டணம் ₹500 முதல்.' : 'Registration amount is ₹500 onwards.'}
+                </p>
                 <p>
-                  Already have an account?{" "}
+                  {lang == 'ta' ? 'ஏற்கனவே கணக்கு உள்ளதா?' : 'Already have an account?'}{" "}
                   <Link href="/login" className="text-primary dark-terms">
-                    Sign in
+                    {lang == 'ta' ? 'உள்நுழைக' : 'Sign in'}
                   </Link>
                 </p>
               </div>
@@ -420,17 +612,17 @@ const SignUp: React.FC = () => {
             </form>
           </div>
         </div>
-      </div>
+      </div >
 
       {/* Right Section - Image with Overlay */}
-      <div className="w-1/2 relative hidden md:block">
+      < div className="w-1/2 relative hidden md:block" >
         <img
           src="/images/login/login.svg"
           alt="Couple"
           className="w-full h-full object-cover"
         />
-      </div>
-    </div>
+      </div >
+    </div >
 
 
   );

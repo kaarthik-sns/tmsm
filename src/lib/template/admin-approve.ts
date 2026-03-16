@@ -1,4 +1,4 @@
-export const adminApprovalTemplate = (name: string, loginUrl: string, email: string, copyright: string, mail_logo: string): string => `
+export const adminApprovalTemplate = (name: string, loginUrl: string, email: string, copyright: string): string => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -104,7 +104,7 @@ export const adminApprovalTemplate = (name: string, loginUrl: string, email: str
                 <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" class="container">
                     <tr>
                         <td align="center" class="logo">
-                            <img src="${mail_logo}" alt="TMSM Logo">
+                            <img src="cid:mail_logo" alt="TMSM Logo">
                         </td>
                     </tr>
                     <tr>
@@ -122,7 +122,7 @@ export const adminApprovalTemplate = (name: string, loginUrl: string, email: str
                             <!-- Added Thanks & Regards Section -->
                             <p style="margin-top: 30px; font-size: 12px; color:rgb(0, 0, 0);">
                                 <i>Thanks & Regards,<br>
-                                <span style="color:rgb(0, 0, 0); font-size: 12px;">TMSM Team</span></i>
+                                <span style="color:rgb(0, 0, 0); font-size: 12px;">TMSM Hub Team</span></i>
                             </p>
                             <p class="footer"><i>${copyright}</i></p>
                         </td>

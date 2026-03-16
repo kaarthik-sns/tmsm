@@ -1,16 +1,55 @@
 main {
     background: #ffffff;
 }
+
 .member-container .title {
     color: #333;
     font-family: "Playfair Display";
-    font-size: 40px;
+    font-size: 30px;
     font-weight: 700;
     line-height: normal;
 }
-.member-container .title span{
+
+.lang-ta .member-container .title {
+    font-size: 26px;
+}
+
+.member-container .title span {
     color: #D13333;
 }
+
+.member-search-btn {
+    font-size: 18px;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.lang-ta .member-search-btn {
+    font-size: 12px;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.member-req-btn {
+    font-size: 14px;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.lang-ta .member-req-btn {
+    font-size: 12px;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
 .member-container .member-title {
     color: #323232;
     text-align: justify;
@@ -19,36 +58,73 @@ main {
     font-weight: 600;
     line-height: 30px;
 }
+
+.lang-ta .member-container .member-title {
+    font-size: 20px;
+}
+
+.lang-ta .member-container .member-info p span {
+    font-size: 14px;
+}
+
+@media (min-width: 1024px) {
+
+    .member-req-btn {
+        font-size: 16px;
+        padding-right: 30px;
+        padding-left: 30px;
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+
+    .lang-ta .member-req-btn {
+        font-size: 16px;
+        padding-right: 30px;
+        padding-left: 30px;
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+
+}
+
+@media (min-width: 768px) {
+    .lang-ta .member-container .member-info p span {
+        font-size: 16px;
+    }
+}
+
 .member-btn {
     color: #323232;
     text-align: center;
     font-family: "Noto Sans";
-    font-size: 18px;
+    font-size: 16px;
     font-style: normal;
     font-weight: 600;
-    line-height: 30px; 
+    line-height: 30px;
     border-radius: 5px;
     background: #FFD16C;
     padding: 13px 36px;
 }
 
-.member-container .member-info p span{
+.member-container .member-info p span {
     font-family: "Noto Sans";
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 300;
     line-height: 30px;
 }
+
+
 .member-container .value {
     color: rgba(0, 0, 0, 0.50);
 }
 
 .member-container .page-number {
     border-radius: 50px;
-    background: #323232;
+    background: #992222;
     padding: 10px 50px;
 }
 
-.member-container .page-number a{
+.member-container .page-number a {
     font-family: "Noto Sans";
     font-size: 16px;
     font-weight: 600;
@@ -70,19 +146,23 @@ main {
     background-color: #FFD16C;
     color: #323232;
 }
+
 .bg-member {
     background: #fdfbfb;
     border-radius: 10px 10px 0px 0px;
     padding-bottom: 1em;
     border-bottom: 0;
 }
-.rounded-member{
+
+.rounded-member {
     border-radius: 0px 0px 10px 10px;
 
 }
+
 .member-container .page-number a:last-child {
     margin-right: 0px !important;
 }
+
 .member-container .page-number a:first-child {
     margin-left: 0px !important;
 }
@@ -92,86 +172,94 @@ main {
     padding-top: 72px;
     padding-bottom: 64px;
 }
+
 .prev-btn {
     height: 48px;
     width: 48px;
     margin-right: 1.16rem;
-    background: #323232;
+    background: #992222;
 }
 
 .next-btn {
     height: 48px;
     width: 48px;
     margin-left: 1.16rem;
-    background: #323232;
+    background: #992222;
 }
-.inner-page-top-banner{
+
+.inner-page-top-banner {
     position: relative;
     width: 100%;
     margin: 0;
     height: 500px;
- }
- .inner-banner-info{
+}
+
+.inner-banner-info {
     position: relative;
     margin: 0;
     display: flex;
     flex-wrap: wrap;
- }
- .in-banner-bg{
+}
+
+.in-banner-bg {
     width: 100%;
     height: 100%;
- }
- .inner-banner-info{
+}
+
+.inner-banner-info {
     position: absolute;
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
-    align-items: center; 
-    top: 0; 
+    align-items: center;
+    top: 0;
     background: rgba(216, 140, 74, 0.60);
- }
- .top-title h2{ 
+}
+
+.top-title h2 {
     color: #FFF;
     text-align: center;
     font-family: "Playfair Display";
     font-weight: 600;
- }
+}
 
- .welcome {
+.welcome {
     color: #d13333;
- }
+}
 
 
- @media only screen and (min-width: 768px) {
-    .inner-page-top-banner{
+@media only screen and (min-width: 768px) {
+    .inner-page-top-banner {
         height: 34.72vw;
     }
-    .top-title h2{
+
+    .top-title h2 {
         font-size: 5.56vw;
-        line-height: 6.82vw; 
+        line-height: 6.82vw;
     }
-   
+
 }
+
 @media only screen and (min-width: 1600px) {
-    .inner-page-top-banner{
+    .inner-page-top-banner {
         height: 500px;
     }
-    .top-title h2{
+
+    .top-title h2 {
         font-size: 80px;
-        line-height: 98.16px; 
+        line-height: 98.16px;
     }
 
 }
 
 @media (max-width: 767px) {
-    .inner-page-top-banner{
+    .inner-page-top-banner {
         height: 200px;
     }
-    .top-title h2{
+
+    .top-title h2 {
         font-size: 40px;
         line-height: 40px;
     }
 }
-
-

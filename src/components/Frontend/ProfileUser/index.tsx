@@ -2,15 +2,17 @@
 
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
-import NextImage from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import SelectGroupStates from "@/components/SelectGroup/SelectGroupStates";
 import SelectGroupCities from "@/components/SelectGroup/SelectGroupCities";
 import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
+import SelectGroupCountries from "@/components/SelectGroup/SelectGroupCountries";
 import SelectGroupCaste from "@/components/SelectGroup/SelectGroupCaste";
 import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
 import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
-
+import ImageUpload from "@/components/FormElements/ImageUpload";
+import FileUpload from "@/components/FormElements/FileUpload";
+import NextImage from "next/image";
 
 const UserProfile = (user_data) => {
 
@@ -34,19 +36,59 @@ const UserProfile = (user_data) => {
 
   const router = useRouter();
 
+  const lang = localStorage.getItem('lang') || 'en';
+
   // Array for religions
-  const religions = [
-    "Hindu",
+  const religions = lang === 'ta'
+    ? [
+      { label: "இந்து", value: "Hindu" }
+    ]
+    : [
+      { label: "Hindu", value: "Hindu" }
+    ];
+
+  const freligions = lang === 'ta'
+    ? [
+      { label: "இந்து", value: "Hindu" },
+      { label: "முஸ்லிம்", value: "Muslim" },
+      { label: "கிறிஸ்துவர்", value: "Christian" },
+    ]
+    : [
+      { label: "Hindu", value: "Hindu" },
+      { label: "Muslim", value: "Muslim" },
+      { label: "Christian", value: "Christian" },
+    ];
+
+  const castes = lang === 'ta'
+    ? [
+      { label: "முதலியார்", value: "Mudaliyar" },
+    ]
+    : [
+      { label: "Mudaliyar", value: "Mudaliyar" },
+    ];
+
+  const profileOptions = [
+    { label: lang === 'ta' ? 'எனக்காக' : 'MySelf', value: 'myself' },
+    { label: lang === 'ta' ? 'மகள்' : 'Daughter', value: 'daughter' },
+    { label: lang === 'ta' ? 'மகன்' : 'Son', value: 'son' },
+    { label: lang === 'ta' ? 'மற்றவர்கள்' : 'Others', value: 'others' },
   ];
 
-  const freligions = [
-    "Hindu",
-    "Muslim",
-    "Christian"
+  const maritalstatusOptions = [
+    { label: lang === 'ta' ? 'திருமணம் செய்யவில்லை' : 'Never Married', value: 'nevermarried' },
+    { label: lang === 'ta' ? 'விதவையானவர்' : 'Widowed', value: 'widowed' },
+    { label: lang === 'ta' ? 'விவாகரத்து பெற்றவர்' : 'Divorced', value: 'divorced' },
+    { label: lang === 'ta' ? 'விவாகரத்துக்காக காத்திருக்கிறேன்' : 'Awaiting Divorce', value: 'awaitingdivorce' },
   ];
-  // Array for castes
-  const castes = [
-    "Mudaliyar"
+
+  const lookingforOptions = [
+    { label: lang === 'ta' ? 'மணமகள்' : 'Bride', value: 'bride' },
+    { label: lang === 'ta' ? 'மணமகன்' : 'Groom', value: 'groom' },
+  ];
+
+  const genderOptions = [
+    { label: lang === 'ta' ? 'ஆண்' : 'Male', value: 'male' },
+    { label: lang === 'ta' ? 'பெண்' : 'Female', value: 'female' },
   ];
 
   const [formData, setFormData] = useState({
@@ -56,7 +98,7 @@ const UserProfile = (user_data) => {
     phonenumber: "",
     religion: "",
     caste: "",
-    subcaste: "",
+    subcaste: "Thondai Mandala Saiva Mudaliyar",
     birthdate: "",
     age: 0,
     place_of_birth: "",
@@ -107,17 +149,28 @@ const UserProfile = (user_data) => {
     city: { name: "" },
     state_id: '',
     city_id: '',
+    country_id: "",
+    relation_name: "",
   });
 
   // Set selected state and city based on formData
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
 
   const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newState = event.target.value;
     setSelectedState(newState);
     setFormData({ ...formData, state_id: newState, city_id: "" }); // Reset city when state changes
     setSelectedCity("");
+  };
+
+  const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCountry = event.target.value;
+    setSelectedCountry(newCountry);
+    setFormData({ ...formData, country_id: newCountry, state_id: "", city_id: "" }); // Reset city when state changes
+    setSelectedCity("");
+    setSelectedState("");
   };
 
   const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -160,6 +213,19 @@ const UserProfile = (user_data) => {
           setHoroscope(data.horoscope);
           setSelectedState(data.state_id);
           setSelectedCity(data.city_id);
+          setSelectedCountry(data.country_id);
+
+          setFormData((prevFormData) => ({
+            ...prevFormData, // Spread existing form data to keep other fields
+            photo1: data?.photo1 ? `/api${data.photo1}` : '',
+            photo2: data?.photo2 ? `/api${data.photo2}` : '',
+            photo3: data?.photo3 ? `/api${data.photo3}` : '',
+            photo4: data?.photo4 ? `/api${data.photo4}` : '',
+            profile_photo: data?.profile_photo ? `/api${data.profile_photo}` : '',
+            profile_creator_photo: data?.profile_creator_photo ? `/api${data.profile_creator_photo}` : '',
+            horoscope: data?.horoscope ? `/api${data.horoscope}` : ''
+          }));
+
 
         } catch (err) {
           //console.error(err);
@@ -225,89 +291,121 @@ const UserProfile = (user_data) => {
     // Validation
     const errors: Record<string, string> = {};
 
+    const isTamil = lang === 'ta';
+
     if (!formData.bride_groom_detail || formData.bride_groom_detail.trim() === "") {
-      errors.bride_groom_detail = "Fill about short deatils.";
+      errors.bride_groom_detail = isTamil
+        ? "மணமகன்/மணமகளின் விவரங்களை பதிவு செய்யவும்."
+        : "Please provide a short detail about the bride or groom.";
     }
 
     if (!formData.gender || formData.gender.trim() === "") {
-      errors.gender = "Gender for cannot be empty.";
+      errors.gender = isTamil ? "பாலினத்தை தேர்வு செய்யவும்." : "Gender cannot be empty.";
     }
 
-
     if (!formData.name || formData.name.trim() === "") {
-      errors.name = "First name cannot be empty.";
+      errors.name = isTamil ? "முதற் பெயரை உள்ளிடவும்." : "First name cannot be empty.";
     }
 
     if (!formData.lastname || formData.lastname.trim() === "") {
-      errors.lastname = "Last name cannot be empty.";
+      errors.lastname = isTamil ? "கடைசி பெயரை உள்ளிடவும்." : "Last name cannot be empty.";
     }
 
     if (!formData.email || !/^\S+@\S+\.\S+$/.test(formData.email)) {
-      errors.email = "A valid email cannot be empty.";
+      errors.email = isTamil
+        ? "தயவு செய்து சரியான மின்னஞ்சலை உள்ளிடவும்."
+        : "Please enter a valid email address.";
     }
 
     if (!formData.phonenumber || !/^\d{10}$/.test(formData.phonenumber)) {
-      errors.phonenumber = "A valid 10-digit phone number cannot be empty.";
+      errors.phonenumber = isTamil
+        ? "சரியான 10 எண்கள் கொண்ட தொலைபேசி எண்ணை உள்ளிடவும்."
+        : "Please enter a valid 10-digit phone number";
     }
 
-    if (!formData.name || formData.name.trim() === "") {
-      errors.name = "First name cannot be empty.";
+    if (!formData.gothram || formData.gothram.trim() === "") {
+      errors.gothram = isTamil ? "கோத்ரம் வெறுமையாக இருக்க முடியாது." : "Gothram cannot be empty.";
+    }
+
+    if (!formData.country_id) {
+      errors.country_id = isTamil ? "நாடு தேர்வு கட்டாயம்" : "Country cannot be empty.";
     }
 
     if (!formData.profile_photo || formData.profile_photo.trim() === "") {
-      errors.profile_photo = "Profile Photo cannot be empty.";
+      errors.profile_photo = isTamil
+        ? "சுயவிவர புகைப்படம் கட்டாயம்"
+        : "Profile Photo cannot be empty.";
     }
 
     if (!formData.birthdate || formData.birthdate.trim() === "") {
-      errors.birthdate = "Date Of Birth cannot be empty.";
+      errors.birthdate = isTamil ? "பிறந்த தேதி கட்டாயம்" : "Date Of Birth cannot be empty.";
     }
 
     if (!formData.maritalstatus || formData.maritalstatus.trim() === "") {
-      errors.maritalstatus = "Marital Status cannot be empty.";
+      errors.maritalstatus = isTamil ? "திருமண நிலையை தேர்வு செய்யவும்." : "Marital Status cannot be empty.";
     }
 
     if (!formData.profile_created_for || formData.profile_created_for.trim() === "") {
-      errors.profile_created_for = "Profile created for cannot be empty.";
+      errors.profile_created_for = isTamil
+        ? "விவரத்தை உருவாக்கியவர் யார் என்பதை தெரிவிக்கவும்."
+        : "Profile created for cannot be empty.";
     }
 
     if (!formData.state_id) {
-      errors.state_id = "State cannot be empty.";
-    }
-    if (!formData.city_id) {
-      errors.city_id = "City cannot be empty.";
+      errors.state_id = isTamil ? "மாநிலம் தேர்வு கட்டாயம்" : "State cannot be empty.";
     }
 
-    if (!formData.address) {
-      errors.address = "Address cannot be empty.";
+    if (!formData.city_id) {
+      errors.city_id = isTamil ? "நகரம் தேர்வு கட்டாயம்" : "City cannot be empty.";
+    }
+
+    if (!formData.address || formData.address.trim() === "") {
+      errors.address = isTamil ? "முகவரி கட்டாயம்" : "Address cannot be empty.";
     }
 
     if (!formData.lookingfor || formData.lookingfor.trim() === "") {
-      errors.lookingfor = "Looking for cannot be empty.";
+      errors.lookingfor = isTamil
+        ? "யாரை தேடுகிறீர்கள் தேர்வு செய்யவும்."
+        : "Looking for cannot be empty.";
     }
 
-    if (formData.profile_created_for != 'myself') {
-
+    if (formData.profile_created_for !== 'myself') {
       if (!formData.profile_creator_name || formData.profile_creator_name.trim() === "") {
-        errors.profile_creator_name = "Name cannot be empty.";
+        errors.profile_creator_name = isTamil ? "பெயரை உள்ளிடவும்." : "Name cannot be empty.";
       }
 
       if (!formData.profile_creator_photo || formData.profile_creator_photo.trim() === "") {
-        errors.profile_creator_photo = "Picture cannot be empty.";
+        errors.profile_creator_photo = isTamil ? "படத்தை பதிவேற்றவும்." : "Picture cannot be empty.";
       }
 
-      if (!formData.profile_creator_aadhar || formData.profile_creator_aadhar.trim() === "") {
-        errors.profile_creator_aadhar = "Aadhar number cannot be empty.";
-      }
-      if (!formData.profile_creator_aadhar || !/^\d{16}$/.test(formData.profile_creator_aadhar)) {
-        errors.profile_creator_aadhar = "A valid 16-digit adhar number cannot be empty.";
+      if (
+        !formData.profile_creator_aadhar ||
+        !/^\d{16}$/.test(formData.profile_creator_aadhar)
+      ) {
+        errors.profile_creator_aadhar = isTamil
+          ? "16 எண்கள் கொண்ட சரியான ஆதார் எண்ணை உள்ளிடவும்."
+          : "Please enter a valid 16-digit Aadhar number.";
       }
 
-      if (formData.profile_creator_phonenumber.trim() !== "") {
-        if (!formData.profile_creator_phonenumber || !/^\d{10}$/.test(formData.profile_creator_phonenumber)) {
-          errors.profile_creator_phonenumber = "A valid 10-digit phone number cannot be empty.";
-        }
+      if (
+        formData.profile_creator_phonenumber &&
+        formData.profile_creator_phonenumber.trim() !== "" &&
+        !/^\d{10}$/.test(formData.profile_creator_phonenumber)
+      ) {
+        errors.profile_creator_phonenumber = isTamil
+          ? "சரியான 10 எண்கள் கொண்ட தொலைபேசி எண்ணை உள்ளிடவும்."
+          : "Enter a valid 10-digit phone number.";
       }
     }
+
+    if (formData.profile_created_for == 'others') {
+      if (!formData.relation_name || formData.relation_name.trim() === "") {
+        errors.relation_name = isTamil
+          ? "மணமகனுடன் / மணமகளுடன் உள்ள உறவு கட்டாயம் உள்ளிடவும்."
+          : "Relationship to Bride/Groom cannot be empty.";
+      }
+    }
+
 
     setErrorMessage("");
     // If there are validation errors, show error messages and stop submission
@@ -355,7 +453,13 @@ const UserProfile = (user_data) => {
         throw new Error("Failed to Update user data.");
       }
 
-      setSuccessMessage("Profile updated successfully!");
+
+
+      setSuccessMessage(
+        lang == 'ta'
+          ? "சுயவிவரம் புதுப்பிக்கப்பட்டது!."
+          : "Profile updated successfully!."
+      );
 
       // Redirect
       router.push(`/dashboard`);
@@ -392,30 +496,6 @@ const UserProfile = (user_data) => {
     }
   }, [successMessage]);
 
-  const profileOptions = [
-    { label: 'MySelf', value: 'myself' },
-    { label: 'Daughter', value: 'daughter' },
-    { label: 'Son', value: 'son' },
-    { label: 'Others', value: 'others' },
-  ];
-
-  const maritalstatusOptions = [
-    { label: 'Never Married', value: 'nevermarried' },
-    { label: 'Widowed', value: 'widowed' },
-    { label: 'Divorced', value: 'divorced' },
-    { label: 'Awaiting Divorce', value: 'awaitingdivorce' },
-  ];
-
-  const lookingforOptions = [
-    { label: 'Bride', value: 'bride' },
-    { label: 'Groom', value: 'groom' },
-  ];
-
-  const genderOptions = [
-    { label: 'Male', value: 'male' },
-    { label: 'Female', value: 'female' },
-  ];
-
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -439,25 +519,25 @@ const UserProfile = (user_data) => {
                 <p>{errorMessage}</p>
               </div>
             )}
+            {lang == 'ta' && (<p className="text-sm font-medium dark-text mb-4">Please fill the form in english&nbsp;<span className="text-meta-1">*</span></p>)}
             <form onSubmit={handleSubmit}>
 
-              <div className="grid grid-cols-1 gap-9 sm:grid-cols-2 mt-5">
+              <div className="grid grid-cols-1 gap-9 sm:grid-cols-2 mt-5 views">
 
                 <div className="flex flex-col gap-9">
-
 
                   {/* <!-- Reference start --> */}
                   <div className="rounded-sm border border-1 bg-light shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                       <h3 className="font-medium dark-text dark:text-white">
-                        Profile Creator Details
+                        {lang === 'ta' ? 'சுயவிவரத்தை உருவாக்கியவர் விவரங்கள்' : 'Profile Creator Details'}
                       </h3>
                     </div>
                     <div className="flex flex-col gap-5.5 p-6.5">
 
                       <div className="mb-4.5 text-black">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Profile created for <span className="text-meta-1">*</span>
+                          {lang === 'ta' ? 'யாருக்காக கணக்கு உருவாக்கப்பட்டது ?' : 'Profile created for'} <span className="text-meta-1">*</span>
                         </label>
                         <RadioButtonGroup
                           name="profile_created_for"
@@ -470,20 +550,19 @@ const UserProfile = (user_data) => {
                         )}
                       </div>
 
-
                       {profileCreator && (
                         <>
-                          <div className="mb-4.5 text-black">
+                          <div className="mb-4.5">
                             <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                              Creator Name <span className="text-meta-1">*</span>
+                              {lang === 'ta' ? 'உருவாக்குநரின் பெயர்' : 'Creator Name'} <span className="text-meta-1">*</span>
                             </label>
                             <input
                               type="text"
                               name="profile_creator_name"
                               value={formData.profile_creator_name || ""}
                               onChange={handleChange}
-                              placeholder="Enter Profile Creator Name"
-                              className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent ${formErrors?.profile_creator_name
+                              placeholder={lang === 'ta' ? 'உருவாக்குநரின் பெயரை உள்ளிடவும்' : 'Enter Profile Creator Name'}
+                              className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.profile_creator_name
                                 ? "border-red-500 focus:border-red-500"
                                 : "border-stroke focus:border-primary"
                                 } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
@@ -495,10 +574,31 @@ const UserProfile = (user_data) => {
                         </>
                       )}
 
+                      {formData.profile_created_for == 'others' && (
+                        < div className="mb-4">
+                          <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                            {lang == 'ta' ? 'மணமகனுடன் / மணமகளுடன் உள்ள உறவு' : 'Relationship to Bride/Groom'} <span className="text-meta-1">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            name="relation_name"
+                            value={formData.relation_name}
+                            onChange={handleChange}
+                            placeholder={lang == 'ta' ? 'மணமகனுடன் / மணமகளுடன் உள்ள உறவு' : 'Relationship to Bride/Groom'}
+                            className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.relation_name
+                              ? "border-red-500 focus:border-red-500"
+                              : "border-stroke focus:border-primary"
+                              } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                          />
+                          {formErrors.relation_name && (
+                            <p className="text-red-600 text-sm">{formErrors.relation_name}</p>
+                          )}
+                        </div>
+                      )}
 
                       <div className="mb-4.5">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Email
+                          {lang === 'ta' ? 'மின்னஞ்சல்' : 'Email'}
                         </label>
                         <input
                           type="email"
@@ -506,22 +606,22 @@ const UserProfile = (user_data) => {
                           value={formData.email || ""}
                           onChange={handleChange}
                           readOnly
-                          placeholder="Enter your email address"
+                          placeholder={lang === 'ta' ? 'மின்னஞ்சல்' : 'Enter your email address'}
                           className=" list-text w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark"
                         />
                       </div>
 
-                      <div className="mb-4.5 text-black">
-                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Phone Number <span className="text-meta-1">*</span>
+                      <div className="mb-4.5">
+                        <label className="mb-1 block text-sm font-medium dark-text dark:text-white">
+                          {lang === 'ta' ? 'தொலைபேசி எண்' : 'Phone Number'} <span><b className="no_text">{lang === 'ta' ? '(மணமகன்/மணமகளின் எண்களை குறிப்பிட வேண்டாம்.)' : "(Don't mention the bride/groom's phone number.)"}</b></span> <span className="text-meta-1">*</span>
                         </label>
                         <input
                           type="text"
                           name="phonenumber"
                           value={formData.phonenumber || ""}
                           onChange={handleChange}
-                          placeholder="Enter your phone number"
-                          className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent ${formErrors?.phonenumber
+                          placeholder={lang === 'ta' ? 'தொலைபேசி எண்' : 'Enter your phone number'}
+                          className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.phonenumber
                             ? "border-red-500 focus:border-red-500"
                             : "border-stroke focus:border-primary"
                             } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
@@ -533,52 +633,28 @@ const UserProfile = (user_data) => {
 
                       {profileCreator && (
                         <>
-                          <div className="mb-4.5 text-black">
-                            <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                              Creator Picture <span className="text-meta-1">*</span>
-                            </label>
-                            <div className="flex items-center space-x-4">
-                              <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                                {formData.profile_creator_photo && (
-                                  <NextImage
-                                    src={formData.profile_creator_photo || ""}
-                                    alt="Profile Creator Picture"
-                                    width={64}
-                                    height={64}
-                                    quality={100}
-                                    unoptimized={true}
-                                    className={`w-full h-full object-cover ${formErrors?.profile_creator_photo
-                                      ? "border-red-500 focus:border-red-500"
-                                      : "border-stroke focus:border-primary"
-                                      }`}
-                                  />
-                                )}
-                              </div>
-                              <input
-                                type="file"
-                                name="profile_creator_photo"
-                                accept="image/*"
-                                onChange={handleChange}
-                                className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                              />
-                            </div>
-                            {formErrors?.profile_creator_photo && (
-                              <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_photo}</p>
-                            )}
+                          <div className="mb-4.5">
+                            <ImageUpload
+                              name="profile_creator_photo"
+                              label={lang === 'ta' ? 'உருவாக்குநரின் புகைப்படம்' : 'Profile creator picture'}
+                              formData={formData}
+                              formErrors={formErrors}
+                              handleChange={handleChange}
+                              required={true}
+                            />
                           </div>
 
-
-                          <div className="mb-4.5 text-black">
+                          <div className="mb-4.5">
                             <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                              Creator Aadhar Number <span className="text-meta-1">*</span>
+                              {lang === 'ta' ? 'ஆதார் எண்' : 'Creator Aadhar Number'} <span className="text-meta-1">*</span>
                             </label>
                             <input
                               type="text"
                               name="profile_creator_aadhar"
                               value={formData.profile_creator_aadhar || ""}
                               onChange={handleChange}
-                              placeholder="Enter your Aadhar Number"
-                              className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent ${formErrors?.profile_creator_aadhar
+                              placeholder={lang === 'ta' ? 'உங்கள் ஆதார் எண்ணை உள்ளிடவும்' : 'Enter your Aadhar Number'}
+                              className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.profile_creator_aadhar
                                 ? "border-red-500 focus:border-red-500"
                                 : "border-stroke focus:border-primary"
                                 } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
@@ -589,64 +665,43 @@ const UserProfile = (user_data) => {
                           </div>
                         </>
                       )}
-
                     </div>
                   </div>
-
                   {/* <!-- Reference end--> */}
+
+
+                  {/* <!-- Groom / Bride Details start --> */}
                   <div className="rounded-sm border border-1 bg-light shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                       <h3 className="font-medium dark-text dark:text-white">
-                        Groom / Bride Details
+                        {lang === 'ta' ? 'மணமகன் / மணமகளின் விவரங்கள்' : 'Groom / Bride Details'}
                       </h3>
                     </div>
                     <div className="p-6.5">
-                      <div className="mb-4.5">
-                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Picture(Groom / Bride) <span className="text-meta-1">*</span>
-                        </label>
-                        <div className="flex items-center space-x-4">
-                          <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
-                            {formData.profile_photo && (
-                              <NextImage
-                                src={formData.profile_photo || ""}
-                                alt="Profile Preview"
-                                width={64}
-                                height={64}
-                                quality={100}
-                                unoptimized={true}
-                                className={`w-full h-full object-cover ${formErrors?.profile_photo
-                                  ? "border-red-500 focus:border-red-500"
-                                  : "border-stroke focus:border-primary"
-                                  }`}
-                              />
-                            )}
-                          </div>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleChange}
-                            name="profile_photo"
-                            className="block text-sm flex-1 text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                          />
-                        </div>
-                        {formErrors?.profile_photo && (
-                          <p className="mt-1 text-sm text-red-500">{formErrors.profile_photo}</p>
-                        )}
+
+                      <div className="mb-6.5">
+                        <ImageUpload
+                          name="profile_photo"
+                          label={lang === 'ta' ? 'ப்ரொஃபைல் புகைப்படம்' : 'Profile Picture'}
+                          formData={formData}
+                          formErrors={formErrors}
+                          handleChange={handleChange}
+                          required={true}
+                        />
                       </div>
 
-                      <div className="mb-4.5 flex flex-col gap-6 xl:flex-row text-black">
+                      <div className="mb-4.5 flex flex-col gap-6 xl:flex-row ">
                         <div className="w-full xl:w-1/2">
                           <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                            First Name <span className="text-meta-1">*</span>
+                            {lang === 'ta' ? 'முதல் பெயர்' : 'First Name'} <span className="text-meta-1">*</span>
                           </label>
                           <input
                             type="text"
                             name="name"
                             value={formData.name || ""}
                             onChange={handleChange}
-                            placeholder="Enter your first name"
-                            className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent ${formErrors?.name
+                            placeholder={lang === 'ta' ? 'முதல் பெயரை உள்ளிடவும்' : 'Enter your first name'}
+                            className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.name
                               ? "border-red-500 focus:border-red-500"
                               : "border-stroke focus:border-primary"
                               } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
@@ -658,15 +713,15 @@ const UserProfile = (user_data) => {
 
                         <div className="w-full xl:w-1/2">
                           <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                            Last Name <span className="text-meta-1">*</span>
+                            {lang === 'ta' ? 'கடைசி பெயர்' : 'Last Name'} <span className="text-meta-1">*</span>
                           </label>
                           <input
                             type="text"
                             name="lastname"
                             value={formData.lastname || ""}
                             onChange={handleChange}
-                            placeholder="Enter your last name"
-                            className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent ${formErrors?.lastname
+                            placeholder={lang === 'ta' ? 'கடைசி பெயரை உள்ளிடவும்' : 'Enter your last name'}
+                            className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.lastname
                               ? "border-red-500 focus:border-red-500"
                               : "border-stroke focus:border-primary"
                               } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
@@ -676,24 +731,27 @@ const UserProfile = (user_data) => {
                           )}
                         </div>
                       </div>
+
                       <div className="mb-4.5">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Detail about groom / bride <span className="text-meta-1">*</span>
+                          {lang === 'ta' ? 'மணமகன் / மணமகள் பற்றிய விவரம்' : 'Detail about (Bride / Groom)'} <span className="text-meta-1">*</span>
                         </label>
                         <textarea
                           rows={6}
                           name="bride_groom_detail"
                           value={formData.bride_groom_detail || ""}
                           onChange={handleChange}
+                          placeholder={lang === 'ta' ? 'விவரங்களை உள்ளிடவும்' : ''}
                           className="w-full rounded-lg border-[1.5px] bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:text-white"
                         ></textarea>
                         {formErrors?.bride_groom_detail && (
                           <p className="mt-1 text-sm text-red-500">{formErrors.bride_groom_detail}</p>
                         )}
                       </div>
+
                       <div className="mb-4.5 text-black">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Gender for (Bride / Groom)  <span className="text-meta-1">*</span>
+                          {lang === 'ta' ? 'பாலினம்' : 'Gender of (Bride / Groom)'} <span className="text-meta-1">*</span>
                         </label>
                         <RadioButtonGroup
                           name="gender"
@@ -705,9 +763,10 @@ const UserProfile = (user_data) => {
                           <p className="mt-1 text-sm text-red-500">{formErrors.gender}</p>
                         )}
                       </div>
+
                       <div className="mb-4.5 text-black">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Marital Status <span className="text-meta-1">*</span>
+                          {lang === 'ta' ? 'திருமண நிலை' : 'Marital Status'} <span className="text-meta-1">*</span>
                         </label>
                         <RadioButtonGroup
                           name="maritalstatus"
@@ -722,7 +781,7 @@ const UserProfile = (user_data) => {
 
                       <div className="mb-4.5 text-black">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Looking For <span className="text-meta-1">*</span>
+                          {lang === 'ta' ? 'யாரை தேடுகிறீர்கள்' : 'Looking For'} <span className="text-meta-1">*</span>
                         </label>
                         <RadioButtonGroup
                           name="lookingfor"
@@ -735,10 +794,10 @@ const UserProfile = (user_data) => {
                         )}
                       </div>
 
-                      {/* Render SelectGroupReligion with dynamic castes */}
+                      {/* Religion & caste */}
                       <div className="text-black">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Religion
+                          {lang === 'ta' ? 'மதம்' : 'Religion'}
                         </label>
                         <SelectGroupReligion
                           religions={religions}
@@ -749,9 +808,10 @@ const UserProfile = (user_data) => {
                           }
                         />
                       </div>
+
                       <div className="text-black">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Caste
+                          {lang === 'ta' ? 'சாதி' : 'Caste'}
                         </label>
                         <SelectGroupCaste
                           castes={castes}
@@ -765,97 +825,87 @@ const UserProfile = (user_data) => {
 
                       <div className="mb-4.5">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          SubCaste
+                          {lang === 'ta' ? 'முதலியார் உட்சாதி' : 'Subcaste in Mudaliyar'}
                         </label>
                         <input
                           type="text"
                           name="subcaste"
                           value={formData.subcaste || ""}
                           onChange={handleChange}
+                          placeholder={lang === 'ta' ? 'உட்சாதி உள்ளிடவும்' : ''}
+                          disabled={true}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
 
                       <div className="text-black">
                         <DatePickerOne
-                          dateFormat="d-m-Y" // Format for the date
-                          placeholder="Select your birth date" // Placeholder for the date picker
-                          value={formData.birthdate} // Pass the current value of birthDate from formData
-                          onChange={(dates) => {
-                            const selectedDate = dates[0];
+                          dateFormat="dd-MM-yyyy"
+                          placeholder={lang === 'ta' ? 'பிறந்த தேதியை தேர்வு செய்யவும்' : 'Select your birth date'}
+                          value={formData.birthdate}
+                          onChange={(selectedDate) => {
                             if (selectedDate) {
-                              const birthDate = new Date(selectedDate);
-                              // Format the date manually to avoid timezone issues
-                              const localISODate = `${birthDate.getFullYear()}-${String(
-                                birthDate.getMonth() + 1
-                              ).padStart(2, "0")}-${String(birthDate.getDate()).padStart(2, "0")}`;
-
+                              const dateObject = new Date(selectedDate);
+                              const localISODate = dateObject.toISOString().split("T")[0];
                               const today = new Date();
-                              const age = today.getFullYear() - birthDate.getFullYear();
+                              let age = today.getFullYear() - dateObject.getFullYear();
                               const isBeforeBirthday =
-                                today.getMonth() < birthDate.getMonth() ||
-                                (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate());
-
-                              const calculatedAge = isBeforeBirthday ? age - 1 : age;
-
+                                today.getMonth() < dateObject.getMonth() ||
+                                (today.getMonth() === dateObject.getMonth() && today.getDate() < dateObject.getDate());
+                              if (isBeforeBirthday) {
+                                age -= 1;
+                              }
                               setFormData((prevData) => ({
                                 ...prevData,
-                                birthdate: localISODate, // Use the manually formatted local date
-                                age: calculatedAge, // Update the age dynamically
+                                birthdate: localISODate,
+                                age: age,
                               }));
-
-                              if (calculatedAge < 18) {
-                                setError("Age must be at least 18 years.");
-                              } else {
-                                setError("");
-                              }
+                              setError(age < 18 ? (lang === 'ta' ? "வயது குறைந்தது 18 இருக்க வேண்டும்." : "Age must be at least 18 years.") : "");
                             }
-
                           }}
                         />
-                        {formErrors?.birthdate && (
-                          <p className="mt-1 text-sm text-red-500">{formErrors.birthdate}</p>
-                        )}
+                        {formErrors?.birthdate && <p className="mt-1 text-sm text-red-500">{formErrors.birthdate}</p>}
                       </div>
 
                       <div className="mb-4.5">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Age
+                          {lang === 'ta' ? 'வயது' : 'Age'}
                         </label>
                         <input
                           type="number"
                           name="age"
-                          value={formData.age || ""} // Display the calculated age
-                          readOnly // Make this input read-only since it's calculated
-                          placeholder="Your age will be calculated automatically"
+                          value={formData.age || ""}
+                          readOnly
+                          placeholder={lang === 'ta' ? 'வயது தானாக கணக்கிடப்படும்' : 'Your age will be calculated automatically'}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
 
                       <div className="mb-4.5">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Place of birth
+                          {lang === 'ta' ? 'பிறந்த இடம்' : 'Place of birth'}
                         </label>
                         <input
                           type="text"
                           name="place_of_birth"
                           value={formData.place_of_birth || ""}
                           onChange={handleChange}
-                          placeholder="Place of birth"
+                          placeholder={lang === 'ta' ? 'பிறந்த இடத்தை உள்ளிடவும்' : 'Place of birth'}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
-                      <div className="mb-4.5 text-black">
+
+                      <div className="mb-4.5">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Additional Phone Number
+                          {lang === 'ta' ? 'கூடுதல் தொலைபேசி எண்' : 'Additional Phone Number'}
                         </label>
                         <input
                           type="text"
                           name="profile_creator_phonenumber"
                           value={formData.profile_creator_phonenumber || ""}
                           onChange={handleChange}
-                          placeholder="Enter additional phone number"
-                          className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent ${formErrors?.profile_creator_phonenumber
+                          placeholder={lang === 'ta' ? 'தொலைபேசி எண்' : 'Enter additional phone number'}
+                          className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.profile_creator_phonenumber
                             ? "border-red-500 focus:border-red-500"
                             : "border-stroke focus:border-primary"
                             } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
@@ -864,177 +914,196 @@ const UserProfile = (user_data) => {
                           <p className="mt-1 text-sm text-red-500">{formErrors.profile_creator_phonenumber}</p>
                         )}
                       </div>
-
                     </div>
                   </div>
+                  {/* <!-- Groom / Bride Details end --> */}
 
-                  {/* <!-- Other Details --> */}
+
+                  {/* <!-- Other Details start--> */}
                   <div className="rounded-sm border border-1 bg-light shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                       <h3 className="font-medium dark-text dark:text-white">
-                        Other Details
+                        {lang === 'ta' ? 'பிற விவரங்கள்' : 'Other Details'}
                       </h3>
                     </div>
                     <div className="flex flex-col gap-5.5 p-6.5">
 
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Education for Groom / Bride
+                          {lang === 'ta' ? 'மணமகன்/மணமகளின் கல்வி' : 'Education of Groom / Bride'}
                         </label>
                         <input
                           type="text"
                           name="education"
                           value={formData.education || ""}
                           onChange={handleChange}
+                          placeholder={lang === 'ta' ? 'கல்வியை உள்ளிடவும்' : ''}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
 
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Complexion of Groom/Bride: (Dark, Wheatish, or Fair)
+                          {lang === 'ta' ? 'மணமகனின்/மணமகளின் தோற்றம் (கருப்பு, மாநிறம், அல்லது வெள்ளை)' : 'Complexion of Groom/Bride: (Dark, Wheatish, or Fair)'}
                         </label>
                         <input
                           type="text"
                           name="complexion"
                           value={formData.complexion || ""}
                           onChange={handleChange}
+                          placeholder={lang === 'ta' ? 'தோற்றத்தை உள்ளிடவும்' : ''}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
 
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Profession
+                          {lang === 'ta' ? 'தொழில்' : 'Profession'}
                         </label>
                         <input
                           type="text"
                           name="profession"
                           value={formData.profession || ""}
                           onChange={handleChange}
+                          placeholder={lang === 'ta' ? 'தொழிலை உள்ளிடவும்' : ''}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
 
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Income
+                          {lang === 'ta' ? 'வருமானம்' : 'Income'}
                         </label>
                         <input
                           type="text"
                           name="income"
                           value={formData.income || ""}
                           onChange={handleChange}
+                          placeholder={lang === 'ta' ? 'வருமானத்தை உள்ளிடவும்' : ''}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
+
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Job of Groom / Bride  (Company, job etc)
+                          {lang === 'ta' ? 'மணமகன்/மணமகளின் வேலை (நிறுவனம், வேலை வகை)' : 'Job of Groom / Bride  (Company, job etc)'}
                         </label>
                         <input
                           type="text"
                           name="job"
                           value={formData.job || ""}
                           onChange={handleChange}
+                          placeholder={lang === 'ta' ? 'வேலை விவரங்களை உள்ளிடவும்' : ''}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
 
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Place of work
+                          {lang === 'ta' ? 'வேலை செய்யும் இடம்' : 'Place of work'}
                         </label>
                         <input
                           type="text"
                           name="place_of_work"
                           value={formData.place_of_work || ""}
                           onChange={handleChange}
+                          placeholder={lang === 'ta' ? 'வேலை இடத்தை உள்ளிடவும்' : ''}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
 
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Kuladeivam
+                          {lang === 'ta' ? 'குலதெய்வம்' : 'Kuladeivam'}
                         </label>
                         <input
                           type="text"
                           name="kuladeivam"
                           value={formData.kuladeivam || ""}
                           onChange={handleChange}
+                          placeholder={lang === 'ta' ? 'குலதெய்வத்தை உள்ளிடவும்' : ''}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
+
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Place of Kuladeivam temple
+                          {lang === 'ta' ? 'குலதெய்வக் கோவிலின் இடம்' : 'Place of Kuladeivam temple'}
                         </label>
                         <input
                           type="text"
                           name="place_of_kuladeivam_temple"
                           value={formData.place_of_kuladeivam_temple || ""}
                           onChange={handleChange}
+                          placeholder={lang === 'ta' ? 'கோவிலின் இடத்தை உள்ளிடவும்' : ''}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
-                      <div>
+
+                      <div className="mb-4.5">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Gothram
+                          {lang === 'ta' ? 'கோத்திரம்' : 'Gothram'} <span className="text-meta-1">*</span>
                         </label>
                         <input
                           type="text"
                           name="gothram"
                           value={formData.gothram || ""}
                           onChange={handleChange}
-                          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                          placeholder={lang === 'ta' ? 'கோத்திரத்தை உள்ளிடவும்' : ''}
+                          className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.gothram
+                            ? "border-red-500 focus:border-red-500"
+                            : "border-stroke focus:border-primary"
+                            } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
                         />
+                        {formErrors?.gothram && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.gothram}</p>
+                        )}
                       </div>
 
                     </div>
                   </div>
 
+                  {/* <!-- Other Details end --> */}
+
+
                   {/* <!-- horoscope upload start --> */}
                   <div className="rounded-sm border border-1 bg-light shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                       <h3 className="font-medium dark-text dark:text-white">
-                        Horoscope Upload
+                        {lang === 'ta' ? 'ஜாதகத்தை பதிவேற்றுக' : 'Horoscope Upload'}
                       </h3>
                     </div>
                     <div className="flex flex-col gap-5.5 p-6.5">
-                      <input
-                        type="file"
-                        accept="image/*,application/pdf"
+                      <FileUpload
                         name="horoscope"
-                        onChange={handleChange}
-                        className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
+                        handleChange={handleChange}
                       />
                       {formData.horoscope && (
                         <button
-                          onClick={handlePreview} style={{ width: "200px", padding: "8px 0" }}
+                          type="button"
+                          onClick={handlePreview}
+                          style={{ width: "200px", padding: "8px 0" }}
                           className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
                         >
-                          Preview
+                          {lang === 'ta' ? 'ஜாதகத்தை பார்க்க' : 'Preview'}
                         </button>
-                      )
-                      }
+                      )}
                     </div>
                   </div>
                   {/* <!-- horoscope upload end--> */}
-
 
 
                   {/* <!-- Reference start --> */}
                   <div className="rounded-sm border border-1 bg-light shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                       <h3 className="font-medium dark-text dark:text-white">
-                        Reference Details
+                        {lang === 'ta' ? 'பரிந்துரையாளர் விவரங்கள்' : 'Referral Details'}
                       </h3>
                     </div>
                     <div className="flex flex-col gap-5.5 p-6.5">
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Reference 1
+                          {lang === 'ta' ? 'பரிந்துரையாளர் 1' : 'Referrer 1'}
                         </label>
                         <input
                           type="text"
@@ -1046,7 +1115,7 @@ const UserProfile = (user_data) => {
                       </div>
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Reference 2
+                          {lang === 'ta' ? 'பரிந்துரையாளர் 2' : 'Referrer 2'}
                         </label>
                         <input
                           type="text"
@@ -1058,66 +1127,72 @@ const UserProfile = (user_data) => {
                       </div>
                     </div>
                   </div>
-
                   {/* <!-- Reference end--> */}
 
                 </div>
 
 
 
-
                 <div className="flex flex-col gap-9">
-                  {/* <!-- Parents Details --> */}
+
+                  {/* <!-- Parents Details start--> */}
                   <div className="rounded-sm border border-1 bg-light shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                       <h3 className="font-medium dark-text dark:text-white">
-                        Parents Details
+                        {lang === 'ta' ? 'பெற்றோர் விவரங்கள்' : 'Parents Details'}
                       </h3>
                     </div>
                     <div className="flex flex-col gap-5.5 p-6.5">
+                      {/* Father's Name */}
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Father's Name
+                          {lang === 'ta' ? "அப்பாவின் பெயர்" : "Father's Name"}
                         </label>
                         <input
                           type="text"
                           name="father_name"
                           value={formData.father_name || ""}
                           onChange={handleChange}
+                          placeholder={lang === 'ta' ? "அப்பாவின் பெயர் உள்ளிடவும்" : "Enter Father's Name"}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
+
+                      {/* Father's Phone Number */}
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Father's Phone Number
+                          {lang === 'ta' ? "அப்பாவின் தொலைபேசி எண்" : "Father's Phone Number"}
                         </label>
                         <input
                           type="text"
                           name="father_phonenumber"
                           value={formData.father_phonenumber || ""}
                           onChange={handleChange}
+                          placeholder={lang === 'ta' ? "தொலைபேசி எண்" : "Enter Father's Phone Number"}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
 
+                      {/* Father's Occupation */}
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Father's Occupation
+                          {lang === 'ta' ? "அப்பாவின் தொழில்" : "Father's Occupation"}
                         </label>
                         <input
                           type="text"
                           name="father_occupation"
                           value={formData.father_occupation || ""}
                           onChange={handleChange}
-                          placeholder=""
+                          placeholder={lang === 'ta' ? "தொழிலை உள்ளிடவும்" : "Enter Father's Occupation"}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
+
+                      {/* Father's Religion */}
                       <div className="text-black">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Father's Religion
+                          {lang === 'ta' ? "அப்பாவின் மதம்" : "Father's Religion"}
                         </label>
-                        {/* Render SelectGroupReligion with dynamic castes */}
                         <SelectGroupReligion
                           religions={freligions}
                           name="father_religion"
@@ -1127,73 +1202,87 @@ const UserProfile = (user_data) => {
                           }
                         />
                       </div>
+
+                      {/* Father's Profession */}
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Father's Profession
+                          {lang === 'ta' ? "அப்பாவின் தொழில்முறை" : "Father's Profession"}
                         </label>
                         <input
                           type="text"
                           name="father_profession"
                           value={formData.father_profession || ""}
                           onChange={handleChange}
+                          placeholder={lang === 'ta' ? "தொழில்முறையை உள்ளிடவும் " : "Enter Father's Profession"}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
+
+                      {/* Father's Place of Work */}
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Father's place of work
-
+                          {lang === 'ta' ? "அப்பாவின் வேலை இடம்" : "Father's place of work"}
                         </label>
                         <input
                           type="text"
                           name="father_placeOfWork"
                           value={formData.father_placeOfWork || ""}
                           onChange={handleChange}
+                          placeholder={lang === 'ta' ? "வேலை இடத்தை உள்ளிடவும்" : "Enter Father's Place of Work"}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
+
+                      {/* Mother's Name */}
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Mother's Name
+                          {lang === 'ta' ? "அம்மாவின் பெயர்" : "Mother's Name"}
                         </label>
                         <input
                           type="text"
                           name="mother_name"
                           value={formData.mother_name || ""}
                           onChange={handleChange}
+                          placeholder={lang === 'ta' ? "அம்மாவின் பெயரை உள்ளிடவும்" : "Enter Mother's Name"}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
+
+                      {/* Mother's Phone Number */}
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Mother's Phone Number
+                          {lang === 'ta' ? "அம்மாவின் தொலைபேசி எண்" : "Mother's Phone Number"}
                         </label>
                         <input
                           type="text"
                           name="mother_phonenumber"
                           value={formData.mother_phonenumber || ""}
                           onChange={handleChange}
+                          placeholder={lang === 'ta' ? "தொலைபேசி எண் உள்ளிடவும்" : "Enter Mother's Phone Number"}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
 
+                      {/* Mother's Occupation */}
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Mother's Occupation
+                          {lang === 'ta' ? "அம்மாவின் தொழில்" : "Mother's Occupation"}
                         </label>
                         <input
                           type="text"
                           name="mother_occupation"
                           value={formData.mother_occupation || ""}
                           onChange={handleChange}
+                          placeholder={lang === 'ta' ? "அம்மாவின் தொழிலை உள்ளிடவும்" : "Enter Mother's Occupation"}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
+
+                      {/* Mother's Religion */}
                       <div className="text-black">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Mother's Religion
+                          {lang === 'ta' ? "அம்மாவின் மதம்" : "Mother's Religion"}
                         </label>
-                        {/* Render SelectGroupReligion with dynamic castes */}
                         <SelectGroupReligion
                           religions={freligions}
                           name="mother_religion"
@@ -1203,47 +1292,68 @@ const UserProfile = (user_data) => {
                           }
                         />
                       </div>
+
+                      {/* Mother's Profession */}
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Mother's Profession
+                          {lang === 'ta' ? "அம்மாவின் தொழில்முறை" : "Mother's Profession"}
                         </label>
                         <input
                           type="text"
                           name="mother_profession"
                           value={formData.mother_profession || ""}
                           onChange={handleChange}
+                          placeholder={lang === 'ta' ? "அம்மாவின் தொழில்முறையை உள்ளிடவும்" : "Enter Mother's Profession"}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
+
+                      {/* Mother's Place of Work */}
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Mother's place of work
-
+                          {lang === 'ta' ? "அம்மாவின் வேலை இடம்" : "Mother's place of work"}
                         </label>
                         <input
                           type="text"
                           name="mother_placeOfWork"
                           value={formData.mother_placeOfWork || ""}
                           onChange={handleChange}
+                          placeholder={lang === 'ta' ? "அம்மாவின் வேலை இடத்தை உள்ளிடவும்" : "Enter Mother's Place of Work"}
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
                     </div>
                   </div>
+                  {/* <!-- Parents Details end--> */}
+
                   {/* <!-- Location upload start--> */}
-                  <div className="rounded-sm border border-stroke  shadow-default dark:border-strokedark ">
+                  <div className="rounded-sm border border-stroke  shadow-default dark:border-strokedark dark-text">
                     <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                       <h3 className="font-medium dark-text dark:text-white">
-                        Location Details
+                        {lang === 'ta' ? 'இடம் விவரங்கள்' : 'Location Details'}
                       </h3>
                     </div>
                     <div className="p-6.5">
 
-                      <div className="mb-4.5 text-black">
+                      <div className="mb-4.5">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          State <span className="text-meta-1">*</span>
+                          {lang === 'ta' ? 'நாடு' : 'Country'} <span className="text-meta-1">*</span>
+                        </label>
+                        <SelectGroupCountries
+                          selectedCountry={selectedCountry}
+                          onCountryChange={handleCountryChange}
+                        />
+                        {formErrors?.country_id && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.country_id}</p>
+                        )}
+                      </div>
+
+                      <div className="mb-4.5">
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          {lang === 'ta' ? 'மாநிலம்' : 'State'} <span className="text-meta-1">*</span>
                         </label>
                         <SelectGroupStates
+                          selectedCountry={selectedCountry}
                           selectedState={selectedState}
                           onStateChange={handleStateChange}
                         />
@@ -1252,9 +1362,9 @@ const UserProfile = (user_data) => {
                         )}
                       </div>
 
-                      <div className="mb-4.5 text-black">
+                      <div className="mb-4.5">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          City <span className="text-meta-1">*</span>
+                          {lang === 'ta' ? 'நகரம்' : 'City'} <span className="text-meta-1">*</span>
                         </label>
                         <SelectGroupCities
                           selectedState={selectedState}
@@ -1266,16 +1376,16 @@ const UserProfile = (user_data) => {
                         )}
                       </div>
 
-                      <div className="mb-4.5 text-black">
+                      <div className="mb-4.5">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Address <span className="text-meta-1">*</span>
+                          {lang === 'ta' ? 'முகவரி' : 'Address'} <span className="text-meta-1">*</span>
                         </label>
                         <textarea
                           rows={6}
                           name="address"
                           value={formData.address || ""}
                           onChange={handleChange}
-                          className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition ${formErrors?.email
+                          className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition dark-text ${formErrors?.email
                             ? "border-red-500 focus:border-red-500"
                             : "border-stroke focus:border-primary"
                             } dark:border-form-strokedark dark:bg-form-input dark:text-white bg-transparent`}
@@ -1288,17 +1398,19 @@ const UserProfile = (user_data) => {
                     </div>
                   </div>
                   {/* <!-- Location upload end--> */}
-                  {/* <!-- Partner Preference  --> */}
+
+
+                  {/* <!-- Partner Preference  start --> */}
                   <div className="rounded-sm border border-1 bg-light shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                       <h3 className="font-medium dark-text dark:text-white">
-                        Partner Preference
+                        {lang === 'ta' ? 'திருமண இணை எதிர்பார்ப்பு' : 'Partner Preference'}
                       </h3>
                     </div>
                     <div className="flex flex-col gap-5.5 p-6.5">
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Education
+                          {lang === 'ta' ? 'கல்வி' : 'Education'}
                         </label>
                         <input
                           type="text"
@@ -1310,7 +1422,7 @@ const UserProfile = (user_data) => {
                       </div>
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Age
+                          {lang === 'ta' ? 'வயது' : 'Age'}
                         </label>
                         <input
                           type="number"
@@ -1319,19 +1431,19 @@ const UserProfile = (user_data) => {
                           onChange={(e) => {
                             const value = e.target.value;
                             setFormData({ ...formData, partner_pref_age: value });
-                            if (parseInt(value as string) < 18) {
+                            if (parseInt(value) < 18) {
                               setError("Age must be at least 18 years.");
                             } else {
                               setError("");
                             }
                           }}
-                          placeholder="Enter your age"
+                          placeholder={lang === 'ta' ? 'வயது' : 'Enter age'}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         />
                       </div>
                       <div className="text-black">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Caste
+                          {lang === 'ta' ? 'சாதி' : 'Caste'}
                         </label>
                         <SelectGroupCaste
                           castes={castes}
@@ -1344,7 +1456,7 @@ const UserProfile = (user_data) => {
                       </div>
                       <div>
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          SubCaste
+                          {lang === 'ta' ? 'முதலியார் உட்சாதி' : 'Subcaste in Mudaliyar'}
                         </label>
                         <input
                           type="text"
@@ -1356,128 +1468,59 @@ const UserProfile = (user_data) => {
                       </div>
                     </div>
                   </div>
+                  {/* <!-- Partner Preference end --> */}
+
 
                   {/* <!-- Photo upload start --> */}
                   <div className="rounded-sm border border-1 bg-light shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                       <h3 className="font-medium dark-text dark:text-white">
-                        Additional  Pictures
+                        {lang === 'ta' ? 'கூடுதல் படங்கள்' : 'Additional  Pictures'}
                       </h3>
                     </div>
 
                     <div className="flex flex-col gap-5.5 p-6.5">
+
                       <div className="mb-4.5">
-                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Picture1
-                        </label>
-                        <div className="flex items-center space-x-4">
-                          <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                            {formData.photo1 && (
-                              <NextImage
-                                src={formData.photo1 || ""}
-                                alt="Profile Preview"
-                                width={64}
-                                height={64}
-                                quality={100}
-                                unoptimized={true}
-                                className="w-full h-full object-cover"
-                              />
-                            )}
-                          </div>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            name="photo1"
-                            onChange={handleChange}
-                            className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                          />
-                        </div>
+                        <ImageUpload
+                          name="photo1"
+                          label=""
+                          formData={formData}
+                          formErrors={formErrors}
+                          handleChange={handleChange}
+                        />
                       </div>
 
                       <div className="mb-4.5">
-                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Picture2
-                        </label>
-                        <div className="flex items-center space-x-4">
-                          <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                            {formData.photo2 && (
-                              <NextImage
-                                src={formData.photo2 || ""}
-                                alt="Profile Preview"
-                                width={64}
-                                height={64}
-                                quality={100}
-                                unoptimized={true}
-                                className="w-full h-full object-cover"
-                              />
-                            )}
-                          </div>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            name="photo2"
-                            onChange={handleChange}
-                            className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                          />
-                        </div>
+                        <ImageUpload
+                          name="photo2"
+                          label=""
+                          formData={formData}
+                          formErrors={formErrors}
+                          handleChange={handleChange}
+                        />
                       </div>
 
                       <div className="mb-4.5">
-                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Picture3
-                        </label>
-                        <div className="flex items-center space-x-4">
-                          <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                            {formData.photo3 && (
-                              <NextImage
-                                src={formData.photo3 || ""}
-                                alt="Profile Preview"
-                                width={64}
-                                height={64}
-                                quality={100}
-                                unoptimized={true}
-                                className="w-full h-full object-cover"
-                              />
-                            )}
-                          </div>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            name="photo3"
-                            onChange={handleChange}
-                            className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                          />
-                        </div>
+                        <ImageUpload
+                          name="photo3"
+                          label=""
+                          formData={formData}
+                          formErrors={formErrors}
+                          handleChange={handleChange}
+                        />
                       </div>
-
 
                       <div className="mb-4.5">
-                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          Picture4
-                        </label>
-                        <div className="flex items-center space-x-4">
-                          <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                            {formData.photo4 && (
-                              <NextImage
-                                src={formData.photo4 || ""}
-                                alt="Profile Preview"
-                                width={64}
-                                height={64}
-                                quality={100}
-                                unoptimized={true}
-                                className="w-full h-full object-cover"
-                              />
-                            )}
-                          </div>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            name="photo4"
-                            onChange={handleChange}
-                            className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                          />
-                        </div>
+                        <ImageUpload
+                          name="photo4"
+                          label=""
+                          formData={formData}
+                          formErrors={formErrors}
+                          handleChange={handleChange}
+                        />
                       </div>
+
                     </div>
                   </div>
                   {/* <!-- Photo upload end--> */}
@@ -1487,7 +1530,7 @@ const UserProfile = (user_data) => {
                       type="submit"
                       className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
                     >
-                      Submit
+                      {lang == 'ta' ? 'சமர்ப்பிக்கவும்வும் ' : 'Submit'}
                     </button>
 
                   </div>

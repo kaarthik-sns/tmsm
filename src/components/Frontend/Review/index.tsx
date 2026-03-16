@@ -11,11 +11,7 @@ const TestimonialsSlider = (data) => {
 
   const data_array = data.data;
 
-  const reviews = data_array.map((item, idx) => ({
-    name: item.name,
-    rating: item.rating,
-    feedback: item.description
-  }));
+  const lang = localStorage.getItem('lang') || 'en';
 
   const renderStars = (rating) => {
     const stars = [];
@@ -29,7 +25,7 @@ const TestimonialsSlider = (data) => {
     return stars;
   };
 
-  if (reviews.length === 0) {
+  if (data_array.length === 0) {
     return <Loader />
   }
 
@@ -37,7 +33,7 @@ const TestimonialsSlider = (data) => {
     <section className="relative bg-[#F2F2F2] py-12">
       <div className="container mx-auto py-8">
         <h2 className="text-center sm:text-left mb-4 heading">
-          Our Clients Say!
+          {lang == 'ta' ? 'வாடிக்கையாளர் கருத்துகள்!' : 'Our Clients Say!'}
         </h2>
         <Swiper
           className="slider-paddings"
@@ -50,12 +46,12 @@ const TestimonialsSlider = (data) => {
             1024: { slidesPerView: 3 },
           }}
         >
-          {reviews.map((item, index) => (
+          {data_array.map((item, index) => (
             <SwiperSlide key={index}>
               <div className="p-6 flex flex-col">
-                <p className="text-justify heading-description mb-4">{item.feedback}</p>
+                <p className="text-justify heading-description mb-4">{lang == 'ta' ? item.description_ta : item.description}</p>
                 <div className="flex justify-left gap-2">
-                  <div className="sub-heading inline-block">{item.name}</div>
+                  <div className="sub-heading inline-block">{lang == 'ta' ? item.name_ta : item.name}</div>
                   <div className="flex items-center ">{renderStars(item.rating)}</div>
                 </div>
               </div>

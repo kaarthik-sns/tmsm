@@ -7,13 +7,18 @@ import Breadcrumb from "@/components/Breadcrumbs/TermBreadcrumb";
 const TermTable = () => {
 
     const [description, setDescription] = useState(null);
+    const [description_ta, setDescriptionta] = useState(null);
+
     const router = useRouter();
 
+    const lang = localStorage.getItem('lang') || 'en';
+    const isTamil = lang === 'ta';
 
     const fetchTableItems = async () => {
         try {
             const response = await axios.post("/api/cms/terms/view");
             setDescription(response?.data?.data?.description || null);
+            setDescriptionta(response?.data?.data?.description_ta || null);
 
         } catch (error) {
             console.error("Error fetching table items:", error);
@@ -30,7 +35,8 @@ const TermTable = () => {
 
     return (
         <>
-            <Breadcrumb pageName="Terms & conditions" />
+            <Breadcrumb pageName={isTamil ? "விதிமுறைகள் மற்றும் நிபந்தனைகள்" : "Edit Terms & Conditions"} />
+
             <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">
                 <div className="">
                     <div>
@@ -39,7 +45,7 @@ const TermTable = () => {
                                 onClick={() => handleEdit()}
                                 className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
                             >
-                                Edit Terms & conditions
+                                {isTamil ? "விதிமுறைகள் மற்றும் நிபந்தனைகளைத் திருத்து" : "Edit Terms & Conditions"}
                             </button>
                         </div>
                     </div>
@@ -51,7 +57,7 @@ const TermTable = () => {
                             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                                 <div className="p-6.5">
                                     <div className="mb-4.5">
-                                        <div dangerouslySetInnerHTML={{ __html: description }} className="cms-heading" />
+                                        <div dangerouslySetInnerHTML={{ __html: lang === 'ta' ? description_ta : description }} className="cms-heading" />
                                     </div>
                                 </div>
                             </div>

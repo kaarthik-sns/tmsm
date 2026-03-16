@@ -23,6 +23,9 @@ const AdminProfile = () => {
   const [changePassword, setchangePassword] = useState(false);
   const [error, setError] = useState(null);
 
+  const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
+
   // Fetch user data on component mount
   useEffect(() => {
     const fetchUserData = async () => {
@@ -41,7 +44,7 @@ const AdminProfile = () => {
           const data = await res.json();
           setName(data.data.name);
           setEmail(data.data.email);
-          setPreview(data.data.image);
+          setPreview(data?.data?.image ? `/api${data.data.image}` : '');
 
         } else {
           console.error("Failed to fetch user data");
@@ -57,8 +60,36 @@ const AdminProfile = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setProfilePic(file);
-      setPreview(URL.createObjectURL(file));
+      // Check file size (2MB = 2 * 1024 * 1024 bytes)
+      if (file.size > 2 * 1024 * 1024) {
+        setError("Image size should be less than 2MB");
+        e.target.value = ''; // Reset the input
+        return;
+      }
+
+      // Check image dimensions
+      const img = document.createElement('img');
+      const objectUrl = URL.createObjectURL(file);
+
+      img.onload = () => {
+        URL.revokeObjectURL(objectUrl);
+        if (img.width < 100 || img.height < 100) {
+          setError("Image dimensions should be at least 100x100 pixels");
+          e.target.value = ''; // Reset the input
+          return;
+        }
+        setError(null);
+        setProfilePic(file);
+        setPreview(objectUrl);
+      };
+
+      img.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        setError("Invalid image file");
+        e.target.value = ''; // Reset the input
+      };
+
+      img.src = objectUrl;
     }
   };
 
@@ -69,21 +100,12 @@ const AdminProfile = () => {
     const hasNumber = /[0-9]/.test(password);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
-    if (password.length < minLength) {
-      return "Password must be at least 6 characters long.";
+    if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
+      return isTamil
+        ? "குறைந்தபட்சம் 6 எழுத்துகள், பெரிய, சிறிய, எண், சிறப்பு எழுத்து வேண்டும்"
+        : "Password must be at least 6 characters long and include uppercase, lowercase, number, and special character.";
     }
-    if (!hasUpperCase) {
-      return "Password must contain at least one uppercase letter.";
-    }
-    if (!hasLowerCase) {
-      return "Password must contain at least one lowercase letter.";
-    }
-    if (!hasNumber) {
-      return "Password must contain at least one number.";
-    }
-    if (!hasSpecialChar) {
-      return "Password must contain at least one special character.";
-    }
+
     return null; // Valid password
   };
 
@@ -91,13 +113,22 @@ const AdminProfile = () => {
     e.preventDefault();
 
     if (changePassword) {
-      if (password == '' || confirmPassword == '') {
-        setError("Please fill the password fileds");
+
+      if (password === '' || confirmPassword === '') {
+        setError(
+          isTamil
+            ? 'கடவுச்சொல்ளை நிரப்பவும்'
+            : 'Please fill the password fields'
+        );
         return;
       }
 
       if (password !== confirmPassword) {
-        setError("Passwords don't match");
+        setError(
+          isTamil
+            ? 'கடவுச்சொற்கள் பொருந்தவில்லை'
+            : "Passwords don't match"
+        );
         return;
       }
 
@@ -116,13 +147,13 @@ const AdminProfile = () => {
 
 
     if (!name) {
-      setError(`Name can't be empty`)
-      return
+      setError(isTamil ? 'பெயர் காலியாக இருக்கக்கூடாது' : "Name can't be empty");
+      return;
     }
 
     if (!email) {
-      setError(`Email can't be empty`)
-      return
+      setError(isTamil ? 'மின்னஞ்சல் காலியாக இருக்கக்கூடாது' : "Email can't be empty");
+      return;
     }
 
 
@@ -144,10 +175,10 @@ const AdminProfile = () => {
             onClick: () => console.log('Close'),
           },
         });
-         // Delay the page reload to allow the user to see the success message
-         setTimeout(() => {
+        // Delay the page reload to allow the user to see the success message
+        setTimeout(() => {
           window.location.reload();
-      }, 1000); // Adjust the delay (in milliseconds) as needed
+        }, 1000); // Adjust the delay (in milliseconds) as needed
       } else {
         toast.error('Failed to update profile', {
           className: "sonner-toast-error",
@@ -172,7 +203,7 @@ const AdminProfile = () => {
   return (
     <>
       <div className="mx-auto">
-        <Breadcrumb pageName="Profile" />
+        <Breadcrumb pageName={isTamil ? 'சுயவிவரம்' : 'Profile'} />
 
         <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="max-w-xl mx-auto mt-10 mb-10 p-6 ">
@@ -185,10 +216,10 @@ const AdminProfile = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
-                  Profile Picture
+                  {isTamil ? 'சுயவிவரப் படம்' : 'Profile Picture'}
                 </label>
                 <div className="flex items-center space-x-4">
-                  <div className="flex-shrink-0 w-24 h-24 rounded-full overflow-hidden bg-gray-200">
+                  <div className="flex-shrink-0 w-26 h-26 rounded-full overflow-hidden bg-gray-200">
                     {preview && (
                       <Image
                         src={preview}
@@ -201,19 +232,58 @@ const AdminProfile = () => {
                       />
                     )}
                   </div>
+                  <div
+                    className="relative w-full flex-1 cursor-pointer rounded-lg border border-dashed border-gray-400 bg-gray-100 px-6 py-5 text-center transition-all hover:border-primary hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600"
+                  >
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      name="profilePic"
+                      className="absolute inset-0 z-50 h-full w-full cursor-pointer opacity-0"
+                    />
+                    <div className="flex flex-col items-center justify-center space-y-2">
+                      <span className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 bg-white shadow-sm dark:bg-gray-800">
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M1.99967 9.33337C2.36786 9.33337 2.66634 9.63185 2.66634 10V12.6667C2.66634 12.8435 2.73658 13.0131 2.8616 13.1381C2.98663 13.2631 3.1562 13.3334 3.33301 13.3334H12.6663C12.8431 13.3334 13.0127 13.2631 13.1377 13.1381C13.2628 13.0131 13.333 12.8435 13.333 12.6667V10C13.333 9.63185 13.6315 9.33337 13.9997 9.33337C14.3679 9.33337 14.6663 9.63185 14.6663 10V12.6667C14.6663 13.1971 14.4556 13.7058 14.0806 14.0809C13.7055 14.456 13.1968 14.6667 12.6663 14.6667H3.33301C2.80257 14.6667 2.29387 14.456 1.91879 14.0809C1.54372 13.7058 1.33301 13.1971 1.33301 12.6667V10C1.33301 9.63185 1.63148 9.33337 1.99967 9.33337Z"
+                            fill="#3C50E0"
+                          />
+                          <path
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M7.5286 1.52864C7.78894 1.26829 8.21106 1.26829 8.4714 1.52864L11.8047 4.86197C12.0651 5.12232 12.0651 5.54443 11.8047 5.80478C11.5444 6.06513 11.1223 6.06513 10.8619 5.80478L8 2.94285L5.13807 5.80478C4.87772 6.06513 4.45561 6.06513 4.19526 5.80478C3.93491 5.54443 3.93491 5.12232 4.19526 4.86197L7.5286 1.52864Z"
+                            fill="#3C50E0"
+                          />
+                          <path
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M7.99967 1.33337C8.36786 1.33337 8.66634 1.63185 8.66634 2.00004V10C8.66634 10.3682 8.36786 10.6667 7.99967 10.6667C7.63148 10.6667 7.33301 10.3682 7.33301 10V2.00004C7.33301 1.63185 7.63148 1.33337 7.99967 1.33337Z"
+                            fill="#3C50E0"
+                          />
+                        </svg>
+                      </span>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
+                        <span className="font-medium dark-text">Click to upload</span> or drag & drop
+                      </p>
+                      <p className="text-xs text-gray-500">(SVG, PNG, JPG, JPEG, WebP)</p>
+                    </div>
+                  </div>
 
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="block flex-1 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:dark-text file:dark-text hover:file:bg-blue-100"
-                  />
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
-                  Name
+                  {isTamil ? 'பெயர்' : 'Name'}
                 </label>
                 <input
                   type="text"
@@ -225,7 +295,7 @@ const AdminProfile = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
-                  Email
+                  {isTamil ? 'மின்னஞ்சல்' : 'Email'}
                 </label>
                 <input
                   type="email"
@@ -238,14 +308,14 @@ const AdminProfile = () => {
               <CheckboxTwo
                 changePassword={changePassword}
                 setchangePassword={setchangePassword}
-                label="Change Password"
+                label={isTamil ? 'கடவுச்சொல்லை மாற்றவும்' : 'Change Password'}
               />
 
               {changePassword && (
                 <>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
-                      Password
+                      {isTamil ? 'கடவுச்சொல்' : 'Password'}
                     </label>
                     <input
                       type="password"
@@ -257,7 +327,7 @@ const AdminProfile = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2  dark-text">
-                      Confirm Password
+                      {isTamil ? 'கடவுச்சொல்லை உறுதிப்படுத்தவும்' : 'Confirm Password'}
                     </label>
                     <input
                       type="password"
@@ -274,7 +344,7 @@ const AdminProfile = () => {
                   type="submit"
                   className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
                 >
-                  Update Profile
+                  {isTamil ? 'சுயவிவரத்தைப் புதுப்பிக்கவும்' : 'Update Profile'}
                 </button>
               </div>
             </form>

@@ -1,4 +1,4 @@
-export const deactivateTemplate = (name: string,copyright: string, email: string,mail_logo: string): string => `
+export const deactivateTemplate = (name: string,copyright: string, email: string): string => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -105,7 +105,7 @@ export const deactivateTemplate = (name: string,copyright: string, email: string
                 <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" class="container">
                     <tr>
                         <td align="center" class="logo">
-                            <img src="${mail_logo}" alt="TMSM Logo">
+                            <img src="cid:mail_logo" alt="TMSM Logo">
                         </td>
                     </tr>
                     <tr>
@@ -113,15 +113,15 @@ export const deactivateTemplate = (name: string,copyright: string, email: string
                             <h1>Account Deactivated Successfully!</h1>
                             <h2>Hello ${name},</h2>
                             <p>We hope this email finds you well.</p>
-                            <p>This is to inform you that your matrimony profile on <strong>TMSM</strong> has been successfully deactivated. As per your request, your profile is no longer visible to other members.</p>
-                            <p>We appreciate your time with <strong>TMSM</strong> and hope to serve you again in the future.</p>
+                            <p>This is to inform you that your matrimony profile on <strong>TMSM Hub</strong> has been successfully deactivated. As per your request, your profile is no longer visible to other members.</p>
+                            <p>We appreciate your time with <strong>TMSM Hub</strong> and hope to serve you again in the future.</p>
                            
                             <p class="text-red"><i>Note: You will not be able to access your account until it is reactivated. If you wish to restore your profile, please contact our support team at <a href="mailto:${email}" style="color:#000;text-decoration:none;font-weight:bold">${email}</a>.</i></p>
                             
                             <!-- Thanks & Regards Section -->
                             <p style="margin-top: 30px; font-size: 12px; color:rgb(0, 0, 0);">
                                 <i>Thanks & Regards,<br>
-                                <span style="color:rgb(0, 0, 0); font-size: 12px;">TMSM Team</span></i>
+                                <span style="color:rgb(0, 0, 0); font-size: 12px;">TMSM Hub Team</span></i>
                             </p>
                             
                             <p class="footer"><i>${copyright}</i></p>

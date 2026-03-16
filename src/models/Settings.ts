@@ -1,38 +1,73 @@
-import mongoose, { Schema, model, models } from "mongoose";
+import mongoose, { Schema, model, models, Document, Model } from "mongoose";
 
-const SettingsSchema = new Schema({
-  logo: { type: String, required: false },
-  favicon: { type: String, required: false },
-  profile_req_limit: { type: String, required: false },
-  organisation_description: { type: String, required: false },
-  organisation_name: { type: String, required: false },
-  organisation_email_id: { type: String, required: false },
-  admin_to_email_id: { type: String, required: false },
-  admin_from_email_id: { type: String, required: false },
-  phone_no: { type: String, required: false },
-  address: { type: String, required: false },
-  domain_url: { type: String, required: false },
-  copyright: { type: String, required: false },
+// TypeScript interface for the Settings document
+export interface ISettings extends Document {
+  logo?: string;
+  favicon?: string;
+  profile_req_limit?: string;
+  organisation_description?: string;
+  organisation_name?: string;
+  organisation_email_id?: string;
+  admin_to_email_id?: string;
+  admin_from_email_id?: string;
+  phone_no?: string;
+  address?: string;
+  domain_url?: string;
+  copyright?: string;
 
-  facebook: { type: String, required: false },
-  twitter: { type: String, required: false },
-  instagram: { type: String, required: false },
-  youtube: { type: String, required: false },
+  facebook?: string;
+  twitter?: string;
+  instagram?: string;
+  youtube?: string;
 
-  smtp_mail: { type: String, required: false },
-  smtp_password: { type: String, required: false },
-  smtp_port: { type: String, required: false },
-  smtp_host: { type: String, required: false },
-  smtp_secure: { type: Boolean, default: true, required: false },
-  contact_desc: { type: String, required: false },
+  smtp_mail?: string;
+  smtp_password?: string;
+  smtp_port?: string;
+  smtp_host?: string;
+  smtp_secure?: boolean;
+
+  contact_desc?: string;
+  contact_desc_ta?: string;
+
+  updated_at?: Date;
+}
+
+// Mongoose schema definition
+const SettingsSchema = new Schema<ISettings>({
+  logo: { type: String },
+  favicon: { type: String },
+  profile_req_limit: { type: String },
+  organisation_description: { type: String },
+  organisation_name: { type: String },
+  organisation_email_id: { type: String },
+  admin_to_email_id: { type: String },
+  admin_from_email_id: { type: String },
+  phone_no: { type: String },
+  address: { type: String },
+  domain_url: { type: String },
+  copyright: { type: String },
+
+  facebook: { type: String },
+  twitter: { type: String },
+  instagram: { type: String },
+  youtube: { type: String },
+
+  smtp_mail: { type: String },
+  smtp_password: { type: String },
+  smtp_port: { type: String },
+  smtp_host: { type: String },
+  smtp_secure: { type: Boolean, default: true },
+
+  contact_desc: { type: String },
+  contact_desc_ta: { type: String },
 
   updated_at: { type: Date, default: Date.now }
-}, { collection: "settings" });
+}, {
+  collection: "settings",
+});
 
-
-const Settings = models.Settings || model("Settings", SettingsSchema);
+// Create and export the model
+const Settings: Model<ISettings> =
+  models.Settings || model<ISettings>("Settings", SettingsSchema);
 
 export default Settings;
-
-
-

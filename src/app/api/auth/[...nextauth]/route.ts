@@ -5,6 +5,8 @@ import Users_activity_log from "@/models/Users_activity_log";
 import connectToDatabase from "@/lib/mongodb";
 import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
+import type { AdapterUser } from "next-auth/adapters";
+import { Types } from "mongoose";
 
 const handler = NextAuth({
     session: {
@@ -19,6 +21,7 @@ const handler = NextAuth({
                 email: {},
                 password: {},
                 is_admin: {},
+                lang: {}
             },
             async authorize(credentials) {
                 try {
@@ -26,54 +29,52 @@ const handler = NextAuth({
 
                     const is_admin = credentials?.is_admin === "true";
                     const email = credentials?.email?.replace(/\s+/g, "").toLowerCase() || "";
+                    const lang = credentials?.lang || "en";
 
-                    // Check in Admin or User collection based on is_admin
-                    let user = is_admin
-                        ? await Admin.findOne({ email: email })
-                        : await User.findOne({ email: email });
+                    let user;
 
-                    if (!user) {
-                        throw new Error("Email address not recognized.");
+                    if (is_admin) {
+                        user = await Admin.findOne({ email });
+                    } else {
+                        user = await User.findOne({ email });
                     }
 
-                    // Check password first
+                    if (!user) {
+                        throw new Error(lang === 'ta' ? "மின்னஞ்சல் முகவரி தவறானது. தயவுசெய்து உங்கள் விவரங்களை சரிபார்க்கவும்." : "Email address not recognized.");
+                    }
+
                     const isValidPasswords = await bcrypt.compare(
                         credentials?.password ?? "",
                         user.password as string
                     );
 
                     if (!isValidPasswords) {
-                        throw new Error("Invalid password. Please check your credentials.");
+                        throw new Error(lang === 'ta' ? "கடவுச்சொல் தவறானது. தயவுசெய்து உங்கள் விவரங்களை சரிபார்க்கவும்." : "Invalid password. Please check your credentials.");
                     }
 
                     if (!is_admin) {
-
                         if (!user.is_approve) {
-                            throw new Error("Account activation is pending. You will be notified once approved.");
+                            throw new Error(lang === 'ta' ? "உங்கள் கணக்கு இன்னும் அங்கீகரிக்கப்படவில்லை.சிறிது நேரம் கழித்து மீண்டும் முயற்சிக்கவும்." : "Account activation is pending. You will be notified once approved.");
                         }
 
                         if (!user.is_verify) {
-                            throw new Error("Email not yet verified.");
+                            throw new Error(lang === 'ta' ? "உங்கள் மின்னஞ்சல் முகவரிக்கு வந்துள்ள உறுதிப்படுத்தல் மெயிலைத் திறந்து, 'Verify Email' பொத்தானைக் கிளிக் செய்யவும்." : "Email not yet verified.");
                         }
 
                         if (!user.is_active) {
-                            throw new Error("Your account has been deactivated");
+                            throw new Error(lang === 'ta' ? "உங்கள் கணக்கு முடக்கப்பட்டுள்ளது." : "Your account has been deactivated.");
                         }
                     }
 
-                    const isValidPassword = await bcrypt.compare(
-                        credentials?.password ?? "",
-                        user.password as string
-                    );
+                    return {
+                        id: (user._id as Types.ObjectId).toString(),
+                        email: user.email,
+                        name: user.name,
+                        is_admin,
+                    } as AdapterUser;
 
-                    if (!isValidPassword) {
-                        throw new Error("Invalid password. Please check your credentials.");
-                    }
-
-                    // Add is_admin to user object
-                    return { ...user.toObject(), is_admin };
                 } catch (error) {
-                    throw new Error(error.message || "Authentication error. Please check your login details.");
+                    throw new Error(error.message || (credentials?.lang === 'ta' ? "உள்நுழைவதில் பிழை. உங்கள் விவரங்களை சரிபார்க்கவும்." : "Authentication error. Please check your login details."));
                 }
             },
         }),
@@ -84,7 +85,7 @@ const handler = NextAuth({
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                token.id = user._id;
+                token.id = user.id;
                 token.email = user.email;
                 token.name = user.name;
                 token.is_admin = user.is_admin;
@@ -102,14 +103,24 @@ const handler = NextAuth({
             }
             return session;
         },
+        async redirect({ url, baseUrl }) {
+            // Redirect to matrimony.searchnscore.com after sign-out
+            if (url === "/login") {
+                return `${process.env.DOMAIN_URL}/login`;
+            }
+            if (url === '/admin/auth/signin') {
+                return `${process.env.DOMAIN_URL}/admin/auth/signin`;
+            }
+            return url;
+        },
         async signIn({ user }) {
 
             await connectToDatabase();
 
-            if (user?._id) {
+            if (user?.id) {
                 try {
                     await Users_activity_log.create({
-                        user_id: user._id,
+                        user_id: user.id,
                         desc: user.name + ' Logged In',
                         created_at: new Date()
                     });

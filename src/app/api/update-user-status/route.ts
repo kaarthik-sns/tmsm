@@ -8,20 +8,34 @@ import getSMTPSettings from '@/utils/settings.util';
 import { sendEmail } from "@/utils/mail.util"
 
 export async function PATCH(req: NextRequest) {
-    const { id, is_active, is_approve } = await req.json();
- 
+    const { id, is_active, is_approve, reason = null, reactivate_reason = null } = await req.json();
+
+    if (!id) {
+        return NextResponse.json({ error: "Something went wrong please try again later!" }, { status: 500 });
+    }
+
     try {
         await connectToDatabase();
+        const updateFields: Record<string, any> = { is_active, is_approve };
+
+        // Only add `deactivate_reason` if `reason` is provided
+        if (reason) {
+            updateFields.deactivate_reason = reason;
+        }
+
+        // Only add `reactivate_reason` if `reason` is provided
+        if (reactivate_reason) {
+            updateFields.reactivate_reason = reactivate_reason;
+        }
+
+
         const result = await User.updateOne(
             { _id: id },
-            { $set: { is_active, is_approve } }
+            { $set: updateFields }
         );
 
         let copyright = '';
         let contactMail = '';
-        let baseUrl = process.env.BASE_URL || '';  // ✅ Get BASE_URL from .env
-        //let mail_logo = `${baseUrl}/images/logo/Flogo.svg`;  // ✅ Construct full path dynamically
-        let mail_logo = `https://searchnscore.in/tmsm/images/mail-logo.png?t=${new Date().getTime()}`;
 
         const smtpSettings = await getSMTPSettings();
         if (smtpSettings) {
@@ -38,7 +52,7 @@ export async function PATCH(req: NextRequest) {
 
         if (is_active === false) {
             const receipients = [{ name, address: email }];
-            htmlBody = deactivateTemplate(name, copyright, contactMail, mail_logo);
+            htmlBody = deactivateTemplate(name, copyright, contactMail);
 
             await sendEmail({
                 receipients,
@@ -50,7 +64,7 @@ export async function PATCH(req: NextRequest) {
         const receipients = [{ name, address: email }];
 
         if (is_approve) {
-            htmlBody = adminApprovalTemplate(name, homePage, contactMail, copyright, mail_logo);
+            htmlBody = adminApprovalTemplate(name, homePage, contactMail, copyright);
             await sendEmail({
                 receipients,
                 subject: 'Congratulations! Your TMSM Account is Approved and Ready',
@@ -59,7 +73,7 @@ export async function PATCH(req: NextRequest) {
         }
 
         if (is_active) {
-            htmlBody = accountReactivationTemplate(name, homePage, contactMail, copyright, mail_logo);
+            htmlBody = accountReactivationTemplate(name, homePage, contactMail, copyright);
             await sendEmail({
                 receipients,
                 subject: '*Important* TMSM Account Activation Notice',

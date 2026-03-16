@@ -1,4 +1,4 @@
-export const changePasswordTemplate = (forgotPasswordLink: string, copyright: string,email: string, mail_logo: string): string => `
+export const changePasswordTemplate = (forgotPasswordLink: string, copyright: string,email: string): string => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -105,13 +105,13 @@ export const changePasswordTemplate = (forgotPasswordLink: string, copyright: st
                 <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" class="container">
                     <tr>
                         <td align="center" class="logo">
-                            <img src="${mail_logo}" alt="TMSM Logo">
+                            <img src="cid:mail_logo" alt="TMSM Logo">
                         </td>
                     </tr>
                     <tr>
                         <td align="left">
                             <h1>Reset Your Password</h1>
-                            <p>We received a request to reset your TMSM password. </p>
+                            <p>We received a request to reset your TMSM Hub profile password. </p>
                             <p>Click the<strong> "Reset password" </strong>button below to set a new password for your account.</p>
                             <p style="text-align: center;">
                                 <a href="${forgotPasswordLink}" class="button">
@@ -123,7 +123,7 @@ export const changePasswordTemplate = (forgotPasswordLink: string, copyright: st
                             <!-- Thanks & Regards Section -->
                             <p style="margin-top: 30px; font-size: 12px; color:rgb(0, 0, 0);">
                                 <i>Thanks & Regards,<br>
-                                <span style="color:rgb(0, 0, 0); font-size: 12px;">TMSM Team</span></i>
+                                <span style="color:rgb(0, 0, 0); font-size: 12px;">TMSM Hub Team</span></i>
                             </p>
                             
                             <p class="footer"><i>${copyright}</i></p>

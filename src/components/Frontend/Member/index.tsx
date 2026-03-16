@@ -29,6 +29,8 @@ const PaginatedUsers = () => {
   const [homeFilterPage, setHomeFilterPage] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
 
+  const lang = localStorage.getItem('lang') || 'en';
+
   // Example data array of subcastes
   const subcastes = [
     "Karaikkal Mudaliyar",
@@ -56,6 +58,7 @@ const PaginatedUsers = () => {
     "Kaikolar Mudaliyar",
     "Vellalar"
   ];
+
   const [filters, setFilters] = useState({
     lookingfor: searchParams.get("lookingfor") || "",
     fromage: searchParams.get("fromage") || "",
@@ -217,15 +220,23 @@ const PaginatedUsers = () => {
     }
     // Show confirmation popup using SweetAlert2
     const result = await Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you want to send a request to view this person\'s profile?',
+      title: lang === 'ta'
+        ? 'உறுதியாக வேண்டுமா?'
+        : 'Are you sure?',
+      text: lang === 'ta'
+        ? 'இந்த நபரின் சுயவிவரத்தை பார்ப்பதற்கான கோரிக்கையை அனுப்ப விரும்புகிறீர்களா?'
+        : 'Do you want to send a request to view this person\'s profile?',
       icon: 'question',
       showCancelButton: true,
-      confirmButtonText: 'Yes, Request Access',
-      cancelButtonText: 'No',
+      confirmButtonText: lang === 'ta'
+        ? 'ஆம், அனுப்பவும்'
+        : 'Yes, Request Access',
+      cancelButtonText: lang === 'ta'
+        ? 'இல்லை'
+        : 'No',
       customClass: {
         confirmButton: 'confirm-color',  // Custom class for confirm button (green)
-        cancelButton: 'cancel-color'       // Custom class for cancel button (red)
+        cancelButton: 'cancel-color'     // Custom class for cancel button (red)
       },
     });
 
@@ -259,14 +270,19 @@ const PaginatedUsers = () => {
 
         // Show success message
         Swal.fire({
-          title: 'Success!',
-          text: 'Request sent. Once approved, you wll be notified via email. You can cancel your request at anytime.',
+          title: lang === 'ta'
+            ? "இந்த கோரிக்கை அனுப்பப்பட்டது"
+            : "Request sent",
+          text: lang === 'ta'
+            ? "அனுமதிக்கப்பட்டவுடன், உங்கள் மின்னஞ்சல் மூலம் அறிவிக்கப்படும். நீங்கள் எப்போதும் உங்கள் கோரிக்கையை ரத்து செய்யலாம்."
+            : "Once approved, you will be notified via email. You can cancel your request at any time.",
           icon: 'success',
-          confirmButtonText: 'OK',
+          confirmButtonText: lang === 'ta' ? 'சரி' : 'OK',
           customClass: {
             confirmButton: 'confirm-color',  // Custom class for confirm button (green)
           },
         });
+
 
       } catch (err) {
         // Close the current modal before showing the error message
@@ -298,9 +314,10 @@ const PaginatedUsers = () => {
         <div className="container mx-auto flex items-center justify-center p-10">
           <form onSubmit={handleSubmit}>
             <div className="flex flex-wrap items-center gap-9 p-6.5 member-search-form">
+
               <div className="w-full md:w-auto">
                 <label className="mb-3 block text-sm font-medium text-white">
-                  Looking For
+                  {lang == 'ta' ? 'துணையை தேடுகிறீர்களா' : 'Looking For'}
                 </label>
                 <SelectBrideGroom
                   name="lookingfor"
@@ -311,39 +328,45 @@ const PaginatedUsers = () => {
 
               <div className="w-full md:w-auto">
                 <label className="mb-3 block text-sm font-medium text-white">
-                  Age
+                  {lang == 'ta' ? 'வயது வரம்பு' : 'From Age'}
                 </label>
                 <SelectAge
                   name="fromage"
                   selectedAge={filters.fromage}
                   onAgeChange={handleAgeChange}
+                  placeholder={lang == 'ta' ? 'தேர்வு செய்க' : 'Select'}
                 />
               </div>
+
               <div className="hidden w-full md:w-auto md:mt-4 md:block">
                 <label className="mb-3 block text-sm font-medium text-white">
-                  To
+                  -
                 </label>
               </div>
+
               <div className="w-full md:w-auto">
-                <label className="mb-3 block text-sm font-medium text-white visibility">
-                  To
+                <label className="mb-3 block text-sm font-medium text-white">
+                  {lang == 'ta' ? 'வயது வரை' : 'To Age'}
                 </label>
                 <SelectAge
                   name="toage"
                   selectedAge={filters.toage}
                   onAgeChange={handleAgeChangesto}
+                  placeholder={lang == 'ta' ? 'தேர்வு செய்க' : 'Select'}
                 />
               </div>
 
-              <div className="w-full md:w-auto relative">
-                <label className="mb-3 block text-sm font-medium text-white">SubCaste</label>
+              {/* <div className="w-full md:w-auto relative">
+                <label className="mb-3 block text-sm font-medium text-white">
+                  {lang == 'ta' ? 'உட்சாதி' : 'Subcaste in Mudaliyar'}
+                </label>
                 <div className="mb-4.5">
                   <input
                     type="text"
                     name="subcaste"
                     value={filters.subcaste}
                     onChange={handleInputChange}
-                    className="relative z-20 md:w-64 w-full appearance-none rounded border border-stroke bg-white px-5 py-3 outline-none transition dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    className="relative z-20 md:w-64 w-full appearance-none rounded border border-stroke bg-white px-5 py-1.5 outline-none transition dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
                   {filteredSuggestions.length > 0 && filters.subcaste.length > 0 && (
                     <ul className="absolute w-full bg-white border shadow-md z-30 max-h-60 overflow-y-auto">
@@ -359,22 +382,22 @@ const PaginatedUsers = () => {
                     </ul>
                   )}
                 </div>
-              </div>
-
+              </div> */}
 
               <div className="w-full md:w-auto flex justify-between gap-4 mt-5 md:mt-5">
                 <button
-                  className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom"
+                  className="inline-block member-search-btn text-white duration-150 rounded-full  md:text-sm ftext-custom"
                   type="submit"
                 >
-                  Search
+                  {lang == 'ta' ? 'தேடு' : 'Search'}
                 </button>
                 <button
-                  className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom"
+                  className="inline-block member-search-btn text-white duration-150 rounded-full  md:text-sm ftext-custom"
                   type="button"
                   onClick={handleReset} // Add onClick event
 
-                > Reset
+                >
+                  {lang == 'ta' ? 'மீட்டமை' : 'Reset'}
                 </button>
               </div>
 
@@ -383,11 +406,11 @@ const PaginatedUsers = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 py-12 member-container">
+      <div className="container mx-auto px-6 py-6 member-container">
 
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="title"><span>You have found {totalCount} </span> search results</h2>
-          <span className="text-lg font-semibold sm:ml-auto text-sm welcome">Welcome, {session?.user?.name || 'Guest'}
+          <h2 className="title"><span> {lang == 'ta' ? 'நீங்கள்' : 'You have found'} {totalCount} </span> {lang == 'ta' ? 'தேடல் முடிவுகளை கண்டறிந்துள்ளீர்கள்' : 'search results'}  </h2>
+          <span className="font-semibold sm:ml-auto text-sm welcome"> {lang == 'ta' ? 'நல்வரவு' : 'Welcome'} , {session?.user?.name || 'Guest'}
           </span>
         </div>
 
@@ -398,7 +421,7 @@ const PaginatedUsers = () => {
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between px-6 py-2 bg-member">
                   <div className="">
                     <div className='h-25 w-25 mb-3'>
-                      <img src={user.profile_photo ? user.profile_photo : '/images/user/dummy.png'} alt="Profile Picture" className="rounded-full w-full h-full object-cover" />
+                      <img src={user.profile_photo ? `/api${user.profile_photo}` : '/images/user/dummy.png'} alt="Profile Picture" className="rounded-full w-full h-full object-cover" />
                     </div>
                     <h4 className="member-title">
                       {user.name}
@@ -413,34 +436,33 @@ const PaginatedUsers = () => {
                           <button
                             key={user._id}
                             onClick={() => handleViewDetails(user._id)} // Define handleViewDetails function
-                            className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom"
+                            className="inline-block member-req-btn text-white duration-150 rounded-full  md:text-sm ftext-custom"
                           >
-                            View Details
+                            {lang == 'ta' ? 'விவரங்களைக் காண்க' : 'View Details'}
                           </button>
                         ) : reqSentData?.[user._id]?.status === "rejected" || reqRecData?.[user._id]?.status === "rejected" ? (
                           // If status is "rejected", show "Rejected" disabled button
                           <button
                             key={user._id}
-                            className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom-rej cursor-not-allowed"
+                            className="inline-block member-req-btn text-white duration-150 rounded-full  md:text-sm ftext-custom-rej cursor-not-allowed"
                             disabled
                           >
-                            Rejected
+                            {lang == 'ta' ? 'கோரிக்கை ஏற்கப்படவில்லை' : 'Declined'}
                           </button>
                         ) : (
 
                           // If user._id exists but status is not "accepted", show "Request Sent" buttonclass="bg-green-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-green-600 mb-6"
                           <button
                             key={user._id}
-                            className="inline-block px-10 py-4 text-white duration-150 rounded-full md:text-sm bg-green-500 cursor-not-allowed"
+                            className="inline-block member-req-btn text-white duration-150 rounded-full md:text-sm bg-green-500 cursor-not-allowed"
                             disabled
                           >
-                            {reqSentData?.[user._id]
-                              ? 'Request Sent' // If user sent request
-                              : 'Request Received' // If user received request
-
+                            {
+                              reqSentData?.[user._id]
+                                ? (lang === 'ta' ? 'கோரிக்கை அனுப்பப்பட்டது' : 'Request Sent')
+                                : (lang === 'ta' ? 'கோரிக்கை பெறப்பட்டது' : 'Request Received')
                             }
                           </button>
-
 
                         )
                       ) : (
@@ -448,9 +470,9 @@ const PaginatedUsers = () => {
                         <button
                           key={user._id}
                           onClick={() => handleRequestClick(user._id)} // Define handleRequestClick function
-                          className="inline-block px-10 py-4 text-white duration-150 rounded-full  md:text-sm ftext-custom"
+                          className="inline-block member-req-btn text-white duration-150 rounded-full  md:text-sm ftext-custom"
                         >
-                          Send Request
+                          {lang == 'ta' ? 'கோரிக்கையை அனுப்பவும்' : ' Send Request'}
                         </button>
                       )
                     }
@@ -462,36 +484,37 @@ const PaginatedUsers = () => {
                     {/* Left Column */}
                     <div>
                       <p className="flex pb-4">
-                        <span className="label w-26 text-black flex-shrink-0">Age:</span>
+                        <span className="label w-26 text-black flex-shrink-0">{lang == 'ta' ? 'வயது' : 'Age'}:</span>
                         <span className="value">{user.age ? user.age : '-'}</span>
                       </p>
                       <p className="flex pb-4">
-                        <span className="label w-26 text-black flex-shrink-0">Religion:</span>
-                        <span className="value">{user.mother_religion ? user.mother_religion : '-'}</span>
+                        <span className="label w-26 text-black flex-shrink-0">{lang == 'ta' ? 'மதம்' : 'Religion'}:</span>
+                        <span className="value">{user.religion ? user.religion : '-'}</span>
                       </p>
                       <p className="flex pb-4">
-                        <span className="label w-26 text-black flex-shrink-0">Caste:</span>
+                        <span className="label w-26 text-black flex-shrink-0">{lang == 'ta' ? 'ஜாதி' : 'Caste'}:</span>
                         <span className="value">{user.caste ? user.caste : '-'}</span>
                       </p>
                       <p className="flex">
-                        <span className="label w-26 text-black flex-shrink-0">SubCaste:</span>
+                        <span className="label w-26 text-black flex-shrink-0">{lang == 'ta' ? 'உபஜாதி' : 'Subcaste'} :</span>
                         <span className="value">{user.subcaste ? user.subcaste : '-'}</span>
                       </p>
                     </div>
                     {/* Right Column */}
                     <div>
                       <p className="flex pb-4">
-                        <span className="label text-black w-26 flex-shrink-0">Education:</span>
+                        <span className="label text-black w-26 flex-shrink-0">{lang == 'ta' ? 'கல்வி' : 'Education'}:</span>
                         <span className="value">{user.education ? user.education : '-'}</span>
                       </p>
                       <p className="flex pb-4">
-                        <span className="label text-black w-26 flex-shrink-0">Profession:</span>
+                        <span className="label text-black w-26 flex-shrink-0">{lang == 'ta' ? 'தொழில்' : 'Profession'}:</span>
                         <span className="value">{user.job ? user.job : '-'}</span>
                       </p>
                       <p className="flex">
-                        <span className="label text-black w-26 flex-shrink-0">Address:</span>
+                        <span className="label text-black w-26 flex-shrink-0">{lang === 'ta' ? 'முகவரி' : 'Address'}:</span>
                         <span className="value">
                           {user.address ? user.address : '-'}
+
                         </span>
                       </p>
                     </div>

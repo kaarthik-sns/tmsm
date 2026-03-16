@@ -6,6 +6,9 @@ import UpdateStatus from "@/components/UserReqTable/Select/UpdateStatus";
 import { toast } from "sonner";
 import Swal from 'sweetalert2';
 import Loader from "@/components/common/Loader";
+import Pagination from "@/components/Pagination";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+
 
 const UserTable = () => {
 
@@ -14,6 +17,8 @@ const UserTable = () => {
     const [tableItems, setTableItems] = useState([]);
     const [triggerFetch, setTriggerFetch] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const lang = localStorage.getItem('lang') || 'en';
+    const isTamil = lang === 'ta';
 
     const [formState, setFormState] = useState({
         name: "",
@@ -110,31 +115,54 @@ const UserTable = () => {
 
         switch (newStatus) {
             case "accepted":
-                confirmationMessage = "Do you want to accept this request?";
-                successMessage = "Request accepted successfully.";
-                confirmButtonText = "Yes, Accept";
+                confirmationMessage =
+                    lang === "ta"
+                        ? "இந்த கோரிக்கையை ஏற்க விரும்புகிறீர்களா?"
+                        : "Do you want to accept this request?";
+                successMessage =
+                    lang === "ta"
+                        ? "கோரிக்கை வெற்றிகரமாக ஏற்கப்பட்டது."
+                        : "Request accepted successfully.";
+                confirmButtonText = lang === "ta" ? "ஆம், ஏற்கவும்" : "Yes, Accept";
+
                 break;
+
             case "rejected":
-                confirmationMessage = "Do you want to decline this request?";
-                successMessage = "Request has been declined.";
-                confirmButtonText = "Yes, Decline";
+                confirmationMessage =
+                    lang === "ta"
+                        ? "இந்த கோரிக்கையை நிராகரிக்க விரும்புகிறீர்களா?"
+                        : "Do you want to decline this request?";
+                successMessage =
+                    lang === "ta"
+                        ? "கோரிக்கை நிராகரிக்கப்பட்டது."
+                        : "Request has been declined.";
+                confirmButtonText = lang === "ta" ? "ஆம், நிராகரிக்கவும்" : "Yes, Decline";
                 break;
+
             case "cancel":
-                confirmationMessage = "Do you want to cancel this request?";
-                successMessage = "Request has been cancelled.";
-                confirmButtonText = "Yes, Cancel";
+                confirmationMessage =
+                    lang === "ta"
+                        ? "இந்த கோரிக்கையை ரத்துசெய்ய விரும்புகிறீர்களா?"
+                        : "Do you want to cancel this request?";
+                successMessage =
+                    lang === "ta"
+                        ? "கோரிக்கை ரத்து செய்யப்பட்டது."
+                        : "Request has been cancelled.";
+                confirmButtonText = lang === "ta" ? "ஆம், ரத்துசெய்யவும்" : "Yes, Cancel";
                 break;
+
             default:
                 return;
         }
 
+
         const result = await Swal.fire({
-            title: "Are you sure?",
+            title: lang === "ta" ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?" : "Are you sure?",
             text: confirmationMessage,
             icon: "question",
             showCancelButton: true,
             confirmButtonText: confirmButtonText,
-            cancelButtonText: "No",
+            cancelButtonText: lang === "ta" ? "இல்லை" : "No",
             customClass: {
                 confirmButton: 'confirm-color',  // Custom class for confirm button (green)
                 cancelButton: 'cancel-color'       // Custom class for cancel button (red)
@@ -218,199 +246,210 @@ const UserTable = () => {
         }
     };
 
+    // Generate pagination numbers (show only a few around current page)
+    const getPaginationNumbers = () => {
+        const pageNumbers = [];
+        const maxVisible = 2; // Show 2 pages before and after current page
+        const start = Math.max(1, currentPage - maxVisible);
+        const end = Math.min(pages, currentPage + maxVisible);
+
+        if (start > 1) pageNumbers.push(1);
+        if (start > 2) pageNumbers.push("...");
+
+        for (let i = start; i <= end; i++) {
+            pageNumbers.push(i);
+        }
+
+        if (end < pages - 1) pageNumbers.push("...");
+        if (end < pages) pageNumbers.push(pages);
+
+        return pageNumbers;
+    };
+
     if (isLoading) {
         return <Loader />
     }
 
     return (
-        <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">
+        <>
+            <Breadcrumb pageName={isTamil ? 'சுயவிவர கோரிக்கை பட்டியல்' : 'List Profile Request'} />
+            <div className="rounded-sm border border-stroke bg-white px-2 sm:px-4 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark xl:pb-11 max-w-full">
+                <div className="mb-6 overflow-hidden">
+                    <form onSubmit={handleSubmit}>
+                        <div className="flex flex-wrap items-center gap-5.5 p-6.5">
+                            <div className="w-full md:w-auto">
+                                <label className="mb-3 block text-sm font-medium text-black dark:text-white dark-text">
+                                    {isTamil ? 'பெயர்' : 'Name'}
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder={isTamil ? 'பெயரை உள்ளிடவும்' : 'Enter Name'}
+                                    value={formState.name}
+                                    onChange={(e) => handleInputChange("name", e.target.value)}
+                                    className="w-full md:w-64 rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary md:text-sm"
+                                />
+                            </div>
 
-            <div className="mt-12 shadow-sm border rounded-lg overflow-x-auto">
+                            <div className="w-full md:w-auto">
+                                <label className="mb-3 block text-sm font-medium text-black dark:text-white dark-text">
+                                    {isTamil ? 'மின்னஞ்சல்' : 'Email'}
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder={isTamil ? 'மின்னஞ்சலை உள்ளிடவும்' : 'Enter Email'}
+                                    value={formState.email}
+                                    onChange={(e) => handleInputChange("email", e.target.value)}
+                                    className="w-full md:w-64 rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary md:text-sm"
+                                />
+                            </div>
 
-                <form onSubmit={handleSubmit}>
-                    <div className="flex flex-wrap items-center gap-5.5 p-6.5">
-                        <div className="w-full md:w-auto">
-                            <label className="mb-3 block text-sm font-medium text-black dark:text-white dark-text">
-                                Name
-                            </label>
-                            <input
-                                type="text"
-                                placeholder="Enter Name"
-                                value={formState.name}
-                                onChange={(e) => handleInputChange("name", e.target.value)}
-                                className="w-full md:w-64 rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary md:text-sm"
-                            />
+                            <div className="w-full md:w-auto">
+                                <StatusFilter
+                                    value={formState.selectOne}
+                                    onChange={(value) => handleInputChange("selectOne", value)}
+                                />
+                            </div>
+
+                            <div className="flex gap-2 md:self-end">
+                                <button
+                                    type="submit"
+                                    className="inline-flex items-center px-3 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 text-sm bg-color-custom dark-text h-[38px]"
+                                >
+                                    {isTamil ? 'தேடு' : 'Search'}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={handleReset}
+                                    className="inline-flex items-center px-3 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 text-sm bg-color-custom dark-text h-[38px]"
+                                >
+                                    {isTamil ? 'மீட்டமை' : 'Reset'}
+                                </button>
+                            </div>
                         </div>
+                    </form>
 
-                        <div className="w-full md:w-auto">
-                            <label className="mb-3 block text-sm font-medium text-black dark:text-white dark-text">
-                                Email
-                            </label>
-                            <input
-                                type="text"
-                                placeholder="Enter Email"
-                                value={formState.email}
-                                onChange={(e) => handleInputChange("email", e.target.value)}
-                                className="w-full md:w-64 rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary md:text-sm"
-                            />
-                        </div>
-
-                        <div className="w-full md:w-auto">
-                            <StatusFilter
-                                value={formState.selectOne}
-                                onChange={(value) => handleInputChange("selectOne", value)}
-                            />
-                        </div>
-
-                        <div className="w-full md:w-auto flex justify-between gap-4 mt-5 md:mt-5">
-                            <button
-                                className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
-                                type="submit"
-                            >
-                                Search
-                            </button>
-
-                            <button
-                                className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
-                                type="button"
-                                onClick={handleReset}
-                            >
-                                Reset
-                            </button>
-                        </div>
-                    </div>
-                </form>
-
-                <table className="w-full table-auto text-md text-left">
-                    <thead className="text-gray-600 font-medium border-b">
-                        <tr>
-                            <th className="py-3 px-6 dark-text">#</th>
-                            <th className="py-3 px-6 dark-text">Sender</th>
-                            <th className="py-3 px-6 dark-text">Receiver</th>
-                            <th className="py-3 px-6 dark-text">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody className="text-gray-600 divide-y">
-                        {tableItems.length === 0 ? (
-                            <tr>
-                                <td colSpan={6} className="text-center px-6 py-4 whitespace-nowrap">
-                                    No data found
-                                </td>
-                            </tr>
-                        ) : (
-                            tableItems.map((item, idx) => (
-                                <tr key={idx} className="odd:bg-gray-50 even:bg-white">
-                                    <td className="px-6 py-4 whitespace-nowrap">{idx + 1}</td>
-
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <h5 className="font-medium text-black dark:text-white">
-                                            {item.sender.name}
-                                        </h5>
-                                        <p className="text-sm">{item.sender.email}</p>
-                                    </td>
-
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <h5 className="font-medium text-black dark:text-white">
-                                            {item.receiver.name}
-                                        </h5>
-                                        <p className="text-sm">{item.receiver.email}</p>
-                                    </td>
-
-                                    <td className="px-6 py-4 whitespace-nowrap">
-
-                                        <UpdateStatus
-                                            value={item.status}
-                                            onChange={(newStatus) => handleStatusUpdate(item._id, newStatus)}
-                                        />
-                                    </td>
-
+                    {/* Desktop Table View */}
+                    <div className="hidden md:block min-w-[800px]">
+                        <table className="w-full table-auto text-md text-left">
+                            <thead className="text-gray-600 font-medium border-b">
+                                <tr>
+                                    <th className="py-3 px-6 dark-text">#</th>
+                                    <th className="py-3 px-6 dark-text">
+                                        {isTamil ? "அனுப்புநர்" : "Sender"}
+                                    </th>
+                                    <th className="py-3 px-6 dark-text">
+                                        {isTamil ? "பெறுநர்" : "Receiver"}
+                                    </th>
+                                    <th className="py-3 px-6 dark-text">
+                                        {isTamil ? "நிலை" : "Status"}
+                                    </th>
                                 </tr>
-                            ))
-                        )}
-                    </tbody>
+                            </thead>
+                            <tbody className="text-gray-600 divide-y">
+                                {tableItems.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={6} className="text-center px-6 py-4 whitespace-nowrap">
+                                            {isTamil ? 'தரவு எதுவும் கிடைக்கவில்லை' : 'No data found'}
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    tableItems.map((item, idx) => (
+                                        <tr key={idx} className="odd:bg-gray-50 even:bg-white">
+                                            <td className="px-6 py-4 whitespace-nowrap">{idx + 1}</td>
 
-                </table>
-            </div>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <h5 className="font-medium text-black dark:text-white">
+                                                    {item.sender.name}
+                                                </h5>
+                                                <p className="text-sm">{item.sender.email}</p>
+                                            </td>
 
-            {pages > 1 && (
-                <div className='rounded-sm dark:bg-boxdark'>
-                    <div className="p-4 sm:p-6 xl:p-7.5 pagination-div">
-                        <nav>
-                            <ul className="flex items-center justify-center space-x-2">
-                                {/* Previous Button */}
-                                <li>
-                                    <a
-                                        className={`flex h-8 w-8 items-center justify-center rounded-full bg-arrow text-white prev-btn ${currentPage === 1 ? 'pointer-events-none opacity-50' : ''
-                                            }`}
-                                        href="#"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (currentPage > 1) handlePageChange(currentPage - 1);
-                                        }}
-                                        aria-label="Previous Page"
-                                    >
-                                        <svg
-                                            className="fill-black"
-                                            width="8"
-                                            height="16"
-                                            viewBox="0 0 8 16"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path d="M7.17578 15.1156C7.00703 15.1156 6.83828 15.0593 6.72578 14.9187L0.369531 8.44995C0.116406 8.19683 0.116406 7.80308 0.369531 7.54995L6.72578 1.0812C6.97891 0.828076 7.37266 0.828076 7.62578 1.0812C7.87891 1.33433 7.87891 1.72808 7.62578 1.9812L1.71953 7.99995L7.65391 14.0187C7.90703 14.2718 7.90703 14.6656 7.65391 14.9187C7.48516 15.0312 7.34453 15.1156 7.17578 15.1156Z" />
-                                        </svg>
-                                    </a>
-                                </li>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <h5 className="font-medium text-black dark:text-white">
+                                                    {item.receiver.name}
+                                                </h5>
+                                                <p className="text-sm">{item.receiver.email}</p>
+                                            </td>
 
-                                {/* Page Numbers */}
-                                <li className="text-white p-2 page-number">
-                                    <div className="flex items-center justify-center">
-                                        {Array.from({ length: pages }, (_, index) => (
-                                            <a
-                                                key={index}
-                                                className={`flex items-center justify-center rounded-full text-black mr-5 ml-5 ${currentPage === index + 1 ? 'dark-text-active dark-text active-page-number' : ''
-                                                    }`}
-                                                href="#"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handlePageChange(index + 1);
-                                                }}
-                                            >
-                                                {index + 1}
-                                            </a>
-                                        ))}
+                                            <td className="px-6 py-4 whitespace-nowrap">
+
+                                                <UpdateStatus
+                                                    value={item.status}
+                                                    onChange={(newStatus) => handleStatusUpdate(item._id, newStatus)}
+                                                />
+                                            </td>
+
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    {/* Mobile Card View */}
+                    <div className="md:hidden">
+                        {tableItems.length === 0 ? (
+                            <div className="text-center px-4 py-6 bg-gray-50 rounded-lg">
+                                <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                                </svg>
+                                <p className="mt-2 text-sm text-gray-500">{isTamil ? 'தரவு எதுவும் கிடைக்கவில்லை' : 'No data found'}</p>
+                            </div>
+                        ) : (
+                            <div className="space-y-4">
+                                {tableItems.map((item, idx) => (
+                                    <div key={idx} className="bg-white dark:bg-boxdark rounded-xl shadow-sm overflow-hidden">
+                                        {/* Sender Info */}
+                                        <div className="p-4 bg-color-custom-top from-indigo-50 to-blue-50 dark:from-gray-800 dark:to-gray-700">
+                                            <h3 className="font-bold text-black dark:text-white">{isTamil ? "அனுப்புநர்" : "Sender"}</h3>
+                                            <div className="mt-1">
+                                                <h5 className="font-medium text-black dark:text-white">
+                                                    {item.sender.name}
+                                                </h5>
+                                                <p className="text-sm text-gray-600 dark:text-gray-300">{item.sender.email}</p>
+                                            </div>
+                                        </div>
+
+                                        {/* Receiver Info */}
+                                        <div className="p-4 border-t dark:border-gray-700">
+                                            <h3 className="font-bold text-black dark:text-white">{isTamil ? "பெறுநர்" : "Receiver"}</h3>
+                                            <div className="mt-1">
+                                                <h5 className="font-medium text-black dark:text-white">
+                                                    {item.receiver.name}
+                                                </h5>
+                                                <p className="text-sm text-gray-600 dark:text-gray-300">{item.receiver.email}</p>
+                                            </div>
+                                        </div>
+
+                                        {/* Status */}
+                                        <div className="p-4 bg-gray-50 dark:bg-gray-800">
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-sm font-medium text-gray-600 dark:text-gray-400"> {isTamil ? "நிலை" : "Status"}</span>
+                                                <UpdateStatus
+                                                    value={item.status}
+                                                    onChange={(newStatus) => handleStatusUpdate(item._id, newStatus)}
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
-                                </li>
-
-                                {/* Next Button */}
-                                <li>
-                                    <a
-                                        className={`flex h-8 w-8 items-center justify-center rounded-full bg-arrow text-white next-btn ${currentPage === pages ? 'pointer-events-none opacity-50' : ''
-                                            }`}
-                                        href="#"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (currentPage < pages) handlePageChange(currentPage + 1);
-                                        }}
-                                        aria-label="Next Page"
-                                    >
-                                        <svg
-                                            className="fill-black"
-                                            width="8"
-                                            height="16"
-                                            viewBox="0 0 8 16"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path d="M0.819531 15.1156C0.650781 15.1156 0.510156 15.0593 0.369531 14.9468C0.116406 14.6937 0.116406 14.3 0.369531 14.0468L6.27578 7.99995L0.369531 1.9812C0.116406 1.72808 0.116406 1.33433 0.369531 1.0812C0.622656 0.828076 1.01641 0.828076 1.26953 1.0812L7.62578 7.54995C7.87891 7.80308 7.87891 8.19683 7.62578 8.44995L1.26953 14.9187C1.15703 15.0312 0.988281 15.1156 0.819531 15.1156Z" />
-                                        </svg>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
-            )}
-        </div >
+
+                {/* Updated Pagination */}
+                {pages > 1 && (
+                    < Pagination
+                        currentPage={currentPage}
+                        totalPages={pages}
+                        changePage={handlePageChange}
+                        getPaginationNumbers={getPaginationNumbers}
+                    />
+                )}
+            </div>
+        </>
     );
 };
 

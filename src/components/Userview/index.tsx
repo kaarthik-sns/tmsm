@@ -4,12 +4,33 @@ import { useSearchParams } from "next/navigation"; // Updated import for query p
 import Breadcrumb from "@/components/Breadcrumbs/UserBreadcrumb";
 import NextImage from "next/image"; // Rename the import to avoid conflict
 import { toast } from "sonner";
+import { FaCheckCircle } from "react-icons/fa";
 
+// Add this utility function at the top level
+const capitalizeFirstLetter = (value: any): string => {
+  if (!value) return "";
+
+  // Handle objects (like city, state)
+  if (typeof value === 'object' && value !== null) {
+    return value.name ? capitalizeFirstLetter(value.name) : "";
+  }
+
+  // Convert to string and handle non-string values
+  const str = String(value);
+  return str.split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
 
 const FormElements = () => {
   const searchParams = useSearchParams();
   const userId = searchParams.get("userId");
   const [isLoading, setIsLoading] = useState(true);
+  const [showImagePopup, setShowImagePopup] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
 
   const [formData, setFormData] = useState({
     name: "",
@@ -68,6 +89,13 @@ const FormElements = () => {
     city_id: "",
     state: { name: "" },
     city: { name: "" },
+    country: { name: "" },
+    reactivate_reason: "",
+    deactivate_reason: "",
+    is_approve: false,
+    is_verify: false,
+    is_active: Boolean,
+    relation_name: ""
   });
 
   const handlePreview = () => {
@@ -102,6 +130,17 @@ const FormElements = () => {
           const { data } = await response.json();
           setFormData(data);
 
+          setFormData((prevFormData) => ({
+            ...prevFormData, // Spread existing form data to keep other fields
+            photo1: data?.photo1 ? `/api${data.photo1}` : '',
+            photo2: data?.photo2 ? `/api${data.photo2}` : '',
+            photo3: data?.photo3 ? `/api${data.photo3}` : '',
+            photo4: data?.photo4 ? `/api${data.photo4}` : '',
+            profile_photo: data?.profile_photo ? `/api${data.profile_photo}` : '',
+            profile_creator_photo: data?.profile_creator_photo ? `/api${data.profile_creator_photo}` : '',
+            horoscope: data?.horoscope ? `/api${data.horoscope}` : ''
+          }));
+
         } catch (err) {
           console.error(err);
         } finally {
@@ -126,497 +165,403 @@ const FormElements = () => {
     return `${day}-${month}-${year}`; // Example: "02-May-2025"
   };
 
+  const handleImageClick = (index: number) => {
+    setSelectedImageIndex(index);
+    setShowImagePopup(true);
+  };
+
+  const handleNavigate = (direction: 'prev' | 'next') => {
+    const images = [formData.photo1, formData.photo2, formData.photo3, formData.photo4].filter(img => img);
+    if (direction === 'prev') {
+      setSelectedImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    } else {
+      setSelectedImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    }
+  };
+
   if (isLoading) {
     return <p>Loading...</p>;
   }
 
   return (
     <>
-      <Breadcrumb pageName="View User" />
-      <div className="grid grid-cols-1 gap-9 sm:grid-cols-2 member">
-        <div className="flex flex-col gap-9">
+      <Breadcrumb pageName= {isTamil ? 'உறுப்பினர் சுயவிவரம்':'View Profile'} />
 
-          {(formData.profile_created_for && formData.profile_created_for !== 'myself') && (
-            <>
-              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                  <h3 className="font-medium dark-text dark:text-white">
-                    Profile Creator Details
-                  </h3>
-                </div>
-                <div className="p-6.5">
-                  <div className="mb-2.5">
-                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                      Profile created for : {formData.profile_created_for || ''}
-                    </label>
-                  </div>
-
-                  <div className="mb-2.5">
-                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                      Email : {formData.email || ""}
-                    </label>
-                  </div>
-                  <div className="mb-2.5">
-                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                      Phone Number : {formData.phonenumber || ""}
-                    </label>
-
-                  </div>
-
-                  < div className="mb-2.5">
-                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                      Name : {formData.profile_creator_name || ""}
-                    </label>
-                  </div>
-
-                  <div className="mb-2.5">
-                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                      Aadhar Number : {formData.profile_creator_aadhar || ""}
-                    </label>
-                  </div>
-                  <div className="mb-4.5">
-                    <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                      Creator Picture
-                    </label>
-                    <div className="flex items-center space-x-4">
-                      <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                        {formData.profile_creator_photo && (
-                          <NextImage
-                            src={formData.profile_creator_photo || ""}
-                            alt="Profile Creator Picture"
-                            width={64}
-                            height={64}
-                            quality={100}
-                            unoptimized={true}
-                            className="w-full h-full object-coverborder-stroke focus:border-primary"
-                          />
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      {/* Main Profile Section */}
+      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark mb-8">
+        <div className="p-8 flex flex-col md:flex-row gap-8">
+          {/* Left Column - Photos */}
+          <div className="md:w-1/3">
+            <div className="mb-6">
+              <div className="w-48 h-48 mx-auto rounded-lg overflow-hidden bg-gray-100">
+                {formData.profile_photo && (
+                  <NextImage
+                    src={formData.profile_photo}
+                    alt="Profile"
+                    width={192}
+                    height={192}
+                    quality={100}
+                    unoptimized={true}
+                    className="w-full h-full object-cover"
+                  />
+                )}
               </div>
-            </>
-          )}
-
-
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium dark-text dark:text-white">
-                Groom / Bride Details
-              </h3>
             </div>
-            <div className="p-6.5">
-              <div className="mb-4.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Profile (Groom / Bride)
-                </label>
-                <div className="flex items-center space-x-4">
-                  <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                    {formData.profile_photo && (
-                      <NextImage
-                        src={formData.profile_photo || "/uploads/photos/1738154599244-a8e0a88c34bc.png"}
-                        alt="Profile Preview"
-                        width={64}
-                        height={64}
-                        quality={100}
-                        unoptimized={true}
-                        className="w-full h-full object-coverborder-stroke focus:border-primary"
-                      />
-                    )}
+
+            {/* Additional Photos Grid - even smaller sizes */}
+            <div className="flex justify-center gap-4 mt-4">
+              {[formData.photo1, formData.photo2, formData.photo3, formData.photo4]
+                .filter(photo => photo)
+                .map((photo, index) => (
+                  <div
+                    key={index}
+                    className="w-20 h-20 rounded-lg overflow-hidden bg-gray-100 cursor-pointer"
+                    onClick={() => handleImageClick(index)}
+                  >
+                    <NextImage
+                      src={photo}
+                      alt={`Photo ${index + 1}`}
+                      width={80}
+                      height={80}
+                      quality={100}
+                      unoptimized={true}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
+                ))}
+            </div>
+          </div>
+
+          {/* Right Column - Basic Info */}
+          <div className="md:w-2/3">
+            <div className="mb-6">
+              <h1 className="text-2xl font-semibold text-gray-800 dark:text-white mb-2 dark-text">
+                {capitalizeFirstLetter(formData.name)} {capitalizeFirstLetter(formData.lastname)}
+              </h1>
+              <p className="text-gray-600 dark:text-gray-300 mb-2">
+                {capitalizeFirstLetter(formData.bride_groom_detail)}
+              </p>
+
+              {/* Moved Verification status to top */}
+              <div className="flex flex-row items-center gap-4 flex-wrap mb-4">
+                <div className="flex items-center gap-1 whitespace-nowrap">
+                  <FaCheckCircle className={formData.is_verify ? "text-green-600" : "text-red-500"} />
+                  <span className={formData.is_verify ? "text-green-600" : "text-red-500"}>
+                    Email: {formData.is_verify === true ? "Verified" : "Not Verified"}
+                  </span>
                 </div>
               </div>
+            </div>
 
-              <div className="mb-2.5">
-                <div className="w-full xl:w-1/2">
-                  <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    Name : {formData.name || "No name provided"} {formData.lastname || ""}
-                  </label>
-
-                </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Basic Info Items */}
+              <div className="flex items-center">
+                <span className="text-sm text-gray-600 dark:text-gray-400 w-[100px] sm:min-w-[120px]">{isTamil ? 'வயது' : 'Age'}:</span>
+                <span className="text-gray-800 dark:text-white">{formData.age}</span>
               </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Bio  (Bride / Groom): {formData.bride_groom_detail || ""}
-                </label>
+              <div className="flex items-center">
+                <span className="text-sm text-gray-600 dark:text-gray-400 w-[100px] sm:min-w-[120px]">{isTamil ? 'பாலினம்' : 'Gender'}:</span>
+                <span className="text-gray-800 dark:text-white">{capitalizeFirstLetter(formData.gender)}</span>
               </div>
-
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Gender for (Bride / Groom) : {formData.gender || ""}
-                </label>
+              <div className="flex items-center">
+                <span className="text-sm text-gray-600 dark:text-gray-400 w-[100px] sm:min-w-[120px]">{isTamil ? 'மின்னஞ்சல்' : 'Email'}:</span>
+                <span className="text-gray-800 dark:text-white">{formData.email}</span>
               </div>
-              <div className="mb-4.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Marital Status : {formData.maritalstatus || ''}
-                </label>
+              <div className="flex items-center">
+                <span className="text-sm text-gray-600 dark:text-gray-400 w-[100px] sm:min-w-[120px]">{isTamil ? 'தொலைபேசி எண்' : 'Phone'}:</span>
+                <span className="text-gray-800 dark:text-white">{formData.phonenumber}</span>
               </div>
-
-
-              <div className="mb-4.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Looking For : {formData.lookingfor || ''}
-                </label>
+              <div className="flex items-center">
+                <span className="text-sm text-gray-600 dark:text-gray-400 w-[100px] sm:min-w-[120px]">{isTamil ? 'கல்வி' : 'Education'}:</span>
+                <span className="text-gray-800 dark:text-white">{formData.education}</span>
               </div>
+              <div className="flex items-center">
+                <span className="text-sm text-gray-600 dark:text-gray-400 w-[100px] sm:min-w-[120px]">{isTamil ? 'மதம்' : 'Religion'}:</span>
+                <span className="text-gray-800 dark:text-white">{capitalizeFirstLetter(formData.religion)}</span>
+              </div>
+              <div className="flex items-center">
+                <span className="text-sm text-gray-600 dark:text-gray-400 w-[100px] sm:min-w-[120px]">{isTamil ? 'தொழில்' : 'Profession'}:</span>
+                <span className="text-gray-800 dark:text-white">{formData.profession}</span>
+              </div>
+              <div className="flex items-center">
+                <span className="text-sm text-gray-600 dark:text-gray-400 w-[100px] sm:min-w-[120px]">{isTamil ? 'சாதி' : 'Caste'}:</span>
+                <span className="text-gray-800 dark:text-white">{capitalizeFirstLetter(formData.caste)}</span>
+              </div>
+              <div className="flex items-center">
+                <span className="text-sm text-gray-600 dark:text-gray-400 w-[100px] sm:min-w-[120px]">{isTamil ? 'வருமானம்' : 'Income'}:</span>
+                <span className="text-gray-800 dark:text-white">{formData.income}</span>
+              </div>
+              <div className="flex items-center">
+                <span className="text-sm text-gray-600 dark:text-gray-400 w-[100px] sm:min-w-[120px]">{isTamil ? 'உட்சாதி' : 'Subcaste'}:</span>
+                <span className="text-gray-800 dark:text-white">{capitalizeFirstLetter(formData.subcaste)}</span>
+              </div>
+              <div className="flex items-center">
+                <span className="text-sm text-gray-600 dark:text-gray-400 w-[100px] sm:min-w-[120px]">{isTamil ? 'யாரை தேடுகிறீர்கள்' : 'Looking For'}:</span>
+                <span className="text-gray-800 dark:text-white">{capitalizeFirstLetter(formData.lookingfor)}</span>
+              </div>
+              <div className="flex items-center">
+                <span className="text-sm text-gray-600 dark:text-gray-400 w-[100px] sm:min-w-[120px]">{isTamil ? 'இடம்' : 'Location'}:</span>
+                <span className="text-gray-800 dark:text-white whitespace-nowrap">
+                  {[
+                    capitalizeFirstLetter(formData.city?.name),
+                    capitalizeFirstLetter(formData.state?.name)
+                  ].filter(Boolean).join(", ")}
+                </span>
+              </div>
+            </div>
 
-              {/* Render SelectGroupReligion with dynamic castes */}
+            {/* Horoscope button */}
+            <div className="flex flex-col md:flex-row items-center justify-between mt-5 gap-4">
               <div>
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Religion : {formData.religion}
-                </label>
-              </div>
-              <div>
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Caste : {formData.caste}
-                </label>
-              </div>
-              <div>
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  SubCaste : {formData.subcaste}
-                </label>
-              </div>
-              <div>
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Date Of Birth :  {formData.birthdate ? formatDate(formData.birthdate) : ""}
-                </label>
-
-              </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Age : {formData.age || ""}
-                </label>
-              </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Place of birth :  {formData.place_of_birth || ""}
-                </label>
-              </div>
-
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Additional Number : {formData.profile_creator_phonenumber || ""}
-                </label>
-              </div>
-
-            </div>
-          </div>
-
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium dark-text dark:text-white">
-                Location Details
-              </h3>
-            </div>
-            <div className="p-6.5">
-
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  City :  {formData?.city?.name || ""}
-                </label>
-              </div>
-
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  State :  {formData?.state?.name || ""}
-                </label>
-              </div>
-
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Address : {formData.address || ""}
-                </label>
-              </div>
-
-            </div>
-          </div>
-
-          {/* <!-- Other Details --> */}
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium dark-text dark:text-white">
-                Other Details
-              </h3>
-            </div>
-            <div className="p-6.5">
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Education for Groom / Bride : {formData.education || ""}
-                </label>
-              </div>
-
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Complexion of Groom/Bride: (Dark, Wheatish, or Fair) : {formData.complexion || ""}
-                </label>
-              </div>
-
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Profession : {formData.profession || ""}
-                </label>
-              </div>
-
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Income : {formData.income || ""}
-                </label>
-              </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Job of Groom / Bride  (Company, job etc) : {formData.job || ""}
-                </label>
-              </div>
-
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Place of work : {formData.place_of_work || ""}
-                </label>
-              </div>
-
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Kuladeivam : {formData.kuladeivam || ""}
-                </label>
-              </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Place of Kuladeivam temple : {formData.place_of_kuladeivam_temple || ""}
-                </label>
-              </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Gothram : {formData.gothram || ""}
-                </label>
-              </div>
-
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Horoscope :  {formData.horoscope && (
-                    <button
-                      onClick={handlePreview} style={{ width: "200px", padding: "8px 0" }}
-                      className="mt-4 px-2 py-1 bg-blue-500 text-white rounded-md text-custom"
-                    >
-                      View
-                    </button>
-
-                  )
-                  }
-                </label>
+                {formData.horoscope && (
+                  <button
+                    onClick={handlePreview}
+                    className="w-full md:w-auto inline-block px-10 py-4 text-white duration-150 rounded-full md:text-sm ftext-custom"
+                  >
+                    {isTamil ? 'ஜாதகத்தை பார்க்க' : 'View Horoscope'}
+                  </button>
+                )}
               </div>
             </div>
           </div>
-        </div>
-
-
-
-
-        <div className="flex flex-col gap-9">
-          {/* <!-- Parents Details --> */}
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium dark-text dark:text-white">
-                Parents Details
-              </h3>
-            </div>
-            <div className="p-6.5">
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Father's Name : {formData.father_name || ""}
-                </label>
-              </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Father's Phone Number : {formData.father_phonenumber || ""}
-                </label>
-              </div>
-
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Father's Occupation : {formData.father_occupation || ""}
-                </label>
-              </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Father's Religion : {formData.father_religion}
-                </label>
-              </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Father's Profession : {formData.father_profession || ""}
-                </label>
-              </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Father's place of work : {formData.father_placeOfWork || ""}
-                </label>
-              </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Mother's Name : {formData.mother_name || ""}
-                </label>
-              </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Mother's Phone Number : {formData.mother_phonenumber || ""}
-                </label>
-              </div>
-
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Mother's Occupation : {formData.mother_occupation || ""}
-                </label>
-              </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Mother's Religion : {formData.mother_religion}
-                </label>
-              </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Mother's Profession : {formData.mother_profession || ""}
-                </label>
-              </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Mother's place of work : {formData.mother_placeOfWork || ""}
-                </label>
-              </div>
-            </div>
-          </div>
-          {/* <!-- Partner Preference  --> */}
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium dark-text dark:text-white">
-                Partner Preference
-              </h3>
-            </div>
-            <div className="p-6.5">
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Education : {formData.partner_pref_education || ""}
-                </label>
-              </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Age : {formData.partner_pref_age || ""}
-                </label>
-              </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  Caste : {formData.caste}
-                </label>
-              </div>
-              <div className="mb-2.5">
-                <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                  SubCaste : {formData.subcaste}
-                </label>
-              </div>
-            </div>
-          </div>
-          {/* <!-- Partner Preference end --> */}
-
-
-          {/* <!-- Photo upload start --> */}
-          {(formData.photo1 || formData.photo2 || formData.photo3 || formData.photo4) && (
-
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="font-medium dark-text dark:text-white">
-                  Additional Picture
-                </h3>
-              </div>
-
-              <div className="flex flex-col gap-5.5 p-6.5">
-                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                  {formData.photo1 && (
-                    <div className="w-full xl:w-1/2">
-                      <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                        Picture
-                      </label>
-                      <div className="flex items-center space-x-4">
-                        <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                          <NextImage
-                            src={formData.photo1 || ""}
-                            alt="Profile Preview"
-                            width={64}
-                            height={64}
-                            quality={100}
-                            unoptimized={true}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  {formData.photo2 && (
-                    <div className="w-full xl:w-1/2">
-                      <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                        Picture2
-                      </label>
-                      <div className="flex items-center space-x-4">
-                        <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                          <NextImage
-                            src={formData.photo2 || ""}
-                            alt="Profile Preview"
-                            width={64}
-                            height={64}
-                            quality={100}
-                            unoptimized={true}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  {formData.photo2 && (
-                    <div className="w-full xl:w-1/2">
-                      <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                        Picture3
-                      </label>
-                      <div className="flex items-center space-x-4">
-                        <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                          <NextImage
-                            src={formData.photo3 || ""}
-                            alt="Profile Preview"
-                            width={64}
-                            height={64}
-                            quality={100}
-                            unoptimized={true}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  {formData.photo4 && (
-                    <div className="w-full xl:w-1/2">
-                      <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                        Picture4
-                      </label>
-                      <div className="flex items-center space-x-4">
-                        <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-                          <NextImage
-                            src={formData.photo4 || ""}
-                            alt="Profile Preview"
-                            width={64}
-                            height={64}
-                            quality={100}
-                            unoptimized={true}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-
         </div>
       </div>
+
+
+      {/* Profile Creator Section - Show only if profile is not created for self */}
+      {formData.profile_created_for !== 'myself' && (
+        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark mb-8">
+          <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark bg-color-custom dark-text">
+            <h3>{isTamil ? 'சுயவிவரத்தை உருவாக்கியவர் விவரங்கள்' : 'Profile Creator Details'}</h3>
+          </div>
+          <div className="p-8 flex flex-col md:flex-row gap-8">
+            {/* Creator's Photo */}
+            <div className="md:w-1/4">
+              <div className="w-32 h-32 mx-auto rounded-lg overflow-hidden bg-gray-100">
+                {formData.profile_creator_photo && (
+                  <NextImage
+                    src={formData.profile_creator_photo}
+                    alt="Creator Profile"
+                    width={128}
+                    height={128}
+                    quality={100}
+                    unoptimized={true}
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+            </div>
+
+            {/* Creator's Information */}
+            <div className="md:w-3/4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex items-center">
+                  <span className="text-sm text-gray-600 dark:text-gray-400 w-[120px]">{isTamil ? 'கணக்கு உருவாக்குநரின் பெயரை உள்ளிடவும்' : 'Creator Name'}:</span>
+                  <span className="text-gray-800 dark:text-white">
+                    {capitalizeFirstLetter(formData.profile_creator_name)}
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-sm text-gray-600 dark:text-gray-400 w-[120px]">{isTamil ? 'மணமகனுடன் / மணமகளுடன் உள்ள உறவு' : 'Relationship to Bride/Groom'}:</span>
+                  <span className="text-gray-800 dark:text-white">
+                    {capitalizeFirstLetter(formData.relation_name)}
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-sm text-gray-600 dark:text-gray-400 w-[120px]">{isTamil ? 'தொலைபேசி எண்' : 'Phone Number'}:</span>
+                  <span className="text-gray-800 dark:text-white">
+                    {formData.phonenumber}
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-sm text-gray-600 dark:text-gray-400 w-[120px]">{isTamil ? 'ஆதார் எண்' : 'Aadhar'}:</span>
+                  <span className="text-gray-800 dark:text-white">
+                    {formData.profile_creator_aadhar}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Detailed Information Sections */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        {/* Personal Details */}
+        <DetailSection title={isTamil ? 'தனிப்பட்ட சுய விவரங்கள்' : 'Personal Details'}>
+          <div className="grid grid-cols-1 gap-4">
+            <InfoItem label={isTamil ? 'பிறந்த தேதி' : 'Date of Birth'} value={formData.birthdate ? formatDate(formData.birthdate) : ""} inline={true} />
+            <InfoItem label={isTamil ? 'பிறந்த இடம்' : 'Place of Birth'} value={capitalizeFirstLetter(formData.place_of_birth)} inline={true} />
+            <InfoItem label={isTamil ? 'திருமண நிலை' : 'Marital Status'} value={capitalizeFirstLetter(formData.maritalstatus)} inline={true} />
+            <InfoItem label={isTamil ? 'தோற்றம்' : 'Complexion'} value={capitalizeFirstLetter(formData.complexion)} inline={true} />
+            <InfoItem label={isTamil ? 'வேலை' : 'Employed In'} value={capitalizeFirstLetter(formData.job)} inline={true} />
+            <InfoItem label={isTamil ? 'வேலை செய்யும் இடம்' : 'Work Location'} value={capitalizeFirstLetter(formData.place_of_work)} inline={true} />
+            <InfoItem label={isTamil ? 'தொலைபேசி எண்' : 'Alt Phone'} value={formData.profile_creator_phonenumber} inline={true} />
+
+          </div>
+        </DetailSection>
+
+        {/* Family Information */}
+        <DetailSection title={isTamil ? 'குடும்ப விவரங்கள்' : 'Family Information'}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Father's Details */}
+            <div>
+              <h4 className="text-base font-bold text-gray-700 dark:text-gray-300 mb-2 dark-text">
+                {isTamil ? 'தந்தையின் விவரங்கள்' : "Father's Details"}
+              </h4>
+              <div className="grid grid-cols-1 gap-3">
+                <InfoItem label={isTamil ? 'பெயர்' : 'Name'} value={capitalizeFirstLetter(formData.father_name)} inline={true} />
+                <InfoItem label={isTamil ? 'தொழில்' : 'Occupation'} value={capitalizeFirstLetter(formData.father_occupation)} inline={true} />
+                <InfoItem label={isTamil ? 'தொலைபேசி எண்' : 'Contact'} value={capitalizeFirstLetter(formData.father_phonenumber)} inline={true} />
+                <InfoItem label={isTamil ? 'மதம்' : 'Religion'} value={capitalizeFirstLetter(formData.father_religion)} inline={true} />
+                <InfoItem label={isTamil ? 'தொழில்முறை' : 'Profession'} value={capitalizeFirstLetter(formData.father_profession)} inline={true} />
+                <InfoItem label={isTamil ? 'வேலை செய்யும் இடம்' : 'Place of Work'} value={capitalizeFirstLetter(formData.father_placeOfWork)} inline={true} />
+              </div>
+            </div>
+
+            {/* Mother's Details */}
+            <div className="mt-4 md:mt-0">
+              <h4 className="text-base font-bold text-gray-700 dark:text-gray-300 mb-2 dark-text">
+                {isTamil ? 'தாயின் விவரங்கள்' : "Mother's Details"}
+              </h4>
+              <div className="grid grid-cols-1 gap-3">
+                <InfoItem label={isTamil ? 'பெயர்' : 'Name'} value={capitalizeFirstLetter(formData.mother_name)} inline={true} />
+                <InfoItem label={isTamil ? 'தொழில்' : 'Occupation'} value={capitalizeFirstLetter(formData.mother_occupation)} inline={true} />
+                <InfoItem label={isTamil ? 'தொலைபேசி எண்' : 'Contact'} value={capitalizeFirstLetter(formData.mother_phonenumber)} inline={true} />
+                <InfoItem label={isTamil ? 'மதம்' : 'Religion'} value={capitalizeFirstLetter(formData.mother_religion)} inline={true} />
+                <InfoItem label={isTamil ? 'தொழில்முறை' : 'Profession'} value={capitalizeFirstLetter(formData.mother_profession)} inline={true} />
+                <InfoItem label={isTamil ? 'வேலை செய்யும் இடம்' : 'Place of Work'} value={capitalizeFirstLetter(formData.mother_placeOfWork)} inline={true} />
+              </div>
+            </div>
+          </div>
+          <div className="mt-4">
+            <div className="flex flex-col gap-2">
+              <div className="flex items-start">
+                <span className="text-sm text-gray-600 dark:text-gray-400 w-[100px] sm:min-w-[120px]">{isTamil ? 'முகவரி' : 'Address'}:</span>
+                <div className="text-gray-800 dark:text-white flex flex-col">
+                  <span>{capitalizeFirstLetter(formData.address)}</span>
+                  <span className="whitespace-nowrap">
+                    {[
+                      capitalizeFirstLetter(formData.city?.name),
+                      capitalizeFirstLetter(formData.state?.name),
+                      capitalizeFirstLetter(formData.country?.name)
+                    ].filter(Boolean).join(", ")}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </DetailSection>
+      </div>
+
+      {/* New 3-column section for Religion, Partner, and Reference */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        {/* Religious Information */}
+        <DetailSection title={isTamil ? 'மத விவரங்கள்' : 'Religious Information'}>
+          <div className="grid grid-cols-1 gap-4">
+            <InfoItem label={isTamil ? 'குலதெய்வம்' : 'Kuladeivam'} value={capitalizeFirstLetter(formData.kuladeivam)} inline={true} />
+            <InfoItem label={isTamil ? 'குலதெய்வக் கோவிலின் இடம்' : 'Place of Temple'} value={capitalizeFirstLetter(formData.place_of_kuladeivam_temple)} inline={true} />
+            <InfoItem label={isTamil ? 'கோத்திரம்' : 'Gothram'} value={capitalizeFirstLetter(formData.gothram)} inline={true} />
+          </div>
+        </DetailSection>
+
+        {/* Partner Preferences */}
+        <DetailSection title={isTamil ? 'திருமண இணை எதிர்பார்ப்பு விவரங்கள்' : 'Partner Preferences'}>
+          <div className="grid grid-cols-1 gap-4">
+            <div className="flex items-center">
+              <span className="text-sm text-gray-600 dark:text-gray-400 w-[100px] sm:min-w-[120px]">{isTamil ? 'வயது' : 'Age'}:</span>
+              <span className="text-gray-800 dark:text-white">
+                {capitalizeFirstLetter(formData.partner_pref_age)}
+              </span>
+            </div>
+            <div className="flex items-center">
+              <span className="text-sm text-gray-600 dark:text-gray-400 w-[100px] sm:min-w-[120px]">{isTamil ? 'கல்வி' : 'Education'}:</span>
+              <span className="text-gray-800 dark:text-white">
+                {capitalizeFirstLetter(formData.partner_pref_education)}
+              </span>
+            </div>
+            <div className="flex items-center">
+              <span className="text-sm text-gray-600 dark:text-gray-400 w-[100px] sm:min-w-[120px]">{isTamil ? 'சாதி' : 'Caste'}:</span>
+              <span className="text-gray-800 dark:text-white">
+                {capitalizeFirstLetter(formData.caste)}
+              </span>
+            </div>
+            <div className="flex items-center">
+              <span className="text-sm text-gray-600 dark:text-gray-400 w-[100px] sm:min-w-[120px]">{isTamil ? 'உட்சாதி' : 'Subcaste'}:</span>
+              <span className="text-gray-800 dark:text-white">
+                {capitalizeFirstLetter(formData.partner_pref_subcaste)}
+              </span>
+            </div>
+          </div>
+        </DetailSection >
+
+        {/* Reference Details */}
+        < DetailSection title={isTamil ? 'பரிந்துரை செய்தவர்கள் விவரங்கள்' : 'Reference Details'} >
+          <div className="grid grid-cols-1 gap-4">
+            <InfoItem label={isTamil ? 'பரிந்துரையாளர் 1' : 'Reference 1'} value={capitalizeFirstLetter(formData.reference1)} inline={true} />
+            <InfoItem label={isTamil ? 'பரிந்துரையாளர் 2' : 'Reference 2'} value={capitalizeFirstLetter(formData.reference2)} inline={true} />
+          </div>
+        </DetailSection >
+      </div >
+
+      {/* Image Popup */}
+      {
+        showImagePopup && (
+          <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+            <div className="relative max-w-4xl mx-auto">
+              <button
+                onClick={() => setShowImagePopup(false)}
+                className="absolute top-4 right-4 text-white text-2xl"
+              >
+                ×
+              </button>
+              <button
+                onClick={() => handleNavigate('prev')}
+                className="absolute left-4 top-1/2 text-white text-2xl"
+              >
+                ‹
+              </button>
+              <button
+                onClick={() => handleNavigate('next')}
+                className="absolute right-4 top-1/2 text-white text-2xl"
+              >
+                ›
+              </button>
+              <NextImage
+                src={[formData.photo1, formData.photo2, formData.photo3, formData.photo4].filter(img => img)[selectedImageIndex]}
+                alt="Selected photo"
+                width={800}
+                height={600}
+                quality={100}
+                unoptimized={true}
+                className="max-h-[80vh] w-auto"
+              />
+            </div>
+          </div>
+        )
+      }
     </>
+  );
+};
+
+// Helper Components
+const DetailSection = ({ title, children }) => (
+  <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark bg-color-custom  dark-text ">
+      <h3>{capitalizeFirstLetter(title)}</h3>
+    </div>
+    <div className="p-6.5">{children}</div>
+  </div>
+);
+
+// Update the InfoItem component for consistent label-value alignment
+const InfoItem = ({ label, value, inline = false }) => {
+  return (
+    <div className={inline ? "flex items-center" : "flex flex-col"}>
+      <span className="text-sm text-gray-600 dark:text-gray-400 min-w-[120px]">{label}:</span>
+      <span className="text-gray-800 dark:text-white">
+        {value ? capitalizeFirstLetter(value) : "-"}
+      </span>
+    </div>
   );
 };
 

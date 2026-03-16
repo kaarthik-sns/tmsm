@@ -40,7 +40,7 @@ const SelectCity: React.FC<SelectCityProps> = ({ selectedState, selectedCity, on
             Select City
           </option>
           {cities.map((city) => (
-            <option key={city._id} value={city._id}>
+            <option key={city.id} value={city.id}>
               {city.name}
             </option>
           ))}

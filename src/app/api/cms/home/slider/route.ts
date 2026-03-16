@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Model from '@/models/Home_page_slider';
+import Slider from '@/models/Home_page_slider';
 import connectToDatabase from '@/lib/mongodb';
 import { promises as fs } from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 
-const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads', 'cms'); // Directory to save uploads
+const UPLOAD_DIR = path.join(process.cwd(), 'uploads', 'cms'); // Directory to save uploads
 
 // Handle POST requests: Create a new entry
 export async function POST(request: NextRequest) {
@@ -16,6 +16,8 @@ export async function POST(request: NextRequest) {
         const formData = await request.formData();
         const title = (formData.get('title') as string) ?? '';
         const description = (formData.get('description') as string) ?? '';
+        const title_ta = (formData.get('title_ta') as string) ?? '';
+        const description_ta = (formData.get('description_ta') as string) ?? '';
         const photo = formData.get('photo') as File;
 
         let image = '';
@@ -30,7 +32,7 @@ export async function POST(request: NextRequest) {
             image = `/uploads/cms/${uniqueFileName}`;
         }
 
-        const newRecord = new Model({ title, description, image });
+        const newRecord = new Slider({ image, title, description, title_ta, description_ta });
         await newRecord.save();
 
         return NextResponse.json({ message: 'Record created successfully.', data: newRecord });
@@ -50,9 +52,11 @@ export async function PUT(request: NextRequest) {
         const id = (formData.get('_id') as string) ?? '';
         const title = (formData.get('title') as string) ?? '';
         const description = (formData.get('description') as string) ?? '';
+        const title_ta = (formData.get('title_ta') as string) ?? '';
+        const description_ta = (formData.get('description_ta') as string) ?? '';
         const photo = formData.get('photo') as File;
 
-        let Fields: Record<string, string> = { title, description };
+        let Fields: Record<string, string> = { title, description, title_ta, description_ta };
 
         if (photo) {
             const uniqueSuffix = Date.now() + '-' + crypto.randomBytes(6).toString('hex');
@@ -65,7 +69,7 @@ export async function PUT(request: NextRequest) {
             Fields.image = `/uploads/cms/${uniqueFileName}`;
         }
 
-        const updatedRecord = await Model.findByIdAndUpdate(id, Fields, { new: true });
+        const updatedRecord = await Slider.findByIdAndUpdate(id, Fields, { new: true });
 
         if (!updatedRecord) {
             return NextResponse.json({ message: 'Record not found.' }, { status: 404 });
@@ -86,7 +90,7 @@ export async function GET(request: NextRequest) {
 
         await connectToDatabase();
 
-        const record = await Model.findById(id);
+        const record = await Slider.findById(id);
 
         if (!record) {
             return NextResponse.json({ message: 'Record not found.' }, { status: 404 });
@@ -110,7 +114,7 @@ export async function PATCH(req: NextRequest) {
     try {
         // Find user by email_code
         await connectToDatabase();
-        const dataModel = await Model.findById(id);
+        const dataModel = await Slider.findById(id);
 
         if (!dataModel) {
             return NextResponse.json({ message: 'Data not found' }, { status: 400 });

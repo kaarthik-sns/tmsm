@@ -1,4 +1,4 @@
-export const verificationTemplate = (user_name: string, verification_link: string, copyright: string,  email: string , mail_logo: string): string => `
+export const verificationTemplate = (user_name: string, verification_link: string, copyright: string,  email: string): string => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -104,7 +104,7 @@ export const verificationTemplate = (user_name: string, verification_link: strin
                 <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" class="container">
                     <tr>
                         <td align="center" class="logo">
-                            <img src="${mail_logo}" alt="TMSM Logo">
+                            <img src="cid:mail_logo" alt="TMSM Logo">
                         </td>
                     </tr>
                     <tr>
@@ -113,7 +113,7 @@ export const verificationTemplate = (user_name: string, verification_link: strin
                                 <h2>Hello ${user_name},</h2>
 
                                 <p>Thank you for signing up! To complete your registration, please verify your email address.</p>
-                                <p>Once the admin approves your registration, you will be able to log in to TMSM.</p>
+                                <p>Once the admin approves your registration, you will be able to log in to TMSM Hub.</p>
                                 <p>Click the<strong> "Verify Email" </strong>button below to confirm your email address.</p>
 
                                 <p style="text-align: center;">
@@ -130,7 +130,7 @@ export const verificationTemplate = (user_name: string, verification_link: strin
                                 <!-- Thanks & Regards Section -->
                                 <p style="margin-top: 30px; font-size: 12px; color: rgb(0, 0, 0);">
                                     <i>Thanks & Regards,<br>
-                                    <span style="color: rgb(0, 0, 0); font-size: 12px;">TMSM Team</span></i>
+                                    <span style="color: rgb(0, 0, 0); font-size: 12px;">TMSM Hub Team</span></i>
                                 </p>
 
                                 <p class="footer"><i>${copyright}</i></p>

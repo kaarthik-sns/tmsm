@@ -1,15 +1,11 @@
 import { Metadata } from "next";
 import FrontendLayouts from "@/components/Layouts/Frontendlayout";
 import FAQ from "@/components/Frontend/Faq";
-import InnerBanner from "@/components/Frontend/InnerPageBanner/faq-innerbanner";
-
 
 export const metadata: Metadata = {
   title: "FAQ - TMSM",
   description: "",
 };
-
-
 
 export default async function Home() {
 
@@ -26,10 +22,8 @@ export default async function Home() {
   return (
     <>
       <FrontendLayouts>
-        <InnerBanner />
         <FAQ data={data.data} />
       </FrontendLayouts>
     </>
   );
 }
-

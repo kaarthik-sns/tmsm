@@ -5,27 +5,28 @@ import Image from "next/image";
 const AboutUs = (data) => {
 
   const AboutData = data.data;
+  const lang = localStorage.getItem('lang') || 'en';
 
   const offerlist = [
     {
       icon: AboutData.feature_one_img,
-      title: AboutData.feature_one,
-      desc: AboutData.feature_one_desc,
+      title: lang == 'ta' ? AboutData.feature_one_ta : AboutData.feature_one,
+      desc: lang == 'ta' ? AboutData.feature_one_desc_ta : AboutData.feature_one_desc,
     },
     {
       icon: AboutData.feature_two_img,
-      title: AboutData.feature_two,
-      desc: AboutData.feature_two_desc,
+      title: lang == 'ta' ? AboutData.feature_two_ta : AboutData.feature_two,
+      desc: lang == 'ta' ? AboutData.feature_two_desc_ta : AboutData.feature_two_desc,
     },
     {
       icon: AboutData.feature_three_img,
-      title: AboutData.feature_three,
-      desc: AboutData.feature_three_desc,
+      title: lang == 'ta' ? AboutData.feature_three_ta : AboutData.feature_three,
+      desc: lang == 'ta' ? AboutData.feature_three_desc_ta : AboutData.feature_three_desc,
     },
     {
       icon: AboutData.feature_four_img,
-      title: AboutData.feature_four,
-      desc: AboutData.feature_four_desc,
+      title: lang == 'ta' ? AboutData.feature_four_ta : AboutData.feature_four,
+      desc: lang == 'ta' ? AboutData.feature_four_desc_ta : AboutData.feature_four_desc,
     },
   ];
 
@@ -34,7 +35,7 @@ const AboutUs = (data) => {
       <section className="inner-page-top-banner">
         <div className="relative in-banner-bg">
           <Image
-            src={AboutData.banner_img}
+            src={`/api${AboutData.banner_img}`}
             alt="Happy Couple"
             layout="fill"
           />
@@ -42,7 +43,7 @@ const AboutUs = (data) => {
 
         <div className="inner-banner-info">
           <div className="top-title">
-            <h2>{AboutData.banner_title}</h2>
+            <h2>{lang == 'ta' ? AboutData.banner_title_ta : AboutData.banner_title}</h2>
           </div>
         </div>
       </section>
@@ -52,17 +53,18 @@ const AboutUs = (data) => {
           <div className="row flex flex-col md:flex-row ">
             <div className="w-full md:w-1/2 px-7.5">
               <div className="about-left-media relative media-relative ">
-                <Image
-                  src={AboutData.sec_one_img}
+                {/* <Image
+                  src={`/api${AboutData.sec_one_img}`}
                   alt="Happy Couple"
                   layout="fill"
-                />
+                /> */}
+                <img src={`/api${AboutData.sec_one_img}`} alt="Happy Couple" height='auto' width='100%' />
               </div>
             </div>
             <div className="w-full md:w-1/2 px-7.5">
               <div className="about-con-desc">
-                <h3>{AboutData.sec_one_title}</h3>
-                <div dangerouslySetInnerHTML={{ __html: AboutData.sec_one_desc }} />
+                <h3>{lang == 'ta' ? AboutData.sec_one_title_ta : AboutData.sec_one_title}</h3>
+                <div dangerouslySetInnerHTML={{ __html: lang == 'ta' ? AboutData.sec_one_desc_ta : AboutData.sec_one_desc }} />
               </div>
             </div>
           </div>
@@ -75,7 +77,7 @@ const AboutUs = (data) => {
             <div className="w-full md:w-1/2 px-7.5">
               <div className="story-left-media relative media-relative">
                 <Image
-                  src={AboutData.sec_two_img}
+                  src={`/api${AboutData.sec_two_img}`}
                   alt="Happy Couple"
                   layout="fill"
                 />
@@ -83,8 +85,8 @@ const AboutUs = (data) => {
             </div>
             <div className="w-full md:w-1/2 px-7.5">
               <div className="story-right-desc">
-              <h3>{AboutData.sec_two_title}</h3>
-              <div dangerouslySetInnerHTML={{ __html: AboutData.sec_two_desc }} />
+                <h3>{lang == 'ta' ? AboutData.sec_two_title_ta : AboutData.sec_two_title}</h3>
+                <div dangerouslySetInnerHTML={{ __html: lang == 'ta' ? AboutData.sec_two_desc_ta : AboutData.sec_two_desc }} />
               </div>
             </div>
           </div>
@@ -95,7 +97,7 @@ const AboutUs = (data) => {
         <div className="container mx-auto">
           <div className="row flex flex-col md:flex-row">
             <div className="we-offer-title px-7.5">
-              <h3>What We Offer</h3>
+              <h3>{lang == 'ta' ? 'எங்கள் சேவைகள்	' : 'What We Offer'}</h3>
             </div>
           </div>
           <div className="row flex flex-wrap px-7.5">
@@ -106,7 +108,7 @@ const AboutUs = (data) => {
                     <div className="offer-icon relative">
 
                       <Image
-                        src={list.icon}
+                        src={`/api${list.icon}`}
                         alt={list.title}
                         fill
                         style={{ objectFit: "contain" }}

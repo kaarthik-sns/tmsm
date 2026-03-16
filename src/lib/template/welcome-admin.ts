@@ -1,4 +1,4 @@
-export const adminWelcomeTemplate = (email: string, name: string, phonenumber: string, copyright: string, mail_logo: string): string => `
+export const adminWelcomeTemplate = (email: string, name: string, phonenumber: string, copyright: string): string => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -107,14 +107,14 @@ export const adminWelcomeTemplate = (email: string, name: string, phonenumber: s
                 <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" class="container">
                     <tr>
                         <td align="center" class="logo">
-                            <img src="${mail_logo}" alt="TMSM Logo">
+                            <img src="cid:mail_logo" alt="TMSM Logo">
                         </td>
                     </tr>
                     <tr>
                        <td align="left">
                             <h1>New User Registration!</h1>
                             <h2>Hello Admin,</h2>
-                            <p>A new user has just registered on TMSM:</p>
+                            <p>A new user has just registered on TMSM Hub:</p>
                             <ul>
                                 <li><strong>Username:</strong> ${name}</li>
                                 <li><strong>Email:</strong> <a href="mailto:${email}" style="color:#000;text-decoration:none;">${email}</a></li>
@@ -125,7 +125,7 @@ export const adminWelcomeTemplate = (email: string, name: string, phonenumber: s
                             <!-- Thanks & Regards Section -->
                             <p style="margin-top: 30px; font-size: 12px; color: rgb(0, 0, 0);">
                                 <i>Thanks & Regards,<br>
-                                <span style="color: rgb(0, 0, 0); font-size: 12px;">TMSM Team</span></i>
+                                <span style="color: rgb(0, 0, 0); font-size: 12px;">TMSM Hub Team</span></i>
                             </p>
                             <p class="footer"><i>${copyright}</i></p>
                         </td>

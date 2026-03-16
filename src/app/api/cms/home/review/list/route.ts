@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/mongodb';
-import Model from '@/models/Review';
+import Review from '@/models/Review';
 
 export const GET = async (req: NextRequest) => {
 
@@ -19,10 +19,10 @@ export const GET = async (req: NextRequest) => {
         query.is_delete = { $ne: true };
 
         // Fetch filtered and paginated users from the database
-        const data = await Model.find(query).skip(skip).limit(pageSize);
+        const data = await Review.find(query).skip(skip).limit(pageSize);
 
         // Count total documents for the query
-        const totalData = await Model.countDocuments(query);
+        const totalData = await Review.countDocuments(query);
 
         // Prepare the response with pagination meta
         return NextResponse.json({

@@ -374,7 +374,7 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 }
 
 .cms-heading  h2{
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 600;
     font-family: 'Noto Sans';
     text-align: left;
@@ -416,14 +416,119 @@ th.py-3.px-6.dark-text {
 
 /* Custom class for SweetAlert2 */
 .confirm-color{
-    background-color: rgba(16, 185, 129, .08);
-    color: #10b981;
+    background-color: rgba(16, 185, 129, .08) !important;
+    color: #10b981 !important; 
 }
 .cancel-color {
-    background-color: rgba(251, 84, 84, .08);
-    color: #fb5454;
+    background-color: rgba(251, 84, 84, .08) !important;
+    color: #fb5454 !important;
 }
 .confirm-color-succes {
-    background-color: rgba(16, 185, 129, .08);
-    color: #10b981;
+    background-color: rgba(16, 185, 129, .08) !important;
+    color: #10b981 !important;
+}
+.swal2-styled.swal2-confirm:focus {
+    box-shadow: 0 0 0 3px rgb(236 250 245) !important;
+}
+
+/*admin cms home page slider*/
+.home-banner-image-info{
+    position: relative;
+    height: 420px;
+  width: 70%;
+}
+.home-banner-image-info img{
+       width: 100%;
+}
+.home-banner-full{
+    justify-content: space-between;
+}
+.slider-upload-info{
+    width: 100%;
+    max-width: 26%
+}
+
+
+/*horoscope view button*/
+.ftext-custom {
+    color: #653D27;
+    background: #FFD16C;
+    border: 1px solid #FFD16C;
+    font-weight: 800;
+    font-family: 'Noto Sans';
+}
+
+.ftext-custom:hover {
+    color: #ffd16c;
+    background: #af2c2c;
+    border: 1px solid #ffd16c;
+}
+
+.dark-text h3 {
+    font-weight: 700;
+}
+
+.cms-heading ul li {
+    font-family: 'Noto Sans';
+    font-weight: 300;
+    text-transform: capitalize;
+    text-align: left;
+    font-size: 15px;
+    color: #653D27;
+    line-height: 25px;
+    margin-top: 1em;
+}
+.react-datepicker-wrapper {
+    width: 100%;
+}
+
+.react-datepicker {
+    z-index: 9999 !important;
+    /* ✅ Ensures it's on top */
+}
+
+.react-datepicker__month-container {
+    position: relative;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.react-datepicker__header {
+    background-color: #fff;
+    /* ✅ Matches the design */
+    border-bottom: 1px solid #ddd;
+}
+
+
+/*language based css updated */
+.lang-ta h3, .lang-ta h4  {
+    font-size: 14px;
+    font-weight: 700;
+}
+ .lang-ta .cms-heading  {
+    font-size: 20px;
+}
+.lang-ta input::placeholder, .lang-ta  select, textarea{
+    font-size: 12px;
+}
+.lang-ta  label {
+    font-size: 12px;
+    line-height: 1.5;
+}
+.lang-ta input {
+    font-size: 16px;
+}
+.lang-ta td, .lang-ta p, .lang-ta .cms-description, .lang-ta .cms-description p, .lang-ta .cms-heading ul li {
+    font-size: 12px;
+
+}
+
+
+/* Tamil Font size */
+.lang-ta ul li a {
+    font-size: 14px;
+}
+
+.lang-ta .forgot-password-section button {
+    font-size: 12px;
 }

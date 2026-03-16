@@ -14,12 +14,6 @@ export async function POST(request: Request) {
 
     let copyright = '';
     let contactMail = '';
-    let baseUrl = process.env.BASE_URL || '';  // ✅ Get BASE_URL from .env
-    //let mail_logo = `${baseUrl}/images/logo/Flogo.svg`;  // ✅ Construct full path dynamically
-    let mail_logo = `https://searchnscore.in/tmsm/images/mail-logo.png?t=${new Date().getTime()}`;
-
-
-
 
     const smtpSettings = await getSMTPSettings();
     if (smtpSettings) {
@@ -27,13 +21,9 @@ export async function POST(request: Request) {
         contactMail = smtpSettings.organisation_email_id;
     }
 
-
-
     if (!email) {
         return NextResponse.json({ message: " Email cannot be empty" }, { status: 400 })
     }
-
-
 
     try {
         await connectToDatabase();
@@ -72,7 +62,7 @@ export async function POST(request: Request) {
             address: email
         }]
 
-        const htmlBody = changePasswordTemplate(forgotPasswordLink, copyright, contactMail, mail_logo);
+        const htmlBody = changePasswordTemplate(forgotPasswordLink, copyright, contactMail);
 
         const result = await sendEmail({
             receipients,

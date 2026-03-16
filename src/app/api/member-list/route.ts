@@ -36,7 +36,7 @@ export const GET = async (req: NextRequest) => {
         
 
         if (gender) {
-            query.gender = { $regex: gender, $options: 'i' }; // Case-insensitive regex search
+            query.gender = { $regex: `^${gender}$`, $options: 'i' }; // Case-insensitive regex search
         }
 
         if (fromage && toage) {
@@ -74,7 +74,6 @@ export const GET = async (req: NextRequest) => {
             ProfileRequestsSentData = await ProfileRequests.find(ReqsentQuery);
             ProfileRequestsRecData = await ProfileRequests.find(ReqRecQuery);
         }
-
 
         // Prepare the response with pagination meta
         return NextResponse.json({

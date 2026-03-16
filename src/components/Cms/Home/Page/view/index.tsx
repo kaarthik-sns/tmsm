@@ -2,12 +2,15 @@
 import Breadcrumb from "@/components/Breadcrumbs/BreadcrumbCustom";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import "react-quill/dist/quill.snow.css";
+
 import Link from "next/link";
 
 const Settings = () => {
 
   const [isLoading, setIsLoading] = useState(true);
+
+  const lang = localStorage.getItem('lang') || 'en';
+  const isTamil = lang === 'ta';
 
   const [formData, setFormData] = useState({
     sec_one_title: '',
@@ -30,6 +33,16 @@ const Settings = () => {
     banner_title: '',
     banner_btn_text: '',
     banner_btn_link: '',
+    sec_one_title_ta: '',
+    sec_one_desc_ta: '',
+    sec_two_title_ta: '',
+    sec_two_desc_ta: '',
+    feature_one_ta: '',
+    feature_two_ta: '',
+    feature_three_ta: '',
+    feature_four_ta: '',
+    banner_title_ta: '',
+    banner_btn_text_ta: '',
   });
 
   useEffect(() => {
@@ -67,8 +80,13 @@ const Settings = () => {
     <>
       <Breadcrumb
         breadcrumbs={[
-          { name: "Dashboard", href: "/admin/dashboard" },
-          { name: "Home Page" },
+          {
+            name: isTamil ? "கட்டுப்பாட்டகம்" : "Dashboard",
+            href: "/admin/dashboard",
+          },
+          {
+            name: isTamil ? "முகப்பு பக்கம்" : "Home Page",
+          },
         ]}
       />
 
@@ -78,7 +96,7 @@ const Settings = () => {
             href="/admin/cms/home/page/edit"
             className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm bg-color-custom dark-text"
           >
-            Edit Home Page
+            {isTamil ? "முகப்புப் பக்கத்தைத் திருத்தவும்" : "Edit Home Page"}
           </Link>
         </div>
       </div>
@@ -89,7 +107,7 @@ const Settings = () => {
           {/* About Section */}
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium dark-text dark:text-white">About</h3>
+              <h3 className="font-medium dark-text dark:text-white">{isTamil ? 'எங்களைப் பற்றி' : 'About'}</h3>
             </div>
             <div className="p-6.5">
 
@@ -97,7 +115,7 @@ const Settings = () => {
                 <div className="w-25 h-25 flex-shrink-0 rounded-full overflow-hidden border-[1.5px] bg-gray-200 border-stroke">
                   {formData.sec_one_img && (
                     <Image
-                      src={formData.sec_one_img}
+                      src={`/api${formData.sec_one_img}`}
                       alt="Profile Preview"
                       width={200}
                       height={200}
@@ -108,14 +126,14 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="mb-4.5 flex-1">
-                  <p className="text-sm dark:text-white  cms-heading">{formData.sec_one_title || "N/A"}</p>
+                  <p className="text-sm dark:text-white  cms-heading">{lang === 'ta' ? formData.sec_one_title_ta : formData.sec_one_title}</p>
                 </div>
               </div>
 
               <div className="mb-4.5">
                 <div
                   className="text-sm dark:text-white  cms-description "
-                  dangerouslySetInnerHTML={{ __html: formData.sec_one_desc || "N/A" }}
+                  dangerouslySetInnerHTML={{ __html: lang === 'ta' ? formData.sec_one_desc_ta : formData.sec_one_desc }}
                 />
               </div>
 
@@ -125,12 +143,12 @@ const Settings = () => {
           {/* Banner Section */}
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium dark-text dark:text-white">Join us</h3>
+              <h3 className="font-medium dark-text dark:text-white">{isTamil ? 'எங்களுடன் சேருங்கள்' : 'Join us'}</h3>
             </div>
             <div className="p-6.5">
 
               <div className="mb-4.5">
-                <p className="text-sm dark:text-white cms-description">{formData.banner_title || "N/A"}</p>
+                <p className="text-sm dark:text-white cms-description">{lang === 'ta' ? formData.banner_title_ta : formData.banner_title}</p>
               </div>
 
               <div className="mb-4.5">
@@ -142,7 +160,7 @@ const Settings = () => {
                     className="text-blue-500 hover:underline"
 
                   >
-                    {formData.banner_btn_text || "N/A"}
+                    {lang === 'ta' ? formData.banner_btn_text_ta : formData.banner_btn_text}
                   </a>
                 </p>
               </div>
@@ -158,7 +176,7 @@ const Settings = () => {
           {/* Why Choose Us Section */}
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium dark-text dark:text-white">Why Choose Us</h3>
+              <h3 className="font-medium dark-text dark:text-white">{isTamil ? 'எங்களை ஏன் தேர்ந்தெடுக்க வேண்டும்' : 'Why Choose Us'}</h3>
             </div>
             <div className="p-6.5">
 
@@ -167,7 +185,7 @@ const Settings = () => {
                 <div className="w-25 h-25 flex-shrink-0 rounded-full overflow-hidden border-[1.5px] bg-gray-200 border-stroke">
                   {formData.sec_two_img && (
                     <Image
-                      src={formData.sec_two_img}
+                      src={`/api${formData.sec_two_img}`}
                       alt="Profile Preview"
                       width={200}
                       height={200}
@@ -178,7 +196,7 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="mb-4.5 flex-1">
-                  <p className="text-sm dark:text-white cms-heading">{formData.sec_two_title || "N/A"}</p>
+                  <p className="text-sm dark:text-white cms-heading">{lang === 'ta' ? formData.sec_two_title_ta : formData.sec_two_title}</p>
                 </div>
               </div>
 
@@ -186,16 +204,16 @@ const Settings = () => {
               <div className="mb-4.5">
                 <div
                   className="text-sm dark:text-white cms-description"
-                  dangerouslySetInnerHTML={{ __html: formData.sec_two_desc || "N/A" }}
+                  dangerouslySetInnerHTML={{ __html: lang === 'ta' ? formData.sec_two_desc_ta : formData.sec_two_desc }}
                 />
               </div>
 
               <div className="mb-4.5 flex items-center space-x-4">
                 {/* Image Section */}
-                <div className="w-25 h-25 flex-shrink-0 rounded-full overflow-hidden border-[1.5px] bg-gray-200 border-stroke flex-shrink-0">
+                <div className="w-25 h-25 flex-shrink-0 rounded-full overflow-hidden border-[1.5px] bg-gray-200 border-stroke">
                   {formData.feature_one_img && (
                     <Image
-                      src={formData.feature_one_img}
+                      src={`/api${formData.feature_one_img}`}
                       alt="Profile Preview"
                       width={200}
                       height={200}
@@ -208,7 +226,7 @@ const Settings = () => {
 
                 {/* Title Section */}
                 <div className="mb-4.5 flex-1">
-                  <p className="text-sm dark:text-white cms-description">{formData.feature_one || "N/A"}</p>
+                  <p className="text-sm dark:text-white cms-description">{lang === 'ta' ? formData.feature_one_ta : formData.feature_one}</p>
                 </div>
               </div>
 
@@ -218,7 +236,7 @@ const Settings = () => {
                 <div className="w-25 h-25 flex-shrink-0 rounded-full overflow-hidden border-[1.5px] bg-gray-200 border-stroke">
                   {formData.feature_two_img && (
                     <Image
-                      src={formData.feature_two_img}
+                      src={`/api${formData.feature_two_img}`}
                       alt="Profile Preview"
                       width={200}
                       height={200}
@@ -230,7 +248,7 @@ const Settings = () => {
                 </div>
 
                 <div className="mb-4.5 flex-1">
-                  <p className="text-sm dark:text-white cms-description">{formData.feature_two || "N/A"}</p>
+                  <p className="text-sm dark:text-white cms-description">{lang === 'ta' ? formData.feature_two_ta : formData.feature_two}</p>
                 </div>
               </div>
 
@@ -239,7 +257,7 @@ const Settings = () => {
                 <div className="w-25 h-25 flex-shrink-0 rounded-full overflow-hidden border-[1.5px] bg-gray-200 border-stroke">
                   {formData.feature_three_img && (
                     <Image
-                      src={formData.feature_three_img}
+                      src={`/api${formData.feature_three_img}`}
                       alt="Profile Preview"
                       width={200}
                       height={200}
@@ -250,7 +268,7 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="mb-4.5 flex-1">
-                  <p className="text-sm dark:text-white cms-description">{formData.feature_three || "N/A"}</p>
+                  <p className="text-sm dark:text-white cms-description">{lang === 'ta' ? formData.feature_three_ta : formData.feature_three}</p>
                 </div>
               </div>
 
@@ -259,7 +277,7 @@ const Settings = () => {
                 <div className="w-25 h-25 flex-shrink-0 rounded-full overflow-hidden border-[1.5px] bg-gray-200 border-stroke">
                   {formData.feature_four_img && (
                     <Image
-                      src={formData.feature_four_img}
+                      src={`/api${formData.feature_four_img}`}
                       alt="Profile Preview"
                       width={200}
                       height={200}
@@ -270,7 +288,7 @@ const Settings = () => {
                   )}
                 </div>
                 <div className="mb-4.5 flex-1">
-                  <p className="text-sm dark:text-white cms-description" >{formData.feature_four || "N/A"}</p>
+                  <p className="text-sm dark:text-white cms-description" >{lang === 'ta' ? formData.feature_four_ta : formData.feature_four}</p>
                 </div>
               </div>
 

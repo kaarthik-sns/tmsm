@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Model from '@/models/Review';
+import Review from '@/models/Review';
 import connectToDatabase from '@/lib/mongodb';
 
 
@@ -12,8 +12,10 @@ export async function POST(request: NextRequest) {
         const name = (formData.get('name') as string) ?? '';
         const description = (formData.get('description') as string) ?? '';
         const rating = (formData.get('rating') as string) ?? '';
+        const name_ta = (formData.get('name_ta') as string) ?? '';
+        const description_ta = (formData.get('description_ta') as string) ?? '';
 
-        const newRecord = new Model({ name, description, rating });
+        const newRecord = new Review({ name, description, rating, description_ta, name_ta });
         await newRecord.save();
 
         return NextResponse.json({ message: 'Record created successfully.', data: newRecord });
@@ -33,10 +35,12 @@ export async function PUT(request: NextRequest) {
         const name = (formData.get('name') as string) ?? '';
         const description = (formData.get('description') as string) ?? '';
         const rating = (formData.get('rating') as string) ?? '';
+        const name_ta = (formData.get('name_ta') as string) ?? '';
+        const description_ta = (formData.get('description_ta') as string) ?? '';
 
-        const Fields: Record<string, string> = { name, description, rating };
+        const Fields: Record<string, string> = { name, description, rating, description_ta, name_ta };
 
-        const updatedRecord = await Model.findByIdAndUpdate(id, Fields, { new: true });
+        const updatedRecord = await Review.findByIdAndUpdate(id, Fields, { new: true });
 
         if (!updatedRecord) {
             return NextResponse.json({ message: 'Record not found.' }, { status: 404 });
@@ -57,7 +61,7 @@ export async function GET(request: NextRequest) {
 
         await connectToDatabase();
 
-        const record = await Model.findById(id);
+        const record = await Review.findById(id);
 
         if (!record) {
             return NextResponse.json({ message: 'Record not found.' }, { status: 404 });
@@ -81,7 +85,7 @@ export async function PATCH(req: NextRequest) {
     try {
         // Find user by email_code
         await connectToDatabase();
-        const dataModel = await Model.findById(id);
+        const dataModel = await Review.findById(id);
 
         if (!dataModel) {
             return NextResponse.json({ message: 'Data not found' }, { status: 400 });

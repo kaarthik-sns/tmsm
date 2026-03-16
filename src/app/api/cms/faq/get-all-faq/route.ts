@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import Model from '@/models/Faq';
+import Faq from '@/models/Faq';
 import connectToDatabase from '@/lib/mongodb';
 
 
@@ -9,7 +9,7 @@ export async function GET() {
 
         await connectToDatabase();
 
-        const record = await Model.find({});
+        const record = await Faq.find({});
 
         if (!record) {
             return NextResponse.json({ message: 'Record not found.' }, { status: 404 });

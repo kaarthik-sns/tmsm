@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
- import Faq from '@/models/Faq'; // Adjust this path based on your project structure
+import Faq from '@/models/Faq'; // Adjust this path based on your project structure
 import connectToDatabase from '@/lib/mongodb';
 export async function POST(request: NextRequest) {
     try {
@@ -7,13 +7,15 @@ export async function POST(request: NextRequest) {
         await connectToDatabase();
 
         const formData = await request.formData();
- 
+
         // Extract only the title and description fields
         const title = (formData.get('title') as string) ?? '';
         const description = (formData.get('description') as string) ?? '';
+        const title_ta = (formData.get('title_ta') as string) ?? '';
+        const description_ta = (formData.get('description_ta') as string) ?? '';
 
         // Prepare the fields to be inserted into the database
-        const FaqFields = { title, description };
+        const FaqFields = { title, description, title_ta, description_ta };
 
         // Create the new faq with the fields
         const Faqs = await Faq.create(FaqFields);

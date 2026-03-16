@@ -18,6 +18,8 @@ export default function Profile({ userId }) {
   const closePopup = () => setPopupImage(null); // Close the popup
   const router = useRouter();
 
+  const lang = localStorage.getItem('lang') || 'en';
+
   const myId = session?.user.id;
 
   // Move fetchUserData outside to be reusable
@@ -76,7 +78,7 @@ export default function Profile({ userId }) {
     if (userId) {
       fetchUserData();
     }
-  }, [userId,session]);
+  }, [userId, session]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -94,7 +96,7 @@ export default function Profile({ userId }) {
   const handlePreview = () => {
     if (profileData.horoscope) {
       // Open the file in a new tab
-      window.open(profileData.horoscope, "_blank");
+      window.open(`/api${profileData.horoscope}`, "_blank");
     } else {
       toast.error('No file uploaded to preview!', {
         className: "sonner-toast-success",
@@ -111,111 +113,124 @@ export default function Profile({ userId }) {
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-100 min-h-screen views">
       {/* Header Section */}
       <div className="profilecolor text-white py-8 relative">
-        <div className="container mx-auto flex flex-col lg:flex-row items-center lg:items-start">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center lg:items-start">
 
           {/* Left Side: Profile Info */}
-          <div className="flex flex-col items-center gap-6 lg:flex-row lg:items-start px-5">
+          <div className="flex flex-col items-center mt-5 gap-6 lg:flex-row lg:items-start w-full">
             <div className="relative">
               {/* Profile Picture */}
               <Image
-                src={profileData.profile_photo || "/images/user/dummy.png"}
+                src={profileData?.profile_photo ? `/api${profileData.profile_photo}` : "/images/user/dummy.png"}
                 alt="Profile Picture"
-                width={200} // Fixed width
-                height={200} // Fixed height
+                width={200}
+                height={200}
                 quality={100}
                 unoptimized={true}
-                className="w-40 h-40 object-cover rounded-full border-4 border-white cursor-pointer"
+                className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-full border-4 border-white cursor-pointer"
               />
             </div>
 
             <div className="text-center lg:text-left px-5">
-              <h1 className="text-2xl font-bold mb-2 text-white">{profileData.name || "No name provided"} {profileData.lastname || ""}</h1>
+              <h1 className="text-2xl font-bold mb-2 text-white">
+                {profileData.name || "No name provided"} {profileData.lastname || ""}
+              </h1>
               <p className="max-w-lg text-white text-justify">
                 {profileData.bride_groom_detail || ""}
               </p>
-              {(profileData.horoscope) && (
-                <button className="inline-block px-10 py-4 text-white duration-150 rounded-full md:text-sm ftext-custom mt-5" onClick={handlePreview} style={{ width: "200px", padding: "8px 0" }}>View Horoscope</button>
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm mt-5">
+                <p className="flex items-center">
+                  <FaPhoneAlt className="inline-block mr-1" />
+                  {profileData.phonenumber || "-"}
+                </p>
+                <p className="flex items-center">
+                  <FaEnvelope className="inline-block mr-1" />
+                  {profileData.email || "-"}
+                </p>
+                <p className="flex items-center">
+                  <FaMapMarkerAlt className="inline-block mr-1" />
+                  {profileData?.city?.name ? `${profileData?.city?.name}, ` : ""}
+                  {profileData?.state?.name ? `${profileData?.state?.name}, ` : ""}
+                  {profileData?.country?.name || ""}
+                </p>
+              </div>
+
+              {profileData.horoscope && (
+                <button
+                  onClick={handlePreview}
+                  className="inline-block px-5 py-2 text-white duration-150 rounded-full md:text-sm ftext-custom mt-5"
+                >
+                  {lang === 'ta' ? 'ஜாதகத்தை பார்க்க' : 'View Horoscope'}
+                </button>
               )}
             </div>
           </div>
 
-          {/* Right Side: Contact Info */}
-          <div className="p-6 rounded-lg text-white mt-6 lg:mt-0 lg:ml-10 md:px-26">
-            <h2 className="text-lg font-bold">CONTACT INFO</h2>
-            <div className="mt-2 conatct-bio">
-              <p><FaPhoneAlt className="inline-block mr-2" /> {profileData.phonenumber || "-"}</p>
-              <p><FaEnvelope className="inline-block mr-2" /> {profileData.email || "-"}</p>
-              <p>
-                <FaMapMarkerAlt className="inline-block mr-2" />
-                {profileData?.city?.name ? `${profileData?.city?.name}, ` : ""}
-                {profileData?.state?.name || ""}
-              </p>
-            </div>
-          </div>
 
         </div>
       </div>
-
       {/* Information Sections */}
-      <div className="container max-w-5xl mx-auto bg-light p-6 mt-6 mb-6 shadow-md rounded-lg">
+      <div className="container max-w-5xl mx-auto bg-light p-6 mt-6 mb-6 shadow-md rounded-lg ">
         {/* Verification */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 text-green-600">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 text-green-600 mb-2">
           <div className="flex items-center gap-1">
-            <FaCheckCircle /> <span>Email: {profileData.is_approve === true ? "Verified" : "Not Verified"}
+            <FaCheckCircle />
+            <span className="email_verfiy">
+              {lang == 'ta' ? "மின்னஞ்சல்: " : "Email: "}
+              {profileData.is_approve === true
+                ? (lang == 'ta' ? "சரிபார்க்கப்பட்டது" : "Verified")
+                : (lang == 'ta' ? "சரிபார்க்கப்படவில்லை" : "Not Verified")
+              }
             </span>
-          </div>
-          <div className="flex items-center gap-1">
-            <FaCheckCircle /> <span>Identity: {profileData.is_verify === true ? "Verified" : "Not Verified"}</span>
           </div>
         </div>
 
         {/* Personal Information */}
-        <h2 className="profile-heading py-6">Personal Information</h2>
+        <h2 className="profile-heading py-2 mb-2">{lang == 'ta' ? 'தனிப்பட்ட தகவல்' : 'Personal Information'}</h2>
         <div className="grid grid-cols-1 md:gap-4 mt-3 md:grid-cols-2 lg:grid-cols-3">
           <div className="contact-bio">
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">D.O.B</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'பிறந்த தேதி' : 'D.O.B'}</strong>
               <span>{profileData.birthdate ? formatDate(profileData.birthdate) : ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Age</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'வயது' : 'Age'}</strong>
               <span>{profileData.age || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Looking For</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'யாரை தேடுகிறேன்' : 'Looking For'}</strong>
               <span>{profileData.lookingfor || ""}</span>
             </p>
           </div>
 
           <div className="contact-bio">
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Religion</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'மதம்' : 'Religion'}</strong>
               <span>{profileData.religion || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Caste</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'சாதி' : 'Caste'}</strong>
               <span>{profileData.caste || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Sub Caste</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'முதலியார் உட்சாதி' : 'Subcaste in Mudaliyar'}</strong>
               <span>{profileData.subcaste || ""}</span>
             </p>
           </div>
 
           <div className="contact-bio">
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Place Of Birth</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'பிறந்த இடம்' : 'Place Of Birth'}</strong>
               <span>{profileData.place_of_birth || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Gender</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'பாலினம்' : 'Gender'}</strong>
               <span>{profileData.gender || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Complexion</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'நிறம்' : 'Complexion'}</strong>
               <span>{profileData.complexion || ""}</span>
             </p>
           </div>
@@ -227,105 +242,110 @@ export default function Profile({ userId }) {
         {/* Education & Occupation */}
         <div className="grid grid-cols-1 gap-4 mt-3 md:grid-cols-2">
           <div className="contact-bio">
-            <h2 className="profile-heading py-6">Family Information</h2>
+            <h2 className="profile-heading py-2 mb-2">{lang == 'ta' ? 'பிற தகவல்' : 'Other Information'}</h2>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-60">Kuladeivam</strong>
+              <strong className="w-auto md:w-60">{lang == 'ta' ? 'குலதெய்வம்' : 'Kuladeivam'}</strong>
               <span>{profileData.kuladeivam || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-60">Place of Kuladeivam</strong>
+              <strong className="w-auto md:w-60">{lang == 'ta' ? 'குலதெய்வ கோயில் இடம்' : 'Place of Kuladeivam'}</strong>
               <span>{profileData.place_of_kuladeivam_temple || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-60">Gothram</strong>
+              <strong className="w-auto md:w-60">{lang == 'ta' ? 'கோத்திரம்' : 'Gothram'}</strong>
               <span>{profileData.gothram || ""}</span>
             </p>
           </div>
           <div className="border-color mt-3 mb-3 md:hidden"></div>
 
           <div className="contact-bio">
-            <h2 className="profile-heading py-6">Education / Occupation</h2>
+            <h2 className="profile-heading py-2 mb-2">{lang == 'ta' ? 'கல்வி / தொழில்' : 'Education / Occupation'}</h2>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Education</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'கல்வி' : 'Education'}</strong>
               <span>{profileData.partner_pref_education || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Profession</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'தொழில்' : 'Profession'}</strong>
               <span>{profileData.profession || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Employed In</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'வேலைசெய்கின்ற இடம்' : 'Employed In'}</strong>
               <span>{profileData.job || ""}</span>
             </p>
           </div>
         </div>
 
+
         <div className="border-color mt-6 mb-6"></div>
 
         {/* Parent Details */}
-        <h2 className="profile-heading py-6">Parents Details</h2>
+        <h2 className="profile-heading py-2 mb-2">{lang == 'ta' ? 'பெற்றோர்களின் விவரங்கள்' : 'Parents Details'}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
           <div className="contact-bio">
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Father’s Name</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'தந்தையின் பெயர்' : 'Father’s Name'}</strong>
               <span>{profileData.father_name || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Phone</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'தொலைபேசி' : 'Phone'}</strong>
               <span>{profileData.father_phonenumber || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Religion</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'மதம்' : 'Religion'}</strong>
               <span>{profileData.father_religion || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Occupation</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'தொழில்' : 'Occupation'}</strong>
               <span>{profileData.father_occupation || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Profession</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'தொழில்முறை' : 'Profession'}</strong>
               <span>{profileData.father_profession || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Place of work</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'வேலை செய்விடம்' : 'Place of work'}</strong>
               <span>{profileData.father_placeOfWork || ""}</span>
             </p>
           </div>
 
           <div className="contact-bio">
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Mother’s Name</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'தாயின் பெயர்' : 'Mother’s Name'}</strong>
               <span>{profileData.mother_name || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Phone</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'தொலைபேசி' : 'Phone'}</strong>
               <span>{profileData.mother_phonenumber || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Religion</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'மதம்' : 'Religion'}</strong>
               <span>{profileData.mother_religion || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Occupation</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'தொழில்' : 'Occupation'}</strong>
               <span>{profileData.mother_occupation || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Profession</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'தொழில்முறை' : 'Profession'}</strong>
               <span>{profileData.mother_profession || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Place of work</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'வேலை செய்விடம்' : 'Place of work'}</strong>
               <span>{profileData.mother_placeOfWork || ""}</span>
             </p>
           </div>
         </div>
 
+
         <div className="border-color mt-6 mb-6"></div>
 
-        <div className="grid grid-cols-1 gap-4 mt-3">
-          <h2 className="profile-heading py-6">Address</h2>
+        <div className="grid grid-cols-1 mt-3">
+          <h2 className="profile-heading py-2">{lang === 'ta' ? 'முகவரி' : 'Address'}</h2>
           <div className="contact-bio">
             <p>{profileData.address || ""} </p>
+            {profileData?.city?.name ? `${profileData?.city?.name}, ` : ""}
+            {profileData?.state?.name ? `${profileData?.state?.name}, ` : ""}
+            {profileData?.country?.name || ""}
           </div>
         </div>
 
@@ -334,21 +354,21 @@ export default function Profile({ userId }) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
           {/* Partner Preference */}
           <div className="contact-bio">
-            <h2 className="profile-heading py-6">Partner Preference</h2>
+            <h2 className="profile-heading py-2 mb-2">{lang == 'ta' ? 'திருமண இணை எதிர்பார்ப்பு' : 'Partner Preference'}</h2>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Education</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'கல்வி' : 'Education'}</strong>
               <span>{profileData.partner_pref_education || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Age</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'வயது' : 'Age'}</strong>
               <span>{profileData.partner_pref_age || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Caste</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'சாதி' : 'Caste'}</strong>
               <span>{profileData.partner_pref_caste || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">SubCaste</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'முதலியார் உட்சாதி' : 'Subcaste in Mudaliyar'}</strong>
               <span>{profileData.partner_pref_subcaste || ""}</span>
             </p>
           </div>
@@ -357,38 +377,37 @@ export default function Profile({ userId }) {
 
           {/* References */}
           <div className="contact-bio">
-            <h2 className="profile-heading py-6">References</h2>
+            <h2 className="profile-heading py-2 mb-2">
+              {lang === 'ta' ? 'TMSM HUB திருமணத் தளத்தை பரிந்துரை செய்தவர்கள் விவரங்கள்' : 'Referral Person Details'}
+            </h2>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Reference 1</strong>
-              <span> {profileData.reference1 || ""}</span>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'பரிந்துரையாளர் 1' : 'Reference 1'}</strong>
+              <span>{profileData.reference1 || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
-              <strong className="w-auto md:w-40">Reference 2</strong>
+              <strong className="w-auto md:w-40">{lang == 'ta' ? 'பரிந்துரையாளர் 2' : 'Reference 2'}</strong>
               <span>{profileData.reference2 || ""}</span>
             </p>
-
           </div>
         </div>
 
         {/*Additional Pictures */}
-
-
         {(profileData.photo1 || profileData.photo2 || profileData.photo3 || profileData.photo4) && (
-          <> <div className="border-color mt-6 mb-6"></div>
+          <>
+            <div className="border-color mt-6 mb-6"></div>
             <div className="grid grid-cols-1 gap-4 mt-3">
-              <h2 className="profile-heading py-6">Additional Pictures</h2>
+              <h2 className="profile-heading py-2 mb-2">{lang == 'ta' ? 'புகைப்படம்' : 'Additional Pictures'}</h2>
               <div className="contact-bio flex flex-wrap gap-4">
                 {[profileData.photo1, profileData.photo2, profileData.photo3, profileData.photo4]
                   .filter(Boolean) // Removes `null` or `undefined` values
                   .map((photo, index) => (
                     <Image
                       key={index}
-                      src={photo}
+                      src={`/api${photo}`}
                       alt={`Profile Picture ${index + 1}`}
                       width={150}
                       height={150}
                       quality={100}
-                      unoptimized={true}
                       className="rounded-full border-4 border-white cursor-pointer"
                       onClick={() => openPopup(photo)}
                     />
@@ -420,7 +439,7 @@ export default function Profile({ userId }) {
                     </button>
                     <div className="flex justify-center items-center">
                       <img
-                        src={popupImage}
+                        src={`/api${popupImage}`}
                         alt="Enlarged Profile Picture"
                         className="max-w-full max-h-screen rounded-lg"
                       />
@@ -435,6 +454,6 @@ export default function Profile({ userId }) {
         )}
 
       </div>
-    </div>
+    </div >
   );
 }

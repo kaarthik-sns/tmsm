@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Model from '@/models/Home_page';
+import Home from '@/models/Home_page';
 import connectToDatabase from '@/lib/mongodb';
 import { promises as fs } from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 
-const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads', 'cms'); // Directory to save uploads
+const UPLOAD_DIR = path.join(process.cwd(), 'uploads', 'cms'); // Directory to save uploads
 
 // Handle PATCH requests: Update an existing entry
 export async function PATCH(request: NextRequest) {
@@ -28,6 +28,18 @@ export async function PATCH(request: NextRequest) {
         const banner_btn_text = (formData.get('banner_btn_text') as string) ?? '';
         const banner_btn_link = (formData.get('banner_btn_link') as string) ?? '';
 
+        const sec_one_title_ta = (formData.get('sec_one_title_ta') as string) ?? '';
+        const sec_one_desc_ta = (formData.get('sec_one_desc_ta') as string) ?? '';
+        const sec_two_title_ta = (formData.get('sec_two_title_ta') as string) ?? '';
+        const sec_two_desc_ta = (formData.get('sec_two_desc_ta') as string) ?? '';
+        const feature_one_ta = (formData.get('feature_one_ta') as string) ?? '';
+        const feature_two_ta = (formData.get('feature_two_ta') as string) ?? '';
+        const feature_three_ta = (formData.get('feature_three_ta') as string) ?? '';
+        const feature_four_ta = (formData.get('feature_four_ta') as string) ?? '';
+        const banner_title_ta = (formData.get('banner_title_ta') as string) ?? '';
+        const banner_btn_text_ta = (formData.get('banner_btn_text_ta') as string) ?? '';
+
+
         // Initialize Fields with text data
         let Fields: Record<string, string> = {
             sec_one_title,
@@ -41,6 +53,16 @@ export async function PATCH(request: NextRequest) {
             banner_title,
             banner_btn_text,
             banner_btn_link,
+            sec_one_title_ta,
+            sec_one_desc_ta,
+            sec_two_title_ta,
+            sec_two_desc_ta,
+            feature_one_ta,
+            feature_two_ta,
+            feature_three_ta,
+            feature_four_ta,
+            banner_title_ta,
+            banner_btn_text_ta,
         };
 
         // Process image fields
@@ -56,7 +78,7 @@ export async function PATCH(request: NextRequest) {
         for (const field of imageFields) {
 
             const file = formData.get(field.key) as File;
-      
+
             if (typeof file === 'string') {
                 // If the file is a string, return it directly
                 Fields[field.pathKey] = file;
@@ -75,14 +97,17 @@ export async function PATCH(request: NextRequest) {
         }
 
         // Check if a record exists
-        const existingRecord = await Model.findOne({});
+        const existingRecord = await Home.findOne({});
 
         if (existingRecord) {
             // Update the existing record
-            await Model.findOneAndUpdate(existingRecord._id, Fields, { new: true });
+            const filteredFields = Object.fromEntries(
+                Object.entries(Fields).filter(([_, value]) => value.trim() !== '')
+            );
+            await Home.findOneAndUpdate(existingRecord._id, filteredFields, { new: true });
         } else {
             // Create a new record
-            await Model.create(Fields);
+            await Home.create(Fields);
         }
 
         return NextResponse.json({ message: 'Record updated successfully.' });
@@ -99,7 +124,7 @@ export async function GET() {
 
         await connectToDatabase();
 
-        const record = await Model.findOne({});
+        const record = await Home.findOne({});
 
         if (!record) {
             return NextResponse.json({ message: 'Record not found.' }, { status: 404 });

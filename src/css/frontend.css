@@ -71,7 +71,7 @@ body {
 
 /*Footer */
 .dark-bg {
-    background: #323232;
+    background: #992222;
 }
 
 .footer-text a {
@@ -89,7 +89,7 @@ body {
 }
 
 .footer-text a:hover {
-    color: #D13333;
+    color: #ffd16c;
 }
 
 /*slider */
@@ -341,6 +341,7 @@ input:-internal-autofill-selected {
     font-family: 'Noto Sans';
     font-weight: 700;
     padding: 13px 40px 13px 40px;
+    font-size:14px;
 }
 
 .bg-dash-button {
@@ -349,6 +350,7 @@ input:-internal-autofill-selected {
     font-family: 'Noto Sans';
     font-weight: 700;
     padding: 13px 40px 13px 40px;
+    font-size:14px;
 }
 
 .dash-heading {
@@ -422,15 +424,18 @@ input:-internal-autofill-selected {
     color: #000;
     font-family: 'Noto Sans';
     font-weight: 600;
+    font-size: 12px;
 }
+
 .active-setting {
     color: #923d27;
     font-family: 'Noto Sans';
     font-weight: 800;
+    font-size: 12px;
 }
 
 .mt-20 {
-    margin-top:10rem;
+    margin-top: 10rem;
 }
 
 /*Responsive code*/
@@ -459,10 +464,35 @@ input:-internal-autofill-selected {
 }
 
 @media (max-width: 991px) {
+
     .slider-content {
-        font-size: 10px;
+        font-size: 9px;
         margin-top: 0rem;
         margin-bottom: .5rem;
+    }
+
+    .heading {
+        font-size: 30px;
+        line-height: 40px;
+    }
+
+    .join-heading {
+        font-size: 20px;
+        line-height: 30px;
+    }
+
+    .about-con-desc h3,
+    .story-right-desc h3,
+    .we-offer-title h3 {
+        font-size: 28px !important;
+        line-height: 40px !important;
+    }
+
+    .lang-ta .about-con-desc h3,
+    .lang-ta .story-right-desc h3,
+    .lang-ta .we-offer-title h3 {
+        font-size: 20px !important;
+        line-height: 20px !important;
     }
 }
 
@@ -566,6 +596,11 @@ input:-internal-autofill-selected {
     margin: 0 0 30px;
 }
 
+.lang-ta .about-con-desc p,
+.lang-ta .about-our-story p {
+    font-size: 14px;
+}
+
 .about-our-story {
     margin: 0;
     padding: 80px 0;
@@ -610,15 +645,15 @@ input:-internal-autofill-selected {
 .we-offer-title h3 {
     color: #333;
     font-family: "Playfair Display";
-    font-size: 50px;
+    font-size: 30px;
     font-weight: 700;
     line-height: normal;
-    margin: 0 0 30px;
+    margin: 0 0 40px;
 }
 
 .offer-list-itmes {
     position: relative;
-    background: #323232;
+    background: #ffd16c;
     border-radius: 10px;
     padding: 24px;
     height: 100%;
@@ -646,7 +681,7 @@ input:-internal-autofill-selected {
 }
 
 .offer-list-itmes h4 {
-    color: #FFF;
+    color: #000000;
     font-family: "Playfair Display";
     font-size: 20px;
     font-weight: 700;
@@ -654,14 +689,22 @@ input:-internal-autofill-selected {
     margin: 0 0 15px;
 }
 
+.lang-ta .offer-list-itmes h4 {
+    font-size: 18px;
+}
+
 .offer-list-itmes p {
-    color: #FFF;
+    color: #000000;
     text-align: justify;
     font-family: 'Noto Sans';
     font-size: 18px;
     font-weight: 300;
     line-height: 24px;
     margin: 0;
+}
+
+.lang-ta .offer-list-itmes p {
+    font-size: 16px;
 }
 
 /*profile */
@@ -678,7 +721,7 @@ input:-internal-autofill-selected {
 }
 
 .profile-heading {
-    font-size: 25px;
+    font-size: 18px;
     color: #93411B;
     font-family: "Playfair Display";
     font-weight: 700;
@@ -688,6 +731,7 @@ input:-internal-autofill-selected {
     font-weight: 400;
     color: #000;
     margin-bottom: 1em;
+    font-size: 12px;
 }
 
 .border-color {
@@ -701,7 +745,9 @@ input:-internal-autofill-selected {
 
 .contact-bio p span {
     text-transform: capitalize;
+    font-size: 14px;;
 }
+
 /**contact page**/
 .contact-info-con {
     margin: 0;
@@ -750,6 +796,10 @@ input:-internal-autofill-selected {
     margin: 0 0 16px;
 }
 
+.lang-ta .con-message p {
+    font-size: 14px;
+}
+
 .con-data-forms form .row {
     margin: 0 -15px;
 }
@@ -787,6 +837,11 @@ input:-internal-autofill-selected {
     padding: 13px 54px;
     border: 0;
     float: right
+}
+
+.lang-ta .cta-submit {
+    font-size: 16px;
+    padding: 11px 40px;
 }
 
 .right-contact-info {
@@ -1101,8 +1156,8 @@ input:-internal-autofill-selected {
     }
 
     .we-offer-title h3 {
-        font-size: 50px;
-        margin: 0 0 30px;
+        font-size: 30px;
+        margin: 0 0 40px;
     }
 
     .offer-list-itmes {
@@ -1225,7 +1280,7 @@ input:-internal-autofill-selected {
     }
 
     .top-title h2 {
-        font-size: 40px;
+        font-size: 30px;
         line-height: 40px;
     }
 
@@ -1308,6 +1363,7 @@ input:-internal-autofill-selected {
 
         }
     }
+
     .profile-heading {
         font-size: 20px;
     }
@@ -1328,13 +1384,16 @@ input:-internal-autofill-selected {
 .inner-banner-info {
     background: rgba(216, 140, 74, 0.60);
 }
+
 .faq-info-con {
     padding: 80px 0px 40px 0;
     background-color: #ffffff;
 }
+
 .faq-list-con {
     background-color: #ffffff;
 }
+
 .title {
     color: #D13333;
     font-family: "Playfair Display";
@@ -1342,6 +1401,7 @@ input:-internal-autofill-selected {
     font-weight: 700;
     line-height: normal;
 }
+
 .faq-content .sub-title {
     color: #323232;
     font-family: "Noto Sans";
@@ -1350,6 +1410,7 @@ input:-internal-autofill-selected {
     line-height: 30px;
     line-height: normal;
 }
+
 .faq-content p {
     color: #333333;
     text-align: justify;
@@ -1358,13 +1419,16 @@ input:-internal-autofill-selected {
     font-weight: 300;
     line-height: 30px;
 }
+
 .faq-list-con {
     padding: 0px 0px 80px 0;
 }
+
 .faq-list-con .border-btm {
     border-color: rgba(33, 28, 28, 0.70);
     border-bottom-width: 1px;
 }
+
 .faq-question {
     color: rgba(33, 28, 28, 0.90);
     text-align: justify;
@@ -1374,12 +1438,14 @@ input:-internal-autofill-selected {
     font-weight: 300;
     line-height: normal;
 }
+
 .faq-answer {
     font-family: "Noto Sans";
     font-size: 16px;
-    color:#333333;
+    color: #333333;
     font-weight: 600;
 }
+
 .expand-font {
     color: rgba(33, 28, 28, 0.90);
     text-align: justify;
@@ -1389,10 +1455,12 @@ input:-internal-autofill-selected {
     font-weight: 500;
     line-height: normal;
 }
-.faq-req-btn-row  {
+
+.faq-req-btn-row {
     padding-top: 50px;
 }
-.faq-req-btn-row .req-btn{
+
+.faq-req-btn-row .req-btn {
     border-radius: 5px;
     color: #323232;
     text-align: center;
@@ -1400,104 +1468,124 @@ input:-internal-autofill-selected {
     font-size: 18px;
     font-style: normal;
     font-weight: 600;
-    line-height: 30px; /* 166.667% */
+    line-height: 30px;
+    /* 166.667% */
     background: #FFD16C;
 }
+
 .faq-req-btn-row .req-btn:hover {
     color: #ffd16c;
     background: #af2c2c;
 }
+
 .faq-req-btn-row p {
-color: rgba(0, 0, 0, 0.50);
-font-family: "Noto Sans";
-font-size: 14px;
-font-weight: 300;
-line-height: 30px;
-padding-top: 1rem;
+    color: rgba(0, 0, 0, 0.50);
+    font-family: "Noto Sans";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 30px;
+    padding-top: 1rem;
 }
 
 /* Custom class for SweetAlert2 */
-.confirm-color{
+.confirm-color {
     background-color: rgba(16, 185, 129, .08);
     color: #10b981;
 }
+
 .cancel-color {
     background-color: rgba(251, 84, 84, .08);
     color: #fb5454;
 }
+
 .confirm-color-succes {
     background-color: rgba(16, 185, 129, .08);
     color: #10b981;
 }
+
 .swal2-popup {
-    font-family: 'Noto Sans'; /* Change to your preferred font family */
-  }
-  
-  .swal2-title {
-    font-family: 'Noto Sans'; /* Change to your preferred font family */
-  }
-  
-  .swal2-content {
-    font-family: 'Noto Sans'; /* Change to your preferred font family */
-  }
-  
-  .swal2-actions button {
-    font-family: 'Noto Sans'; /* Change to your preferred font family */
-  }
-  
+    font-family: 'Noto Sans';
+    /* Change to your preferred font family */
+}
+
+.swal2-title {
+    font-family: 'Noto Sans';
+    /* Change to your preferred font family */
+}
+
+.swal2-content {
+    font-family: 'Noto Sans';
+    /* Change to your preferred font family */
+}
+
+.swal2-actions button {
+    font-family: 'Noto Sans';
+    /* Change to your preferred font family */
+}
+
 @media only screen and (min-width: 768px) {
     .faq-info-con {
         padding: 5.56vw 0px 2.78vw 0;
     }
+
     .faq-list-con {
         padding: 0px 0px 5.56vw 0;
     }
-    .faq-req-btn-row  {
+
+    .faq-req-btn-row {
         padding-top: 3.47vw;
     }
 }
+
 @media only screen and (min-width: 1600px) {
     .faq-info-con {
         padding: 80px 0px 40px 0;
     }
+
     .faq-list-con {
         padding: 0px 0px 80px 0;
     }
-    .faq-req-btn-row  {
+
+    .faq-req-btn-row {
         padding-top: 50px;
     }
 }
+
 @media (max-width: 767px) {
     .faq-info-con {
         padding: 40px 0;
     }
-    .faq-req-btn-row  {
+
+    .faq-req-btn-row {
         padding-top: 40px;
     }
 }
 
-.team-info-con{
+.team-info-con {
     display: block;
     width: 100%;
     position: relative;
     padding: 80px 0;
     background: #fff;
 }
-.team-content{
+
+.team-content {
     display: block;
     margin: 0;
     clear: both;
 
 }
+
 .team-content h2 {
-    color: #333; 
+    color: #333;
     font-family: 'Noto Sans';
-    font-size:24px;
+    font-size: 24px;
     font-weight: 700;
     line-height: normal;
     margin: 0 0 20px;
 }
-.team-content p{
+
+.team-content p {
     color: #333;
     text-align: justify;
     font-family: 'Noto Sans';
@@ -1505,49 +1593,60 @@ padding-top: 1rem;
     font-weight: 300;
     line-height: 36px;
     margin: 0 0 15px;
+}
+
+@media only screen and (min-width: 768px) {
+    .team-info-con {
+        padding: 5.56vw 0;
     }
 
-    @media only screen and (min-width: 768px) {
-        .team-info-con{      
-            padding: 5.56vw 0;
-        }
-        .team-content h2 {
-            font-size:1.67vw;      
-            margin: 0 0 1.39vw;
-        }
-        .team-content p{           
-            font-size: 1.25vw;
-            line-height: 2.5vw;
-            margin: 0 0 1.04vw;
-        }
-        
-    }
-    @media only screen and (min-width: 1600px) {
-        .team-info-con{      
-            padding: 80px 0;
-        }
-        .team-content h2 {
-            font-size:24px;     
-            margin: 0 0 20px;
-        }
-        .team-content p{           
-            font-size: 18px;
-            line-height: 36px;
-            margin: 0 0 15px;
-        }
+    .team-content h2 {
+        font-size: 1.67vw;
+        margin: 0 0 1.39vw;
     }
 
-    @media (max-width: 767px) {
-        .team-info-con{
-            padding: 40px 0;
-        }
-        .team-content h3{
-            font-size:25px;
-        }
-        .team-content h2{
-            font-size: 25px;
-        }
+    .team-content p {
+        font-size: 1.25vw;
+        line-height: 2.5vw;
+        margin: 0 0 1.04vw;
     }
+
+}
+
+@media only screen and (min-width: 1600px) {
+    .team-info-con {
+        padding: 80px 0;
+    }
+
+    .team-content h2 {
+        font-size: 24px;
+        margin: 0 0 20px;
+    }
+
+    .team-content p {
+        font-size: 18px;
+        line-height: 36px;
+        margin: 0 0 15px;
+    }
+}
+
+@media (max-width: 767px) {
+    .team-info-con {
+        padding: 40px 0;
+    }
+
+    .team-content h3 {
+        font-size: 20px;
+        line-height: 30px;
+    }
+
+    .team-content h2 {
+        font-size: 25px;
+    }
+    .faq-answer {
+     font-size: 14px;
+    }
+}
 
 /* Radio Button */
 
@@ -1561,3 +1660,665 @@ input[type="radio"] {
 }
 
 
+.active-footer {
+    color: #ffd16c !important;
+}
+
+.team-info-con ul li {
+    line-height: 36px;
+    color: #333;
+}
+
+.team-info-con ul {
+    margin-bottom: 1em;
+}
+
+.no_text {
+    font-size: 12px;
+}
+
+@media (min-width: 640px) {
+    .sm\:max-w-md {
+        max-width: 40rem;
+    }
+}
+
+.react-datepicker-wrapper {
+    width: 100%;
+}
+
+.react-datepicker {
+    z-index: 9999 !important;
+    /* ✅ Ensures it's on top */
+}
+
+.react-datepicker__month-container {
+    position: relative;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.react-datepicker__header {
+    background-color: #fff;
+    /* ✅ Matches the design */
+    border-bottom: 1px solid #ddd;
+}
+
+/***** lang tamil *****/
+.lang-ta .slider-text {
+    font-size: 3vw;
+    line-height: 4vw;
+    max-width: 70vw;
+}
+
+@media (min-width: 1536px) {
+    .container-header {
+        max-width: 1540px;
+    }
+}
+
+.lang-ta .join-heading {
+    font-size: 27px;
+}
+
+.lang-ta .heading {
+    font-size: 30px;
+}
+
+.lang-ta .description p {
+    font-size: 16px;
+    text-align: left;
+}
+
+.lang-ta .heading-description {
+    font-size: 14px;
+}
+
+.lang-ta .header-text a {
+    font-size: 15px;
+}
+
+.lang-ta .footer-text a {
+    font-size: 14px;
+}
+
+@media only screen and (min-width: 768px) {
+
+    .lang-ta .top-title h2 {
+        font-size: 2.56vw;
+        line-height: 4vw;
+    }
+
+    .lang-ta .about-info-con {
+        padding: 5.56vw 0;
+    }
+
+    .lang-ta .about-con-desc {
+        padding: 3vw;
+    }
+
+
+    .lang-ta .about-con-desc p {
+        font-size: 1vw;
+        line-height: 2.08vw;
+        margin: 0 0 2.08vw;
+    }
+
+    .lang-ta .about-our-story {
+        padding: 5.556vw 0;
+    }
+
+    .lang-ta .story-right-desc h3 {
+        font-size: 3vw;
+        margin: 0 0 1.67vw;
+    }
+
+    .lang-ta .story-right-desc p {
+        font-size: 1vw;
+        line-height: 2.08vw;
+        margin: 0 0 1.04vw;
+    }
+
+    .lang-ta .about-we-offer {
+        padding: 5vw 0;
+    }
+
+    .lang-ta .we-offer-title h3 {
+        font-size: 3vw;
+        margin: 0 0 2.08vw;
+    }
+
+
+    .lang-ta .offer-icon {
+        width: 4.44vw;
+        height: 4.44vw;
+        margin: 0 0 1.39vw;
+    }
+
+    .lang-ta .offer-list-itmes h4 {
+        font-size: 1vw;
+        margin: 0 0 1.04vw;
+    }
+
+    .lang-ta .offer-list-itmes p {
+        font-size: 1vw;
+        line-height: 1.67vw;
+    }
+
+    /**/
+    .lang-ta .contact-info-con {
+        padding: 5.56vw 0;
+    }
+
+    .lang-ta .con-top-title h3 {
+        font-size: 20px;
+        margin: 0 0 2.08vw;
+    }
+
+    .lang-ta .con-message h4 {
+        font-size: 1vw;
+        line-height: 2.08vw;
+        margin: 0 0 1.11vw;
+    }
+
+    .lang-ta .con-message p {
+        font-size: 1vw;
+        line-height: 2.08vw;
+        margin: 0 0 1.11vw;
+    }
+
+    .lang-ta .con-data-forms form .row {
+        margin: 0 -1.04vw;
+    }
+
+    .lang-ta .con-list-info {
+        padding: 0 1.04vw;
+        margin: 0 0 1.39vw;
+    }
+
+    .lang-ta .con-list-info input[type="text"] {
+        padding: 1.25vw 0.69vw;
+    }
+
+    .lang-ta .con-list-info input[type="email"] {
+        padding: 1.25vw 0.69vw;
+    }
+
+    .lang-ta .con-list-info textarea {
+        padding: 1.25vw 0.69vw;
+    }
+
+    .lang-ta .cta-submit {
+        font-size: 1vw;
+        line-height: 2.08vw;
+        margin: 2.78vw 0 0;
+        padding: 0.9vw 3.75vw;
+    }
+
+    .lang-ta .con-list-of-data {
+        margin: 0 0 2.08vw;
+    }
+
+    .lang-ta .con-list-of-data h4 {
+        font-size: 1.2vw;
+        line-height: 2.08vw;
+        margin: 0 0 1.11vw;
+    }
+
+    .lang-ta .con-list-of-data p {
+        font-size: 1vw;
+        line-height: 2.08vw;
+        margin: 0 0 1.11vw;
+    }
+
+    .lang-ta .call-info .icon-info {
+        margin-right: 0.69vw;
+    }
+
+    .lang-ta .call-info img {
+        width: 2.22vw;
+    }
+
+    .lang-ta .social-media-info {
+        margin: 1.74vw 0 0;
+    }
+
+    .lang-ta .social-media-info li {
+        margin: 0 1.39vw 0 0;
+    }
+
+    .lang-ta .info-link-data {
+        font-size: 1.11vw;
+        padding: 0.69vw 2.43vw;
+    }
+
+    .lang-ta .social-media-info li a img {
+        width: 2.78vw;
+    }
+
+}
+
+@media only screen and (min-width: 1600px) {
+
+    .lang-ta .top-title h2 {
+        font-size: 35px;
+    }
+
+    .lang-ta .about-con-desc h3 {
+        font-size: 30px;
+        margin: 0 0 10px;
+    }
+
+    .lang-ta .about-con-desc p {
+        font-size: 14px;
+        line-height: 28px;
+    }
+
+    .lang-ta .story-right-desc h3 {
+        font-size: 30px;
+        margin: 0 0 10px;
+    }
+
+    .lang-ta .story-right-desc p {
+        font-size: 14px;
+        line-height: 28px;
+    }
+
+    .lang-ta .about-we-offer {
+        padding: 80px 0;
+    }
+
+    .lang-ta .we-offer-title h3 {
+        font-size: 30px;
+        margin: 0 0 40px;
+    }
+
+    .lang-ta .offer-list-itmes {
+        padding: 24px;
+    }
+
+    .lang-ta .offer-icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 0 20px;
+    }
+
+    .lang-ta .offer-list-itmes h4 {
+        font-size: 16px;
+        margin: 0 0 15px;
+    }
+
+    .lang-ta .offer-list-itmes p {
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    /**/
+    .lang-ta .contact-info-con {
+        padding: 80px 0;
+    }
+
+   
+
+    .lang-ta .con-message h4 {
+        font-size: 24px;
+        line-height: 30px;
+        margin: 0 0 16px;
+    }
+
+    .lang-ta .con-message p {
+        font-size: 16px;
+        line-height: 28px;
+        margin: 0 0 16px;
+    }
+
+    .lang-ta .con-data-forms form .row {
+        margin: 0 -15px;
+    }
+
+    .lang-ta .con-list-info {
+        padding: 0 15px;
+        margin: 0 0 20px;
+    }
+
+    .lang-ta .call-info img {
+        width: 32px;
+    }
+
+    .lang-ta .con-list-info input[type="text"] {
+        padding: 18px 10px;
+    }
+
+    .lang-ta .con-list-info input[type="email"] {
+        padding: 18px 10px;
+    }
+
+    .lang-ta .con-list-info textarea {
+        padding: 18px 10px;
+    }
+
+    .lang-ta .cta-submit {
+        font-size: 18px;
+        line-height: 30px;
+        margin: 40px 0px 0;
+        padding: 13px 54px;
+    }
+
+    .lang-ta .con-list-of-data {
+        margin: 0 0 30px;
+    }
+
+    .lang-ta .con-list-of-data h4 {
+        font-size: 24px;
+        line-height: 30px;
+        margin: 0 0 16px;
+    }
+
+    .lang-ta .con-list-of-data p {
+        font-size: 16px;
+        line-height: 26px;
+        margin: 0 0 16px;
+    }
+
+    .lang-ta .call-info .icon-info {
+        margin-right: 10px;
+    }
+
+    .lang-ta .social-media-info {
+        margin: 25px 0 0;
+    }
+
+    .lang-ta .social-media-info li {
+        margin: 0 20px 0 0;
+    }
+
+    .lang-ta .info-link-data {
+        font-size: 16px;
+        padding: 10px 35px;
+    }
+
+    .lang-ta .social-media-info li a img {
+        width: 40px;
+    }
+
+
+}
+
+@media (max-width: 767px) {
+    .lang-ta .inner-page-top-banner {
+        height: 200px;
+    }
+
+    .lang-ta .top-title h2 {
+        font-size: 18px;
+        line-height: 30px;
+    }
+
+    .lang-ta .about-left-media {
+        margin-bottom: 30px;
+    }
+
+    .lang-ta .about-info-con {
+        padding: 40px 0;
+    }
+
+    .lang-ta .about-con-desc {
+        padding: 30px;
+    }
+
+    .lang-ta .story-left-media {
+        margin-bottom: 30px;
+    }
+
+    .lang-ta .about-we-offer {
+        padding: 50px 0;
+    }
+
+    .lang-ta .list-offer-info {
+        margin-bottom: 30px;
+    }
+
+    .lang-ta .list-offer-info:last-child {
+        margin-bottom: 0;
+    }
+
+    .lang-ta .contact-info-con {
+        padding: 50px 0;
+    }
+
+    .lang-ta .con-top-title h3 {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+    .lang-ta .con-message h4 {
+        font-size: 20px;
+    }
+
+    .lang-ta .con-form-line-info {
+        margin-bottom: 30px;
+    }
+
+    .lang-ta .con-form-line-info::after {
+        width: 100%;
+        height: 1px;
+        right: 0;
+        top: auto;
+        bottom: 0;
+        left: 0;
+    }
+
+    .lang-ta .cta-submit {
+        margin: 30px 0;
+    }
+
+    .lang-ta .con-list-of-data h4 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .lang-ta .con-list-of-data p {
+        font-size: 14px;
+
+        .heading {
+            font-size: 30px;
+        }
+
+        .join-heading {
+            font-size: 25px;
+        }
+
+        .slider-padding {
+            padding: 1rem;
+
+        }
+    }
+
+    .lang-ta .profile-heading {
+        font-size: 20px;
+    }
+    
+}
+
+
+/*language based css updated */
+
+
+.lang-ta .register h2 {
+    font-size: 18px;
+}
+
+.lang-ta .register label {
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.lang-ta .register .text-red-600 {
+    font-size: 11px;
+}
+
+.lang-ta .register 
+input::placeholder, .lang-ta .register  select{
+    font-size: 14px;
+}
+.lang-ta  label {
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.lang-ta  
+input::placeholder, .lang-ta  select{
+    font-size: 14px;
+}
+
+.lang-ta .register .leading-snug {
+    font-size: 11px;
+    line-height: 2;
+}
+.lang-ta .register .leading-snug .danger {
+    color: rgb(220, 38, 38);
+}
+.email_verfiy {
+    font-size: 12px;
+}
+.lang-ta .bg-dash-button-active, .lang-ta .bg-dash-button, .lang-ta .accept,  .lang-ta .decline,  .lang-ta .view,.lang-ta .accepted  {
+    font-size: 12px;
+}
+
+.lang-ta div#swal2-html-container, .lang-ta h2#swal2-title, .lang-ta .confirm-color,  .lang-ta .cancel-color {
+    font-size: 12px;
+}
+
+.lang-ta  .contact-bio, .contact-bio   {
+    font-size: 14px;;
+}
+.lang-ta .views h3 {
+    font-size: 14px;
+}
+.lang-ta .profile-heading {
+    font-size: 14px;
+}
+.lang-ta   .offer-list-itmes p {
+    font-size: 14px;
+    line-height: 24px;
+    text-align: left;
+ }
+ 
+ .lang-ta .con-top-title h3, .lang-ta .con-list-of-data h4 {
+    font-size: 20px;
+    margin: 0 0 20px;
+}
+.lang-ta .about-con-desc h3 {
+    font-size: 30px;
+    margin: 0 0 20px;
+}
+.lang-ta .team-info-con ul li, .lang-ta .team-content p , .lang-ta .faq-content p, .lang-ta  .faq-answer   {
+    font-size: 14px;
+}
+
+.lang-ta .slider-text {
+    font-size: 50px;
+}
+
+.lang-ta .team-info-con h3, .lang-ta .faq-content h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.lang-ta .header-text a, .lang-ta .header-text button {
+    font-size: 15px;
+}
+
+
+.lang-ta .react-select__placeholder, .lang-ta .react-select-container {
+  font-size: 12px; /* Change to your desired size */
+  color: #999;     /* Optional: adjust color for readability */
+}
+
+
+@media (min-width: 768px) {
+    .register .md\:w-100 {
+        width: 30rem;
+    }
+}
+
+
+@media (max-width: 991px) {
+    .lang-ta .slider-text {
+        font-size: 14px;
+        line-height: 1;
+    }
+    .lang-ta .about-con-desc h3 {
+        font-size: 20px;
+        margin: 0 0 20px;
+    }
+
+    .lang-ta .description p {
+        font-size: 12px;
+        line-height: 30px;
+    }
+    .lang-ta .heading {
+      font-size: 18px;
+      line-height: 30px;
+    }
+    .icon-text {
+         font-size: 14px;
+    }
+    .lang-ta .join-heading {
+        font-size: 15px;
+    }
+    .slider-padding {
+        padding: 2rem;
+    }
+     .lang-ta .heading-description {
+        font-size: 12px;
+    }
+    .heading-text {
+        font-size: 16px;
+    }
+    .sub-heading {
+     font-size: 14px;
+    }
+    .lang-ta .member-container .title {
+       font-size: 16px  !important;
+        line-height: 30px;
+    }
+    .gap-y-4 {
+        row-gap: 0;
+    }
+    .grid p {
+        padding-bottom: 0;
+    }
+    .lang-ta .register p {
+        font-size: 12px;
+    }
+    .lang-ta .register .text-red-600  {
+        font-size: 9px;
+    }
+     .lang-ta .register .leading-snug {
+        font-size: 9px;
+        line-height: 2;
+    }
+    .lang-ta .team-content p, .faq-content p  {
+         font-size: 14px;
+         line-height: 30px;
+    }
+    .lang-ta .team-info-con ul li {
+        font-size: 14px;
+    }
+    .lang-ta .faq-answer {
+          font-size: 14px;
+    }
+    .lang-ta .faq-content .title {
+        font-size: 20px;
+    }
+     .lang-ta .con-top-title h3 {
+        font-size: 18px;
+        margin: 0 0 20px;
+    }
+
+
+}
+.lang-ta input {
+    font-size: 16px;
+}

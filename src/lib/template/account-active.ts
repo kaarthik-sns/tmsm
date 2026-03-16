@@ -2,8 +2,7 @@ export const accountReactivationTemplate = (
     name: string,
     loginUrl: string,
     email: string,
-    copyright: string,
-    mail_logo: string
+    copyright: string
   ): string => `<!DOCTYPE html>
 <html>
 <head>
@@ -109,16 +108,16 @@ export const accountReactivationTemplate = (
                 <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" class="container">
                     <tr>
                         <td align="center" class="logo">
-                            <img src="${mail_logo}" alt="TMSM Logo">
+                           <img src="cid:mail_logo" alt="TMSM Logo">
                         </td>
                     </tr>
                     <tr>
                         <td align="left">
                             <h1>Account Reactivated Successfully!</h1>
                             <h2>Hello ${name},</h2>
-                            <p>We are pleased to inform you that, as per your request, your matrimony profile on <strong>TMSM</strong> has been successfully <strong>reactivated</strong>.</p>
+                            <p>We are pleased to inform you that, as per your request, your matrimony profile on <strong>TMSM Hub</strong> has been successfully <strong>reactivated</strong>.</p>
                             <p>Your profile is now visible to other members, and you can continue using our services without any interruptions.</p>
-                            <p>Thank you for being a part of <strong>TMSM</strong>. We’re happy to have you back!</p>
+                            <p>Thank you for being a part of <strong>TMSM Hub</strong>. We’re happy to have you back!</p>
                             <p>Click the<strong> "Login Now" </strong>button below to access your account.</p>
                             <p style="text-align: center;">
                                 <a href="${loginUrl}" class="button">
@@ -129,7 +128,7 @@ export const accountReactivationTemplate = (
                             <!-- Added Thanks & Regards Section -->
                             <p style="margin-top: 30px; font-size: 12px; color:rgb(0, 0, 0);">
                                 <i>Thanks & Regards,<br>
-                                <span style="color:rgb(0, 0, 0); font-size: 12px;">TMSM Team</span></i>
+                                <span style="color:rgb(0, 0, 0); font-size: 12px;">TMSM Hub Team</span></i>
                             </p>
                             <p class="footer"><i>${copyright}</i></p>
                         </td>

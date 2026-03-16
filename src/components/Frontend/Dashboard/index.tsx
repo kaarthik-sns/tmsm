@@ -11,6 +11,7 @@ import Swal from 'sweetalert2'; // Import SweetAlert2
 
 const RequestStatus = () => {
   const { data: session } = useSession();
+  console.log(session);
   const myId = session?.user.id;
   const [activeTab, setActiveTab] = useState("profile");
   const [selectedProfile, setSelectedProfile] = useState(null);
@@ -21,6 +22,8 @@ const RequestStatus = () => {
   const [sentRequests, setSentReqData] = useState([]);
   const [receivedRequests, setRecivedReqData] = useState([]);
   const router = useRouter();
+
+  const lang = localStorage.getItem('lang') || 'en';
 
   const filteredRequests = (activeTab === "received" ? receivedRequests : sentRequests).filter(profile =>
     profile.user.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -82,33 +85,53 @@ const RequestStatus = () => {
     let successMessage = "";
     let confirmButtonText = "";
 
+
     switch (newStatus) {
       case "accepted":
-        confirmationMessage = "Do you want to accept this request?";
-        successMessage = "Request accepted successfully.";
-        confirmButtonText = "Yes, Accept";
+        confirmationMessage = lang === 'ta'
+          ? "இந்த கோரிக்கையை ஏற்றுக்கொள்ள விரும்புகிறீர்களா?"
+          : "Do you want to accept this request?";
+        successMessage = lang === 'ta'
+          ? "கோரிக்கை வெற்றிகரமாக ஏற்றுக்கொள்ளப்பட்டது."
+          : "Request accepted successfully.";
+        confirmButtonText = lang === 'ta' ? "ஆம், ஏற்று" : "Yes, Accept";
+        
         break;
+
       case "rejected":
-        confirmationMessage = "Do you want to decline this request?";
-        successMessage = "Request has been declined.";
-        confirmButtonText = "Yes, Decline";
+        confirmationMessage = lang === 'ta'
+          ? "இந்த கோரிக்கையை நிராகரிக்க விரும்புகிறீர்களா?"
+          : "Do you want to decline this request?";
+        successMessage = lang === 'ta'
+          ? "கோரிக்கை நிராகரிக்கப்பட்டது."
+          : "Request has been declined.";
+        confirmButtonText = lang === 'ta' ? "ஆம், நிராகரி" : "Yes, Decline";
+       
         break;
+
       case "cancel":
-        confirmationMessage = "Do you want to cancel this request?";
-        successMessage = "Request has been cancelled.";
-        confirmButtonText = "Yes, Cancel";
+        confirmationMessage = lang === 'ta'
+          ? "இந்த கோரிக்கையை ரத்து செய்ய விரும்புகிறீர்களா?"
+          : "Do you want to cancel this request?";
+        successMessage = lang === 'ta'
+          ? "கோரிக்கை ரத்துசெய்யப்பட்டது."
+          : "Request has been cancelled.";
+        confirmButtonText = lang === 'ta' ? "ஆம், ரத்து செய்" : "Yes, Cancel";
+      
         break;
+
       default:
         return;
     }
 
+
     const result = await Swal.fire({
-      title: "Are you sure?",
+      title: lang == 'ta' ? 'நீங்கள் உறுதியாக இருக்கிறீர்களா' : "Are you sure?",
       text: confirmationMessage,
       icon: "question",
       showCancelButton: true,
       confirmButtonText: confirmButtonText,
-      cancelButtonText: "No",
+      cancelButtonText: lang == 'ta' ? 'இல்லை' : "No",
       customClass: {
         confirmButton: 'confirm-color',  // Custom class for confirm button (green)
         cancelButton: 'cancel-color'       // Custom class for cancel button (red)
@@ -133,10 +156,10 @@ const RequestStatus = () => {
         fetchReqData(myId);
 
         await Swal.fire({
-          title: "Success!",
+          title: lang == 'ta' ? 'வெற்றிகரமாக' : "Success!",
           text: successMessage,
           icon: "success",
-          confirmButtonText: "OK",
+          confirmButtonText: lang == 'ta' ? 'சரி' : "OK",
           customClass: {
             confirmButton: 'confirm-color',  // Custom class for confirm button (green)
           },
@@ -145,9 +168,9 @@ const RequestStatus = () => {
       } catch (error) {
         await Swal.fire({
           title: "Error!",
-          text: "Failed to update request status. Please try again later.",
+          text: lang == 'ta' ? 'கோரிக்கை தோல்வியடைந்தது. பிறகு முயற்சிக்கவும்' : "Failed to update request status. Please try again later.",
           icon: "error",
-          confirmButtonText: "OK",
+          confirmButtonText: lang == 'ta' ? 'சரி' : "OK",
           customClass: {
             confirmButton: 'confirm-color',  // Custom class for confirm button (green)
           },
@@ -171,7 +194,7 @@ const RequestStatus = () => {
   return (
     <div className="bg-light min-h-screen flex justify-center py-10 px-4">
       <div className="container max-w-4xl p-6">
-        <h1 className="text-lg sm:text-xl font-semibold mb-4 text-gray-700">My Account</h1>
+        <h1 className="text-lg sm:text-xl font-semibold mb-4 text-gray-700">{lang == 'ta' ? 'எனது பக்கம்' : 'My Account'}</h1>
 
         {/* Tabs Navigation */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-2 sm:space-y-0">
@@ -183,25 +206,25 @@ const RequestStatus = () => {
                 setIsEditMode(false); // Reset edit mode when switching to profile
               }}
             >
-              My Profile
+              {lang == 'ta' ? 'எனது சுயவிவரம்' : 'My Profile'}
             </button>
             <button
               className={`px-4 py-2 rounded-full ${activeTab === "received" ? "bg-dash-button-active" : "bg-dash-button"}`}
               onClick={() => setActiveTab("received")}
             >
-              Received Request
+              {lang == 'ta' ? 'பெறப்பட்ட கோரிக்கை' : 'Received Request'}
             </button>
             <button
               className={`px-4 py-2 rounded-full ${activeTab === "sent" ? "bg-dash-button-active" : "bg-dash-button"}`}
               onClick={() => setActiveTab("sent")}
             >
-              Sent Request
+              {lang == 'ta' ? 'அனுப்பிய கோரிக்கை' : 'Sent Request'}
             </button>
             <button
               className={`px-4 py-2 rounded-full ${activeTab === "settings" ? "bg-dash-button-active" : "bg-dash-button"}`}
               onClick={() => setActiveTab("settings")}
             >
-              Settings
+              {lang == 'ta' ? 'அமைப்புகள்' : 'Settings'}
             </button>
           </div>
 
@@ -231,7 +254,7 @@ const RequestStatus = () => {
                     className="flex cursor-pointer items-center justify-center gap-2 rounded bg-edit px-2 py-1 text-sm font-medium text-white hover:bg-opacity-80"
                     onClick={handleEditProfile}
                   >
-                    <span>Edit Profile</span>
+                    <span>{lang == 'ta' ? 'சுயவிவரம் திருத்தவும்' : 'Edit Profile'}</span>
                   </label>
                 </div>
               </>
@@ -243,7 +266,7 @@ const RequestStatus = () => {
                     className="flex cursor-pointer items-center justify-center gap-2 rounded bg-edit px-2 py-1 text-sm font-medium text-white hover:bg-opacity-80"
                     onClick={handleEditProfile}
                   >
-                    <span>Back</span>
+                    <span>{lang == 'ta' ? 'திரும்ப செல்' : 'Go back'}</span>
                   </label>
                 </div>
                 <ProfileUser userId={myId} />
@@ -260,16 +283,17 @@ const RequestStatus = () => {
                 onViewProfile={handleViewProfile}
                 onHandleRequest={handleRequest}
                 onRedirectProfile={redirectProfile}
+                lang={lang}
               />
             ))
           ) : (
-            <p className="text-gray-500 text-center mt-20">No requests found</p>
+            <p className="text-gray-500 text-center mt-20">{lang == 'ta' ? 'கோரிக்கைகள் எதுவும் இல்லை' : 'No requests found'}</p>
           )}
         </div>
       </div>
 
       {/* Profile Modal */}
-      {isModalOpen && selectedProfile && <ProfileModal profile={selectedProfile} onClose={handleCloseModal} />}
+      {isModalOpen && selectedProfile && <ProfileModal lang={lang} profile={selectedProfile} onClose={handleCloseModal} />}
     </div>
 
   );
@@ -277,37 +301,50 @@ const RequestStatus = () => {
 
 
 // Profile Card Component
-const ProfileCard = ({ profile, activeTab, onViewProfile, onHandleRequest, onRedirectProfile }) => (
+const ProfileCard = ({ profile, activeTab, onViewProfile, onHandleRequest, onRedirectProfile, lang }) => (
 
   <div className="bg-white rounded-lg p-4 sm:p-6 shadow-md flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 mb-4">
-    <img src={profile.user.profile_photo} alt={profile.user.name} className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border cursor-pointer" onClick={() => onViewProfile(profile)} />
+    <img src={`/api${profile.user.profile_photo}`} alt={profile.user.name} className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border cursor-pointer" onClick={() => onViewProfile(profile)} />
+
     <div className="flex-1 text-center sm:text-left">
       <h2 className="dash-heading mb-2">{profile.user.name}</h2>
-      <p className="text-gray-600 text-sm">{profile.user.profession} | Age: {profile.user.age}</p>
-      <p className="text-xs text-gray-700 md:block hidden">Caste: {profile.user.caste} | SubCaste: {profile.user.subcaste}</p>
+      <p className="text-xs text-gray-500">
+        {lang == 'ta' ? 'வயது: ' : 'Age: '} {profile.user.age} |
+        {lang == 'ta' ? 'தொழில்: ' : 'Profession: '} {profile.user.profession} |
+        {lang == 'ta' ? 'கல்வி: ' : 'Education: '} {profile.user.education}
+      </p>
+      <p className="text-xs text-gray-500 md:block hidden">
+        {lang == 'ta' ? 'மதம்: ' : 'Religion: '} {profile.user.religion} |
+        {lang == 'ta' ? 'குலம்: ' : 'Caste: '} {profile.user.caste} |
+        {lang == 'ta' ? 'உட்சாதி: ' : 'SubCaste: '} {profile.user.subcaste}
+      </p>
+      <p className="text-xs text-gray-500">
+        {profile.user.address ? (lang == 'ta' ? 'முகவரி: ' : 'Address: ') + profile.user.address : ""}
+      </p>
     </div>
+
+
     <div className="flex flex-wrap gap-2 sm:gap-4 justify-center sm:justify-start">
 
       {
         (activeTab === "received" && profile.status === "pending") ? (
           <>
-            <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm accept" onClick={() => onHandleRequest(profile._id, 'accepted')}>Accept</button>
-            <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm decline" onClick={() => onHandleRequest(profile._id, 'rejected')}>Decline</button>
+            <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm accept" onClick={() => onHandleRequest(profile._id, 'accepted')}>{lang == 'ta' ? 'ஏற்றுக்கொள்' : 'Accept'}</button>
+            <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm decline" onClick={() => onHandleRequest(profile._id, 'rejected')}>{lang == 'ta' ? 'நிராகரி' : 'Decline'}</button>
           </>
         ) : profile.status === "accepted" ? (
           <>
-            <button className="px-3 py-1 sm:px-4 sm:py-2 bg-green-500 rounded-full text-xs sm:text-sm accepted" >Accepted</button>
+            <button className="px-3 py-1 sm:px-4 sm:py-2 bg-green-500 rounded-full text-xs sm:text-sm accepted" >{lang == 'ta' ? 'ஏற்றுக்கொள்ளப்பட்டது' : 'Accepted'}</button>
           </>
         ) : profile.status === "rejected" ? (
           <>
-            <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm decline" >Declined</button>
+            <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm decline" >{lang == 'ta' ? 'நிராகரிக்கப்பட்டது' : 'Declined'}</button>
           </>
         ) : (activeTab !== "received" && profile.status === "pending") ? (
           <>
-            <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm decline" onClick={() => onHandleRequest(profile._id, 'cancel')}>Cancel</button>
+            <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm decline" onClick={() => onHandleRequest(profile._id, 'cancel')}>{lang == 'ta' ? 'ரத்து செய்' : 'Cancel'}</button>
           </>
         ) : null
-
       }
 
       {
@@ -316,14 +353,14 @@ const ProfileCard = ({ profile, activeTab, onViewProfile, onHandleRequest, onRed
             className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm view"
             onClick={() => onRedirectProfile(profile.user._id)}
           >
-            View Profile
+            {lang == 'ta' ? 'சுயவிவரத்தைக் காண்க' : 'View Profile'}
           </button>
         ) : (
           <button
             className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm view"
             onClick={() => onViewProfile(profile)}
           >
-            Basic info
+            {lang == 'ta' ? 'அடிப்படை தகவல்' : 'Basic info'}
           </button>
         )
       }
@@ -333,7 +370,7 @@ const ProfileCard = ({ profile, activeTab, onViewProfile, onHandleRequest, onRed
 
 );
 
-const ProfileModal = ({ profile, onClose }) => (
+const ProfileModal = ({ profile, onClose, lang }) => (
   <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 px-4">
     <div className="bg-white p-4 sm:p-6 rounded-lg max-w-sm sm:max-w-md w-full relative">
       <button
@@ -356,11 +393,20 @@ const ProfileModal = ({ profile, onClose }) => (
         </svg>
       </button>
       <div className="flex flex-col items-center text-center">
-        <img src={profile.user.profile_photo} alt={profile.user.name} className="w-20 h-20 rounded-full border mb-4" />
+        <img src={`/api${profile.user.profile_photo}`} alt={profile.user.name} className="w-20 h-20 rounded-full border mb-4" />
         <h2 className="dash-heading">{profile.user.name}</h2>
-        <p className="text-gray-600">{profile.user.profession}</p>
-        <p className="text-gray-500 text-sm">Age: {profile.user.age}</p>
-        <p className="text-gray-500 text-sm">Caste: {profile.user.caste} | SubCaste: {profile.user.subcaste}</p>
+        <p className="text-gray-500 text-sm">{lang == 'ta' ? 'வயது: ' : 'Age: '}  {profile.user.age}</p>
+        <p className="text-gray-500 text-sm">{lang == 'ta' ? 'தொழில்: ' : 'Profession: '} {profile.user.profession} | {lang == 'ta' ? 'கல்வி: ' : 'Education: '} {profile.user.education} </p>
+        <p className="text-gray-500 text-sm">{lang == 'ta' ? 'மதம்: ' : 'Religion: '} {profile.user.religion} | {lang == 'ta' ? 'குலம்: ' : 'Caste: '} {profile.user.caste} | {lang == 'ta' ? 'துணை சாதி: ' : 'SubCaste: '} {profile.user.subcaste}</p>
+        <p className="text-gray-500 text-sm"> {profile.user.address || ""} </p>
+
+        <p className="text-xs text-gray-500">
+          {profile.user.profession} |
+          {profile.user.education}
+        </p>
+
+
+
         {/* <div className="flex flex-wrap gap-2 sm:gap-4 justify-center sm:justify-start mt-5">
           <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm accept">Accept</button>
           <button className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm decline">Decline</button>

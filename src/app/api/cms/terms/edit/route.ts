@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Term from '@/models/Terms'; // Adjust this path based on your project structure
+import Terms from '@/models/Terms'; // Adjust this path based on your project structure
 import connectToDatabase from '@/lib/mongodb';
 
 export async function POST(request: NextRequest) {
@@ -8,16 +8,18 @@ export async function POST(request: NextRequest) {
 
     // Extract all fields from formData
     const description = (formData.get('description') as string) ?? '';
+    const description_ta = (formData.get('description_ta') as string) ?? '';
 
     try {
         await connectToDatabase();
 
-        let model = await Term.findOne();
+        let model = await Terms.findOne();
 
         if (!model) {
-            model = new Term({ description });
+            model = new Terms({ description, description_ta });
         } else {
             model.description = description || model.description;
+            model.description_ta = description_ta || model.description_ta;
         }
 
         await model.save();
