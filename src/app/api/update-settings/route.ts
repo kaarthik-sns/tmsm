@@ -29,6 +29,11 @@ export async function POST(req: NextRequest) {
     const admin_to_email_id = formData.get('admin_to_email_id') as string;
     const admin_from_email_id = formData.get('admin_from_email_id') as string;
     const phone_no = formData.get('phone_no') as string;
+    const contact_person_name_1 = formData.get('contact_person_name_1') as string;
+    const phone_no_2 = formData.get('phone_no_2') as string;
+    const contact_person_name_2 = formData.get('contact_person_name_2') as string;
+    const phone_no_3 = formData.get('phone_no_3') as string;
+    const contact_person_name_3 = formData.get('contact_person_name_3') as string;
     const address = formData.get('address') as string;
     const domain_url = formData.get('domain_url') as string;
     const copyright = formData.get('copyright') as string;
@@ -62,6 +67,11 @@ export async function POST(req: NextRequest) {
     settings.admin_to_email_id = admin_to_email_id ?? "";
     settings.admin_from_email_id = admin_from_email_id ?? "";
     settings.phone_no = phone_no ?? "";
+    settings.contact_person_name_1 = contact_person_name_1 ?? "";
+    settings.phone_no_2 = phone_no_2 ?? "";
+    settings.contact_person_name_2 = contact_person_name_2 ?? "";
+    settings.phone_no_3 = phone_no_3 ?? "";
+    settings.contact_person_name_3 = contact_person_name_3 ?? "";
     settings.address = address ?? "";
     settings.domain_url = domain_url ?? "";
     settings.copyright = copyright ?? "";

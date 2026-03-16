@@ -69,6 +69,26 @@ const UserTable = () => {
         ["clean"], // Remove formatting button
     ];
 
+    const formatDate = (dateString: string | undefined | null) => {
+        if (!dateString) return "-";
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return "-";
+
+        const day = date.getDate();
+        const month = date.toLocaleString('en-US', { month: 'short' }).toLowerCase();
+        const year = date.getFullYear();
+
+        let hours = date.getHours();
+        const minutes = date.getMinutes();
+        const ampm = hours >= 12 ? 'pm' : 'am';
+
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+
+        return `${day}-${month}-${year} ${hours}:${minutesStr}${ampm}`;
+    };
+
     const handleView = (contactItem) => {
         setModalData(contactItem); // Set the data for the modal
         setIsModalOpen(true);  // Open the modal
@@ -197,7 +217,7 @@ const UserTable = () => {
     };
 
     const handleDelete = async (Id) => {
-       
+
         const result = await Swal.fire({
             title: isTamil ? 'உறுதியாக இருக்கிறீர்களா?' : 'Are you sure?',
             text: isTamil ? 'இந்த தகவலை நீக்க விரும்புகிறீர்களா?' : 'Do you want to delete this data?',
@@ -263,102 +283,182 @@ const UserTable = () => {
             <Breadcrumb pageName={isTamil ? 'தொடர்பு கொண்டவர்கள் பட்டியல்' : 'List Contact Us'} />
             <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">
 
-                <div className="mt-12 shadow-sm border rounded-lg overflow-x-auto">
+                <div className="mt-12 w-full">
 
-                    <table className="w-full table-auto text-md text-left">
-                        <thead className="text-gray-600 font-medium border-b">
-                            <tr>
-                                <th className="py-3 px-4 sm:px-6 dark-text">#</th>
-                                <th className="py-3 px-4 sm:px-6 dark-text">{isTamil ? 'பெயர்' : 'Name'}</th>
-                                <th className="hidden sm:table-cell py-3 px-4 sm:px-6 dark-text">{isTamil ? 'மின்னஞ்சல்' : 'Email'}</th>
-                                <th className="hidden sm:table-cell py-3 px-4 sm:px-6 dark-text">{isTamil ? 'தொலைபேசி எண்' : 'Phone Number'}</th>
-                                <th className="hidden sm:table-cell py-3 px-4 sm:px-6 dark-text">{isTamil ? 'செய்தி' : 'Message'}</th>
-                                <th className="py-3 px-4 sm:px-6 dark-text">{isTamil ? 'செயல்பாடுகள்' : 'Action'}</th>
-                            </tr>
-                        </thead>
-                        <tbody className="text-gray-600 divide-y">
-                            {tableItems.length === 0 ? (
+                    {/* Desktop Table View */}
+                    <div className="hidden lg:block border rounded-lg shadow-sm overflow-x-auto">
+                        <table className="w-full table-auto text-md text-left min-w-max">
+                            <thead className="text-gray-600 font-medium border-b bg-gray-50 dark:bg-meta-4 dark:text-white">
                                 <tr>
-                                    <td colSpan={6} className="text-center px-6 py-4 whitespace-nowrap">
-                                        {isTamil ? 'தரவு எதுவும் கிடைக்கவில்லை' : 'No data found'}
-                                    </td>
+                                    <th className="py-3 px-4 sm:px-6">{isTamil ? '#' : '#'}</th>
+                                    <th className="py-3 px-4 sm:px-6">{isTamil ? 'பெயர்' : 'Name'}</th>
+                                    <th className="py-3 px-4 sm:px-6">{isTamil ? 'மின்னஞ்சல்' : 'Email'}</th>
+                                    <th className="py-3 px-4 sm:px-6">{isTamil ? 'தொலைபேசி எண்' : 'Phone Number'}</th>
+                                    <th className="py-3 px-4 sm:px-6">{isTamil ? 'செய்தி' : 'Message'}</th>
+                                    <th className="py-3 px-4 sm:px-6">{isTamil ? 'தேதி' : 'Date'}</th>
+                                    <th className="py-3 px-4 sm:px-6">{isTamil ? 'செயல்பாடுகள்' : 'Action'}</th>
                                 </tr>
-                            ) : (
-                                tableItems.map((item, idx) => (
-                                    <tr key={idx} className="odd:bg-gray-50 even:bg-white hover:bg-gray-100">
-                                        <td className="px-4 sm:px-6 py-3 whitespace-nowrap text-sm">
-                                            <span className="font-medium text-black dark:text-white">
-                                                {idx + 1}
-                                            </span>
-                                        </td>
-
-                                        <td className="px-4 sm:px-6 py-3 whitespace-nowrap">
-                                            <h5 className="font-medium text-black dark:text-white text-sm">
-                                                {item.name}
-                                            </h5>
-                                        </td>
-
-                                        <td className="hidden sm:table-cell px-4 sm:px-6 py-3 whitespace-nowrap">
-                                            <h5 className="font-medium text-black dark:text-white text-sm">
-                                                {item.email}
-                                            </h5>
-                                        </td>
-
-                                        <td className="hidden sm:table-cell px-4 sm:px-6 py-3 whitespace-nowrap">
-                                            <h5 className="font-medium text-black dark:text-white text-sm">
-                                                {item.phone}
-                                            </h5>
-                                        </td>
-
-                                        <td className="hidden sm:table-cell px-4 sm:px-6 py-3 whitespace-nowrap">
-                                            <h5 className="font-medium text-black dark:text-white text-sm">
-                                                {item.message.length > 50 ? item.message.substring(0, 50) + "..." : item.message}
-                                            </h5>
-                                        </td>
-
-                                        <td className="px-4 sm:px-6 py-3 whitespace-nowrap">
-                                            <div className="flex items-center space-x-2">
-                                                <button
-                                                    onClick={() => handleView(item)}
-                                                    className="p-2 text-blue-600 hover:text-blue-500 hover:bg-blue-50 rounded-full transition duration-150"
-                                                    aria-label="View"
-                                                >
-                                                    <svg
-                                                        className="w-5 h-5 fill-current"
-                                                        viewBox="0 0 18 18"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                    >
-                                                        <path
-                                                            d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
-                                                        />
-                                                        <path
-                                                            d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
-                                                        />
-                                                    </svg>
-                                                </button>
-
-                                                <button
-                                                    onClick={() => handleDelete(item._id)}
-                                                    className="p-2 text-red-600 hover:text-red-500 hover:bg-red-50 rounded-full transition duration-150"
-                                                    aria-label="Delete"
-                                                >
-                                                    <svg
-                                                        className="w-5 h-5 fill-current"
-                                                        viewBox="0 0 18 18"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                    >
-                                                        <path
-                                                            d="M13.7535 2.47502H11.5879V1.9969C11.5879 1.15315 10.9129 0.478149 10.0691 0.478149H7.90352C7.05977 0.478149 6.38477 1.15315 6.38477 1.9969V2.47502H4.21914C3.40352 2.47502 2.72852 3.15002 2.72852 3.96565V4.8094C2.72852 5.42815 3.09414 5.9344 3.62852 6.1594L4.07852 15.4688C4.13477 16.6219 5.09102 17.5219 6.24414 17.5219H11.7004C12.8535 17.5219 13.8098 16.6219 13.866 15.4688L14.3441 6.13127C14.8785 5.90627 15.2441 5.3719 15.2441 4.78127V3.93752C15.2441 3.15002 14.5691 2.47502 13.7535 2.47502ZM7.67852 1.9969C7.67852 1.85627 7.79102 1.74377 7.93164 1.74377H10.0973C10.2379 1.74377 10.3504 1.85627 10.3504 1.9969V2.47502H7.70664V1.9969H7.67852ZM4.02227 3.96565C4.02227 3.85315 4.10664 3.74065 4.24727 3.74065H13.7535C13.866 3.74065 13.9785 3.82502 13.9785 3.96565V4.8094C13.9785 4.9219 13.8941 5.0344 13.7535 5.0344H4.24727C4.13477 5.0344 4.02227 4.95002 4.02227 4.8094V3.96565ZM11.7285 16.2563H6.27227C5.79414 16.2563 5.40039 15.8906 5.37227 15.3844L4.95039 6.2719H13.0785L12.6566 15.3844C12.6004 15.8625 12.2066 16.2563 11.7285 16.2563Z"
-                                                        />
-                                                    </svg>
-                                                </button>
-                                            </div>
+                            </thead>
+                            <tbody className="text-gray-600 divide-y">
+                                {tableItems.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={7} className="text-center px-6 py-4 whitespace-nowrap">
+                                            {isTamil ? 'தரவு எதுவும் கிடைக்கவில்லை' : 'No data found'}
                                         </td>
                                     </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
+                                ) : (
+                                    tableItems.map((item, idx) => (
+                                        <tr key={idx} className="odd:bg-gray-50 even:bg-white hover:bg-gray-100">
+                                            <td className="px-4 sm:px-6 py-3 whitespace-nowrap text-sm">
+                                                <span className="font-medium text-black dark:text-white">
+                                                    {idx + 1}
+                                                </span>
+                                            </td>
+
+                                            <td className="px-4 sm:px-6 py-3 whitespace-nowrap">
+                                                <h5 className="font-medium text-black dark:text-white text-sm">
+                                                    {item.name}
+                                                </h5>
+                                            </td>
+
+                                            <td className="px-4 sm:px-6 py-3 whitespace-nowrap">
+                                                <h5 className="font-medium text-black dark:text-white text-sm">
+                                                    {item.email}
+                                                </h5>
+                                            </td>
+
+                                            <td className="px-4 sm:px-6 py-3 whitespace-nowrap">
+                                                <h5 className="font-medium text-black dark:text-white text-sm">
+                                                    {item.phone}
+                                                </h5>
+                                            </td>
+
+                                            <td className="px-4 sm:px-6 py-3 whitespace-nowrap">
+                                                <h5 className="font-medium text-black dark:text-white text-sm">
+                                                    {item.message?.length > 50 ? item.message.substring(0, 50) + "..." : item.message}
+                                                </h5>
+                                            </td>
+
+                                            <td className="px-4 sm:px-6 py-3 whitespace-nowrap">
+                                                <h5 className="font-medium text-black dark:text-white text-sm">
+                                                    {formatDate(item.created_at)}
+                                                </h5>
+                                            </td>
+
+                                            <td className="px-4 sm:px-6 py-3 whitespace-nowrap">
+                                                <div className="flex items-center space-x-2">
+                                                    <button
+                                                        onClick={() => handleView(item)}
+                                                        className="p-2 text-blue-600 hover:text-blue-500 hover:bg-blue-50 rounded-full transition duration-150"
+                                                        aria-label="View"
+                                                    >
+                                                        <svg
+                                                            className="w-5 h-5 fill-current"
+                                                            viewBox="0 0 18 18"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                        >
+                                                            <path
+                                                                d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
+                                                            />
+                                                            <path
+                                                                d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
+                                                            />
+                                                        </svg>
+                                                    </button>
+
+                                                    <button
+                                                        onClick={() => handleDelete(item._id)}
+                                                        className="p-2 text-red-600 hover:text-red-500 hover:bg-red-50 rounded-full transition duration-150"
+                                                        aria-label="Delete"
+                                                    >
+                                                        <svg
+                                                            className="w-5 h-5 fill-current"
+                                                            viewBox="0 0 18 18"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                        >
+                                                            <path
+                                                                d="M13.7535 2.47502H11.5879V1.9969C11.5879 1.15315 10.9129 0.478149 10.0691 0.478149H7.90352C7.05977 0.478149 6.38477 1.15315 6.38477 1.9969V2.47502H4.21914C3.40352 2.47502 2.72852 3.15002 2.72852 3.96565V4.8094C2.72852 5.42815 3.09414 5.9344 3.62852 6.1594L4.07852 15.4688C4.13477 16.6219 5.09102 17.5219 6.24414 17.5219H11.7004C12.8535 17.5219 13.8098 16.6219 13.866 15.4688L14.3441 6.13127C14.8785 5.90627 15.2441 5.3719 15.2441 4.78127V3.93752C15.2441 3.15002 14.5691 2.47502 13.7535 2.47502ZM7.67852 1.9969C7.67852 1.85627 7.79102 1.74377 7.93164 1.74377H10.0973C10.2379 1.74377 10.3504 1.85627 10.3504 1.9969V2.47502H7.70664V1.9969H7.67852ZM4.02227 3.96565C4.02227 3.85315 4.10664 3.74065 4.24727 3.74065H13.7535C13.866 3.74065 13.9785 3.82502 13.9785 3.96565V4.8094C13.9785 4.9219 13.8941 5.0344 13.7535 5.0344H4.24727C4.13477 5.0344 4.02227 4.95002 4.02227 4.8094V3.96565ZM11.7285 16.2563H6.27227C5.79414 16.2563 5.40039 15.8906 5.37227 15.3844L4.95039 6.2719H13.0785L12.6566 15.3844C12.6004 15.8625 12.2066 16.2563 11.7285 16.2563Z"
+                                                            />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {/* Mobile/Tablet Card View */}
+                    <div className="block lg:hidden mt-4 space-y-4">
+                        {tableItems.length === 0 ? (
+                            <div className="text-center bg-gray-50 dark:bg-meta-4 rounded-xl px-6 py-8 border border-gray-100 dark:border-gray-700">
+                                <p className="text-gray-500 dark:text-gray-400 font-medium">{isTamil ? 'தரவு எதுவும் கிடைக்கவில்லை' : 'No data found'}</p>
+                            </div>
+                        ) : (
+                            tableItems.map((item, idx) => (
+                                <div key={idx} className="bg-white dark:bg-boxdark rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm p-5 hover:shadow-md transition-all duration-200">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div className="flex items-center space-x-4">
+                                            <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary font-bold text-sm">
+                                                {idx + 1}
+                                            </div>
+                                            <div>
+                                                <h5 className="font-bold text-gray-900 dark:text-white text-lg leading-tight">
+                                                    {item.name}
+                                                </h5>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 flex items-center">
+                                                    <svg className="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                                    {formatDate(item.created_at)}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col sm:flex-row items-center gap-2">
+                                            <button
+                                                onClick={() => handleView(item)}
+                                                className="p-2 text-blue-600 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded-full transition duration-150 shadow-sm"
+                                                aria-label="View"
+                                            >
+                                                <svg className="w-4.5 h-4.5 fill-current" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z" />
+                                                    <path d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z" />
+                                                </svg>
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(item._id)}
+                                                className="p-2 text-red-600 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 rounded-full transition duration-150 shadow-sm"
+                                                aria-label="Delete"
+                                            >
+                                                <svg className="w-4.5 h-4.5 fill-current" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M13.7535 2.47502H11.5879V1.9969C11.5879 1.15315 10.9129 0.478149 10.0691 0.478149H7.90352C7.05977 0.478149 6.38477 1.15315 6.38477 1.9969V2.47502H4.21914C3.40352 2.47502 2.72852 3.15002 2.72852 3.96565V4.8094C2.72852 5.42815 3.09414 5.9344 3.62852 6.1594L4.07852 15.4688C4.13477 16.6219 5.09102 17.5219 6.24414 17.5219H11.7004C12.8535 17.5219 13.8098 16.6219 13.866 15.4688L14.3441 6.13127C14.8785 5.90627 15.2441 5.3719 15.2441 4.78127V3.93752C15.2441 3.15002 14.5691 2.47502 13.7535 2.47502ZM7.67852 1.9969C7.67852 1.85627 7.79102 1.74377 7.93164 1.74377H10.0973C10.2379 1.74377 10.3504 1.85627 10.3504 1.9969V2.47502H7.70664V1.9969H7.67852ZM4.02227 3.96565C4.02227 3.85315 4.10664 3.74065 4.24727 3.74065H13.7535C13.866 3.74065 13.9785 3.82502 13.9785 3.96565V4.8094C13.9785 4.9219 13.8941 5.0344 13.7535 5.0344H4.24727C4.13477 5.0344 4.02227 4.95002 4.02227 4.8094V3.96565ZM11.7285 16.2563H6.27227C5.79414 16.2563 5.40039 15.8906 5.37227 15.3844L4.95039 6.2719H13.0785L12.6566 15.3844C12.6004 15.8625 12.2066 16.2563 11.7285 16.2563Z" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div>
+                                                <p className="text-xs font-semibold text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 uppercase tracking-wider mb-1">{isTamil ? 'மின்னஞ்சல்' : 'Email'}</p>
+                                                <p className="text-sm font-medium text-gray-800 dark:text-gray-200 break-all bg-gray-50 dark:bg-meta-4 py-1.5 px-3 rounded-md">{item.email}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-xs font-semibold text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 uppercase tracking-wider mb-1">{isTamil ? 'தொலைபேசி' : 'Phone'}</p>
+                                                <p className="text-sm font-medium text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-meta-4 py-1.5 px-3 rounded-md">{item.phone}</p>
+                                            </div>
+                                            <div className="sm:col-span-2 mt-1">
+                                                <p className="text-xs font-semibold text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 uppercase tracking-wider mb-1">{isTamil ? 'செய்தி' : 'Message'}</p>
+                                                <p className="text-sm font-medium text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-meta-4 py-2.5 px-4 rounded-lg leading-relaxed shadow-inner">
+                                                    {item.message?.length > 100 ? item.message.substring(0, 100) + "..." : item.message}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
                 </div>
                 {totalPages > 1 && (
                     < Pagination
@@ -369,12 +469,12 @@ const UserTable = () => {
                     />
                 )}
                 {isModalOpen && modalData && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 px-4">
-                        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl relative">
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 px-4 pt-10 pb-10 sm:p-4 overflow-y-auto">
+                        <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-3xl relative max-h-[90vh] overflow-y-auto mt-auto mb-auto">
                             {/* Close Button */}
                             <button
                                 onClick={closeModal}
-                                className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
+                                className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 bg-gray-100 p-1 rounded-full shadow-sm hover:bg-gray-200 transition-colors"
                                 aria-label="Close"
                             >
                                 <svg
@@ -385,16 +485,16 @@ const UserTable = () => {
                                     strokeWidth="2"
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
-                                    className="w-6 h-6"
+                                    className="w-5 h-5 sm:w-6 sm:h-6"
                                 >
                                     <line x1="18" y1="6" x2="6" y2="18" />
                                     <line x1="6" y1="6" x2="18" y2="18" />
                                 </svg>
                             </button>
 
-                            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">{isTamil ? 'தொடர்பு கொண்டவர்' : 'Contact Us'}</h2>
+                            <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 text-center">{isTamil ? 'தொடர்பு கொண்டவர்' : 'Contact Us'}</h2>
 
-                            <div className="grid gap-x-4 gap-y-4 text-gray-700 items-start" style={{ gridTemplateColumns: 'auto 1fr' }}>
+                            <div className="grid gap-x-2 gap-y-3 sm:gap-x-4 sm:gap-y-4 text-gray-700 items-start grid-cols-1 sm:grid-cols-[140px_1fr]">
                                 <p className="font-bold">{isTamil ? 'பெயர்' : 'Name'}:</p>
                                 <p>{modalData.name}</p>
 
@@ -407,6 +507,9 @@ const UserTable = () => {
                                 <p className="font-bold">{isTamil ? 'செய்தி' : 'Message'}:</p>
                                 <p>{modalData.message}</p>
 
+                                <p className="font-bold">{isTamil ? 'தேதி' : 'Date'}:</p>
+                                <p>{formatDate(modalData.created_at)}</p>
+
                                 <p className="font-bold">{isTamil ? 'மொழி' : 'Language'}:</p>
                                 <select
                                     className="w-1/3 border border-gray-300 rounded px-3 py-1"
@@ -417,7 +520,7 @@ const UserTable = () => {
                                     <option value="ta">{isTamil ? 'தமிழ்' : 'Tamil'}</option>
                                 </select>
 
-                                <p className="font-bold mt-2">{isTamil ? 'பதில்' : 'Reply'}:</p>
+                                <p className="font-bold sm:mt-2">{isTamil ? 'பதில்' : 'Reply'}:</p>
                                 <div className="w-full">
                                     <ReactQuill
                                         theme="snow"
@@ -427,7 +530,7 @@ const UserTable = () => {
                                         }}
                                         placeholder=""
                                         modules={{ toolbar: toolbarOptions }}
-                                        className="w-full min-h-[200px]"
+                                        className="w-full h-auto min-h-[150px] sm:min-h-[200px]"
                                     />
                                 </div>
                             </div>

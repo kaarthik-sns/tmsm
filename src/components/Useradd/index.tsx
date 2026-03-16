@@ -310,11 +310,11 @@ const FormElements = () => {
       errors.address = isTamil ? "முகவரி கட்டாயம்" : "Address cannot be empty.";
     }
 
-    if (!formData.lookingfor || formData.lookingfor.trim() === "") {
-      errors.lookingfor = isTamil
-        ? "யாரை தேடுகிறீர்கள் தேர்வு செய்யவும்."
-        : "Looking for cannot be empty.";
-    }
+    // if (!formData.lookingfor || formData.lookingfor.trim() === "") {
+    //   errors.lookingfor = isTamil
+    //     ? "யாரை தேடுகிறீர்கள் தேர்வு செய்யவும்."
+    //     : "Looking for cannot be empty.";
+    // }
 
     if (formData.profile_created_for !== 'myself') {
       if (!formData.profile_creator_name || formData.profile_creator_name.trim() === "") {
@@ -759,7 +759,7 @@ const FormElements = () => {
                   )}
                 </div>
 
-                <div className="mb-4.5 text-black">
+                {/* <div className="mb-4.5 text-black">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                     {lang === 'ta' ? 'யாரை தேடுகிறீர்கள்' : 'Looking For'} <span className="text-meta-1">*</span>
                   </label>
@@ -772,7 +772,7 @@ const FormElements = () => {
                   {formErrors?.lookingfor && (
                     <p className="mt-1 text-sm text-red-500">{formErrors.lookingfor}</p>
                   )}
-                </div>
+                </div> */}
 
                 {/* Religion & caste */}
                 <div className="text-black">

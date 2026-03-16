@@ -199,10 +199,10 @@ export default function Profile({ userId }) {
               <strong className="w-auto md:w-40">{lang == 'ta' ? 'வயது' : 'Age'}</strong>
               <span>{profileData.age || ""}</span>
             </p>
-            <p className="flex gap-x-2 text-left">
+            {/* <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">{lang == 'ta' ? 'யாரை தேடுகிறேன்' : 'Looking For'}</strong>
               <span>{profileData.lookingfor || ""}</span>
-            </p>
+            </p> */}
           </div>
 
           <div className="contact-bio">

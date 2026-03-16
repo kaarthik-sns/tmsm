@@ -363,11 +363,11 @@ const UserProfile = (user_data) => {
       errors.address = isTamil ? "முகவரி கட்டாயம்" : "Address cannot be empty.";
     }
 
-    if (!formData.lookingfor || formData.lookingfor.trim() === "") {
-      errors.lookingfor = isTamil
-        ? "யாரை தேடுகிறீர்கள் தேர்வு செய்யவும்."
-        : "Looking for cannot be empty.";
-    }
+    // if (!formData.lookingfor || formData.lookingfor.trim() === "") {
+    //   errors.lookingfor = isTamil
+    //     ? "யாரை தேடுகிறீர்கள் தேர்வு செய்யவும்."
+    //     : "Looking for cannot be empty.";
+    // }
 
     if (formData.profile_created_for !== 'myself') {
       if (!formData.profile_creator_name || formData.profile_creator_name.trim() === "") {
@@ -461,8 +461,16 @@ const UserProfile = (user_data) => {
           : "Profile updated successfully!."
       );
 
-      // Redirect
-      router.push(`/dashboard`);
+      setTimeout(() => {
+        if (errorRef.current) {
+          errorRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
+
+      // Redirect after a short delay so the user can see the success message
+      setTimeout(() => {
+        router.push(`/dashboard`);
+      }, 2000);
 
     } catch (err) {
       setError(err.message);
@@ -480,7 +488,7 @@ const UserProfile = (user_data) => {
     if (errorMessage) {
       const timer = setTimeout(() => {
         setErrorMessage(""); // Clear the message after 5 seconds
-      }, 5000);
+      }, 10000);
 
       return () => clearTimeout(timer); // Cleanup timer when component unmounts or message changes
     }
@@ -490,7 +498,7 @@ const UserProfile = (user_data) => {
     if (successMessage) {
       const timer = setTimeout(() => {
         setSuccessMessage(""); // Clear the message after 5 seconds
-      }, 5000);
+      }, 10000);
 
       return () => clearTimeout(timer); // Cleanup timer when component unmounts or message changes
     }
@@ -779,7 +787,7 @@ const UserProfile = (user_data) => {
                         )}
                       </div>
 
-                      <div className="mb-4.5 text-black">
+                      {/* <div className="mb-4.5 text-black">
                         <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                           {lang === 'ta' ? 'யாரை தேடுகிறீர்கள்' : 'Looking For'} <span className="text-meta-1">*</span>
                         </label>
@@ -792,7 +800,7 @@ const UserProfile = (user_data) => {
                         {formErrors?.lookingfor && (
                           <p className="mt-1 text-sm text-red-500">{formErrors.lookingfor}</p>
                         )}
-                      </div>
+                      </div> */}
 
                       {/* Religion & caste */}
                       <div className="text-black">

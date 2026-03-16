@@ -11,6 +11,11 @@ export interface ISettings extends Document {
   admin_to_email_id?: string;
   admin_from_email_id?: string;
   phone_no?: string;
+  contact_person_name_1?: string;
+  phone_no_2?: string;
+  contact_person_name_2?: string;
+  phone_no_3?: string;
+  contact_person_name_3?: string;
   address?: string;
   domain_url?: string;
   copyright?: string;
@@ -43,6 +48,11 @@ const SettingsSchema = new Schema<ISettings>({
   admin_to_email_id: { type: String },
   admin_from_email_id: { type: String },
   phone_no: { type: String },
+  contact_person_name_1: { type: String },
+  phone_no_2: { type: String },
+  contact_person_name_2: { type: String },
+  phone_no_3: { type: String },
+  contact_person_name_3: { type: String },
   address: { type: String },
   domain_url: { type: String },
   copyright: { type: String },
