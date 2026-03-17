@@ -761,7 +761,7 @@ input:-internal-autofill-selected {
     font-weight: 400;
     color: #000;
     margin-bottom: 1em;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .border-color {
@@ -2384,4 +2384,12 @@ input::placeholder, .lang-ta  select{
     background: transparent !important;
     transform: none !important;
     opacity: 0.7 !important;
+}
+
+.react-select-container {
+    min-width: 160px;
+}
+
+.con-data-forms textarea {
+    font-size: 100% !important;
 }

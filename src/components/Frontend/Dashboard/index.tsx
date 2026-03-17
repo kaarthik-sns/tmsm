@@ -95,7 +95,7 @@ const RequestStatus = () => {
           ? "கோரிக்கை வெற்றிகரமாக ஏற்றுக்கொள்ளப்பட்டது."
           : "Request accepted successfully.";
         confirmButtonText = lang === 'ta' ? "ஆம், ஏற்று" : "Yes, Accept";
-        
+
         break;
 
       case "rejected":
@@ -106,7 +106,7 @@ const RequestStatus = () => {
           ? "கோரிக்கை நிராகரிக்கப்பட்டது."
           : "Request has been declined.";
         confirmButtonText = lang === 'ta' ? "ஆம், நிராகரி" : "Yes, Decline";
-       
+
         break;
 
       case "cancel":
@@ -117,7 +117,7 @@ const RequestStatus = () => {
           ? "கோரிக்கை ரத்துசெய்யப்பட்டது."
           : "Request has been cancelled.";
         confirmButtonText = lang === 'ta' ? "ஆம், ரத்து செய்" : "Yes, Cancel";
-      
+
         break;
 
       default:
@@ -400,7 +400,7 @@ const ProfileModal = ({ profile, onClose, lang }) => (
         <p className="text-gray-500 text-sm">{lang == 'ta' ? 'மதம்: ' : 'Religion: '} {profile.user.religion} | {lang == 'ta' ? 'குலம்: ' : 'Caste: '} {profile.user.caste} | {lang == 'ta' ? 'துணை சாதி: ' : 'SubCaste: '} {profile.user.subcaste}</p>
         <p className="text-gray-500 text-sm"> {profile.user.address || ""} </p>
 
-        <p className="text-xs text-gray-500">
+        <p className="text-sm text-gray-500">
           {profile.user.profession} |
           {profile.user.education}
         </p>

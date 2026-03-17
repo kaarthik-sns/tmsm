@@ -405,10 +405,10 @@ export default function Profile({ userId }) {
                       key={index}
                       src={`/api${photo}`}
                       alt={`Profile Picture ${index + 1}`}
-                      width={150}
+                      width={180}
                       height={150}
                       quality={100}
-                      className="rounded-full border-4 border-white cursor-pointer"
+                      className="border-2 border-white cursor-pointer"
                       onClick={() => openPopup(photo)}
                     />
                   ))}
@@ -441,7 +441,7 @@ export default function Profile({ userId }) {
                       <img
                         src={`/api${popupImage}`}
                         alt="Enlarged Profile Picture"
-                        className="max-w-full max-h-screen rounded-lg"
+                        className="w-[50vw] h-auto max-h-[50vw] rounded-lg object-contain"
                       />
                     </div>
                   </div>

@@ -75,7 +75,7 @@ const UserTable = () => {
         if (isNaN(date.getTime())) return "-";
 
         const day = date.getDate();
-        const month = date.toLocaleString('en-US', { month: 'short' }).toLowerCase();
+        const month = date.toLocaleString('en-US', { month: 'short' });
         const year = date.getFullYear();
 
         let hours = date.getHours();
@@ -185,6 +185,20 @@ const UserTable = () => {
         fetchUsers(currentPage);
     }, [currentPage]);
 
+    // Handle background scroll lock
+    useEffect(() => {
+        if (isModalOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+
+        // Cleanup function to ensure scroll is restored
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isModalOpen]);
+
     // Handle page navigation
     const handlePageChange = (page: number) => {
         if (page >= 1 && page <= totalPages) {
@@ -281,7 +295,7 @@ const UserTable = () => {
     return (
         <>
             <Breadcrumb pageName={isTamil ? 'தொடர்பு கொண்டவர்கள் பட்டியல்' : 'List Contact Us'} />
-            <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-11">
+            <div className="md:rounded-sm md:border md:border-stroke md:bg-white md:px-5 md:pb-2.5 md:pt-6 md:shadow-default dark:border-strokedark dark:bg-boxdark xl:pb-11">
 
                 <div className="mt-12 w-full">
 
@@ -469,75 +483,110 @@ const UserTable = () => {
                     />
                 )}
                 {isModalOpen && modalData && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 px-4 pt-10 pb-10 sm:p-4 overflow-y-auto">
-                        <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-3xl relative max-h-[90vh] overflow-y-auto mt-auto mb-auto">
-                            {/* Close Button */}
-                            <button
-                                onClick={closeModal}
-                                className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 bg-gray-100 p-1 rounded-full shadow-sm hover:bg-gray-200 transition-colors"
-                                aria-label="Close"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="w-5 h-5 sm:w-6 sm:h-6"
+                    <div className="fixed inset-0 flex items-center justify-center bg-black/65 backdrop-blur-sm z-[9999] px-4 py-10 sm:p-6 overflow-y-auto transition-all duration-300">
+                        <div className="bg-white dark:bg-boxdark rounded-2xl shadow-2xl w-full max-w-4xl relative max-h-[95vh] flex flex-col overflow-hidden border border-stroke dark:border-strokedark">
+
+                            {/* Modal Header */}
+                            <div className="flex items-center justify-between px-6 py-4 border-b border-stroke dark:border-strokedark bg-white dark:bg-boxdark">
+                                <h2 className="text-xl sm:text-title-sm font-bold text-black dark:text-white flex items-center">
+                                    <span className="w-1.5 h-6 bg-primary rounded-full mr-3"></span>
+                                    {isTamil ? 'தொடர்பு கொண்டவர் விவரங்கள்' : 'Contact Details'}
+                                </h2>
+                                <button
+                                    onClick={closeModal}
+                                    className="p-1.5 text-bodydark2 hover:text-black dark:hover:text-white bg-gray-2 dark:bg-meta-4 shadow-sm border border-stroke dark:border-strokedark rounded-lg transition-all duration-200"
+                                    aria-label="Close"
                                 >
-                                    <line x1="18" y1="6" x2="6" y2="18" />
-                                    <line x1="6" y1="6" x2="18" y2="18" />
-                                </svg>
-                            </button>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                                        <line x1="18" y1="6" x2="6" y2="18" />
+                                        <line x1="6" y1="6" x2="18" y2="18" />
+                                    </svg>
+                                </button>
+                            </div>
 
-                            <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 text-center">{isTamil ? 'தொடர்பு கொண்டவர்' : 'Contact Us'}</h2>
+                            {/* Modal Body */}
+                            <div className="flex-1 overflow-y-auto p-6 sm:p-8 custom-scrollbar">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+                                    {/* Name Field */}
+                                    <div className="space-y-1 p-4 rounded-xl bg-whiter dark:bg-meta-4/30 border border-stroke dark:border-strokedark/50">
+                                        <label className="text-[10px] uppercase font-bold tracking-widest text-primary">{isTamil ? 'பெயர்' : 'FullName'}</label>
+                                        <p className="text-base font-medium text-black dark:text-white">{modalData.name}</p>
+                                    </div>
 
-                            <div className="grid gap-x-2 gap-y-3 sm:gap-x-4 sm:gap-y-4 text-gray-700 items-start grid-cols-1 sm:grid-cols-[140px_1fr]">
-                                <p className="font-bold">{isTamil ? 'பெயர்' : 'Name'}:</p>
-                                <p>{modalData.name}</p>
+                                    {/* Email Field */}
+                                    <div className="space-y-1 p-4 rounded-xl bg-whiter dark:bg-meta-4/30 border border-stroke dark:border-strokedark/50">
+                                        <label className="text-[10px] uppercase font-bold tracking-widest text-primary">{isTamil ? 'மின்னஞ்சல்' : 'Email Address'}</label>
+                                        <p className="text-base font-medium text-black dark:text-white break-all">{modalData.email}</p>
+                                    </div>
 
-                                <p className="font-bold">{isTamil ? 'மின்னஞ்சல்' : 'Email'}:</p>
-                                <p>{modalData.email}</p>
+                                    {/* Phone Field */}
+                                    <div className="space-y-1 p-4 rounded-xl bg-whiter dark:bg-meta-4/30 border border-stroke dark:border-strokedark/50">
+                                        <label className="text-[10px] uppercase font-bold tracking-widest text-primary">{isTamil ? 'தொலைபேசி எண்' : 'Phone Number'}</label>
+                                        <p className="text-base font-medium text-black dark:text-white">{modalData.phone}</p>
+                                    </div>
 
-                                <p className="font-bold">{isTamil ? 'தொலைபேசி எண்' : 'Phone Number'}:</p>
-                                <p>{modalData.phone}</p>
+                                    {/* Date Field */}
+                                    <div className="space-y-1 p-4 rounded-xl bg-whiter dark:bg-meta-4/30 border border-stroke dark:border-strokedark/50">
+                                        <label className="text-[10px] uppercase font-bold tracking-widest text-primary">{isTamil ? 'தேதி' : 'Received Date'}</label>
+                                        <p className="text-base font-medium text-black dark:text-white">{formatDate(modalData.created_at)}</p>
+                                    </div>
 
-                                <p className="font-bold">{isTamil ? 'செய்தி' : 'Message'}:</p>
-                                <p>{modalData.message}</p>
+                                    {/* Message Field (Full Width) */}
+                                    <div className="md:col-span-2 space-y-2 p-4 rounded-xl bg-primary/5 dark:bg-primary/10 border border-primary/20">
+                                        <label className="text-[10px] uppercase font-bold tracking-widest text-primary">{isTamil ? 'செய்தி' : 'Client Message'}</label>
+                                        <div className="text-sm font-medium text-black dark:text-bodydark1 bg-white/50 dark:bg-boxdark/50 p-4 rounded-lg leading-relaxed shadow-inner max-h-[160px] overflow-y-auto custom-scrollbar whitespace-pre-wrap">
+                                            {modalData.message}
+                                        </div>
+                                    </div>
+                                </div>
 
-                                <p className="font-bold">{isTamil ? 'தேதி' : 'Date'}:</p>
-                                <p>{formatDate(modalData.created_at)}</p>
+                                {/* Reply Section */}
+                                <div className="space-y-4 pt-6 border-t border-stroke dark:border-strokedark">
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="text-title-xsm font-bold text-black dark:text-white flex items-center">
+                                            <svg className="w-5 h-5 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" /></svg>
+                                            {isTamil ? 'பதில் அளிக்கவும்' : 'Send a Reply'}
+                                        </h3>
+                                        <div className="flex items-center space-x-1.5 bg-whiter dark:bg-meta-4 p-1 rounded-lg">
+                                            <button
+                                                onClick={() => setSelectedLanguage('en')}
+                                                className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${selectedLanguage === 'en' ? 'bg-primary text-white shadow-sm' : 'text-bodydark2 hover:text-black dark:hover:text-white'}`}
+                                            >
+                                                EN
+                                            </button>
+                                            <button
+                                                onClick={() => setSelectedLanguage('ta')}
+                                                className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${selectedLanguage === 'ta' ? 'bg-primary text-white shadow-sm' : 'text-bodydark2 hover:text-black dark:hover:text-white'}`}
+                                            >
+                                                TA
+                                            </button>
+                                        </div>
+                                    </div>
 
-                                <p className="font-bold">{isTamil ? 'மொழி' : 'Language'}:</p>
-                                <select
-                                    className="w-1/3 border border-gray-300 rounded px-3 py-1"
-                                    value={selectedLanguage}
-                                    onChange={(e) => setSelectedLanguage(e.target.value)}
-                                >
-                                    <option value="en">English</option>
-                                    <option value="ta">{isTamil ? 'தமிழ்' : 'Tamil'}</option>
-                                </select>
-
-                                <p className="font-bold sm:mt-2">{isTamil ? 'பதில்' : 'Reply'}:</p>
-                                <div className="w-full">
-                                    <ReactQuill
-                                        theme="snow"
-                                        value={selectedLanguage === 'en' ? message : message_ta}
-                                        onChange={(val) => {
-                                            selectedLanguage === 'en' ? setMessage(val) : setMessageTa(val);
-                                        }}
-                                        placeholder=""
-                                        modules={{ toolbar: toolbarOptions }}
-                                        className="w-full h-auto min-h-[150px] sm:min-h-[200px]"
-                                    />
+                                    <div className="w-full rounded-xl overflow-hidden border border-stroke dark:border-strokedark shadow-sm focus-within:border-primary transition-colors">
+                                        <ReactQuill
+                                            key={selectedLanguage}
+                                            theme="snow"
+                                            value={selectedLanguage === 'en' ? message : message_ta}
+                                            onChange={(val) => {
+                                                selectedLanguage === 'en' ? setMessage(val) : setMessageTa(val);
+                                            }}
+                                            placeholder={isTamil ? "உங்கள் பதிலை இங்கே தட்டச்சு செய்க..." : "Type your reply here..."}
+                                            modules={{ toolbar: toolbarOptions }}
+                                            className="w-full h-auto min-h-[220px] bg-white dark:bg-boxdark"
+                                        />
+                                    </div>
                                 </div>
                             </div>
 
-
-                            {/* Send Reply Button */}
-                            <div className="mt-6 text-center">
+                            {/* Modal Footer */}
+                            <div className="p-6 bg-white dark:bg-boxdark border-t border-stroke dark:border-strokedark flex flex-col sm:flex-row items-center justify-end gap-3">
+                                <button
+                                    onClick={closeModal}
+                                    className="w-full sm:w-auto px-8 py-2.5 rounded-xl border border-stroke dark:border-strokedark text-black dark:text-white font-bold hover:bg-whiter dark:hover:bg-meta-4 transition-all"
+                                >
+                                    {isTamil ? 'ரத்துசெய்' : 'Cancel'}
+                                </button>
                                 <button
                                     onClick={() =>
                                         sendReply({
@@ -547,20 +596,22 @@ const UserTable = () => {
                                         })
                                     }
                                     disabled={modalData.mail_status === true}
-                                    className={`inline-flex items-center justify-center rounded-lg px-6 py-2.5 text-center font-medium text-white lg:px-5 xl:px-6 text-custom 
+                                    className={`w-full sm:w-auto inline-flex items-center justify-center rounded-xl px-10 py-2.5 text-center font-bold text-white transition-all shadow-md shadow-primary/25
                                     ${modalData.mail_status === true
-                                            ? 'bg-gray-400 cursor-not-allowed'
-                                            : 'bg-primary hover:bg-opacity-90'
+                                            ? 'bg-bodydark text-white cursor-not-allowed shadow-none'
+                                            : 'bg-primary hover:bg-opacity-90 active:scale-95'
                                         }`}
                                 >
                                     {modalData?.mail_status
-                                        ? (isTamil ? 'முந்தைய பதில் அனுப்பப்பட்டுள்ளது' : 'Reply Already Sent')
+                                        ? (isTamil ? 'பதில் அனுப்பபட்டது' : 'Reply Sent')
                                         : (isTamil ? 'பதில் அனுப்பு' : 'Send Reply')}
                                 </button>
                             </div>
                         </div>
                     </div>
                 )}
+
+
 
             </div >
         </>
