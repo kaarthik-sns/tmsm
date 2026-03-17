@@ -247,6 +247,7 @@ const SignUp: React.FC = () => {
     e.preventDefault();
     setPending(true);
     setErrors({});
+    setError(null);
     setSuccessMessage(""); // Clear any previous success messages
 
     const validationErrors = validate();
