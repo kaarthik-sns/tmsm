@@ -53,31 +53,24 @@ export const sendEmail = async (dto: SendEmailDto) => {
             user: smtpSettings.smtp_mail,
             pass: smtpSettings.smtp_password
         },
+        dkim: {
+            domainName: 'tmsmsaivamudaliyarmatrimony.com',
+            keySelector: 'default',
+            privateKey: process.env.DKIM_PRIVATE_KEY
+        },
         logger: true,
         debug: true
     } as SMTPTransport.Options)
 
-    let baseUrl = process.env.BASE_URL;
-    let imagePath = `${baseUrl}/images/logo/mail-logo.png`;
+    const baseUrl = process.env.BASE_URL;
+    const logoUrl = `${baseUrl}/images/logo/mail-logo.png`;
+    const finalMessage = message.replace(/cid:mail_logo/g, logoUrl);
 
     return await transport.sendMail({
         from: sender,
         to: receipientsData,
         subject,
-        html: message,
-        attachments: [
-            {
-                filename: 'mail-logo.png',
-                path: imagePath, // Local path to your image
-                cid: 'mail_logo' // Content-ID, referenced in the `src` attribute of the image
-            }
-        ],
+        html: finalMessage,
         text: message
-    }, (err, info) => {
-        if (err) {
-            console.error('Error sending email:', err);
-        } else {
-            // console.log('Email sent:', info.response);
-        }
     });
 }
