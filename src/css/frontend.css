@@ -135,7 +135,8 @@ body {
 .swiper-button-prev:after {
     font-size: 32px !important;
     color: #686767 !important;
-    font-weight: 300 !important; /* Thin chevron style */
+    font-weight: 300 !important;
+    /* Thin chevron style */
 }
 
 .swiper-button-next:hover,
@@ -371,7 +372,7 @@ input:-internal-autofill-selected {
     font-family: 'Noto Sans';
     font-weight: 700;
     padding: 13px 40px 13px 40px;
-    font-size:14px;
+    font-size: 14px;
 }
 
 .bg-dash-button {
@@ -380,7 +381,7 @@ input:-internal-autofill-selected {
     font-family: 'Noto Sans';
     font-weight: 700;
     padding: 13px 40px 13px 40px;
-    font-size:14px;
+    font-size: 14px;
 }
 
 .dash-heading {
@@ -775,7 +776,8 @@ input:-internal-autofill-selected {
 
 .contact-bio p span {
     text-transform: capitalize;
-    font-size: 14px;;
+    font-size: 14px;
+    ;
 }
 
 /**contact page**/
@@ -1626,7 +1628,8 @@ input:-internal-autofill-selected {
     font-size: 18px;
     font-weight: 300;
     line-height: 36px;
-    margin: 0 0 15px;
+    margin: 0;
+    /* margin: 0 0 15px; */
 }
 
 @media only screen and (min-width: 768px) {
@@ -1642,7 +1645,7 @@ input:-internal-autofill-selected {
     .team-content p {
         font-size: 1.25vw;
         line-height: 2.5vw;
-        margin: 0 0 1.04vw;
+        /* margin: 0 0 1.04vw; */
     }
 
 }
@@ -1660,7 +1663,7 @@ input:-internal-autofill-selected {
     .team-content p {
         font-size: 18px;
         line-height: 36px;
-        margin: 0 0 15px;
+        /* margin: 0 0 15px; */
     }
 }
 
@@ -1677,8 +1680,9 @@ input:-internal-autofill-selected {
     .team-content h2 {
         font-size: 25px;
     }
+
     .faq-answer {
-     font-size: 14px;
+        font-size: 14px;
     }
 }
 
@@ -1992,7 +1996,7 @@ input[type="radio"] {
         padding: 80px 0;
     }
 
-   
+
 
     .lang-ta .con-message h4 {
         font-size: 24px;
@@ -2171,7 +2175,7 @@ input[type="radio"] {
     .lang-ta .profile-heading {
         font-size: 20px;
     }
-    
+
 }
 
 
@@ -2191,17 +2195,18 @@ input[type="radio"] {
     font-size: 11px;
 }
 
-.lang-ta .register 
-input::placeholder, .lang-ta .register  select{
+.lang-ta .register input::placeholder,
+.lang-ta .register select {
     font-size: 14px;
 }
-.lang-ta  label {
+
+.lang-ta label {
     font-size: 12px;
     line-height: 1.5;
 }
 
-.lang-ta  
-input::placeholder, .lang-ta  select{
+.lang-ta input::placeholder,
+.lang-ta select {
     font-size: 14px;
 }
 
@@ -2209,44 +2214,66 @@ input::placeholder, .lang-ta  select{
     font-size: 11px;
     line-height: 2;
 }
+
 .lang-ta .register .leading-snug .danger {
     color: rgb(220, 38, 38);
 }
+
 .email_verfiy {
     font-size: 12px;
 }
-.lang-ta .bg-dash-button-active, .lang-ta .bg-dash-button, .lang-ta .accept,  .lang-ta .decline,  .lang-ta .view,.lang-ta .accepted  {
+
+.lang-ta .bg-dash-button-active,
+.lang-ta .bg-dash-button,
+.lang-ta .accept,
+.lang-ta .decline,
+.lang-ta .view,
+.lang-ta .accepted {
     font-size: 12px;
 }
 
-.lang-ta div#swal2-html-container, .lang-ta h2#swal2-title, .lang-ta .confirm-color,  .lang-ta .cancel-color {
+.lang-ta div#swal2-html-container,
+.lang-ta h2#swal2-title,
+.lang-ta .confirm-color,
+.lang-ta .cancel-color {
     font-size: 12px;
 }
 
-.lang-ta  .contact-bio, .contact-bio   {
-    font-size: 14px;;
+.lang-ta .contact-bio,
+.contact-bio {
+    font-size: 14px;
+    ;
 }
+
 .lang-ta .views h3 {
     font-size: 14px;
 }
+
 .lang-ta .profile-heading {
     font-size: 14px;
 }
-.lang-ta   .offer-list-itmes p {
+
+.lang-ta .offer-list-itmes p {
     font-size: 14px;
     line-height: 24px;
     text-align: left;
- }
- 
- .lang-ta .con-top-title h3, .lang-ta .con-list-of-data h4 {
+}
+
+.lang-ta .con-top-title h3,
+.lang-ta .con-list-of-data h4 {
     font-size: 20px;
     margin: 0 0 20px;
 }
+
 .lang-ta .about-con-desc h3 {
     font-size: 30px;
     margin: 0 0 20px;
 }
-.lang-ta .team-info-con ul li, .lang-ta .team-content p , .lang-ta .faq-content p, .lang-ta  .faq-answer   {
+
+.lang-ta .team-info-con ul li,
+.lang-ta .team-content p,
+.lang-ta .faq-content p,
+.lang-ta .faq-answer {
     font-size: 14px;
 }
 
@@ -2254,19 +2281,24 @@ input::placeholder, .lang-ta  select{
     font-size: 50px;
 }
 
-.lang-ta .team-info-con h3, .lang-ta .faq-content h3 {
+.lang-ta .team-info-con h3,
+.lang-ta .faq-content h3 {
     font-size: 20px;
     margin-bottom: 20px;
 }
 
-.lang-ta .header-text a, .lang-ta .header-text button {
+.lang-ta .header-text a,
+.lang-ta .header-text button {
     font-size: 15px;
 }
 
 
-.lang-ta .react-select__placeholder, .lang-ta .react-select-container {
-  font-size: 12px; /* Change to your desired size */
-  color: #999;     /* Optional: adjust color for readability */
+.lang-ta .react-select__placeholder,
+.lang-ta .react-select-container {
+    font-size: 12px;
+    /* Change to your desired size */
+    color: #999;
+    /* Optional: adjust color for readability */
 }
 
 
@@ -2282,6 +2314,7 @@ input::placeholder, .lang-ta  select{
         font-size: 14px;
         line-height: 1;
     }
+
     .lang-ta .about-con-desc h3 {
         font-size: 20px;
         margin: 0 0 20px;
@@ -2291,75 +2324,95 @@ input::placeholder, .lang-ta  select{
         font-size: 12px;
         line-height: 30px;
     }
+
     .lang-ta .heading {
-      font-size: 18px;
-      line-height: 30px;
+        font-size: 18px;
+        line-height: 30px;
     }
+
     .icon-text {
-         font-size: 14px;
+        font-size: 14px;
     }
+
     .lang-ta .join-heading {
         font-size: 15px;
     }
+
     .slider-padding {
         padding: 2rem;
     }
-     .lang-ta .heading-description {
+
+    .lang-ta .heading-description {
         font-size: 12px;
     }
+
     .heading-text {
         font-size: 16px;
     }
+
     .sub-heading {
-     font-size: 14px;
+        font-size: 14px;
     }
+
     .lang-ta .member-container .title {
-       font-size: 16px  !important;
+        font-size: 16px !important;
         line-height: 30px;
     }
+
     .gap-y-4 {
         row-gap: 0;
     }
+
     .grid p {
         padding-bottom: 0;
     }
+
     .lang-ta .register p {
         font-size: 12px;
     }
-    .lang-ta .register .text-red-600  {
+
+    .lang-ta .register .text-red-600 {
         font-size: 9px;
     }
-     .lang-ta .register .leading-snug {
+
+    .lang-ta .register .leading-snug {
         font-size: 9px;
         line-height: 2;
     }
-    .lang-ta .team-content p, .faq-content p  {
-         font-size: 14px;
-         line-height: 30px;
+
+    .lang-ta .team-content p,
+    .faq-content p {
+        font-size: 14px;
+        line-height: 30px;
     }
+
     .lang-ta .team-info-con ul li {
         font-size: 14px;
     }
+
     .lang-ta .faq-answer {
-          font-size: 14px;
+        font-size: 14px;
     }
+
     .lang-ta .faq-content .title {
         font-size: 20px;
     }
-     .lang-ta .con-top-title h3 {
+
+    .lang-ta .con-top-title h3 {
         font-size: 18px;
         margin: 0 0 20px;
     }
 
 
 }
+
 .lang-ta input {
     font-size: 16px;
 }
 
 /* Custom Swiper Navigation UI */
 :root {
-  --swiper-navigation-color: #686767;
+    --swiper-navigation-color: #686767;
 }
 
 .swiper-button-next,

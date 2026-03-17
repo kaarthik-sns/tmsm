@@ -40,7 +40,7 @@ const handler = NextAuth({
                     }
 
                     if (!user) {
-                        throw new Error(lang === 'ta' ? "மின்னஞ்சல் முகவரி தவறானது. தயவுசெய்து உங்கள் விவரங்களை சரிபார்க்கவும்." : "Email address not recognized.");
+                        throw new Error(lang === 'ta' ? "நீங்கள் உள்ளிட்ட மின்னஞ்சல் முகவரி பதிவு செய்யப்படவில்லை. எழுத்துப் பிழைகளைச் சரிபார்க்கவும் அல்லது புதிய கணக்கை உருவாக்கவும்." : "The email address you entered is not registered. Please check for typos or register a new account.");
                     }
 
                     const isValidPasswords = await bcrypt.compare(
@@ -49,20 +49,20 @@ const handler = NextAuth({
                     );
 
                     if (!isValidPasswords) {
-                        throw new Error(lang === 'ta' ? "கடவுச்சொல் தவறானது. தயவுசெய்து உங்கள் விவரங்களை சரிபார்க்கவும்." : "Invalid password. Please check your credentials.");
+                        throw new Error(lang === 'ta' ? "நீங்கள் உள்ளிட்ட கடவுச்சொல் தவறானது. நீங்கள் அதை மறந்திருந்தால், 'கடவுச்சொல்லை மறந்துவிட்டீர்களா' என்ற விருப்பத்தைப் பயன்படுத்தவும்." : "The password you entered is incorrect. If you've forgotten it, please use the 'Forgot Password' option.");
                     }
 
                     if (!is_admin) {
                         if (!user.is_approve) {
-                            throw new Error(lang === 'ta' ? "உங்கள் கணக்கு இன்னும் அங்கீகரிக்கப்படவில்லை.சிறிது நேரம் கழித்து மீண்டும் முயற்சிக்கவும்." : "Account activation is pending. You will be notified once approved.");
+                            throw new Error(lang === 'ta' ? "உங்கள் கணக்கு தற்போது நிர்வாகத்தின் அங்கீகாரத்திற்காகக் காத்திருக்கிறது. உங்கள் பதிவுத் தரவை எங்கள் குழு சரிபார்த்து வருகிறது. உங்கள் கணக்கு செயல்பாட்டிற்கு வந்தவுடன் மின்னஞ்சல் மூலம் உங்களுக்குத் தெரிவிக்கப்படும்." : "Your account is currently pending administrative approval. Our team is verifying your registration data. You will be notified via email once your account is activated.");
                         }
 
                         if (!user.is_verify) {
-                            throw new Error(lang === 'ta' ? "உங்கள் மின்னஞ்சல் முகவரிக்கு வந்துள்ள உறுதிப்படுத்தல் மெயிலைத் திறந்து, 'Verify Email' பொத்தானைக் கிளிக் செய்யவும்." : "Email not yet verified.");
+                            throw new Error(lang === 'ta' ? "உங்கள் மின்னஞ்சல் முகவரி இன்னும் உறுதிப்படுத்தப்படவில்லை. உங்கள் மின்னஞ்சல் பெட்டியில் வந்திருக்கும் உறுதிப்படுத்தல் மெயிலைத் திறந்து, 'மின்னஞ்சலை உறுதிப்படுத்து' பொத்தானைக் கிளிக் செய்யவும்." : "Your email address has not been verified yet. Please check your inbox for the verification email and click the 'Verify Email' button to continue.");
                         }
 
                         if (!user.is_active) {
-                            throw new Error(lang === 'ta' ? "உங்கள் கணக்கு முடக்கப்பட்டுள்ளது." : "Your account has been deactivated.");
+                            throw new Error(lang === 'ta' ? "இந்தக் கணக்கு முடக்கப்பட்டுள்ளது. மேலதிக உதவிக்கு எங்கள் ஆதரவு குழுவைத் தொடர்பு கொள்ளவும்." : "This account has been deactivated. Please contact our support team for further assistance.");
                         }
                     }
 
