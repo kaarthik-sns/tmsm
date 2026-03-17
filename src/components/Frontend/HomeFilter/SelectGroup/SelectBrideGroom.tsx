@@ -3,6 +3,11 @@ import React, { useEffect, useState } from "react";
 import Select from "react-select";
 
 const SelectBrideGroom = ({ selectedBrideGroom, name, onBrideGroomChange }) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const lang = localStorage.getItem('lang') || 'en';
 
@@ -31,8 +36,12 @@ const SelectBrideGroom = ({ selectedBrideGroom, name, onBrideGroomChange }) => {
         options={options}
         placeholder={lang == "ta" ? "தேர்வு செய்க" : "Select"}
         isClearable
-        className="react-select-container relative z-20 w-full"
+        className="react-select-container relative z-20"
         classNamePrefix="react-select"
+        menuPortalTarget={isMounted ? document.body : null}
+        styles={{
+          menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+        }}
       />
     </div>
   );

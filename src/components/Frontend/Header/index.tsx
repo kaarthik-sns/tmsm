@@ -102,17 +102,26 @@ export function NavbarWithSimpleLinks() {
   }, []);
 
   return (
-    <nav className="header-bg py-6 border-0 w-full">
+    <nav className="header-bg lg:py-2 py-6 border-0 w-full">
 
       <div className={`${lang == 'ta' ? 'container-header' : 'container'} mx-auto flex items-center justify-between mt-6`}>
-        <Link className="hidden flex-shrink-0 lg:block" href="/">
+        <Link className="hidden lg:block flex-shrink-0" href="/">
           <img
-            className="2xl:w-[700px] xl:w-[520px] lg:w-[400px] sm:w-[300px]"
-            src={"/images/logo/Flogo.svg"}
+            className="2xl:w-[550px] xl:w-[480px] lg:w-[350px] sm:w-[250px]"
+            src={"/images/logo/tmsm-logo.svg"}
             alt="Logo"
             loading="lazy"
           />
         </Link>
+
+        <div className="hidden lg:block">
+          <img
+            className=""
+            src={"/images/logo/Founder.png"}
+            alt="Logo"
+            loading="lazy"
+          />
+        </div>
 
         <div className="hidden lg:block">
           <NavList />
