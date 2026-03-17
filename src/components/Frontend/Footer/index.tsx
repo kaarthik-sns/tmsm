@@ -54,7 +54,7 @@ export function FooterWithCustomDesign() {
               src="/images/logo/Footer-logo.svg"
             />
           </Link>
-          <div className="flex justify-center md:justify-start space-x-4 mt-4 items-center  md:block  hidden">
+          {/* <div className="flex justify-center md:justify-start space-x-4 mt-4 items-center  md:block  hidden">
             <div className="flex justify-center md:justify-start space-x-4">
               <Link href={settings?.twitter ? settings.twitter : "#"}>
                 <Image
@@ -84,7 +84,7 @@ export function FooterWithCustomDesign() {
                 />
               </Link>
             </div>
-          </div>
+          </div> */}
           <div className="mt-4 text-center md:text-left md:block  hidden">
             <p className="footer-p">
               &copy; {new Date().getFullYear()} {copyright}
@@ -137,7 +137,7 @@ export function FooterWithCustomDesign() {
 
       {/* Footer Bottom - Social Icons and Copyright */}
       <div className="flex flex-col items-center md:items-start justify-center mt-8 md:mt-0 md:hidden block">
-        <div className="flex space-x-4 mb-4">
+        {/* <div className="flex space-x-4 mb-4">
           <Link href={settings?.twitter ? settings.twitter : "#"}>
             <Image
               src="/images/icon/twitter.svg"
@@ -165,7 +165,7 @@ export function FooterWithCustomDesign() {
               loading="lazy"
             />
           </Link>
-        </div>
+        </div> */}
         <div className="text-center">
           <p className="footer-p">
             &copy; {new Date().getFullYear()} {copyright}

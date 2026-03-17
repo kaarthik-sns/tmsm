@@ -104,7 +104,7 @@ const handler = NextAuth({
             return session;
         },
         async redirect({ url, baseUrl }) {
-            // Redirect to matrimony.searchnscore.com after sign-out
+            // Redirect after sign-out
             if (url === "/login") {
                 return `${process.env.DOMAIN_URL}/login`;
             }

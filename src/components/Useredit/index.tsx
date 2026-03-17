@@ -308,10 +308,10 @@ const FormElements = () => {
         : "Please enter a valid email address.";
     }
 
-    if (!formData.phonenumber || !/^\d{10}$/.test(formData.phonenumber)) {
+    if (!formData.phonenumber) {
       errors.phonenumber = isTamil
-        ? "சரியான 10 எண்கள் கொண்ட தொலைபேசி எண் உள்ளிடவும்."
-        : "Please enter a valid 10-digit phone number";
+        ? "சரியான தொலைபேசி எண் உள்ளிடவும்."
+        : "Please enter a valid phone number";
     }
 
     if (!formData.gothram || formData.gothram.trim() === "") {
@@ -365,9 +365,9 @@ const FormElements = () => {
         errors.profile_creator_name = isTamil ? "பெயரை உள்ளிடவும்." : "Name cannot be empty.";
       }
 
-      if (!formData.profile_creator_photo || formData.profile_creator_photo.trim() === "") {
-        errors.profile_creator_photo = isTamil ? "படத்தை பதிவேற்றவும்." : "Picture cannot be empty.";
-      }
+      // if (!formData.profile_creator_photo || formData.profile_creator_photo.trim() === "") {
+      //   errors.profile_creator_photo = isTamil ? "படத்தை பதிவேற்றவும்." : "Picture cannot be empty.";
+      // }
 
       if (
         !formData.profile_creator_aadhar ||
@@ -380,12 +380,11 @@ const FormElements = () => {
 
       if (
         formData.profile_creator_phonenumber &&
-        formData.profile_creator_phonenumber.trim() !== "" &&
-        !/^\d{10}$/.test(formData.profile_creator_phonenumber)
+        formData.profile_creator_phonenumber.trim() !== ""
       ) {
         errors.profile_creator_phonenumber = isTamil
-          ? "சரியான 10 எண்கள் கொண்ட தொலைபேசி எண்ணை உள்ளிடவும்."
-          : "Enter a valid 10-digit phone number.";
+          ? "சரியான தொலைபேசி எண் உள்ளிடவும்."
+          : "Enter a valid phone number.";
       }
     }
 
@@ -593,7 +592,7 @@ const FormElements = () => {
                         formData={formData}
                         formErrors={formErrors}
                         handleChange={handleChange}
-                        required={true}
+                        required={false}
                       />
                     </div>
 

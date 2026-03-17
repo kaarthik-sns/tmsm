@@ -4,14 +4,11 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Terms from "@/components/Checkboxes/Terms";
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
-
 import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
 import SelectGroupCaste from "@/components/SelectGroup/SelectGroupCaste";
-
 import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
 
 
@@ -34,7 +31,7 @@ const SignUp: React.FC = () => {
 
   const lang = localStorage.getItem('lang') || 'en';
 
-  const [remainingTime, setRemainingTime] = useState(9); // 5 seconds initially
+  const [remainingTime, setRemainingTime] = useState(15); // 15 seconds countdown
   const [selected, setselected] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
@@ -212,10 +209,6 @@ const SignUp: React.FC = () => {
 
     if (!form.phonenumber) {
       newErrors.phonenumber = lang === 'ta' ? "தொலைபேசி எண் கட்டாயம் உள்ளிடவும்." : "Phone number cannot be empty";
-    } else if (!/^\d{10}$/.test(form.phonenumber)) {
-      newErrors.phonenumber = lang === 'ta'
-        ? "சரியான 10 இலக்க தொலைபேசி எண் உள்ளிடவும்."
-        : "Enter a valid 10-digit phone number";
     }
 
     const passwordValidationError = validatePassword(form.password);
@@ -279,10 +272,7 @@ const SignUp: React.FC = () => {
           : "Registration successful. Await admin approval. Check your email for updates."
       );
       window.scrollTo({ top: 0, behavior: "smooth" });
-      // Redirect to the login page after 5 seconds
-      setTimeout(() => {
-        router.push("/login");
-      }, 5000); // Redirect after 5 seconds
+      // Redirect is handled by useEffect with countdown
     } else if (res.status === 400) {
       setError(data.message);
       setPending(false);
@@ -326,25 +316,26 @@ const SignUp: React.FC = () => {
   };
 
 
+  // Handle Redirection when countdown reaches 0
+  useEffect(() => {
+    if (successMessage && remainingTime === 0) {
+      router.push("/login");
+    }
+  }, [remainingTime, successMessage, router]);
+
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
 
     if (successMessage) {
       timer = setInterval(() => {
-        setRemainingTime((prevTime) => {
-          if (prevTime === 1) {
-            clearInterval(timer as NodeJS.Timeout);  // Stop the timer
-            router.push("/login");  // Redirect after countdown finishes
-          }
-          return prevTime - 1;
-        });
-      }, 1000); // 1000ms = 1 second
+        setRemainingTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+      }, 1000);
     }
 
     return () => {
-      if (timer) clearInterval(timer); // Clean up the interval if the component unmounts or successMessage changes
+      if (timer) clearInterval(timer);
     };
-  }, [successMessage, router]);
+  }, [successMessage]);
 
   return (
 
@@ -546,6 +537,9 @@ const SignUp: React.FC = () => {
                     </svg>
                   </span>
                 </div>
+                {errors.subcaste && (
+                  <p className="text-red-600 text-sm">{errors.subcaste}</p>
+                )}
               </div>
 
               <div className="mb-4">
@@ -591,11 +585,20 @@ const SignUp: React.FC = () => {
               </div>
 
               <div className="mb-5">
-                <input
+                <button
                   type="submit"
-                  value={lang == 'ta' ? 'கணக்கை உருவாக்கவும்' : 'Create account'}
-                  className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-button"
-                />
+                  disabled={pending}
+                  className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-button flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:bg-opacity-70"
+                >
+                  {pending ? (
+                    <>
+                      <div className="h-5 w-5 animate-spin rounded-full border-2 border-solid border-white border-t-transparent"></div>
+                      <span>{lang == 'ta' ? 'செயலாக்கப்படுகின்றன...' : 'Processing...'}</span>
+                    </>
+                  ) : (
+                    lang == 'ta' ? 'கணக்கை உருவாக்கவும்' : 'Create account'
+                  )}
+                </button>
               </div>
               <div className="mt-6 text-center">
                 <p className="text-sm font-medium text-center dark-text mb-4">

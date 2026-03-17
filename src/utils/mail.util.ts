@@ -62,7 +62,7 @@ export const sendEmail = async (dto: SendEmailDto) => {
         debug: true
     } as SMTPTransport.Options)
 
-    const baseUrl = 'https://tmsmsaivamudaliyarmatrimony.com';
+    const baseUrl = process.env.BASE_URL;
     const logoUrl = `${baseUrl}/images/logo/mail-logo.png`;
     const finalMessage = message.replace(/cid:mail_logo/g, logoUrl);
 
