@@ -120,6 +120,8 @@ const UserTable = () => {
                         onClick: () => console.log("Close"),
                     },
                 });
+                closeModal();
+                fetchUsers(currentPage);
             } else {
                 toast.error('Failed to send reply', {
                     className: "sonner-toast-error",
@@ -545,36 +547,45 @@ const UserTable = () => {
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-title-xsm font-bold text-black dark:text-white flex items-center">
                                             <svg className="w-5 h-5 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" /></svg>
-                                            {isTamil ? 'பதில் அளிக்கவும்' : 'Send a Reply'}
+                                            {modalData.mail_status ? (isTamil ? 'அனுப்பப்பட்ட பதில்' : 'Sent Reply') : (isTamil ? 'பதில் அளிக்கவும்' : 'Send a Reply')}
                                         </h3>
-                                        <div className="flex items-center space-x-1.5 bg-whiter dark:bg-meta-4 p-1 rounded-lg">
-                                            <button
-                                                onClick={() => setSelectedLanguage('en')}
-                                                className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${selectedLanguage === 'en' ? 'bg-primary text-white shadow-sm' : 'text-bodydark2 hover:text-black dark:hover:text-white'}`}
-                                            >
-                                                EN
-                                            </button>
-                                            <button
-                                                onClick={() => setSelectedLanguage('ta')}
-                                                className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${selectedLanguage === 'ta' ? 'bg-primary text-white shadow-sm' : 'text-bodydark2 hover:text-black dark:hover:text-white'}`}
-                                            >
-                                                TA
-                                            </button>
-                                        </div>
+                                        {!modalData.mail_status && (
+                                            <div className="flex items-center space-x-1.5 bg-whiter dark:bg-meta-4 p-1 rounded-lg">
+                                                <button
+                                                    onClick={() => setSelectedLanguage('en')}
+                                                    className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${selectedLanguage === 'en' ? 'bg-primary text-white shadow-sm' : 'text-bodydark2 hover:text-black dark:hover:text-white'}`}
+                                                >
+                                                    EN
+                                                </button>
+                                                <button
+                                                    onClick={() => setSelectedLanguage('ta')}
+                                                    className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${selectedLanguage === 'ta' ? 'bg-primary text-white shadow-sm' : 'text-bodydark2 hover:text-black dark:hover:text-white'}`}
+                                                >
+                                                    TA
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="w-full rounded-xl overflow-hidden border border-stroke dark:border-strokedark shadow-sm focus-within:border-primary transition-colors">
-                                        <ReactQuill
-                                            key={selectedLanguage}
-                                            theme="snow"
-                                            value={selectedLanguage === 'en' ? message : message_ta}
-                                            onChange={(val) => {
-                                                selectedLanguage === 'en' ? setMessage(val) : setMessageTa(val);
-                                            }}
-                                            placeholder={isTamil ? "உங்கள் பதிலை இங்கே தட்டச்சு செய்க..." : "Type your reply here..."}
-                                            modules={{ toolbar: toolbarOptions }}
-                                            className="w-full h-auto min-h-[220px] bg-white dark:bg-boxdark"
-                                        />
+                                        {modalData.mail_status ? (
+                                            <div
+                                                className="w-full h-auto min-h-[220px] bg-white dark:bg-boxdark p-5 overflow-y-auto custom-scrollbar text-black dark:text-bodydark1 content-html"
+                                                dangerouslySetInnerHTML={{ __html: modalData.reply_message || '<p>No reply message saved.</p>' }}
+                                            />
+                                        ) : (
+                                            <ReactQuill
+                                                key={selectedLanguage}
+                                                theme="snow"
+                                                value={selectedLanguage === 'en' ? message : message_ta}
+                                                onChange={(val) => {
+                                                    selectedLanguage === 'en' ? setMessage(val) : setMessageTa(val);
+                                                }}
+                                                placeholder={isTamil ? "உங்கள் பதிலை இங்கே தட்டச்சு செய்க..." : "Type your reply here..."}
+                                                modules={{ toolbar: toolbarOptions }}
+                                                className="w-full h-auto min-h-[220px] bg-white dark:bg-boxdark"
+                                            />
+                                        )}
                                     </div>
                                 </div>
                             </div>
