@@ -216,6 +216,7 @@ body {
     color: #333333;
     line-height: 36px;
     text-align: justify;
+    margin: 0 0 15px;
 }
 
 .h-21 {
@@ -1628,8 +1629,8 @@ input:-internal-autofill-selected {
     font-size: 18px;
     font-weight: 300;
     line-height: 36px;
-    margin: 0;
-    /* margin: 0 0 15px; */
+    /* margin: 0; */
+    margin: 0 0 15px;
 }
 
 @media only screen and (min-width: 768px) {
@@ -1663,7 +1664,7 @@ input:-internal-autofill-selected {
     .team-content p {
         font-size: 18px;
         line-height: 36px;
-        /* margin: 0 0 15px; */
+        margin: 0 0 15px;
     }
 }
 
