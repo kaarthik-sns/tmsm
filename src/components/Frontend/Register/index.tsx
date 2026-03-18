@@ -31,7 +31,7 @@ const SignUp: React.FC = () => {
 
   const lang = localStorage.getItem('lang') || 'en';
 
-  const [remainingTime, setRemainingTime] = useState(15); // 15 seconds countdown
+  const [remainingTime, setRemainingTime] = useState(10); // 10 seconds countdown
   const [selected, setselected] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
