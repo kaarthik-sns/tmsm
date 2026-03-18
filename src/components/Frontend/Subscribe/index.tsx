@@ -39,7 +39,6 @@ export default function CheckoutPage() {
 
         if (res.ok) {
           const { data } = await res.json();
-          console.log(data);
           setPhone(data?.phonenumber);
           setEmail(data?.email);
           setName(data?.name + ' ' + data?.lastname);
