@@ -318,7 +318,7 @@ const PaginatedUsers = () => {
     <>
 
       <div className="dark-bg">
-        <div className="container mx-auto flex items-center justify-center p-10">
+        <div className="container mx-auto flex items-center justify-center xs:p-1 md:p-10">
           <form>
             <div className="flex flex-wrap items-center gap-9 p-6.5 member-search-form">
 
@@ -520,11 +520,10 @@ const PaginatedUsers = () => {
                       </p>
                       <p className="flex">
                         <span className="label text-black w-26 flex-shrink-0">{lang === 'ta' ? 'முகவரி' : 'Address'}:</span>
-                        <span className="value">
-                          {user.address ? user.address : '-'}
-
-                        </span>
                       </p>
+                      <p><span className="value">
+                        {user.address ? user.address : '-'}
+                      </span></p>
                     </div>
                   </div>
                 </div>
