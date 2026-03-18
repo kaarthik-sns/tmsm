@@ -5,16 +5,7 @@ import { getToken } from "next-auth/jwt";
 export async function proxy(req) {
     const url = req.nextUrl;
     const pathname = url.pathname;
-    
-    const isProduction = process.env.NODE_ENV === "production";
-    const isHttps = req.headers.get("x-forwarded-proto") === "https" || req.url.startsWith("https://");
-    const secureCookie = isProduction || isHttps;
-
-    const token = await getToken({ 
-        req, 
-        secret: process.env.NEXTAUTH_SECRET,
-        secureCookie
-    });
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
     // Rewrite `/` to serve content from `/frontend` but keep `/` in the browser's address bar
     if (pathname === '' || pathname === '/') {
@@ -71,12 +62,12 @@ export async function proxy(req) {
     // }
 
     // Redirect unauthenticated users trying to access restricted paths
-    if (!token && (pathname.startsWith('/dashboard') || pathname.startsWith('/view-profile') || pathname.startsWith('/member'))) {
+    if (!token && (pathname.startsWith('/dashboard') || pathname.startsWith('/view-profile'))) {
         return NextResponse.redirect(new URL('/login', req.url));
     }
 
     // Redirect unauthenticated users trying to access restricted paths
-    if (token && token.is_admin && (pathname.startsWith('/dashboard') || pathname.startsWith('/view-profile') || pathname.startsWith('/member'))) {
+    if (token && token.is_admin && (pathname.startsWith('/dashboard') || pathname.startsWith('/view-profile'))) {
         return NextResponse.redirect(new URL('/login', req.url));
     }
 

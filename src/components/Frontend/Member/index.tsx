@@ -23,8 +23,16 @@ const PaginatedUsers = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    } else if (status === "authenticated" && session?.user?.is_admin) {
+      router.push("/login");
+    }
+  }, [status, session, router]);
 
   const [homeFilterPage, setHomeFilterPage] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
@@ -181,7 +189,7 @@ const PaginatedUsers = () => {
   };
 
   const handleSearch = () => {
-    router.replace('/member', undefined);
+    // router.replace('/member', { scroll: false });
     fetchUsers(1, filters);
   };
 
