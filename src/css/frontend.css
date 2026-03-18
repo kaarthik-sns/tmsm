@@ -501,7 +501,8 @@ input:-internal-autofill-selected {
 
     .about-con-desc h3,
     .story-right-desc h3,
-    .we-offer-title h3 {
+    .we-offer-title h3,
+    .faq-title {
         font-size: 28px !important;
         line-height: 40px !important;
     }
@@ -982,7 +983,8 @@ input:-internal-autofill-selected {
         padding: 3.47vw;
     }
 
-    .about-con-desc h3 {
+    .about-con-desc h3,
+    .faq-title {
         font-size: 3.47vw;
         margin: 0 0 1.67vw;
     }
@@ -1148,7 +1150,8 @@ input:-internal-autofill-selected {
         padding: 50px;
     }
 
-    .about-con-desc h3 {
+    .about-con-desc h3,
+    .faq-title {
         font-size: 50px;
         margin: 0 0 24px;
     }
@@ -1370,7 +1373,8 @@ input:-internal-autofill-selected {
         margin-bottom: 10px;
     }
 
-    .con-list-of-data p, .info-link-data {
+    .con-list-of-data p,
+    .info-link-data {
         font-size: 15px;
 
         .heading {
