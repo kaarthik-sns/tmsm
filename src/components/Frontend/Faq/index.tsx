@@ -27,7 +27,7 @@ const FAQ = (data) => {
 
         <div className="inner-banner-info">
           <div className="top-title">
-            <h2>{lang === 'ta' ? 'அடிக்கடி கேட்கப்படும் கேள்விகள்' : 'FAQ' }</h2>
+            <h2>{lang === 'ta' ? 'அடிக்கடி கேட்கப்படும் கேள்விகள்' : 'FAQ'}</h2>
           </div>
         </div>
       </section>
@@ -37,7 +37,7 @@ const FAQ = (data) => {
           <div className="row flex flex-col md:flex-row ">
             <div className="w-full md:w-1/1  px-7.5">
               <div className="faq-content">
-                <h3>
+                <h3 className="faq-title">
                   {lang === 'ta' ? 'அடிக்கடி கேட்கப்படும் கேள்விகள்' : 'Frequently Asked Questions'}
                 </h3>
                 <p>

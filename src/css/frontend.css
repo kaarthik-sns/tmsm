@@ -1423,7 +1423,7 @@ input:-internal-autofill-selected {
 }
 
 .faq-info-con {
-    padding: 80px 0px 40px 0;
+    padding: 80px 0px 10px 0;
     background-color: #ffffff;
 }
 
@@ -1437,6 +1437,15 @@ input:-internal-autofill-selected {
     font-size: 35px;
     font-weight: 700;
     line-height: normal;
+}
+
+.faq-title {
+    color: #D13333;
+    font-family: "Playfair Display";
+    font-size: 35px;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 20px;
 }
 
 .faq-content .sub-title {
@@ -1472,7 +1481,7 @@ input:-internal-autofill-selected {
     font-family: "Noto Sans";
     font-size: 16px;
     font-style: normal;
-    font-weight: 300;
+    font-weight: 600;
     line-height: normal;
 }
 
@@ -1480,7 +1489,7 @@ input:-internal-autofill-selected {
     font-family: "Noto Sans";
     font-size: 16px;
     color: #333333;
-    font-weight: 600;
+    font-weight: 400;
 }
 
 .expand-font {
@@ -1562,7 +1571,7 @@ input:-internal-autofill-selected {
 
 @media only screen and (min-width: 768px) {
     .faq-info-con {
-        padding: 5.56vw 0px 2.78vw 0;
+        padding: 5.56vw 0px 1.78vw 0;
     }
 
     .faq-list-con {
@@ -1576,7 +1585,7 @@ input:-internal-autofill-selected {
 
 @media only screen and (min-width: 1600px) {
     .faq-info-con {
-        padding: 80px 0px 40px 0;
+        padding: 80px 0px 10px 0;
     }
 
     .faq-list-con {
@@ -1629,8 +1638,11 @@ input:-internal-autofill-selected {
     font-size: 18px;
     font-weight: 300;
     line-height: 36px;
-    /* margin: 0; */
     margin: 0 0 15px;
+}
+
+.team-content li {
+  margin: 0 0 15px;
 }
 
 @media only screen and (min-width: 768px) {
