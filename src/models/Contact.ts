@@ -11,6 +11,7 @@ export interface IContactUs extends Document {
     created_at?: Date;
     updated_at?: Date;
     mail_status?: boolean;
+    reply_message?: string;
 }
 
 // Define the schema with the interface
@@ -24,6 +25,7 @@ const ContactUsSchema = new Schema<IContactUs>({
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
     mail_status: { type: Boolean, default: false },
+    reply_message: { type: String, required: false },
 }, {
     collection: "contact_us",
 });

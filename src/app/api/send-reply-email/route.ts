@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
             message: htmlBody
         });
 
-        await Contact.findByIdAndUpdate(_id, { mail_status: false });
+        await Contact.findByIdAndUpdate(_id, { mail_status: true, reply_message: message });
 
         return NextResponse.json({ success: true, message: 'Reply email sent successfully' });
     } catch (error) {
