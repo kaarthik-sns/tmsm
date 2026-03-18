@@ -287,7 +287,6 @@ const SignUp: React.FC = () => {
   const handleReligionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedReligion = e.target.value;
     setForm({ ...form, religion: selectedReligion });
-    console.log(selectedReligion);
 
     let newErrors = { ...errors };
     setErrors(null);
