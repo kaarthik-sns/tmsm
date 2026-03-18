@@ -417,7 +417,7 @@ const UserTable = () => {
                                 <div key={idx} className="bg-white dark:bg-boxdark rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm p-5 hover:shadow-md transition-all duration-200">
                                     <div className="flex justify-between items-start mb-4">
                                         <div className="flex items-center space-x-4">
-                                            <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary font-bold text-sm">
+                                            <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-graydark/10 text-graydark font-bold text-sm">
                                                 {idx + 1}
                                             </div>
                                             <div>
@@ -491,7 +491,7 @@ const UserTable = () => {
                             {/* Modal Header */}
                             <div className="flex items-center justify-between px-6 py-4 border-b border-stroke dark:border-strokedark bg-white dark:bg-boxdark">
                                 <h2 className="text-xl sm:text-title-sm font-bold text-black dark:text-white flex items-center">
-                                    <span className="w-1.5 h-6 bg-primary rounded-full mr-3"></span>
+                                    <span className="w-1.5 h-6 bg-graydark rounded-full mr-3"></span>
                                     {isTamil ? 'தொடர்பு கொண்டவர் விவரங்கள்' : 'Contact Details'}
                                 </h2>
                                 <button
@@ -511,31 +511,31 @@ const UserTable = () => {
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
                                     {/* Name Field */}
                                     <div className="space-y-1 p-4 rounded-xl bg-whiter dark:bg-meta-4/30 border border-stroke dark:border-strokedark/50">
-                                        <label className="text-[10px] uppercase font-bold tracking-widest text-primary">{isTamil ? 'பெயர்' : 'FullName'}</label>
+                                        <label className="text-[10px] uppercase font-bold tracking-widest text-graydark">{isTamil ? 'பெயர்' : 'FullName'}</label>
                                         <p className="text-base font-medium text-black dark:text-white">{modalData.name}</p>
                                     </div>
 
                                     {/* Email Field */}
                                     <div className="space-y-1 p-4 rounded-xl bg-whiter dark:bg-meta-4/30 border border-stroke dark:border-strokedark/50">
-                                        <label className="text-[10px] uppercase font-bold tracking-widest text-primary">{isTamil ? 'மின்னஞ்சல்' : 'Email Address'}</label>
+                                        <label className="text-[10px] uppercase font-bold tracking-widest text-graydark">{isTamil ? 'மின்னஞ்சல்' : 'Email Address'}</label>
                                         <p className="text-base font-medium text-black dark:text-white break-all">{modalData.email}</p>
                                     </div>
 
                                     {/* Phone Field */}
                                     <div className="space-y-1 p-4 rounded-xl bg-whiter dark:bg-meta-4/30 border border-stroke dark:border-strokedark/50">
-                                        <label className="text-[10px] uppercase font-bold tracking-widest text-primary">{isTamil ? 'தொலைபேசி எண்' : 'Phone Number'}</label>
+                                        <label className="text-[10px] uppercase font-bold tracking-widest text-graydark">{isTamil ? 'தொலைபேசி எண்' : 'Phone Number'}</label>
                                         <p className="text-base font-medium text-black dark:text-white">{modalData.phone}</p>
                                     </div>
 
                                     {/* Date Field */}
                                     <div className="space-y-1 p-4 rounded-xl bg-whiter dark:bg-meta-4/30 border border-stroke dark:border-strokedark/50">
-                                        <label className="text-[10px] uppercase font-bold tracking-widest text-primary">{isTamil ? 'தேதி' : 'Received Date'}</label>
+                                        <label className="text-[10px] uppercase font-bold tracking-widest text-graydark">{isTamil ? 'தேதி' : 'Received Date'}</label>
                                         <p className="text-base font-medium text-black dark:text-white">{formatDate(modalData.created_at)}</p>
                                     </div>
 
                                     {/* Message Field (Full Width) */}
-                                    <div className="md:col-span-2 space-y-2 p-4 rounded-xl bg-primary/5 dark:bg-primary/10 border border-primary/20">
-                                        <label className="text-[10px] uppercase font-bold tracking-widest text-primary">{isTamil ? 'செய்தி' : 'Client Message'}</label>
+                                    <div className="md:col-span-2 space-y-2 p-4 rounded-xl bg-graydark/5 dark:bg-graydark/10 border border-primary/20">
+                                        <label className="text-[10px] uppercase font-bold tracking-widest text-graydark">{isTamil ? 'செய்தி' : 'Client Message'}</label>
                                         <div className="text-sm font-medium text-black dark:text-bodydark1 bg-white/50 dark:bg-boxdark/50 p-4 rounded-lg leading-relaxed shadow-inner max-h-[160px] overflow-y-auto custom-scrollbar whitespace-pre-wrap">
                                             {modalData.message}
                                         </div>
@@ -546,20 +546,20 @@ const UserTable = () => {
                                 <div className="space-y-4 pt-6 border-t border-stroke dark:border-strokedark">
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-title-xsm font-bold text-black dark:text-white flex items-center">
-                                            <svg className="w-5 h-5 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" /></svg>
+                                            <svg className="w-5 h-5 mr-3 text-graydark" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" /></svg>
                                             {modalData.mail_status ? (isTamil ? 'அனுப்பப்பட்ட பதில்' : 'Sent Reply') : (isTamil ? 'பதில் அளிக்கவும்' : 'Send a Reply')}
                                         </h3>
                                         {!modalData.mail_status && (
                                             <div className="flex items-center space-x-1.5 bg-whiter dark:bg-meta-4 p-1 rounded-lg">
                                                 <button
                                                     onClick={() => setSelectedLanguage('en')}
-                                                    className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${selectedLanguage === 'en' ? 'bg-primary text-white shadow-sm' : 'text-bodydark2 hover:text-black dark:hover:text-white'}`}
+                                                    className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${selectedLanguage === 'en' ? 'bg-graydark text-white shadow-sm' : 'text-bodydark2 hover:text-black dark:hover:text-white'}`}
                                                 >
                                                     EN
                                                 </button>
                                                 <button
                                                     onClick={() => setSelectedLanguage('ta')}
-                                                    className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${selectedLanguage === 'ta' ? 'bg-primary text-white shadow-sm' : 'text-bodydark2 hover:text-black dark:hover:text-white'}`}
+                                                    className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${selectedLanguage === 'ta' ? 'bg-graydark text-white shadow-sm' : 'text-bodydark2 hover:text-black dark:hover:text-white'}`}
                                                 >
                                                     TA
                                                 </button>
@@ -610,7 +610,7 @@ const UserTable = () => {
                                     className={`w-full sm:w-auto inline-flex items-center justify-center rounded-xl px-10 py-2.5 text-center font-bold text-white transition-all shadow-md shadow-primary/25
                                     ${modalData.mail_status === true
                                             ? 'bg-bodydark text-white cursor-not-allowed shadow-none'
-                                            : 'bg-primary hover:bg-opacity-90 active:scale-95'
+                                            : 'bg-graydark hover:bg-opacity-90 active:scale-95'
                                         }`}
                                 >
                                     {modalData?.mail_status
