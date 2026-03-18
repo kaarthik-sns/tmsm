@@ -425,7 +425,7 @@ const PaginatedUsers = () => {
         <>
           <div className='grid grid-cols-1 gap-7.5 sm:grid-cols-1 xl:grid-cols-2 '>
             {users.map((user: any) => (
-              <div className="rounded-sm px-6 py-5" key={user._id}>
+              <div className="rounded-sm xs:px-1 xs:py-2 md:px-6 md:py-5" key={user._id}>
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between px-6 py-2 bg-member">
                   <div className="">
                     <div className='h-25 w-25 mb-3'>
