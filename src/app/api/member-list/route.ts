@@ -33,7 +33,7 @@ export const GET = async (req: NextRequest) => {
             subcaste = subcaste.replace(/\bMudaliyar\b/i, '').replace(/\s+/g, ' ').trim(); // Remove 'Mudaliyar' and extra spaces
             query.subcaste = { $regex: subcaste, $options: 'i' }; // Case-insensitive regex search
         }
-        
+
 
         if (gender) {
             query.gender = { $regex: `^${gender}$`, $options: 'i' }; // Case-insensitive regex search
@@ -54,6 +54,7 @@ export const GET = async (req: NextRequest) => {
         query.is_delete = false;
         query.is_approve = true;
         query.is_verify = true;
+        query.is_active = true;
 
         // Fetch filtered and paginated users from the database
         const users = await User.find(query).skip(skip).limit(pageSize);

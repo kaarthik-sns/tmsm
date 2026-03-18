@@ -180,8 +180,7 @@ const PaginatedUsers = () => {
     setFilters({ ...filters, lookingfor: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSearch = () => {
     router.replace('/member', undefined);
     fetchUsers(1, filters);
   };
@@ -312,7 +311,7 @@ const PaginatedUsers = () => {
 
       <div className="dark-bg">
         <div className="container mx-auto flex items-center justify-center p-10">
-          <form onSubmit={handleSubmit}>
+          <form>
             <div className="flex flex-wrap items-center gap-9 p-6.5 member-search-form">
 
               <div className="w-full md:w-auto">
@@ -387,7 +386,8 @@ const PaginatedUsers = () => {
               <div className="w-full md:w-auto flex justify-between gap-4 mt-5 md:mt-5">
                 <button
                   className="inline-block member-search-btn text-white duration-150 rounded-full  md:text-sm ftext-custom"
-                  type="submit"
+                  type="button"
+                  onClick={handleSearch}
                 >
                   {lang == 'ta' ? 'தேடு' : 'Search'}
                 </button>

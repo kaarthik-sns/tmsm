@@ -5,7 +5,16 @@ import { getToken } from "next-auth/jwt";
 export async function proxy(req) {
     const url = req.nextUrl;
     const pathname = url.pathname;
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    
+    const isProduction = process.env.NODE_ENV === "production";
+    const isHttps = req.headers.get("x-forwarded-proto") === "https" || req.url.startsWith("https://");
+    const secureCookie = isProduction || isHttps;
+
+    const token = await getToken({ 
+        req, 
+        secret: process.env.NEXTAUTH_SECRET,
+        secureCookie
+    });
 
     // Rewrite `/` to serve content from `/frontend` but keep `/` in the browser's address bar
     if (pathname === '' || pathname === '/') {
