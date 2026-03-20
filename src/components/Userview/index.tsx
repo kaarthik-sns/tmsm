@@ -113,6 +113,25 @@ const FormElements = () => {
     }
   };
 
+  const handleDownload = async () => {
+    if (!formData.horoscope) return;
+    try {
+      const response = await fetch(formData.horoscope);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      const ext = formData.horoscope.split(".").pop()?.split("?")[0] || "jpg";
+      a.download = `horoscope.${ext}`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch {
+      toast.error("Failed to download horoscope.");
+    }
+  };
+
   useEffect(() => {
     if (userId) {
       const fetchUserData = async () => {
@@ -452,14 +471,27 @@ const FormElements = () => {
       {/* Horoscope Section */}
       <div className="mb-8">
         <DetailSection title={isTamil ? 'ஜாதகம்' : 'Horoscope'}>
-          <div className="flex justify-start">
+          <div className="flex flex-col gap-2">
             {formData.horoscope ? (
-              <img
-                src={formData.horoscope}
-                alt="Horoscope"
-                onClick={() => window.open(formData.horoscope, "_blank")}
-                className="max-h-60 rounded border border-stroke object-contain cursor-pointer"
-              />
+              <>
+                <img
+                  src={formData.horoscope}
+                  alt="Horoscope"
+                  onClick={() => window.open(formData.horoscope, "_blank")}
+                  className="max-h-60 rounded border border-stroke object-contain cursor-pointer"
+                />
+                <div>
+                  <button
+                    onClick={handleDownload}
+                    className="inline-flex items-center gap-2 rounded text-custom px-4 py-2 text-sm font-medium transition"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
+                    </svg>
+                    {isTamil ? 'பதிவிறக்கு' : 'Download'}
+                  </button>
+                </div>
+              </>
             ) : (
               <span className="text-gray-800 dark:text-white">-</span>
             )}

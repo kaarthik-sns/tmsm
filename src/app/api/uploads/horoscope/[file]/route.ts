@@ -16,8 +16,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ file
         // Check if file exists asynchronously
         await fs.promises.access(filePath, fs.constants.F_OK);
     } catch (err) {
-        // File doesn't exist
-        return NextResponse.json({ error: 'File not found' }, { status: 404 });
+        // File doesn't exist — redirect to 404 page
+        return NextResponse.redirect(new URL('/404', req.url));
     }
 
     // Determine the content type

@@ -193,7 +193,7 @@ const RequestStatus = () => {
   return (
     <div className="bg-light min-h-screen flex justify-center py-10 px-4">
       <div className="container max-w-4xl p-6">
-        <h1 className="text-lg sm:text-xl font-semibold mb-4 text-gray-700">{lang == 'ta' ? 'எனது பக்கம்' : 'My Account'}</h1>
+        {/* <h1 className="text-lg sm:text-xl font-semibold mb-4 text-gray-700">{lang == 'ta' ? 'எனது பக்கம்' : 'My Account'}</h1> */}
 
         {/* Tabs Navigation */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-2 sm:space-y-0">
@@ -226,20 +226,20 @@ const RequestStatus = () => {
               {lang == 'ta' ? 'அமைப்புகள்' : 'Settings'}
             </button>
           </div>
-
-          {/* Search Input (Visible in non-profile tabs non-settings tabs) */}
-          {activeTab !== "profile" && activeTab !== "settings" && (
-            <div className="w-full sm:w-auto">
-              <input
-                type="text"
-                placeholder="Search by name..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="border px-4 py-2 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-brown w-full sm:w-auto"
-              />
-            </div>
-          )}
         </div>
+
+        {/* Search Input (Visible in non-profile tabs non-settings tabs) */}
+        {activeTab !== "profile" && activeTab !== "settings" && (
+          <div className="w-full sm:w-auto">
+            <input
+              type="text"
+              placeholder="Search by name..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="border-2 border-gray-300 px-4 py-2 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-brown w-full sm:w-auto"
+            />
+          </div>
+        )}
 
         {/* Tab Content */}
         <div className="mt-6 relative">
@@ -303,7 +303,7 @@ const RequestStatus = () => {
 const ProfileCard = ({ profile, activeTab, onViewProfile, onHandleRequest, onRedirectProfile, lang }) => (
 
   <div className="bg-white rounded-lg p-4 sm:p-6 shadow-md flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 mb-4">
-    <img src={`/api${profile.user.profile_photo}`} alt={profile.user.name} className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border cursor-pointer" onClick={() => onViewProfile(profile)} />
+    <img src={profile.user.profile_photo ? `/api${profile.user.profile_photo}` : (profile.user.gender?.toLowerCase() === 'female' ? '/images/user/female.png' : '/images/user/dummy.png')} alt={profile.user.name} className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border cursor-pointer" onClick={() => onViewProfile(profile)} />
 
     <div className="flex-1 text-center sm:text-left">
       <h2 className="dash-heading mb-2">{profile.user.name}</h2>
@@ -392,7 +392,7 @@ const ProfileModal = ({ profile, onClose, lang }) => (
         </svg>
       </button>
       <div className="flex flex-col items-center text-center">
-        <img src={`/api${profile.user.profile_photo}`} alt={profile.user.name} className="w-20 h-20 rounded-full border mb-4" />
+        <img src={profile.user.profile_photo ? `/api${profile.user.profile_photo}` : (profile.user.gender?.toLowerCase() === 'female' ? '/images/user/female.png' : '/images/user/dummy.png')} alt={profile.user.name} className="w-20 h-20 rounded-full border mb-4" />
         <h2 className="dash-heading">{profile.user.name}</h2>
         <p className="text-gray-500 text-sm">{lang == 'ta' ? 'வயது: ' : 'Age: '}  {profile.user.age}</p>
         <p className="text-gray-500 text-sm">{lang == 'ta' ? 'தொழில்: ' : 'Profession: '} {profile.user.profession} | {lang == 'ta' ? 'கல்வி: ' : 'Education: '} {profile.user.education} </p>
