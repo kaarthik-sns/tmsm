@@ -6,10 +6,11 @@ import Image from "next/image";
 import Terms from "@/components/Checkboxes/Terms";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { TriangleAlert } from "lucide-react";
+import { TriangleAlert, Eye, EyeOff } from "lucide-react";
 import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
 import SelectGroupCaste from "@/components/SelectGroup/SelectGroupCaste";
 import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
+import Swal from 'sweetalert2';
 
 
 const SignUp: React.FC = () => {
@@ -46,6 +47,8 @@ const SignUp: React.FC = () => {
   });
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const router = useRouter();
 
@@ -245,7 +248,6 @@ const SignUp: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setPending(true);
     setErrors({});
     setError(null);
     setSuccessMessage(""); // Clear any previous success messages
@@ -253,9 +255,35 @@ const SignUp: React.FC = () => {
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      setPending(false);
       return;
     }
+
+    const result = await Swal.fire({
+      title: lang === 'ta' ? 'முக்கிய குறிப்பு' : 'Important Note',
+      html: lang === 'ta'
+        ? `<div class="text-sm text-left mb-4">
+             <p class="mb-2">சொத்து விவரம், பொருளாதார எதிர்பார்ப்பு ஆகியவற்றை இத்தளத்தில் பதியக் கூடாது. ஜாதகம், பயோடேட்டா ஆகியவற்றுடனும் இவ்விவரங்களைப் பதிவிடக்கூடாது. அப்படிப் பதிவு செய்தால் அவ்விவரங்கள் நீக்கப்படும்.</p>
+             <p>பெண் வரன்களின் புகைப்படங்களை இங்கு ஜாதகத்துடனோ வேறு வகையிலோ பதிவிட வேண்டாம். இவ்வேண்டுகோள் உங்கள் பாதுகாப்புக் கருதி தெரிவிக்கப்படுகிறது. அப்படியும் படங்கள் பதிவிடப்பட்டால் அதற்கு இந்த வெப்சைட் நிர்வாகம் பொறுப்பாகாது.</p>
+           </div>
+           <p class="font-medium">இந்த நிபந்தனைகளை ஏற்று தொடர விரும்புகிறீர்களா?</p>`
+        : `<div class="text-sm text-left mb-4">
+             <p class="mb-2">Do not post information of property details or financial expectations. This matrimony platform is for sharing horoscopes and profile-related information only. Restricting such content helps maintain privacy, avoid misuse, and help us to keep the platform focused on matchmaking. Any such information if posted, will be removed.</p>
+             <p>Please avoid posting bride girl's photo in this site. Please also avoid bride girl's photo in horoscope too. This is for your safety. If at all you post any photo, it is at your own risk and the site or site management will not be responsible.</p>
+           </div>
+           <p class="font-medium">Do you agree and wish to proceed?</p>`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: lang === 'ta' ? 'ஆம், நான் ஏற்கிறேன்' : 'I Agree, Proceed',
+      cancelButtonText: lang === 'ta' ? 'இல்லை, ரத்து செய்' : 'No, Cancel',
+    });
+
+    if (!result.isConfirmed) {
+      return;
+    }
+
+    setPending(true);
 
     const res = await fetch("/api/auth/signup", {
       method: "POST",
@@ -543,30 +571,48 @@ const SignUp: React.FC = () => {
               </div>
 
               <div className="mb-4">
-                <input
-                  type="password"
-                  name="password"
-                  value={form.password}
-                  onChange={handleChange}
-                  autoComplete="new-password"
-                  placeholder={lang == 'ta' ? 'கடவுச்சொல்' : 'Password'}
-                  className={`w-full rounded-lg border ${passwordError ? "border-red-500" : "border-stroke"
-                    } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={form.password}
+                    onChange={handleChange}
+                    autoComplete="new-password"
+                    placeholder={lang == 'ta' ? 'கடவுச்சொல்' : 'Password'}
+                    className={`w-full rounded-lg border ${passwordError ? "border-red-500" : "border-stroke"
+                      } bg-transparent py-4 pl-6 pr-12 text-black outline-none focus:border-primary`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
                 {passwordError && <p className="text-red-600 text-sm">{passwordError}</p>}
               </div>
               {/* Confirm Password Field */}
               <div className="mb-4">
-                <input
-                  type="password"
-                  name="confirmPassword" // ✅ Ensure this matches state key
-                  value={form.confirmPassword} // ✅ Ensure correct state binding
-                  onChange={handleChange}
-                  autoComplete="new-password"
-                  placeholder={lang == 'ta' ? 'கடவுச்சொல்லை உறுதிப்படுத்தவும்' : 'Confirm Password'}
-                  className={`w-full rounded-lg border ${confirmPasswordError ? "border-red-500" : "border-stroke"
-                    } bg-transparent py-4 pl-6 pr-6 text-black outline-none focus:border-primary`}
-                />
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    name="confirmPassword" // ✅ Ensure this matches state key
+                    value={form.confirmPassword} // ✅ Ensure correct state binding
+                    onChange={handleChange}
+                    autoComplete="new-password"
+                    placeholder={lang == 'ta' ? 'கடவுச்சொல்லை உறுதிப்படுத்தவும்' : 'Confirm Password'}
+                    className={`w-full rounded-lg border ${confirmPasswordError ? "border-red-500" : "border-stroke"
+                      } bg-transparent py-4 pl-6 pr-12 text-black outline-none focus:border-primary`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword((prev) => !prev)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                  >
+                    {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
                 {confirmPasswordError && <p className="text-red-600 text-sm">{confirmPasswordError}</p>}
               </div>
 
@@ -601,9 +647,9 @@ const SignUp: React.FC = () => {
                 </button>
               </div>
               <div className="mt-6 text-center">
-                <p className="text-sm font-medium text-center dark-text mb-4">
+                {/* <p className="text-sm font-medium text-center dark-text mb-4">
                   {lang === 'ta' ? 'பதிவுக்கான கட்டணம் ₹500 முதல்.' : 'Registration amount is ₹500 onwards.'}
-                </p>
+                </p> */}
                 <p>
                   {lang == 'ta' ? 'ஏற்கனவே கணக்கு உள்ளதா?' : 'Already have an account?'}{" "}
                   <Link href="/login" className="text-primary dark-terms">

@@ -57,6 +57,9 @@ main {
     font-size: 24px;
     font-weight: 600;
     line-height: 30px;
+    word-break: break-all;
+    word-spacing: normal;
+    word-wrap: break-word;
 }
 
 .lang-ta .member-container .member-title {

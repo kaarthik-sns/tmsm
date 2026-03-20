@@ -35,6 +35,7 @@ const ImageUpload = ({ name, label, formData, formErrors, handleChange, required
                         accept="image/*"
                         name={name}
                         onChange={handleChange}
+                        onClick={(e) => { e.currentTarget.value = ""; }}
                         className="absolute inset-0 z-50 h-full w-full cursor-pointer opacity-0"
                     />
                     <div className="flex flex-col items-center justify-center space-y-2">
