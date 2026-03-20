@@ -185,7 +185,7 @@ const FormElements = () => {
 
   return (
     <>
-      <Breadcrumb pageName= {isTamil ? 'உறுப்பினர் சுயவிவரம்':'View Profile'} />
+      <Breadcrumb pageName={isTamil ? 'உறுப்பினர் சுயவிவரம்' : 'View Profile'} />
 
       {/* Main Profile Section */}
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark mb-8">
@@ -194,9 +194,19 @@ const FormElements = () => {
           <div className="md:w-1/3">
             <div className="mb-6">
               <div className="w-48 h-48 mx-auto rounded-lg overflow-hidden bg-gray-100">
-                {formData.profile_photo && (
+                {formData.profile_photo ? (
                   <NextImage
                     src={formData.profile_photo}
+                    alt="Profile"
+                    width={192}
+                    height={192}
+                    quality={100}
+                    unoptimized={true}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <NextImage
+                    src={formData?.gender?.toLowerCase() === 'female' ? '/images/user/female.png' : '/images/user/dummy.png'}
                     alt="Profile"
                     width={192}
                     height={192}
@@ -209,7 +219,7 @@ const FormElements = () => {
             </div>
 
             {/* Additional Photos Grid - even smaller sizes */}
-            <div className="flex justify-center gap-4 mt-4">
+            {/* <div className="flex justify-center gap-4 mt-4">
               {[formData.photo1, formData.photo2, formData.photo3, formData.photo4]
                 .filter(photo => photo)
                 .map((photo, index) => (
@@ -229,7 +239,7 @@ const FormElements = () => {
                     />
                   </div>
                 ))}
-            </div>
+            </div> */}
           </div>
 
           {/* Right Column - Basic Info */}
@@ -309,20 +319,6 @@ const FormElements = () => {
                 </span>
               </div>
             </div>
-
-            {/* Horoscope button */}
-            <div className="flex flex-col md:flex-row items-center justify-between mt-5 gap-4">
-              <div>
-                {formData.horoscope && (
-                  <button
-                    onClick={handlePreview}
-                    className="w-full md:w-auto inline-block px-10 py-4 text-white duration-150 rounded-full md:text-sm ftext-custom"
-                  >
-                    {isTamil ? 'ஜாதகத்தை பார்க்க' : 'View Horoscope'}
-                  </button>
-                )}
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -336,7 +332,7 @@ const FormElements = () => {
           </div>
           <div className="p-8 flex flex-col md:flex-row gap-8">
             {/* Creator's Photo */}
-            <div className="md:w-1/4">
+            {/* <div className="md:w-1/4">
               <div className="w-32 h-32 mx-auto rounded-lg overflow-hidden bg-gray-100">
                 {formData.profile_creator_photo && (
                   <NextImage
@@ -350,7 +346,7 @@ const FormElements = () => {
                   />
                 )}
               </div>
-            </div>
+            </div> */}
 
             {/* Creator's Information */}
             <div className="md:w-3/4">
@@ -373,12 +369,12 @@ const FormElements = () => {
                     {formData.phonenumber}
                   </span>
                 </div>
-                <div className="flex items-center">
+                {/* <div className="flex items-center">
                   <span className="text-sm text-gray-600 dark:text-gray-400 w-[120px]">{isTamil ? 'ஆதார் எண்' : 'Aadhar'}:</span>
                   <span className="text-gray-800 dark:text-white">
                     {formData.profile_creator_aadhar}
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -449,6 +445,24 @@ const FormElements = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </DetailSection>
+      </div>
+
+      {/* Horoscope Section */}
+      <div className="mb-8">
+        <DetailSection title={isTamil ? 'ஜாதகம்' : 'Horoscope'}>
+          <div className="flex justify-start">
+            {formData.horoscope ? (
+              <img
+                src={formData.horoscope}
+                alt="Horoscope"
+                onClick={() => window.open(formData.horoscope, "_blank")}
+                className="max-h-60 rounded border border-stroke object-contain cursor-pointer"
+              />
+            ) : (
+              <span className="text-gray-800 dark:text-white">-</span>
+            )}
           </div>
         </DetailSection>
       </div>

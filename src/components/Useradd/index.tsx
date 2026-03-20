@@ -9,6 +9,7 @@ import SelectGroupCountries from "@/components/SelectGroup/SelectGroupCountries"
 import SelectGroupCities from "@/components/SelectGroup/SelectGroupCities";
 import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
 import { toast } from "sonner";
+import Swal from "sweetalert2";
 import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
 import { useRouter } from "next/navigation";
 import ImageUpload from "@/components/FormElements/ImageUpload";
@@ -180,6 +181,21 @@ const FormElements = () => {
       // Handle file input
       const file = files[0];
 
+      if (name === 'horoscope') {
+        const validExtensions = ['image/jpeg', 'image/jpg'];
+        if (!validExtensions.includes(file.type)) {
+          Swal.fire({
+            title: lang === 'ta' ? 'தவறான கோப்பு' : 'Invalid File',
+            text: lang === 'ta' ? 'தயவுசெய்து JPG அல்லது JPEG கோப்பை மட்டும் பதிவேற்றவும்.' : 'Please upload only JPG or JPEG files.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6',
+          });
+          e.target.value = '';
+          return;
+        }
+      }
+
       if (name == 'profile_photo') setProfilePic(file);
       if (name == 'photo1') setPhoto1(file);
       if (name == 'photo2') setPhoto2(file);
@@ -278,11 +294,11 @@ const FormElements = () => {
       errors.country_id = isTamil ? "நாடு தேர்வு கட்டாயம்" : "Country cannot be empty.";
     }
 
-    if (!formData.profile_photo || formData.profile_photo.trim() === "") {
-      errors.profile_photo = isTamil
-        ? "புகைப்படம் கட்டாயம்"
-        : "Profile Photo cannot be empty.";
-    }
+    // if (!formData.profile_photo || formData.profile_photo.trim() === "") {
+    //   errors.profile_photo = isTamil
+    //     ? "புகைப்படம் கட்டாயம்"
+    //     : "Profile Photo cannot be empty.";
+    // }
 
     if (!formData.birthdate || formData.birthdate.trim() === "") {
       errors.birthdate = isTamil ? "பிறந்த தேதி கட்டாயம்" : "Date Of Birth cannot be empty.";
@@ -325,23 +341,23 @@ const FormElements = () => {
       //   errors.profile_creator_photo = isTamil ? "படத்தை பதிவேற்றவும்." : "Picture cannot be empty.";
       // }
 
-      if (
-        !formData.profile_creator_aadhar ||
-        !/^\d{16}$/.test(formData.profile_creator_aadhar)
-      ) {
-        errors.profile_creator_aadhar = isTamil
-          ? "16 எண்கள் கொண்ட சரியான ஆதார் எண்ணை உள்ளிடவும்."
-          : "Please enter a valid 16-digit Aadhar number.";
-      }
+      // if (
+      //   !formData.profile_creator_aadhar ||
+      //   !/^\d{16}$/.test(formData.profile_creator_aadhar)
+      // ) {
+      //   errors.profile_creator_aadhar = isTamil
+      //     ? "16 எண்கள் கொண்ட சரியான ஆதார் எண்ணை உள்ளிடவும்."
+      //     : "Please enter a valid 16-digit Aadhar number.";
+      // }
 
-      if (
-        formData.profile_creator_phonenumber &&
-        formData.profile_creator_phonenumber.trim() !== ""
-      ) {
-        errors.profile_creator_phonenumber = isTamil
-          ? "சரியான தொலைபேசி எண் உள்ளிடவும்."
-          : "Enter a valid phone number.";
-      }
+      // if (
+      //   formData.profile_creator_phonenumber &&
+      //   formData.profile_creator_phonenumber.trim() !== ""
+      // ) {
+      //   errors.profile_creator_phonenumber = isTamil
+      //     ? "சரியான தொலைபேசி எண் உள்ளிடவும்."
+      //     : "Enter a valid phone number.";
+      // }
     }
 
 
@@ -610,7 +626,7 @@ const FormElements = () => {
                   )}
                 </div>
 
-                {profileCreator && (
+                {/* {profileCreator && (
                   <>
                     <div className="mb-4.5">
                       <ImageUpload
@@ -643,7 +659,7 @@ const FormElements = () => {
                       )}
                     </div>
                   </>
-                )}
+                )} */}
               </div>
             </div>
             {/* <!-- Reference end--> */}
@@ -658,7 +674,7 @@ const FormElements = () => {
               </div>
               <div className="p-6.5">
 
-                <div className="mb-6.5">
+                {/* <div className="mb-6.5">
                   <ImageUpload
                     name="profile_photo"
                     label={lang === 'ta' ? 'புகைப்படம்' : 'Profile Picture'}
@@ -667,7 +683,7 @@ const FormElements = () => {
                     handleChange={handleChange}
                     required={true}
                   />
-                </div>
+                </div> */}
 
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row ">
                   <div className="w-full xl:w-1/2">
@@ -1054,17 +1070,26 @@ const FormElements = () => {
               <div className="flex flex-col gap-5.5 p-6.5">
                 <FileUpload
                   name="horoscope"
+                  accept=".jpg,.jpeg"
                   handleChange={handleChange}
                 />
                 {formData.horoscope && (
-                  <button
-                    type="button"
-                    onClick={handlePreview}
-                    style={{ width: "200px", padding: "8px 0" }}
-                    className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 text-custom"
-                  >
-                    {lang === 'ta' ? 'ஜாதகத்தை பார்க்க' : 'Preview'}
-                  </button>
+                  <div className="mt-4 flex flex-col items-center gap-3">
+                    <img
+                      src={formData.horoscope}
+                      alt="Horoscope Preview"
+                      title={lang === 'ta' ? 'ஜாதகத்தை பார்க்க' : 'Preview Horoscope'}
+                      onClick={() => window.open(formData.horoscope, "_blank")}
+                      className="max-h-60 rounded-lg border border-stroke object-contain cursor-pointer"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, horoscope: "" })}
+                      className="text-sm font-medium text-red-500 hover:text-red-700 underline"
+                    >
+                      {lang === 'ta' ? 'படத்தை அகற்று' : 'Remove Image'}
+                    </button>
+                  </div>
                 )}
               </div>
             </div>
@@ -1450,7 +1475,7 @@ const FormElements = () => {
 
 
             {/* <!-- Photo upload start --> */}
-            <div className="rounded-lg border border-1 bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            {/* <div className="rounded-lg border border-1 bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                 <h3 className="font-medium dark-text dark:text-white">
                   {lang === 'ta' ? 'கூடுதல் படங்கள்' : 'Additional  Pictures'}
@@ -1500,7 +1525,7 @@ const FormElements = () => {
                 </div>
 
               </div>
-            </div>
+            </div> */}
             {/* <!-- Photo upload end--> */}
 
             <div className="text-right">

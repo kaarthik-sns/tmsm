@@ -123,7 +123,7 @@ export default function Profile({ userId }) {
             <div className="relative">
               {/* Profile Picture */}
               <Image
-                src={profileData?.profile_photo ? `/api${profileData.profile_photo}` : "/images/user/dummy.png"}
+                src={profileData?.profile_photo ? `/api${profileData.profile_photo}` : (profileData?.gender?.toLowerCase() === 'female' ? '/images/user/female.png' : '/images/user/dummy.png')}
                 alt="Profile Picture"
                 width={200}
                 height={200}
@@ -158,12 +158,15 @@ export default function Profile({ userId }) {
               </div>
 
               {profileData.horoscope && (
-                <button
-                  onClick={handlePreview}
-                  className="inline-block px-5 py-2 text-white duration-150 rounded-full md:text-sm ftext-custom mt-5"
-                >
-                  {lang === 'ta' ? 'ஜாதகத்தை பார்க்க' : 'View Horoscope'}
-                </button>
+                <div className="mt-5">
+                  <p className="text-white font-medium mb-2">{lang === 'ta' ? 'ஜாதகம்' : 'Horoscope'}</p>
+                  <img
+                    src={`/api${profileData.horoscope}`}
+                    alt="Horoscope"
+                    onClick={() => window.open(`/api${profileData.horoscope}`, "_blank")}
+                    className="max-h-60 rounded border border-white object-contain cursor-pointer"
+                  />
+                </div>
               )}
             </div>
           </div>
@@ -392,7 +395,7 @@ export default function Profile({ userId }) {
         </div>
 
         {/*Additional Pictures */}
-        {(profileData.photo1 || profileData.photo2 || profileData.photo3 || profileData.photo4) && (
+        {/* {(profileData.photo1 || profileData.photo2 || profileData.photo3 || profileData.photo4) && (
           <>
             <div className="border-color mt-6 mb-6"></div>
             <div className="grid grid-cols-1 gap-4 mt-3">
@@ -414,7 +417,6 @@ export default function Profile({ userId }) {
                   ))}
               </div>
 
-              {/* Popup */}
               {popupImage && (
                 <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 px-4">
                   <div className="bg-white p-4 sm:p-6 rounded-lg max-w-sm sm:max-w-md w-full relative">
@@ -451,7 +453,7 @@ export default function Profile({ userId }) {
 
             </div>
           </>
-        )}
+        )} */}
 
       </div>
     </div >

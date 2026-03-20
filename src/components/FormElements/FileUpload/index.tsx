@@ -1,4 +1,4 @@
-const FileUpload = ({ name, handleChange }) => {
+const FileUpload = ({ name, handleChange, accept = "image/*,application/pdf" }) => {
     return (
         <div>
             {/* File Upload Box */}
@@ -8,9 +8,10 @@ const FileUpload = ({ name, handleChange }) => {
             >
                 <input
                     type="file"
-                    accept="image/*,application/pdf"
+                    accept={accept}
                     name={name}
                     onChange={handleChange}
+                    onClick={(e) => { e.currentTarget.value = ""; }}
                     className="absolute inset-0 z-50 h-full w-full cursor-pointer opacity-0"
                 />
                 <div className="flex flex-col items-center justify-center space-y-2">
@@ -45,7 +46,7 @@ const FileUpload = ({ name, handleChange }) => {
                     <p className="text-sm text-gray-600 dark:text-gray-300">
                         <span className="font-medium dark-text">Click to upload</span> or drag & drop
                     </p>
-                    <p className="text-xs text-gray-500">(PDF, SVG, PNG, JPG, JPEG, WebP)</p>
+                    <p className="text-xs text-gray-500">(JPG,JPEG)</p>
                 </div>
             </div>
         </div>
