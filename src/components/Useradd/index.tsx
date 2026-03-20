@@ -26,6 +26,7 @@ const FormElements = () => {
   const [error, setError] = useState(null);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [profileCreator, setProfileCreator] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const formData_upload = new FormData();
 
   const router = useRouter();
@@ -158,6 +159,7 @@ const FormElements = () => {
     setSelectedState(newState);
     setFormData({ ...formData, state_id: newState, city_id: "" }); // Reset city when state changes
     setSelectedCity("");
+    setFormErrors((prev) => ({ ...prev, state_id: "" }));
   };
 
   const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -166,16 +168,20 @@ const FormElements = () => {
     setFormData({ ...formData, country_id: newCountry, state_id: "", city_id: "" }); // Reset city when state changes
     setSelectedCity("");
     setSelectedState("");
+    setFormErrors((prev) => ({ ...prev, country_id: "" }));
   };
 
   const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newCity = event.target.value;
     setSelectedCity(newCity);
     setFormData({ ...formData, city_id: newCity });
+    setFormErrors((prev) => ({ ...prev, city_id: "" }));
   };
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+
+    setFormErrors((prev) => ({ ...prev, [name]: "" }));
 
     if (files && files.length > 0) {
       // Handle file input
@@ -447,6 +453,8 @@ const FormElements = () => {
     if (horoscope) formData_upload.append("horoscope", horoscope);
     if (profileCreatorPic) formData_upload.append("profile_creator_photo", profileCreatorPic);
 
+    setIsSubmitting(true);
+    toast.loading(isTamil ? 'சமர்ப்பிக்கிறது...' : 'Submitting...', { id: 'submit-toast' });
 
     try {
       const res = await fetch("/api/user", {
@@ -458,7 +466,8 @@ const FormElements = () => {
         throw new Error("Failed to add user data.");
       }
 
-      toast.success('User Added successfully!', {
+      toast.success(isTamil ? 'பயனர் சேர்க்கப்பட்டார்!' : 'User Added successfully!', {
+        id: 'submit-toast',
         className: "sonner-toast-success",
         cancel: {
           label: 'Close',
@@ -479,13 +488,16 @@ const FormElements = () => {
 
     } catch (err) {
       setError(err.message);
-      toast.error('Failed to update User', {
+      toast.error(isTamil ? 'பயனரை சேர்க்க முடியவில்லை' : 'Failed to add User', {
+        id: 'submit-toast',
         className: "sonner-toast-error",
         cancel: {
           label: 'Close',
           onClick: () => console.log('Close'),
         },
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -855,6 +867,7 @@ const FormElements = () => {
                           age: age,
                         }));
                         setError(age < 18 ? (lang === 'ta' ? "வயது குறைந்தது 18 இருக்க வேண்டும்." : "Age must be at least 18 years.") : "");
+                        setFormErrors((prev) => ({ ...prev, birthdate: "" }));
                       }
                     }}
                   />
@@ -1531,9 +1544,18 @@ const FormElements = () => {
             <div className="text-right">
               <button
                 type="submit"
-                className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom"
+                disabled={isSubmitting}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 text-custom disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                {lang == 'ta' ? 'சமர்ப்பிக்கவும் ' : 'Submit'}
+                {isSubmitting && (
+                  <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                  </svg>
+                )}
+                {isSubmitting
+                  ? (isTamil ? 'சமர்ப்பிக்கிறது...' : 'Submitting...')
+                  : (isTamil ? 'சமர்ப்பிக்கவும் ' : 'Submit')}
               </button>
 
             </div>
