@@ -164,6 +164,7 @@ const UserProfile = (user_data) => {
     setSelectedState(newState);
     setFormData({ ...formData, state_id: newState, city_id: "" }); // Reset city when state changes
     setSelectedCity("");
+    setFormErrors((prev) => ({ ...prev, state_id: "" }));
   };
 
   const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -172,12 +173,14 @@ const UserProfile = (user_data) => {
     setFormData({ ...formData, country_id: newCountry, state_id: "", city_id: "" }); // Reset city when state changes
     setSelectedCity("");
     setSelectedState("");
+    setFormErrors((prev) => ({ ...prev, country_id: "" }));
   };
 
   const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newCity = event.target.value;
     setSelectedCity(newCity);
     setFormData({ ...formData, city_id: newCity });
+    setFormErrors((prev) => ({ ...prev, city_id: "" }));
   };
 
   useEffect(() => {
@@ -243,6 +246,8 @@ const UserProfile = (user_data) => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+
+    setFormErrors((prev) => ({ ...prev, [name]: "" }));
 
     if (files && files.length > 0) {
       // Handle file input
@@ -884,6 +889,7 @@ const UserProfile = (user_data) => {
                                 age: age,
                               }));
                               setError(age < 18 ? (lang === 'ta' ? "வயது குறைந்தது 18 இருக்க வேண்டும்." : "Age must be at least 18 years.") : "");
+                              setFormErrors((prev) => ({ ...prev, birthdate: "" }));
                             }
                           }}
                         />

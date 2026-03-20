@@ -83,10 +83,21 @@ const UserTable = () => {
                                             </div>
                                         </td>
                                         <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
-                                            {capitalizeFirstLetter(item.name)} {capitalizeFirstLetter(item.lastname)}
+                                            <div className="flex items-center gap-1 max-w-[150px] lg:max-w-[200px]" title={`${capitalizeFirstLetter(item.name)} ${capitalizeFirstLetter(item.lastname)}`}>
+                                                <span className="truncate">{capitalizeFirstLetter(item.name)}</span>
+                                                <span className="text-gray-500 truncate">{capitalizeFirstLetter(item.lastname)}</span>
+                                            </div>
                                         </td>
-                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap">{item.email}</td>
-                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap">{item.phonenumber}</td>
+                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                            <div className="max-w-[150px] lg:max-w-[250px] truncate" title={item.email}>
+                                                {item.email}
+                                            </div>
+                                        </td>
+                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                            <div className="max-w-[150px] lg:max-w-[250px] truncate" title={item.phonenumber}>
+                                                {item.phonenumber}
+                                            </div>
+                                        </td>
                                         <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                                             <span className={`font-medium ${item.is_active ? 'text-green-500' : 'text-orange-500'}`}>
                                                 {isTamil
