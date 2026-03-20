@@ -258,7 +258,7 @@ const ContactInfo = ({ data }) => {
                                         )}
                                     </div>
                                 </div>
-                                {/* <div className="con-list-of-data">
+                                <div className="con-list-of-data">
 
                                     <h4>{lang === 'ta' ? 'மின்னஞ்சல் அனுப்ப' : 'Email Us'}</h4>
                                     <p>{lang === 'ta'
@@ -270,8 +270,8 @@ const ContactInfo = ({ data }) => {
                                         <span className="icon-info"><img src="/images/contact/mail-icon.svg" alt="call-icon" /></span>
                                         <a className="info-link-data" href={`mailto:${data.organisation_email_id}`}>{data.organisation_email_id}</a>
                                     </div>
-                                </div> 
-
+                                </div>
+                                {/*
                                 <div className="con-list-of-data">
                                     <h4>{lang === 'ta' ? 'எங்களை பின்தொடர' : 'Follow Us'}</h4>
                                     <p>{lang === 'ta'
