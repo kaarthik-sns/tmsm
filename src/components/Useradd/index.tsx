@@ -595,6 +595,9 @@ const FormElements = () => {
                     placeholder={lang === 'ta' ? 'மின்னஞ்சல்' : 'Enter your email address'}
                     className=" w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark"
                   />
+                   {formErrors.email && (
+                      <p className="text-red-600 text-sm">{formErrors.email}</p>
+                    )}
                 </div>
 
                 <div className="mb-4.5">
