@@ -438,7 +438,7 @@ const FormElements = () => {
     for (const [key, value] of Object.entries(formData)) {
       const excludedKeys = ["profile_photo", "photo1", "photo2", "photo3", "photo4", "horoscope", "profile_creator_photo"];
       if (!excludedKeys.includes(key)) {
-        if (typeof value === "number") {
+        if (typeof value === "number" || typeof value === "boolean") {
           formData_upload.append(key, value.toString());
         } else {
           formData_upload.append(key, value);
