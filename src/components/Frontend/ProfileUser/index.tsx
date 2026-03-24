@@ -473,8 +473,6 @@ const UserProfile = (user_data) => {
         throw new Error("Failed to Update user data.");
       }
 
-
-
       setSuccessMessage(
         lang == 'ta'
           ? "சுயவிவரம் புதுப்பிக்கப்பட்டது!."

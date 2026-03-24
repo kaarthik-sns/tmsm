@@ -146,7 +146,8 @@ const FormElements = () => {
     bride_groom_detail: "",
     country_id: "",
     relation_name: "",
-
+    is_verify: true,
+    is_approve: true
   });
 
   // Set selected state and city based on formData

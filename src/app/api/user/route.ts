@@ -9,6 +9,7 @@ import { sendEmail } from "@/utils/mail.util"
 import { verificationTemplate } from '@/lib/template/verification';
 import { welcomeTemplate } from '@/lib/template/welcome';
 import { adminWelcomeTemplate } from '@/lib/template/welcome-admin';
+import { credentialsTemplate } from '@/lib/template/credentials';
 import getSMTPSettings from '@/utils/settings.util';
 
 
@@ -120,7 +121,11 @@ export async function POST(request: NextRequest) {
     const bride_groom_detail = (formData.get('bride_groom_detail') as string) ?? '';
     const gender = (formData.get('gender') as string) ?? '';
     const relation_name = (formData.get('relation_name') as string) ?? '';
-
+    const has_is_verify = formData.has('is_verify');
+    const is_verify = formData.get('is_verify') === 'true';
+    
+    const has_is_approve = formData.has('is_approve');
+    const is_approve = formData.get('is_approve') === 'true';
 
     const file = formData.get('profile_photo') as File | null;
     const file1 = formData.get('photo1') as File | null;
@@ -226,7 +231,15 @@ export async function POST(request: NextRequest) {
             updated_at: new Date(),
             relation_name
         });
+
+        if (has_is_verify) {
+            newUserFields.is_verify = is_verify;
+        }
         
+        if (has_is_approve) {
+            newUserFields.is_approve = is_approve;
+        }
+
         if (id) {
             // Update data
             await User.findByIdAndUpdate(id, newUserFields, { new: true });
@@ -255,13 +268,23 @@ export async function POST(request: NextRequest) {
                 message: htmlBody
             })
 
-            const htmlBody2 = verificationTemplate(name, verificationLink, copyright,contactMail);
+            if (is_verify) {
+                const htmlBody = credentialsTemplate(name, email, password, copyright);
 
-            const result2 = await sendEmail({
-                receipients,
-                subject: 'TMSM - Verification mail',
-                message: htmlBody2
-            })
+                const result = await sendEmail({
+                    receipients,
+                    subject: 'TMSM - Your Login Credentials',
+                    message: htmlBody
+                })
+            } else {
+                const htmlBody2 = verificationTemplate(name, verificationLink, copyright, contactMail);
+
+                const result2 = await sendEmail({
+                    receipients,
+                    subject: 'TMSM - Verification mail',
+                    message: htmlBody2
+                })
+            }
 
             const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber, copyright);
 
