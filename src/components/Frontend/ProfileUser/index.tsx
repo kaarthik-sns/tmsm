@@ -352,11 +352,11 @@ const UserProfile = (user_data) => {
       errors.country_id = isTamil ? "நாடு தேர்வு கட்டாயம்" : "Country cannot be empty.";
     }
 
-    if (!formData.profile_photo || formData.profile_photo.trim() === "") {
-      errors.profile_photo = isTamil
-        ? "சுயவிவர புகைப்படம் கட்டாயம்"
-        : "Profile Photo cannot be empty.";
-    }
+    // if (!formData.profile_photo || formData.profile_photo.trim() === "") {
+    //   errors.profile_photo = isTamil
+    //     ? "சுயவிவர புகைப்படம் கட்டாயம்"
+    //     : "Profile Photo cannot be empty.";
+    // }
 
     if (!formData.birthdate || formData.birthdate.trim() === "") {
       errors.birthdate = isTamil ? "பிறந்த தேதி கட்டாயம்" : "Date Of Birth cannot be empty.";
@@ -472,8 +472,6 @@ const UserProfile = (user_data) => {
       if (!res.ok) {
         throw new Error("Failed to Update user data.");
       }
-
-
 
       setSuccessMessage(
         lang == 'ta'
@@ -714,7 +712,7 @@ const UserProfile = (user_data) => {
                           formData={formData}
                           formErrors={formErrors}
                           handleChange={handleChange}
-                          required={true}
+                          required={false}
                         />
                       </div>
 
