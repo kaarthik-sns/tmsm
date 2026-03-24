@@ -352,11 +352,11 @@ const UserProfile = (user_data) => {
       errors.country_id = isTamil ? "நாடு தேர்வு கட்டாயம்" : "Country cannot be empty.";
     }
 
-    // if (!formData.profile_photo || formData.profile_photo.trim() === "") {
-    //   errors.profile_photo = isTamil
-    //     ? "சுயவிவர புகைப்படம் கட்டாயம்"
-    //     : "Profile Photo cannot be empty.";
-    // }
+    if (!formData.profile_photo || formData.profile_photo.trim() === "") {
+      errors.profile_photo = isTamil
+        ? "சுயவிவர புகைப்படம் கட்டாயம்"
+        : "Profile Photo cannot be empty.";
+    }
 
     if (!formData.birthdate || formData.birthdate.trim() === "") {
       errors.birthdate = isTamil ? "பிறந்த தேதி கட்டாயம்" : "Date Of Birth cannot be empty.";
@@ -707,7 +707,7 @@ const UserProfile = (user_data) => {
                     </div>
                     <div className="p-6.5">
 
-                      {/* <div className="mb-6.5">
+                      <div className="mb-6.5">
                         <ImageUpload
                           name="profile_photo"
                           label={lang === 'ta' ? 'ப்ரொஃபைல் புகைப்படம்' : 'Profile Picture'}
@@ -716,7 +716,7 @@ const UserProfile = (user_data) => {
                           handleChange={handleChange}
                           required={true}
                         />
-                      </div> */}
+                      </div>
 
                       <div className="mb-4.5 flex flex-col gap-6 xl:flex-row ">
                         <div className="w-full xl:w-1/2">
