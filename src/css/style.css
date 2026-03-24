@@ -540,7 +540,7 @@ th.py-3.px-6.dark-text {
  .lang-ta .cms-heading  {
     font-size: 20px;
 }
-.lang-ta input::placeholder, .lang-ta  select, textarea{
+.lang-ta input::placeholder, .lang-ta  select, .lang-ta textarea{
     font-size: 12px;
 }
 .lang-ta  label {

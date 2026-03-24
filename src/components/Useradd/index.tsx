@@ -300,11 +300,11 @@ const FormElements = () => {
       errors.country_id = isTamil ? "நாடு தேர்வு கட்டாயம்" : "Country cannot be empty.";
     }
 
-    // if (!formData.profile_photo || formData.profile_photo.trim() === "") {
-    //   errors.profile_photo = isTamil
-    //     ? "புகைப்படம் கட்டாயம்"
-    //     : "Profile Photo cannot be empty.";
-    // }
+    if (!formData.profile_photo || formData.profile_photo.trim() === "") {
+      errors.profile_photo = isTamil
+        ? "புகைப்படம் கட்டாயம்"
+        : "Profile Photo cannot be empty.";
+    }
 
     if (!formData.birthdate || formData.birthdate.trim() === "") {
       errors.birthdate = isTamil ? "பிறந்த தேதி கட்டாயம்" : "Date Of Birth cannot be empty.";
@@ -595,9 +595,9 @@ const FormElements = () => {
                     placeholder={lang === 'ta' ? 'மின்னஞ்சல்' : 'Enter your email address'}
                     className=" w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark"
                   />
-                   {formErrors.email && (
-                      <p className="text-red-600 text-sm">{formErrors.email}</p>
-                    )}
+                  {formErrors.email && (
+                    <p className="text-red-600 text-sm">{formErrors.email}</p>
+                  )}
                 </div>
 
                 <div className="mb-4.5">
@@ -689,7 +689,7 @@ const FormElements = () => {
               </div>
               <div className="p-6.5">
 
-                {/* <div className="mb-6.5">
+                <div className="mb-6.5">
                   <ImageUpload
                     name="profile_photo"
                     label={lang === 'ta' ? 'புகைப்படம்' : 'Profile Picture'}
@@ -698,7 +698,7 @@ const FormElements = () => {
                     handleChange={handleChange}
                     required={true}
                   />
-                </div> */}
+                </div>
 
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row ">
                   <div className="w-full xl:w-1/2">
