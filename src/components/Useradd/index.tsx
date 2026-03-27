@@ -1438,7 +1438,7 @@ const FormElements = () => {
                     name="address"
                     value={formData.address || ""}
                     onChange={handleChange}
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition dark-text ${formErrors?.email
+                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition dark-text ${formErrors?.address
                       ? "border-red-500 focus:border-red-500"
                       : "border-stroke focus:border-primary"
                       } dark:border-form-strokedark dark:bg-form-input dark:text-white bg-transparent`}
