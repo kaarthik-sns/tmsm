@@ -46,7 +46,7 @@ const FileUpload = ({ name, handleChange, accept = "image/*,application/pdf" }) 
                     <p className="text-sm text-gray-600 dark:text-gray-300">
                         <span className="font-medium dark-text">Click to upload</span> or drag & drop
                     </p>
-                    <p className="text-xs text-gray-500">(JPG,JPEG)</p>
+                    <p className="text-xs text-gray-500">(JPG, JPEG, PDF)</p>
                 </div>
             </div>
         </div>

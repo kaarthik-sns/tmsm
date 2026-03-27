@@ -256,11 +256,11 @@ const UserProfile = (user_data) => {
       const file = files[0];
 
       if (name === 'horoscope') {
-        const validExtensions = ['image/jpeg', 'image/jpg'];
+        const validExtensions = ['image/jpeg', 'image/jpg', 'application/pdf'];
         if (!validExtensions.includes(file.type)) {
           Swal.fire({
             title: lang === 'ta' ? 'தவறான கோப்பு' : 'Invalid File',
-            text: lang === 'ta' ? 'தயவுசெய்து JPG அல்லது JPEG கோப்பை மட்டும் பதிவேற்றவும்.' : 'Please upload only JPG or JPEG files.',
+            text: lang === 'ta' ? 'தயவுசெய்து JPG, JPEG அல்லது PDF கோப்பை மட்டும் பதிவேற்றவும்.' : 'Please upload only JPG, JPEG, or PDF files.',
             icon: 'error',
             confirmButtonText: 'OK',
             confirmButtonColor: '#3085d6',
@@ -687,26 +687,26 @@ const UserProfile = (user_data) => {
                         </div>
                       )}
 
-                        <div className="mb-4.5">
-                          <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                            {lang === 'ta' ? 'மின்னஞ்சல்' : 'Email'}
-                          </label>
-                          <input
-                            type="email"
-                            name="email"
-                            value={formData.email || ""}
-                            onChange={handleChange}
-                            onBlur={() => checkUniqueness('email', formData.email)}
-                            placeholder={lang === 'ta' ? 'மின்னஞ்சல்' : 'Enter your email address'}
-                            className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.email
-                              ? "border-red-500 focus:border-red-500"
-                              : "border-stroke focus:border-primary"
-                              } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                          />
-                          {formErrors?.email && (
-                            <p className="mt-1 text-sm text-red-500">{formErrors.email}</p>
-                          )}
-                        </div>
+                      <div className="mb-4.5">
+                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                          {lang === 'ta' ? 'மின்னஞ்சல்' : 'Email'}
+                        </label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email || ""}
+                          onChange={handleChange}
+                          onBlur={() => checkUniqueness('email', formData.email)}
+                          placeholder={lang === 'ta' ? 'மின்னஞ்சல்' : 'Enter your email address'}
+                          className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.email
+                            ? "border-red-500 focus:border-red-500"
+                            : "border-stroke focus:border-primary"
+                            } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                        />
+                        {formErrors?.email && (
+                          <p className="mt-1 text-sm text-red-500">{formErrors.email}</p>
+                        )}
+                      </div>
 
                       <div className="mb-4.5">
                         <label className="mb-1 block text-sm font-medium dark-text dark:text-white">
@@ -1176,24 +1176,36 @@ const UserProfile = (user_data) => {
                     <div className="flex flex-col gap-5.5 p-6.5">
                       <FileUpload
                         name="horoscope"
-                        accept=".jpg,.jpeg"
+                        accept=".jpg,.jpeg,.pdf"
                         handleChange={handleChange}
                       />
                       {formData.horoscope && (
                         <div className="mt-4 flex flex-col items-center gap-3">
-                          <img
-                            src={formData.horoscope}
-                            alt="Horoscope Preview"
-                            title={lang === 'ta' ? 'ஜாதகத்தை பார்க்க' : 'Preview Horoscope'}
-                            onClick={() => window.open(formData.horoscope, "_blank")}
-                            className="max-h-60 rounded-lg border border-stroke object-contain cursor-pointer"
-                          />
+                          {((horoscope && horoscope.type === 'application/pdf') || (typeof formData.horoscope === 'string' && (formData.horoscope.includes('application/pdf') || formData.horoscope.toLowerCase().endsWith('.pdf')))) ? (
+                            <div
+                              onClick={() => window.open(formData.horoscope, "_blank")}
+                              className="flex items-center justify-center w-full max-w-60 h-32 rounded-lg border border-stroke bg-gray-100 dark:bg-gray-800 cursor-pointer text-center p-4 hover:bg-gray-200 dark:hover:bg-gray-700"
+                              title={lang === 'ta' ? 'ஜாதகத்தை பார்க்க' : 'Preview Horoscope'}
+                            >
+                              <span className="font-semibold dark-text">
+                                {lang === 'ta' ? 'PDF ஆவணத்தைப் பார்க்க கிளிக் செய்யவும்' : 'Click to view PDF document'}
+                              </span>
+                            </div>
+                          ) : (
+                            <img
+                              src={formData.horoscope}
+                              alt="Horoscope Preview"
+                              title={lang === 'ta' ? 'ஜாதகத்தை பார்க்க' : 'Preview Horoscope'}
+                              onClick={() => window.open(formData.horoscope, "_blank")}
+                              className="max-h-60 rounded-lg border border-stroke object-contain cursor-pointer"
+                            />
+                          )}
                           <button
                             type="button"
                             onClick={() => setFormData({ ...formData, horoscope: "" })}
                             className="text-sm font-medium text-red-500 hover:text-red-700 underline"
                           >
-                            {lang === 'ta' ? 'படத்தை அகற்று' : 'Remove Image'}
+                            {lang === 'ta' ? 'கோப்பை அகற்று' : 'Remove File'}
                           </button>
                         </div>
                       )}
