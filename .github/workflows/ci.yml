@@ -1,0 +1,40 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          script_stop: true
+          script: |
+            echo "🚀 Starting remote deployment..."
+            # Adjust the folder path if your tmsm project is in a different directory on the server
+            cd /var/www/tmsm || exit 1
+
+            echo "📥 Fetching latest code..."
+            git fetch origin main
+            git reset --hard origin/main
+
+            echo "📦 Installing dependencies..."
+            npm install
+
+            echo "🏗 Building Next.js..."
+            npm run build
+
+            echo "🔄 Restarting PM2..."
+            # Replace 'tmsm' with your actual pm2 process name if it differs
+            pm2 reload tmsm
+
+            echo "✅ Deployment complete!"
