@@ -160,16 +160,28 @@ export default function Profile({ userId }) {
               {profileData.horoscope && (
                 <div className="mt-5 flex flex-col items-center lg:items-start">
                   <p className="text-white font-medium mb-2">{lang === 'ta' ? 'ஜாதகம்' : 'Horoscope'}</p>
-                  <img
-                    src={`/api${profileData.horoscope}`}
-                    alt="Horoscope"
-                    onClick={() => window.open(`/api${profileData.horoscope}`, "_blank")}
-                    className="max-h-60 rounded border border-white object-contain cursor-pointer"
-                  />
+                  {typeof profileData.horoscope === 'string' && profileData.horoscope.toLowerCase().endsWith('.pdf') ? (
+                    <div
+                      onClick={() => window.open(`/api${profileData.horoscope}`, "_blank")}
+                      className="flex items-center justify-center w-full max-w-60 h-32 rounded border border-white bg-white/10 cursor-pointer text-center p-4 hover:bg-white/20 transition"
+                      title={lang === 'ta' ? 'ஜாதகத்தை பார்க்க' : 'Preview Horoscope'}
+                    >
+                      <span className="font-semibold text-white">
+                        {lang === 'ta' ? 'PDF ஆவணத்தைப் பார்க்க கிளிக் செய்யவும்' : 'Click to view PDF document'}
+                      </span>
+                    </div>
+                  ) : (
+                    <img
+                      src={`/api${profileData.horoscope}`}
+                      alt="Horoscope"
+                      onClick={() => window.open(`/api${profileData.horoscope}`, "_blank")}
+                      className="max-h-60 rounded border border-white object-contain cursor-pointer"
+                    />
+                  )}
                   <a
                     href={`/api${profileData.horoscope}`}
-                    download="horoscope.jpg"
-                    className="mt-2 inline-flex items-center gap-1 px-3 py-1 text-sm bg-edit transition"
+                    download={`horoscope.${profileData.horoscope.split('.').pop()?.split('?')[0] || 'jpg'}`}
+                    className="mt-2 inline-flex items-center gap-1 px-3 py-1 text-sm bg-edit transition text-white"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 4v11" />

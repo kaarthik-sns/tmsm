@@ -474,12 +474,24 @@ const FormElements = () => {
           <div className="flex flex-col gap-2">
             {formData.horoscope ? (
               <>
-                <img
-                  src={formData.horoscope}
-                  alt="Horoscope"
-                  onClick={() => window.open(formData.horoscope, "_blank")}
-                  className="max-h-60 rounded border border-stroke object-contain cursor-pointer"
-                />
+                {typeof formData.horoscope === 'string' && (formData.horoscope.includes('application/pdf') || formData.horoscope.toLowerCase().endsWith('.pdf')) ? (
+                  <div
+                    onClick={() => window.open(formData.horoscope, "_blank")}
+                    className="flex items-center justify-center w-full max-w-60 h-32 rounded-lg border border-stroke bg-gray-100 dark:bg-gray-800 cursor-pointer text-center p-4 hover:bg-gray-200 dark:hover:bg-gray-700"
+                    title={lang === 'ta' ? 'ஜாதகத்தை பார்க்க' : 'Preview Horoscope'}
+                  >
+                    <span className="font-semibold dark-text">
+                      {lang === 'ta' ? 'PDF ஆவணத்தைப் பார்க்க கிளிக் செய்யவும்' : 'Click to view PDF document'}
+                    </span>
+                  </div>
+                ) : (
+                  <img
+                    src={formData.horoscope}
+                    alt="Horoscope"
+                    onClick={() => window.open(formData.horoscope, "_blank")}
+                    className="max-h-60 rounded border border-stroke object-contain cursor-pointer"
+                  />
+                )}
                 <div>
                   <button
                     onClick={handleDownload}

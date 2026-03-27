@@ -5,6 +5,7 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
+import Image from "next/image";
 
 const SignIn: React.FC = () => {
 
@@ -162,7 +163,9 @@ const SignIn: React.FC = () => {
 
       {/* Right Section - Image with Overlay */}
       <div className="w-1/2 relative hidden md:block">
-        <img
+        <Image
+          width={100}
+          height={100}
           src="/images/login/login.svg"
           alt="Couple"
           className="w-full h-full object-cover"
