@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
 
     // Parse the form data
     const formData = await req.formData();
-    
+
     const file = formData.get('profilePic') as File;
     const password = formData.get('password') as string;
     const name = formData.get('name') as string;
@@ -67,8 +67,6 @@ export async function POST(req: NextRequest) {
     if (email) {
       user.email = email;
     }
-
-    console.log(user);
 
     await user.save();
 
