@@ -631,6 +631,28 @@ const FormElements = () => {
                 </div>
 
                 <div className="mb-4.5">
+                  <label className="mb-1 block text-sm font-medium dark-text dark:text-white">
+                    {lang === 'ta' ? 'பதிவு தொலைபேசி எண்' : 'Registration Phone Number'} <span><b className="no_text">{lang === 'ta' ? '(மணமகன்/மணமகளின் எண்களை குறிப்பிட வேண்டாம்.)' : "(Don't mention the bride/groom's phone number.)"}</b></span> <span className="text-meta-1">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="phonenumber"
+                    maxLength={10}
+                    value={formData.phonenumber || ""}
+                    onChange={handleChange}
+                    onBlur={() => checkUniqueness('phonenumber', formData.phonenumber)}
+                    placeholder={lang === 'ta' ? 'தொலைபேசி எண்' : 'Enter your phone number'}
+                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.phonenumber
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-stroke focus:border-primary"
+                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                  />
+                  {formErrors?.phonenumber && (
+                    <p className="mt-1 text-sm text-red-500">{formErrors.phonenumber}</p>
+                  )}
+                </div>
+
+                <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
                     {lang === 'ta' ? 'கடவுச்சொல்' : 'Password'} <span className="text-meta-1">*</span>
                   </label>
@@ -648,28 +670,6 @@ const FormElements = () => {
                   />
                   {formErrors?.password && (
                     <p className="mt-1 text-sm text-red-500">{formErrors.password}</p>
-                  )}
-                </div>
-
-                <div className="mb-4.5">
-                  <label className="mb-1 block text-sm font-medium dark-text dark:text-white">
-                    {lang === 'ta' ? 'தொலைபேசி எண்' : 'Phone Number'} <span><b className="no_text">{lang === 'ta' ? '(மணமகன்/மணமகளின் எண்களை குறிப்பிட வேண்டாம்.)' : "(Don't mention the bride/groom's phone number.)"}</b></span> <span className="text-meta-1">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="phonenumber"
-                    maxLength={10}
-                    value={formData.phonenumber || ""}
-                    onChange={handleChange}
-                    onBlur={() => checkUniqueness('phonenumber', formData.phonenumber)}
-                    placeholder={lang === 'ta' ? 'தொலைபேசி எண்' : 'Enter your phone number'}
-                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.phonenumber
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-stroke focus:border-primary"
-                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
-                  />
-                  {formErrors?.phonenumber && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.phonenumber}</p>
                   )}
                 </div>
 

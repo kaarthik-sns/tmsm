@@ -663,7 +663,7 @@ const FormElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-1 block text-sm font-medium dark-text dark:text-white">
-                    {lang === 'ta' ? 'தொலைபேசி எண்' : 'Phone Number'} <span><b className="no_text">{lang === 'ta' ? '(மணமகன்/மணமகளின் எண்களை குறிப்பிட வேண்டாம்.)' : "(Don't mention the bride/groom's phone number.)"}</b></span> <span className="text-meta-1">*</span>
+                    {lang === 'ta' ? 'பதிவு தொலைபேசி எண்' : 'Registration Phone Number'} <span><b className="no_text">{lang === 'ta' ? '(மணமகன்/மணமகளின் எண்களை குறிப்பிட வேண்டாம்.)' : "(Don't mention the bride/groom's phone number.)"}</b></span> <span className="text-meta-1">*</span>
                   </label>
                   <input
                     type="text"

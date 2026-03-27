@@ -369,12 +369,12 @@ const SignUp: React.FC = () => {
 
   return (
 
-    <div className="flex bg-[#fbeed5] register">
+    <div className="flex flex-col justify-center lg:flex-row lg:justify-start md:min-h-screen bg-[#fbeed5] register">
       {/* Left Section - Login Form */}
-      <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-6 md:p-10">
-        <div className="flex items-center md:w-100">
-          <div className="w-full p-4">
-            <h2 className="mb-2 text-3xl font-bold text-black  sm:text-title-xl2">
+      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-4 sm:p-6 lg:p-10">
+        <div className="flex items-center w-full max-w-full sm:max-w-md lg:max-w-lg xl:max-w-xl">
+          <div className="w-full p-2 sm:p-4">
+            <h2 className="mb-4 sm:mb-6 text-2xl sm:text-3xl font-bold text-black lg:text-title-xl2 text-center sm:text-left">
               {lang == 'ta' ? 'புதிய கணக்கு உருவாக்குங்கள்' : 'Register'}
             </h2>
             {successMessage && (
@@ -668,7 +668,7 @@ const SignUp: React.FC = () => {
       </div >
 
       {/* Right Section - Image with Overlay */}
-      < div className="w-1/2 relative hidden md:block" >
+      <div className="w-full lg:w-1/2 relative hidden lg:block">
         <Image
           width={1000}
           height={1000}
