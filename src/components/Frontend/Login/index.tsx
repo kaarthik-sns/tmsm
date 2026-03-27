@@ -10,7 +10,7 @@ const SignIn: React.FC = () => {
 
   const router = useRouter();
 
-  const [email, setEmail] = useState<string>("");
+  const [loginId, setLoginId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [pending, setPending] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -18,7 +18,7 @@ const SignIn: React.FC = () => {
 
 
   // Validation states
-  const [emailError, setEmailError] = useState<string>("");
+  const [loginIdError, setLoginIdError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
 
   const lang = localStorage.getItem('lang') || 'en';
@@ -27,15 +27,15 @@ const SignIn: React.FC = () => {
     e.preventDefault();
 
     // Reset previous errors
-    setEmailError("");
+    setLoginIdError("");
     setPasswordError("");
     setError("");
 
     // Validate fields
     let valid = true;
 
-    if (!email) {
-      setEmailError(lang == 'ta' ? "மின்னஞ்சல் கட்டாயம்" : "Email cannot be empty.");
+    if (!loginId) {
+      setLoginIdError(lang == 'ta' ? "மின்னஞ்சல் அல்லது தொலைபேசி எண் கட்டாயம்" : "Email or Phone Number cannot be empty.");
       valid = false;
     }
 
@@ -51,7 +51,7 @@ const SignIn: React.FC = () => {
 
     const res = await signIn("credentials", {
       redirect: false,
-      email,
+      email: loginId,
       password,
       is_admin: false,
       lang
@@ -94,22 +94,22 @@ const SignIn: React.FC = () => {
             )}
 
             <form onSubmit={handleSubmit}>
-              {/* Email Input */}
+              {/* Login Identifier Input */}
               <div className="mb-4">
                 <div className="relative">
                   <input
-                    type="email"
+                    type="text"
                     disabled={pending}
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder={lang == 'ta' ? 'மின்னஞ்சல் உள்ளிடவும்' : 'E-mail id'}
+                    value={loginId}
+                    onChange={(e) => setLoginId(e.target.value)}
+                    placeholder={lang == 'ta' ? 'மின்னஞ்சல் அல்லது தொலைபேசி எண்' : 'E-mail id or Phone Number'}
 
-                    className={`w-full rounded-lg border ${emailError ? "border-red-500" : "border-stroke"
+                    className={`w-full rounded-lg border ${loginIdError ? "border-red-500" : "border-stroke"
                       } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-                    autoComplete="new-email"
+                    autoComplete="username"
                   />
                 </div>
-                {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
+                {loginIdError && <p className="text-red-500 text-sm mt-1">{loginIdError}</p>}
               </div>
 
               {/* Password Input */}

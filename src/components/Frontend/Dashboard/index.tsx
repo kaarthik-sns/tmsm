@@ -306,7 +306,8 @@ const ProfileCard = ({ profile, activeTab, onViewProfile, onHandleRequest, onRed
     <img src={profile.user.profile_photo ? `/api${profile.user.profile_photo}` : (profile.user.gender?.toLowerCase() === 'female' ? '/images/user/female.png' : '/images/user/dummy.png')} alt={profile.user.name} className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border cursor-pointer" onClick={() => onViewProfile(profile)} />
 
     <div className="flex-1 text-center sm:text-left">
-      <h2 className="dash-heading mb-2">{profile.user.name}</h2>
+      <h2 className="dash-heading mb-0">{profile.user.name}</h2>
+      <p className="text-xs text-gray-500 mb-2 truncate" title={profile.user.email}>{profile.user.email}</p>
       <p className="text-xs text-gray-500">
         {lang == 'ta' ? 'வயது: ' : 'Age: '} {profile.user.age} |
         {lang == 'ta' ? 'தொழில்: ' : 'Profession: '} {profile.user.profession} |

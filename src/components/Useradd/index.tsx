@@ -222,7 +222,12 @@ const FormElements = () => {
       }
 
       // Handle regular input fields
-      setFormData((prevData) => ({ ...prevData, [name]: value }));
+      if (['phonenumber', 'father_phonenumber', 'mother_phonenumber', 'profile_creator_phonenumber'].includes(name)) {
+        const numericValue = value.replace(/\D/g, "").slice(0, 10);
+        setFormData((prevData) => ({ ...prevData, [name]: numericValue }));
+      } else {
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
+      }
     }
   };
 
@@ -257,6 +262,40 @@ const FormElements = () => {
     return null; // Valid password
   };
 
+  const checkUniqueness = async (field: 'email' | 'phonenumber', value: string) => {
+    if (!value || value.trim() === "") return true;
+
+    // Basic format validation before API check
+    if (field === 'email' && !/^\S+@\S+\.\S+$/.test(value)) return false;
+    if (field === 'phonenumber' && !/^\d{10}$/.test(value)) return false;
+
+    try {
+      const endpoint = field === 'email' ? '/api/check-email' : '/api/check-phone';
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ [field]: value }),
+      });
+
+      const data = await response.json();
+      if (data.exists) {
+        setFormErrors((prev) => ({
+          ...prev,
+          [field]: isTamil
+            ? (field === 'email' ? 'இந்த மின்னஞ்சல் ஏற்கனவே பதிவு செய்யப்பட்டுள்ளது.' : 'இந்த தொலைபேசி எண் ஏற்கனவே உள்ளது.')
+            : (field === 'email' ? 'Email already registered.' : 'Phone number already exists.')
+        }));
+        return false;
+      } else {
+        setFormErrors((prev) => ({ ...prev, [field]: "" }));
+        return true;
+      }
+    } catch (error) {
+      console.error(`Error checking ${field} uniqueness:`, error);
+      return true;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -281,16 +320,22 @@ const FormElements = () => {
       errors.lastname = isTamil ? "கடைசி பெயர் கட்டாயம்" : "Last name cannot be empty.";
     }
 
-    if (!formData.email || !/^\S+@\S+\.\S+$/.test(formData.email)) {
-      errors.email = isTamil
-        ? "தயவு செய்து சரியான மின்னஞ்சலை உள்ளிடவும்."
-        : "Please enter a valid email address.";
+    if (formData.email && formData.email.trim() !== "") {
+      if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+        errors.email = isTamil
+          ? "தயவு செய்து சரியான மின்னஞ்சலை உள்ளிடவும்."
+          : "Please enter a valid email address.";
+      }
     }
 
     if (!formData.phonenumber) {
       errors.phonenumber = isTamil
-        ? "சரியான தொலைபேசி எண் உள்ளிடவும்."
-        : "Please enter a valid phone number";
+        ? "தொலைபேசி எண் கட்டாயம்"
+        : "Phone number is required";
+    } else if (!/^\d{10}$/.test(formData.phonenumber)) {
+      errors.phonenumber = isTamil
+        ? "சரியான 10 இலக்க தொலைபேசி எண் உள்ளிடவும்."
+        : "Please enter a valid 10-digit phone number";
     }
 
     if (!formData.gothram || formData.gothram.trim() === "") {
@@ -382,38 +427,18 @@ const FormElements = () => {
       errors.password = passwordError;
     }
 
+    // Uniqueness checks
     if (formData.email) {
-      // Check for duplicate email
-      try {
-        const res = await fetch(`/api/check-email`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email: formData.email }),
-        });
+      const isEmailUnique = await checkUniqueness('email', formData.email);
+      if (!isEmailUnique) {
+        errors.email = isTamil ? "இந்த மின்னஞ்சல் ஏற்கனவே பதிவுசெய்யப்பட்டுள்ளது." : "This email is already registered.";
+      }
+    }
 
-        if (!res.ok) {
-          throw new Error("Failed to check email.");
-        }
-
-        const data = await res.json();
-        if (data.exists) {
-          errors.email = lang === 'ta'
-            ? "இந்த மின்னஞ்சல் ஏற்கனவே பதிவுசெய்யப்பட்டுள்ளது."
-            : "This email is already registered.";
-        }
-
-      } catch (err) {
-        console.error(err);
-        toast.error('Failed to validate email. Please try again.', {
-          className: "sonner-toast-error",
-          cancel: {
-            label: 'Close',
-            onClick: () => console.log('Close'),
-          },
-        });
-        return;
+    if (formData.phonenumber) {
+      const isPhoneUnique = await checkUniqueness('phonenumber', formData.phonenumber);
+      if (!isPhoneUnique) {
+        errors.phonenumber = isTamil ? "இந்த தொலைபேசி எண் ஏற்கனவே உள்ளது." : "Phone number already exists.";
       }
     }
 
@@ -585,16 +610,20 @@ const FormElements = () => {
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                    {lang === 'ta' ? 'மின்னஞ்சல்' : 'Email'} <span className="text-meta-1">*</span>
+                    {lang === 'ta' ? 'மின்னஞ்சல்' : 'Email'}
                   </label>
                   <input
                     type="email"
                     name="email"
                     value={formData.email || ""}
                     onChange={handleChange}
+                    onBlur={() => checkUniqueness('email', formData.email)}
                     autoComplete="new-email"
                     placeholder={lang === 'ta' ? 'மின்னஞ்சல்' : 'Enter your email address'}
-                    className=" w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark"
+                    className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.email
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-stroke focus:border-primary"
+                      } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
                   />
                   {formErrors.email && (
                     <p className="text-red-600 text-sm">{formErrors.email}</p>
@@ -629,8 +658,10 @@ const FormElements = () => {
                   <input
                     type="text"
                     name="phonenumber"
+                    maxLength={10}
                     value={formData.phonenumber || ""}
                     onChange={handleChange}
+                    onBlur={() => checkUniqueness('phonenumber', formData.phonenumber)}
                     placeholder={lang === 'ta' ? 'தொலைபேசி எண்' : 'Enter your phone number'}
                     className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.phonenumber
                       ? "border-red-500 focus:border-red-500"
@@ -1186,6 +1217,7 @@ const FormElements = () => {
                   <input
                     type="text"
                     name="father_phonenumber"
+                    maxLength={10}
                     value={formData.father_phonenumber || ""}
                     onChange={handleChange}
                     placeholder={lang === 'ta' ? "தொலைபேசி எண் உள்ளிடவும்" : "Enter Father's Phone Number"}
@@ -1276,6 +1308,7 @@ const FormElements = () => {
                   <input
                     type="text"
                     name="mother_phonenumber"
+                    maxLength={10}
                     value={formData.mother_phonenumber || ""}
                     onChange={handleChange}
                     placeholder={lang === 'ta' ? "தொலைபேசி எண் உள்ளிடவும்" : "Enter Mother's Phone Number"}

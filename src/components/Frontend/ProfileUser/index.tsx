@@ -31,6 +31,8 @@ const UserProfile = (user_data) => {
   const [profileCreator, setProfileCreator] = useState(false);
   const formData_upload = new FormData();
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isCheckingUniqueness, setIsCheckingUniqueness] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const errorRef = useRef(null);
@@ -287,7 +289,12 @@ const UserProfile = (user_data) => {
       }
 
       // Handle regular input fields
-      setFormData((prevData) => ({ ...prevData, [name]: value }));
+      if (['phonenumber', 'father_phonenumber', 'mother_phonenumber', 'profile_creator_phonenumber'].includes(name)) {
+        const numericValue = value.replace(/\D/g, "").slice(0, 10);
+        setFormData((prevData) => ({ ...prevData, [name]: numericValue }));
+      } else {
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
+      }
     }
   };
 
@@ -303,6 +310,43 @@ const UserProfile = (user_data) => {
           onClick: () => console.log('Close'),
         },
       });
+    }
+  };
+
+  const checkUniqueness = async (field: 'email' | 'phonenumber', value: string) => {
+    if (!value || value.trim() === "") return true;
+
+    // Basic format validation before API check
+    if (field === 'email' && !/^\S+@\S+\.\S+$/.test(value)) return false;
+    if (field === 'phonenumber' && !/^\d{10}$/.test(value)) return false;
+
+    setIsCheckingUniqueness(true);
+    try {
+      const endpoint = field === 'email' ? '/api/check-email' : '/api/check-phone';
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ [field]: value, userId: user_data.userId }),
+      });
+
+      const data = await response.json();
+      if (data.exists) {
+        setFormErrors((prev) => ({
+          ...prev,
+          [field]: lang === 'ta'
+            ? (field === 'email' ? 'இந்த மின்னஞ்சல் ஏற்கனவே உள்ளது.' : 'இந்த தொலைபேசி எண் ஏற்கனவே உள்ளது.')
+            : (field === 'email' ? 'Email already exists.' : 'Phone number already exists.')
+        }));
+        return false;
+      } else {
+        setFormErrors((prev) => ({ ...prev, [field]: "" }));
+        return true;
+      }
+    } catch (error) {
+      console.error(`Error checking ${field} uniqueness:`, error);
+      return true; // Assume unique on error to not block user, or handle as needed
+    } finally {
+      setIsCheckingUniqueness(false);
     }
   };
 
@@ -332,16 +376,22 @@ const UserProfile = (user_data) => {
       errors.lastname = isTamil ? "கடைசி பெயரை உள்ளிடவும்." : "Last name cannot be empty.";
     }
 
-    if (!formData.email || !/^\S+@\S+\.\S+$/.test(formData.email)) {
-      errors.email = isTamil
-        ? "தயவு செய்து சரியான மின்னஞ்சலை உள்ளிடவும்."
-        : "Please enter a valid email address.";
+    if (formData.email && formData.email.trim() !== "") {
+      if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+        errors.email = isTamil
+          ? "தயவு செய்து சரியான மின்னஞ்சலை உள்ளிடவும்."
+          : "Please enter a valid email address.";
+      }
     }
 
     if (!formData.phonenumber) {
       errors.phonenumber = isTamil
-        ? "சரியான தொலைபேசி எண் உள்ளிடவும்."
-        : "Please enter a valid phone number";
+        ? "தொலைபேசி எண் கட்டாயம்"
+        : "Phone number is required";
+    } else if (!/^\d{10}$/.test(formData.phonenumber)) {
+      errors.phonenumber = isTamil
+        ? "சரியான 10 இலக்க தொலைபேசி எண் உள்ளிடவும்."
+        : "Please enter a valid 10-digit phone number";
     }
 
     if (!formData.gothram || formData.gothram.trim() === "") {
@@ -426,6 +476,21 @@ const UserProfile = (user_data) => {
       }
     }
 
+
+    // Uniqueness check
+    if (formData.email) {
+      const isEmailUnique = await checkUniqueness('email', formData.email);
+      if (!isEmailUnique) {
+        errors.email = isTamil ? "இந்த மின்னஞ்சல் ஏற்கனவே உள்ளது." : "Email already exists.";
+      }
+    }
+
+    if (formData.phonenumber) {
+      const isPhoneUnique = await checkUniqueness('phonenumber', formData.phonenumber);
+      if (!isPhoneUnique) {
+        errors.phonenumber = isTamil ? "இந்த தொலைபேசி எண் ஏற்கனவே உள்ளது." : "Phone number already exists.";
+      }
+    }
 
     setErrorMessage("");
     // If there are validation errors, show error messages and stop submission
@@ -622,20 +687,26 @@ const UserProfile = (user_data) => {
                         </div>
                       )}
 
-                      <div className="mb-4.5">
-                        <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
-                          {lang === 'ta' ? 'மின்னஞ்சல்' : 'Email'}
-                        </label>
-                        <input
-                          type="email"
-                          name="email"
-                          value={formData.email || ""}
-                          onChange={handleChange}
-                          readOnly
-                          placeholder={lang === 'ta' ? 'மின்னஞ்சல்' : 'Enter your email address'}
-                          className=" list-text w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 dark-text outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark"
-                        />
-                      </div>
+                        <div className="mb-4.5">
+                          <label className="mb-3 block text-sm font-medium dark-text dark:text-white">
+                            {lang === 'ta' ? 'மின்னஞ்சல்' : 'Email'}
+                          </label>
+                          <input
+                            type="email"
+                            name="email"
+                            value={formData.email || ""}
+                            onChange={handleChange}
+                            onBlur={() => checkUniqueness('email', formData.email)}
+                            placeholder={lang === 'ta' ? 'மின்னஞ்சல்' : 'Enter your email address'}
+                            className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.email
+                              ? "border-red-500 focus:border-red-500"
+                              : "border-stroke focus:border-primary"
+                              } dark:border-form-strokedark dark:bg-form-input dark:text-white`}
+                          />
+                          {formErrors?.email && (
+                            <p className="mt-1 text-sm text-red-500">{formErrors.email}</p>
+                          )}
+                        </div>
 
                       <div className="mb-4.5">
                         <label className="mb-1 block text-sm font-medium dark-text dark:text-white">
@@ -644,8 +715,10 @@ const UserProfile = (user_data) => {
                         <input
                           type="text"
                           name="phonenumber"
+                          maxLength={10}
                           value={formData.phonenumber || ""}
                           onChange={handleChange}
+                          onBlur={() => checkUniqueness('phonenumber', formData.phonenumber)}
                           placeholder={lang === 'ta' ? 'தொலைபேசி எண்' : 'Enter your phone number'}
                           className={`w-full rounded border-[1.5px] px-5 py-3 outline-none transition bg-transparent dark-text ${formErrors?.phonenumber
                             ? "border-red-500 focus:border-red-500"
@@ -1201,6 +1274,7 @@ const UserProfile = (user_data) => {
                         <input
                           type="text"
                           name="father_phonenumber"
+                          maxLength={10}
                           value={formData.father_phonenumber || ""}
                           onChange={handleChange}
                           placeholder={lang === 'ta' ? "தொலைபேசி எண்" : "Enter Father's Phone Number"}
@@ -1291,6 +1365,7 @@ const UserProfile = (user_data) => {
                         <input
                           type="text"
                           name="mother_phonenumber"
+                          maxLength={10}
                           value={formData.mother_phonenumber || ""}
                           onChange={handleChange}
                           placeholder={lang === 'ta' ? "தொலைபேசி எண் உள்ளிடவும்" : "Enter Mother's Phone Number"}

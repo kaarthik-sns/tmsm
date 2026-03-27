@@ -7,7 +7,7 @@ export const GET = async (req: NextRequest) => {
         const { searchParams } = new URL(req.url);
         const page = parseInt(searchParams.get('page') || '1', 10);
         const name = (searchParams.get('name') || '').trim();
-        const email = (searchParams.get('email') || '').trim();
+        const search = (searchParams.get('search') || '').trim();
         const is_active = searchParams.get('is_active') || '';
         const is_approve = searchParams.get('is_approve') || '';
         const pageSize = 10;
@@ -23,8 +23,11 @@ export const GET = async (req: NextRequest) => {
             query.name = { $regex: name, $options: 'i' }; // Case-insensitive regex search
         }
 
-        if (email) {
-            query.email = { $regex: email, $options: 'i' }; // Case-insensitive regex search
+        if (search) {
+            query.$or = [
+                { email: { $regex: search, $options: 'i' } },
+                { phonenumber: { $regex: search, $options: 'i' } }
+            ];
         }
 
         if (is_active != '') {

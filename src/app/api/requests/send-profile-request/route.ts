@@ -57,16 +57,17 @@ export async function POST(request: NextRequest) {
       address: email
     }]
 
-    const homePage = process.env.BASE_URL+'/login';
+    const homePage = process.env.BASE_URL + '/login';
 
-    const htmlBody = profileViewRequestTemplate(recName, sentName, homePage, copyright,contactMail);
+    if (email) {
+      const htmlBody = profileViewRequestTemplate(recName, sentName, homePage, copyright, contactMail);
 
-    const result = await sendEmail({
-      receipients,
-      subject: `TMSM - You Have a New Profile View Request from ${sentName}`,
-      message: htmlBody
-    }); 
-
+      await sendEmail({
+        receipients,
+        subject: `TMSM - You Have a New Profile View Request from ${sentName}`,
+        message: htmlBody
+      });
+    }
     // Return success response
     return NextResponse.json({ message: 'Profile request sent Successfully' }, { status: 200 });
   } catch (error) {

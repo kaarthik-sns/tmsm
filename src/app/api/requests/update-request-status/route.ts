@@ -145,7 +145,7 @@ export async function PATCH(req: NextRequest) {
 
             }
 
-            if (status != 'pending') {
+            if (status != 'pending' && email) {
                 const result = await sendEmail({
                     receipients,
                     subject: subjects,

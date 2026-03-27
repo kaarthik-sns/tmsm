@@ -19,15 +19,17 @@ export async function POST(req: NextRequest) {
 
         const message = reply_message;
 
-        const htmlBody = language === 'ta' ? sendReplyTa(name, message, copyright) : sendReply(name, message, copyright);
+        if (email) {
+            const htmlBody = language === 'ta' ? sendReplyTa(name, message, copyright) : sendReply(name, message, copyright);
 
-        const receipients = [{ name: name || 'User', address: email }];
+            const receipients = [{ name: name || 'User', address: email }];
 
-        await sendEmail({
-            receipients,
-            subject: 'Your Inquiry Received - Thank you!',
-            message: htmlBody
-        });
+            await sendEmail({
+                receipients,
+                subject: 'Your Inquiry Received - Thank you!',
+                message: htmlBody
+            });
+        }
 
         await Contact.findByIdAndUpdate(_id, { mail_status: true, reply_message: message });
 

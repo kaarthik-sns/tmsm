@@ -22,6 +22,10 @@ export async function POST(request: Request) {
             return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
 
+        if (!user.email) {
+            return NextResponse.json({ message: "User does not have an email address associated with their account." }, { status: 400 });
+        }
+
         if (user.is_verify) {
             return NextResponse.json({ message: "User is already verified" }, { status: 400 });
         }
