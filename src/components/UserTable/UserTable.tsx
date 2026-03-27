@@ -28,7 +28,7 @@ const UserTable = () => {
 
     const [formState, setFormState] = useState({
         name: "",
-        email: "",
+        search: "",
         selectOne: "",
         selectTwo: "",
     });
@@ -62,7 +62,7 @@ const UserTable = () => {
     const handleReset = () => {
         setFormState({
             name: "",
-            email: "",
+            search: "",
             selectOne: "",
             selectTwo: "",
         });
@@ -91,7 +91,7 @@ const UserTable = () => {
                 params: {
                     page: currentPage,
                     name: formState.name,
-                    email: formState.email,
+                    search: formState.search,
                     is_active: formState.selectOne,
                     is_approve: formState.selectTwo,
                 },
@@ -397,9 +397,9 @@ const UserTable = () => {
     return (
         <>
             <Breadcrumb pageName={isTamil ? 'உறுப்பினர் பட்டியல்' : 'List Users'} />
-            <div className="rounded-sm border border-stroke bg-white px-2 sm:px-4 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark xl:pb-11 max-w-full">
+            <div className="rounded-sm border border-stroke bg-white px-2 sm:px-4 pb-1 pt-2 shadow-default dark:border-strokedark dark:bg-boxdark xl:pb-6 max-w-full">
                 {/* Add member button */}
-                <div className="flex justify-end mb-4">
+                <div className="flex justify-end mb-2">
                     <Link
                         href="/admin/users/useradd"
                         className="inline-flex items-center px-3 sm:px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 text-sm bg-color-custom dark-text"
@@ -410,12 +410,12 @@ const UserTable = () => {
                 </div>
 
                 {/* Search form */}
-                <div className="mb-6 overflow-hidden">
+                <div className="mb-2 overflow-hidden">
                     <form onSubmit={handleSubmit} className="bg-white dark:bg-boxdark rounded-lg shadow-sm">
-                        <div className="flex flex-col md:flex-row gap-4 p-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 p-3 items-end">
                             {/* Name Input */}
-                            <div className="w-full md:w-64">
-                                <label className="mb-3 block text-sm font-medium text-black dark:text-white dark-text">
+                            <div className="w-full">
+                                <label className="mb-1.5 block text-sm font-medium text-black dark:text-white dark-text">
                                     {isTamil ? 'பெயர்' : 'Name'}
                                 </label>
                                 <input
@@ -423,26 +423,26 @@ const UserTable = () => {
                                     placeholder={isTamil ? 'பெயரை உள்ளிடவும்' : 'Enter Name'}
                                     value={formState.name}
                                     onChange={(e) => handleInputChange("name", e.target.value)}
-                                    className="w-full md:w-64 rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary md:text-sm"
+                                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary md:text-sm"
                                 />
                             </div>
 
-                            {/* Email Input */}
-                            <div className="w-full md:w-64">
-                                <label className="mb-3 block text-sm font-medium text-black dark:text-white dark-text">
-                                    {isTamil ? 'மின்னஞ்சல்' : 'Email'}
+                            {/* Search Input (Email / Phone) */}
+                            <div className="w-full">
+                                <label className="mb-1.5 block text-sm font-medium text-black dark:text-white dark-text">
+                                    {isTamil ? 'மின்னஞ்சல் / தொலைபேசி' : 'Email / Phone'}
                                 </label>
                                 <input
                                     type="text"
-                                    placeholder={isTamil ? 'மின்னஞ்சலை உள்ளிடவும்' : 'Enter Email'}
-                                    value={formState.email}
-                                    onChange={(e) => handleInputChange("email", e.target.value)}
-                                    className="w-full md:w-64 rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary md:text-sm"
+                                    placeholder={isTamil ? 'மின்னஞ்சல் அல்லது தொலைபேசி' : 'Enter Email or Phone'}
+                                    value={formState.search}
+                                    onChange={(e) => handleInputChange("search", e.target.value)}
+                                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary md:text-sm"
                                 />
                             </div>
 
                             {/* User Status Dropdown */}
-                            <div className="w-full md:w-64">
+                            <div className="w-full">
                                 <SelectGroupTwo
                                     value={formState.selectOne}
                                     onChange={(value) => handleInputChange("selectOne", value)}
@@ -450,7 +450,7 @@ const UserTable = () => {
                             </div>
 
                             {/* Account Status Dropdown */}
-                            <div className="w-full md:w-64">
+                            <div className="w-full">
                                 <SelectGroupOne
                                     value={formState.selectTwo}
                                     onChange={(value) => handleInputChange("selectTwo", value)}
@@ -458,17 +458,17 @@ const UserTable = () => {
                             </div>
 
                             {/* Buttons */}
-                            <div className="flex gap-2 md:self-end">
+                            <div className="flex gap-2 lg:col-span-2 w-full pt-1">
                                 <button
                                     type="submit"
-                                    className="inline-flex items-center px-3 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 text-sm bg-color-custom dark-text h-[38px]"
+                                    className="w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 text-sm bg-color-custom dark-text"
                                 >
                                     {isTamil ? 'தேடு' : 'Search'}
                                 </button>
                                 <button
                                     type="button"
                                     onClick={handleReset}
-                                    className="inline-flex items-center px-3 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 text-sm bg-color-custom dark-text h-[38px]"
+                                    className="w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 text-gray-700 border border-stroke dark:border-strokedark dark:text-white duration-150 font-medium bg-gray-50 dark:bg-transparent rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-sm"
                                 >
                                     {isTamil ? 'மீட்டமை' : 'Reset'}
                                 </button>
@@ -485,34 +485,33 @@ const UserTable = () => {
                             <table className="w-full table-auto text-sm text-left">
                                 <thead className="bg-gray-50 dark:bg-boxdark text-gray-600 font-medium border-b">
                                     <tr>
-                                        <th className="py-3 px-6 dark-text">#</th>
-                                        <th className="py-3 px-6 dark-text">{isTamil ? 'பெயர்' : 'Name'}</th>
-                                        <th className="py-3 px-6 dark-text">{isTamil ? 'மின்னஞ்சல்' : 'Email'}</th>
-                                        <th className="py-3 px-6 dark-text">{isTamil ? 'தொலைபேசி எண்' : 'Phone Number'}</th>
-                                        <th className="py-3 px-6 dark-text">{isTamil ? 'உறுப்பினர் நிலை' : 'User Status'}</th>
-                                        <th className="py-3 px-6 dark-text">{isTamil ? 'கணக்கின் நிலை' : 'Account Status'}</th>
-                                        <th className="py-3 px-6 dark-text">{isTamil ? 'செயல்பாடுகள்' : 'Action'}</th>
+                                        <th className="py-3 px-4 dark-text text-sm w-12 text-center">#</th>
+                                        <th className="py-3 px-4 dark-text text-sm">{isTamil ? 'பெயர் / மின்னஞ்சல்' : 'Name / Email'}</th>
+                                        <th className="py-3 px-4 dark-text text-sm whitespace-nowrap">{isTamil ? 'தொலைபேசி எண்' : 'Phone Number'}</th>
+                                        <th className="py-3 px-4 dark-text text-sm whitespace-nowrap text-center">{isTamil ? 'உறுப்பினர் நிலை' : 'User Status'}</th>
+                                        <th className="py-3 px-4 dark-text text-sm whitespace-nowrap text-center">{isTamil ? 'கணக்கின் நிலை' : 'Account Status'}</th>
+                                        <th className="py-3 px-4 dark-text text-sm whitespace-nowrap text-right">{isTamil ? 'செயல்பாடுகள்' : 'Action'}</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-100">
                                     {tableItems.length === 0 ? (
                                         <tr>
-                                            <td colSpan={6} className="text-center px-6 py-4 whitespace-nowrap">
+                                            <td colSpan={6} className="text-center px-4 py-4 whitespace-nowrap text-sm">
                                                 {isTamil ? 'தரவு எதுவும் கிடைக்கவில்லை' : 'No data found'}
                                             </td>
                                         </tr>
                                     ) : (
                                         tableItems.map((item, idx) => (
-                                            <tr key={idx} className="odd:bg-gray-50 even:bg-white">
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="flex items-center space-x-4">
-                                                        <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200">
+                                            <tr key={idx} className="odd:bg-gray-50 even:bg-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                                                <td className="px-4 py-3 whitespace-nowrap">
+                                                    <div className="flex justify-center items-center">
+                                                        <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200 shadow-sm border border-gray-100 dark:border-gray-700">
                                                             {item.profile_photo && (
                                                                 <NextImage
                                                                     src={`/api${item.profile_photo}`}
                                                                     alt="Profile Preview"
-                                                                    width={16}
-                                                                    height={16}
+                                                                    width={40}
+                                                                    height={40}
                                                                     quality={100}
                                                                     unoptimized={true}
                                                                     className="w-full h-full object-cover"
@@ -521,47 +520,47 @@ const UserTable = () => {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="flex items-center gap-1 max-w-[150px] lg:max-w-[200px]" title={`${capitalizeFirstLetter(item.name)} ${capitalizeFirstLetter(item.lastname)}`}>
-                                                        <span className="truncate">{capitalizeFirstLetter(item.name)}</span>
-                                                        <span className="text-gray-500 truncate">{capitalizeFirstLetter(item.lastname)}</span>
+                                                <td className="px-4 py-3 whitespace-nowrap">
+                                                    <div className="flex flex-col max-w-[150px] lg:max-w-[200px]" title={`${capitalizeFirstLetter(item.name)} ${capitalizeFirstLetter(item.lastname)}`}>
+                                                        <div className="flex items-center gap-1">
+                                                            <span className="truncate font-medium text-black dark:text-white text-sm">{capitalizeFirstLetter(item.name)}</span>
+                                                            <span className="text-gray-500 truncate text-sm">{capitalizeFirstLetter(item.lastname)}</span>
+                                                        </div>
+                                                        <span className="text-[12px] text-gray-500 truncate" title={item.email}>{item.email}</span>
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="max-w-[150px] lg:max-w-[250px] truncate" title={item.email}>
-                                                        {item.email}
+                                                <td className="px-4 py-3 whitespace-nowrap text-sm text-black dark:text-white font-medium">{item.phonenumber}</td>
+                                                <td className="px-4 py-3 whitespace-nowrap">
+                                                    <div className="flex justify-center">
+                                                        <SwitcherFour
+                                                            isEnabled={switchStates[idx]}
+                                                            onToggle={() => handleToggle(idx, "is_active")}
+                                                        />
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">{item.phonenumber}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <SwitcherFour
-                                                        isEnabled={switchStates[idx]}
-                                                        onToggle={() => handleToggle(idx, "is_active")}
-                                                    />
+                                                <td className="px-4 py-3 whitespace-nowrap">
+                                                    <div className="flex justify-center">
+                                                        <SwitcherFour
+                                                            isEnabled={switchStates2[idx]}
+                                                            onToggle={() => handleToggle(idx, "is_approve")}
+                                                        />
+                                                    </div>
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <SwitcherFour
-                                                        isEnabled={switchStates2[idx]}
-                                                        onToggle={() => handleToggle(idx, "is_approve")}
-                                                    />
-                                                </td>
-                                                <td className="text-right px-6 whitespace-nowrap">
-                                                    <div className="flex items-center space-x-3.5">
+                                                <td className="text-right px-4 py-3 whitespace-nowrap">
+                                                    <div className="flex items-center justify-end space-x-2">
                                                         <button
                                                             onClick={() => handleEdit(item._id)}
                                                             title="Edit"
-                                                            className="py-2 px-3 font-medium  hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg "
+                                                            className="p-2 font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 duration-150 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
                                                         >
                                                             <svg
                                                                 xmlns="http://www.w3.org/2000/svg"
                                                                 viewBox="0 0 24 24"
                                                                 fill="currentColor"
-                                                                className="w-6 h-6"
+                                                                className="w-5 h-5"
                                                             >
                                                                 <path d="M4 20h4l10-10-4-4L4 16v4zm15.656-15.656a2 2 0 010 2.828l-1.828 1.828-4-4 1.828-1.828a2 2 0 012.828 0l1.172 1.172z" />
                                                             </svg>
-
-
                                                         </button>
 
                                                         <Link
@@ -569,13 +568,11 @@ const UserTable = () => {
                                                                 pathname: "/admin/users/userview",
                                                                 query: { userId: item._id },
                                                             }}
-
-                                                            className="inline-block px-4 py-2 text-white duration-150 font-medium  md:text-sm dark-text"
+                                                            title="View"
+                                                            className="p-2 text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 duration-150 font-medium hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
                                                         >
                                                             <svg
-                                                                className="fill-current"
-                                                                width="18"
-                                                                height="18"
+                                                                className="fill-current w-5 h-5"
                                                                 viewBox="0 0 18 18"
                                                                 fill="none"
                                                                 xmlns="http://www.w3.org/2000/svg"
@@ -595,13 +592,10 @@ const UserTable = () => {
                                                             <button
                                                                 onClick={() => handleDelete(item._id)}
                                                                 title="Delete"
-                                                                className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
+                                                                className="p-2 font-medium text-red-500 hover:text-red-700 duration-150 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
                                                             >
-
                                                                 <svg
-                                                                    className="fill-current"
-                                                                    width="18"
-                                                                    height="18"
+                                                                    className="fill-current w-5 h-5"
                                                                     viewBox="0 0 18 18"
                                                                     fill="none"
                                                                     xmlns="http://www.w3.org/2000/svg"
@@ -623,21 +617,16 @@ const UserTable = () => {
                                                                         fill=""
                                                                     />
                                                                 </svg>
-
                                                             </button>
-
                                                         )}
                                                         {(!item.is_verify) && (
                                                             <button
                                                                 onClick={() => handleVerify(item._id)}
                                                                 title="Verify"
-                                                                className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
+                                                                className="p-2 font-medium text-orange-500 hover:text-orange-700 duration-150 hover:bg-orange-50 dark:hover:bg-orange-900/20 rounded-lg"
                                                             >
-
                                                                 <svg
-                                                                    className="fill-current"
-                                                                    width="18"
-                                                                    height="18"
+                                                                    className="fill-current w-5 h-5"
                                                                     viewBox="0 0 18 18"
                                                                     fill="none"
                                                                     xmlns="http://www.w3.org/2000/svg"
@@ -647,10 +636,7 @@ const UserTable = () => {
                                                                         fill=""
                                                                     />
                                                                 </svg>
-
-
                                                             </button>
-
                                                         )}
                                                     </div>
                                                 </td>
@@ -731,11 +717,11 @@ const UserTable = () => {
                                         </div>
 
                                         {/* Action Buttons */}
-                                        <div className="p-2 flex flex-wrap items-center justify-center gap-2 bg-gray-50 dark:bg-gray-800 border-t dark:border-gray-700">
+                                        <div className="p-2 flex flex-wrap items-center justify-center gap-2 bg-gray-50 dark:bg-gray-800 border-t border-stroke dark:border-gray-700">
                                             <button
                                                 onClick={() => handleEdit(item._id)}
                                                 title="Edit"
-                                                className="p-1.5 text-gray-600 hover:text-indigo-500 duration-150 hover:bg-gray-100 rounded-lg"
+                                                className="p-2 font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 duration-150 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg"
                                             >
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -752,13 +738,11 @@ const UserTable = () => {
                                                     pathname: "/admin/users/userview",
                                                     query: { userId: item._id },
                                                 }}
-
-                                                className="inline-block px-4 py-2 text-white duration-150 font-medium  md:text-sm dark-text"
+                                                title="View"
+                                                className="p-2 text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 duration-150 font-medium hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg"
                                             >
                                                 <svg
-                                                    className="fill-current"
-                                                    width="18"
-                                                    height="18"
+                                                    className="fill-current w-5 h-5"
                                                     viewBox="0 0 18 18"
                                                     fill="none"
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -778,13 +762,10 @@ const UserTable = () => {
                                                 <button
                                                     onClick={() => handleDelete(item._id)}
                                                     title="Delete"
-                                                    className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
+                                                    className="p-2 font-medium text-red-500 hover:text-red-700 duration-150 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
                                                 >
-
                                                     <svg
-                                                        className="fill-current"
-                                                        width="18"
-                                                        height="18"
+                                                        className="fill-current w-5 h-5"
                                                         viewBox="0 0 18 18"
                                                         fill="none"
                                                         xmlns="http://www.w3.org/2000/svg"
@@ -814,13 +795,10 @@ const UserTable = () => {
                                                 <button
                                                     onClick={() => handleVerify(item._id)}
                                                     title="Verify"
-                                                    className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
+                                                    className="p-2 font-medium text-orange-500 hover:text-orange-700 duration-150 hover:bg-orange-50 dark:hover:bg-orange-900/20 rounded-lg"
                                                 >
-
                                                     <svg
-                                                        className="fill-current"
-                                                        width="18"
-                                                        height="18"
+                                                        className="fill-current w-5 h-5"
                                                         viewBox="0 0 18 18"
                                                         fill="none"
                                                         xmlns="http://www.w3.org/2000/svg"

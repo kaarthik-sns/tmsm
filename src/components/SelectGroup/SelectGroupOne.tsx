@@ -13,7 +13,7 @@ const SelectGroupTwo: React.FC<SelectGroupTwoProps> = ({ value, onChange }) => {
 
   return (
     <div>
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white dark-text">
+      <label className="mb-1.5 block text-sm font-medium text-black dark:text-white dark-text">
         {isTamil ? 'கணக்கின் நிலை' : 'Account Status'}
       </label>
 
@@ -21,7 +21,7 @@ const SelectGroupTwo: React.FC<SelectGroupTwoProps> = ({ value, onChange }) => {
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`w-full md:w-64 relative z-20 appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary md:text-sm ${value ? "text-black dark:text-white" : ""
+          className={`w-full relative z-20 appearance-none rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-2 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary md:text-sm ${value ? "text-black dark:text-white" : ""
             }`}
         >
           <option value="" disabled className="text-body dark:text-bodydark">

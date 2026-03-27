@@ -204,14 +204,16 @@ const SignUp: React.FC = () => {
       newErrors.subcaste = lang === 'ta' ? "உட்சாதி தேர்வு கட்டாயம் உள்ளிடவும்." : "Subcaste cannot be empty.";
     }
 
-    if (!form.email || form.email.trim() === "") {
-      newErrors.email = lang === 'ta' ? "மின்னஞ்சல் கட்டாயம் உள்ளிடவும்." : "Email cannot be empty.";
-    } else if (!/\S+@\S+\.\S+/.test(form.email)) {
-      newErrors.email = lang === 'ta' ? "சரியான மின்னஞ்சல் உள்ளிடவும்." : "Enter a valid email address";
+    if (form.email && form.email.trim() !== "") {
+      if (!/\S+@\S+\.\S+/.test(form.email)) {
+        newErrors.email = lang === 'ta' ? "சரியான மின்னஞ்சல் உள்ளிடவும்." : "Enter a valid email address";
+      }
     }
 
     if (!form.phonenumber) {
       newErrors.phonenumber = lang === 'ta' ? "தொலைபேசி எண் கட்டாயம் உள்ளிடவும்." : "Phone number cannot be empty";
+    } else if (!/^\d{10}$/.test(form.phonenumber)) {
+      newErrors.phonenumber = lang === 'ta' ? "சரியான 10 இலக்க தொலைபேசி எண்ணை உள்ளிடவும்." : "Enter a valid 10-digit phone number";
     }
 
     const passwordValidationError = validatePassword(form.password);
@@ -491,11 +493,13 @@ const SignUp: React.FC = () => {
                 )}
                 <input
                   type="text"
+                  maxLength={10}
                   disabled={pending}
                   value={form.phonenumber}
-                  onChange={(e) =>
-                    setForm({ ...form, phonenumber: e.target.value })
-                  }
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, "");
+                    setForm({ ...form, phonenumber: value });
+                  }}
                   placeholder={lang == 'ta' ? 'தொலைபேசி எண்' : placeholders.phonenumber}
                   className={`w-full rounded-lg border ${errors.phonenumber ? 'border-red-500' : 'border-stroke'} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                 />
@@ -665,7 +669,9 @@ const SignUp: React.FC = () => {
 
       {/* Right Section - Image with Overlay */}
       < div className="w-1/2 relative hidden md:block" >
-        <img
+        <Image
+          width={1000}
+          height={1000}
           src="/images/login/login.svg"
           alt="Couple"
           className="w-full h-full object-cover"

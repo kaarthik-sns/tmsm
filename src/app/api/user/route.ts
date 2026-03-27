@@ -157,10 +157,11 @@ export async function POST(request: NextRequest) {
 
                 if (valueType === 'string') {
                     // Check if the string value is `'null'` and replace it with an empty string
-                    sanitizedFields[key] = value === 'null' ? '' : value.trim();
+                    const trimmedValue = value === 'null' ? '' : value.trim();
+                    sanitizedFields[key] = (key === 'email' && trimmedValue === '') ? undefined : trimmedValue;
                 } else if (value == null || value === '') {
-                    // Replace null, undefined, or empty strings with an empty string
-                    sanitizedFields[key] = '';
+                    // Replace null, undefined, or empty strings with an empty string (except for email)
+                    sanitizedFields[key] = key === 'email' ? undefined : '';
                 } else {
                     // Retain numbers, objects, arrays, and other types as they are
                     sanitizedFields[key] = value;
@@ -255,35 +256,37 @@ export async function POST(request: NextRequest) {
             const verificationLink = `${process.env.BASE_URL}/verify-email?code=${newUser.email_code}`;
 
 
-            const receipients = [{
-                name: name,
-                address: email
-            }]
+            if (email) {
+                const receipients = [{
+                    name: name,
+                    address: email
+                }]
 
-            const htmlBody = welcomeTemplate(name, copyright);
+                const htmlBody = welcomeTemplate(name, copyright);
 
-            const result = await sendEmail({
-                receipients,
-                subject: 'TMSM - Welcome mail',
-                message: htmlBody
-            })
-
-            if (is_verify) {
-                const htmlBody = credentialsTemplate(name, email, password, copyright);
-
-                const result = await sendEmail({
+                await sendEmail({
                     receipients,
-                    subject: 'TMSM - Your Login Credentials',
+                    subject: 'TMSM - Welcome mail',
                     message: htmlBody
                 })
-            } else {
-                const htmlBody2 = verificationTemplate(name, verificationLink, copyright, contactMail);
 
-                const result2 = await sendEmail({
-                    receipients,
-                    subject: 'TMSM - Verification mail',
-                    message: htmlBody2
-                })
+                if (is_verify) {
+                    const htmlBody = credentialsTemplate(name, email, password, copyright);
+
+                    await sendEmail({
+                        receipients,
+                        subject: 'TMSM - Your Login Credentials',
+                        message: htmlBody
+                    })
+                } else {
+                    const htmlBody2 = verificationTemplate(name, verificationLink, copyright, contactMail);
+
+                    await sendEmail({
+                        receipients,
+                        subject: 'TMSM - Verification mail',
+                        message: htmlBody2
+                    })
+                }
             }
 
             const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber, copyright);

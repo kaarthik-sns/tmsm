@@ -50,7 +50,7 @@ export async function PATCH(req: NextRequest) {
 
         let htmlBody = '';
 
-        if (is_active === false) {
+        if (is_active === false && email) {
             const receipients = [{ name, address: email }];
             htmlBody = deactivateTemplate(name, copyright, contactMail);
 
@@ -61,9 +61,8 @@ export async function PATCH(req: NextRequest) {
             });
         }
 
-        const receipients = [{ name, address: email }];
-
-        if (is_approve) {
+        if (is_approve && email) {
+            const receipients = [{ name, address: email }];
             htmlBody = adminApprovalTemplate(name, homePage, contactMail, copyright);
             await sendEmail({
                 receipients,
@@ -72,7 +71,8 @@ export async function PATCH(req: NextRequest) {
             });
         }
 
-        if (is_active) {
+        if (is_active && email) {
+            const receipients = [{ name, address: email }];
             htmlBody = accountReactivationTemplate(name, homePage, contactMail, copyright);
             await sendEmail({
                 receipients,

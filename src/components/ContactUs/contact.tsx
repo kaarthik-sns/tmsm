@@ -306,62 +306,58 @@ const UserTable = () => {
                         <table className="w-full table-auto text-md text-left min-w-max">
                             <thead className="text-gray-600 font-medium border-b bg-gray-50 dark:bg-meta-4 dark:text-white">
                                 <tr>
-                                    <th className="py-3 px-4 sm:px-6">{isTamil ? '#' : '#'}</th>
-                                    <th className="py-3 px-4 sm:px-6">{isTamil ? 'பெயர்' : 'Name'}</th>
-                                    <th className="py-3 px-4 sm:px-6">{isTamil ? 'மின்னஞ்சல்' : 'Email'}</th>
-                                    <th className="py-3 px-4 sm:px-6">{isTamil ? 'தொலைபேசி எண்' : 'Phone Number'}</th>
-                                    <th className="py-3 px-4 sm:px-6">{isTamil ? 'செய்தி' : 'Message'}</th>
-                                    <th className="py-3 px-4 sm:px-6">{isTamil ? 'தேதி' : 'Date'}</th>
-                                    <th className="py-3 px-4 sm:px-6">{isTamil ? 'செயல்பாடுகள்' : 'Action'}</th>
+                                    <th className="py-3 px-2">{isTamil ? '#' : '#'}</th>
+                                    <th className="py-3 px-2">{isTamil ? 'பெயர் / மின்னஞ்சல்' : 'Name / Email'}</th>
+                                    <th className="py-3 px-2">{isTamil ? 'தொலைபேசி எண்' : 'Phone Number'}</th>
+                                    <th className="py-3 px-2">{isTamil ? 'செய்தி' : 'Message'}</th>
+                                    <th className="py-3 px-2">{isTamil ? 'தேதி' : 'Date'}</th>
+                                    <th className="py-3 px-2">{isTamil ? 'செயல்பாடுகள்' : 'Action'}</th>
                                 </tr>
                             </thead>
                             <tbody className="text-gray-600 divide-y">
                                 {tableItems.length === 0 ? (
                                     <tr>
-                                        <td colSpan={7} className="text-center px-6 py-4 whitespace-nowrap">
+                                        <td colSpan={6} className="text-center px-2 py-4 whitespace-nowrap">
                                             {isTamil ? 'தரவு எதுவும் கிடைக்கவில்லை' : 'No data found'}
                                         </td>
                                     </tr>
                                 ) : (
                                     tableItems.map((item, idx) => (
                                         <tr key={idx} className="odd:bg-gray-50 even:bg-white hover:bg-gray-100">
-                                            <td className="px-4 sm:px-6 py-3 whitespace-nowrap text-sm">
+                                            <td className="px-2 py-3 whitespace-nowrap text-sm">
                                                 <span className="font-medium text-black dark:text-white">
                                                     {idx + 1}
                                                 </span>
                                             </td>
 
                                             <td className="px-4 sm:px-6 py-3 whitespace-nowrap">
-                                                <h5 className="font-medium text-black dark:text-white text-sm">
-                                                    {item.name}
-                                                </h5>
+                                                <div className="flex flex-col">
+                                                    <h5 className="font-medium text-black dark:text-white text-sm">
+                                                        {item.name}
+                                                    </h5>
+                                                    <p className="text-xs text-gray-500 truncate mt-0.5" title={item.email}>{item.email}</p>
+                                                </div>
                                             </td>
 
-                                            <td className="px-4 sm:px-6 py-3 whitespace-nowrap">
-                                                <h5 className="font-medium text-black dark:text-white text-sm">
-                                                    {item.email}
-                                                </h5>
-                                            </td>
-
-                                            <td className="px-4 sm:px-6 py-3 whitespace-nowrap">
+                                            <td className="px-2 py-3 whitespace-nowrap">
                                                 <h5 className="font-medium text-black dark:text-white text-sm">
                                                     {item.phone}
                                                 </h5>
                                             </td>
 
-                                            <td className="px-4 sm:px-6 py-3 whitespace-nowrap">
+                                            <td className="px-2 py-3 whitespace-nowrap">
                                                 <h5 className="font-medium text-black dark:text-white text-sm">
                                                     {item.message?.length > 50 ? item.message.substring(0, 50) + "..." : item.message}
                                                 </h5>
                                             </td>
 
-                                            <td className="px-4 sm:px-6 py-3 whitespace-nowrap">
+                                            <td className="px-2 py-3 whitespace-nowrap">
                                                 <h5 className="font-medium text-black dark:text-white text-sm">
                                                     {formatDate(item.created_at)}
                                                 </h5>
                                             </td>
 
-                                            <td className="px-4 sm:px-6 py-3 whitespace-nowrap">
+                                            <td className="px-2 py-3 whitespace-nowrap">
                                                 <div className="flex items-center space-x-2">
                                                     <button
                                                         onClick={() => handleView(item)}

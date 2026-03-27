@@ -28,6 +28,14 @@ type SendEmailDto = {
 export const sendEmail = async (dto: SendEmailDto) => {
     const { receipients, subject, message } = dto;
 
+    // Filter out recipients without email addresses
+    const validReceipients = receipients.filter(r => r.address && r.address.trim() !== "");
+
+    if (validReceipients.length === 0 && receipients[0]?.name !== 'admin') {
+        console.log("No valid recipients with email addresses found. Skipping email sending.");
+        return;
+    }
+
     // Fetch SMTP settings from the database
     const smtpSettings = await getSMTPSettings();
 

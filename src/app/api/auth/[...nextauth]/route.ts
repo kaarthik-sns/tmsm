@@ -28,19 +28,24 @@ const handler = NextAuth({
                     await connectToDatabase();
 
                     const is_admin = credentials?.is_admin === "true";
-                    const email = credentials?.email?.replace(/\s+/g, "").toLowerCase() || "";
+                    const loginId = credentials?.email?.replace(/\s+/g, "").toLowerCase() || "";
                     const lang = credentials?.lang || "en";
 
                     let user;
 
                     if (is_admin) {
-                        user = await Admin.findOne({ email });
+                        user = await Admin.findOne({ email: loginId });
                     } else {
-                        user = await User.findOne({ email });
+                        user = await User.findOne({
+                            $or: [
+                                { email: loginId },
+                                { phonenumber: loginId }
+                            ]
+                        });
                     }
 
                     if (!user) {
-                        throw new Error(lang === 'ta' ? "நீங்கள் உள்ளிட்ட மின்னஞ்சல் முகவரி பதிவு செய்யப்படவில்லை. எழுத்துப் பிழைகளைச் சரிபார்க்கவும் அல்லது புதிய கணக்கை உருவாக்கவும்." : "The email address you entered is not registered. Please check for typos or register a new account.");
+                        throw new Error(lang === 'ta' ? "நிங்கள் உள்ளிட்ட விவரங்கள் பதிவு செய்யப்படவில்லை. எழுத்துப் பிழைகளைச் சரிபார்க்கவும் அல்லது புதிய கணக்கை உருவாக்கவும்." : "The email address or phone number you entered is not registered. Please check for typos or register a new account.");
                     }
 
                     const isValidPasswords = await bcrypt.compare(
@@ -57,9 +62,9 @@ const handler = NextAuth({
                             throw new Error(lang === 'ta' ? "உங்கள் கணக்கு தற்போது நிர்வாகத்தின் அங்கீகாரத்திற்காகக் காத்திருக்கிறது. உங்கள் பதிவுத் தரவை எங்கள் குழு சரிபார்த்து வருகிறது. உங்கள் கணக்கு செயல்பாட்டிற்கு வந்தவுடன் மின்னஞ்சல் மூலம் உங்களுக்குத் தெரிவிக்கப்படும்." : "Your account is currently pending administrative approval. Our team is verifying your registration data. You will be notified via email once your account is activated.");
                         }
 
-                        if (!user.is_verify) {
-                            throw new Error(lang === 'ta' ? "உங்கள் மின்னஞ்சல் முகவரி இன்னும் உறுதிப்படுத்தப்படவில்லை. உங்கள் மின்னஞ்சல் பெட்டியில் வந்திருக்கும் உறுதிப்படுத்தல் மெயிலைத் திறந்து, 'மின்னஞ்சலை உறுதிப்படுத்து' பொத்தானைக் கிளிக் செய்யவும்." : "Your email address has not been verified yet. Please check your inbox for the verification email and click the 'Verify Email' button to continue.");
-                        }
+                        // if (!user.is_verify) {
+                        //     throw new Error(lang === 'ta' ? "உங்கள் மின்னஞ்சல் முகவரி இன்னும் உறுதிப்படுத்தப்படவில்லை. உங்கள் மின்னஞ்சல் பெட்டியில் வந்திருக்கும் உறுதிப்படுத்தல் மெயிலைத் திறந்து, 'மின்னஞ்சலை உறுதிப்படுத்து' பொத்தானைக் கிளிக் செய்யவும்." : "Your email address has not been verified yet. Please check your inbox for the verification email and click the 'Verify Email' button to continue.");
+                        // }
 
                         if (!user.is_active) {
                             throw new Error(lang === 'ta' ? "இந்தக் கணக்கு முடக்கப்பட்டுள்ளது. மேலதிக உதவிக்கு எங்கள் ஆதரவு குழுவைத் தொடர்பு கொள்ளவும்." : "This account has been deactivated. Please contact our support team for further assistance.");

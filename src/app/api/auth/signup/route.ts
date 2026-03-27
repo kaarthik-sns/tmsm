@@ -31,11 +31,16 @@ export async function POST(request: Request) {
         return emailRegex.test(email_id);
     }
 
-    if (!name || !email_id || !password || !confirmPassword) {
-        return NextResponse.json({ message: " All fields are required" }, { status: 400 })
+    if (!name || !password || !confirmPassword || !phonenumber) {
+        return NextResponse.json({ message: " Name, Password, and Phone number are required" }, { status: 400 })
     }
-    if (!isValidEmail(email_id)) {
+
+    if (email_id && !isValidEmail(email_id)) {
         return NextResponse.json({ message: "Invalid email format" }, { status: 400 });
+    }
+
+    if (!/^\d{10}$/.test(phonenumber)) {
+        return NextResponse.json({ message: "Phone number must be exactly 10 digits" }, { status: 400 });
     }
     if (confirmPassword !== password) {
         return NextResponse.json({ message: "Password does not match" }, { status: 400 })
@@ -46,9 +51,17 @@ export async function POST(request: Request) {
 
     try {
         await connectToDatabase();
-        const existingUser = await User.findOne({ email, is_active: true });
+        const existingUser = await User.findOne({
+            $or: [
+                ...(email_id ? [{ email: email_id }] : []),
+                { phonenumber: phonenumber }
+            ],
+            is_active: true
+        });
+
         if (existingUser) {
-            return NextResponse.json({ message: "Email already exist" }, { status: 400 });
+            const conflictField = existingUser.phonenumber === phonenumber ? "Phone number" : "Email";
+            return NextResponse.json({ message: `${conflictField} already exist` }, { status: 400 });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -56,7 +69,7 @@ export async function POST(request: Request) {
         const newUser = new User({
             profile_created_for,
             profile_creator_name,
-            email: email_id,
+            email: email_id || undefined,
             name,
             lastname,
             phonenumber,
@@ -70,37 +83,39 @@ export async function POST(request: Request) {
 
         await newUser.save();
 
-        const verificationLink = `${process.env.BASE_URL}/verify-email?code=${newUser.email_code}`;
+        if (email_id) {
+            const verificationLink = `${process.env.BASE_URL}/verify-email?code=${newUser.email_code}`;
 
-        const receipients = [{
-            name: name,
-            address: email
-        }]
+            const receipients = [{
+                name: name,
+                address: email_id
+            }]
 
-        const htmlBody = welcomeTemplate(name, copyright);
+            const htmlBody = welcomeTemplate(name, copyright);
 
-        const result = await sendEmail({
-            receipients,
-            subject: `Welcome to TMSM, ${name}!`,
-            message: htmlBody
-        })
+            await sendEmail({
+                receipients,
+                subject: `Welcome to TMSM, ${name}!`,
+                message: htmlBody
+            })
 
-        const htmlBody2 = verificationTemplate(name, verificationLink, copyright, contactMail);
+            const htmlBody2 = verificationTemplate(name, verificationLink, copyright, contactMail);
 
-        const result2 = await sendEmail({
-            receipients,
-            subject: 'Verify Your TMSM Account',
-            message: htmlBody2
-        })
+            await sendEmail({
+                receipients,
+                subject: 'Verify Your TMSM Account',
+                message: htmlBody2
+            })
+        }
 
-        const htmlBody3 = adminWelcomeTemplate(email, name, phonenumber, copyright);
+        const htmlBody3 = adminWelcomeTemplate(email_id || 'N/A', name, phonenumber, copyright);
 
         const receipients2 = [{
             name: 'admin',
             address: ''
         }]
 
-        const result3 = await sendEmail({
+        await sendEmail({
             receipients: receipients2,
             subject: 'New Member Joined TMSM',
             message: htmlBody3
