@@ -88,7 +88,7 @@ const UserSchema = new Schema<IUserDocument>(
   {
     name: { type: String, required: true },
     lastname: { type: String },
-    email: { type: String, required: false, sparse: true },
+    email: { type: String, required: false, unique: true, sparse: true },
     password: { type: String },
     phonenumber: { type: String, required: true, unique: true },
     is_active: { type: Boolean, default: true },
