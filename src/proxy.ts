@@ -76,6 +76,11 @@ export async function proxy(req) {
         return NextResponse.redirect(url);
     }
 
+    if (pathname === '/register') {
+        url.pathname = '/';
+        return NextResponse.redirect(url);
+    }
+
     // Create a NextResponse instance to modify headers
     const res = NextResponse.next();
 

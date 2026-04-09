@@ -147,14 +147,14 @@ const SignIn: React.FC = () => {
                 />
               </div>
 
-              <div className="mt-6 text-left">
+              {/* <div className="mt-6 text-left">
                 <p>
                   {lang == 'ta' ? 'கணக்கு இல்லையா?' : 'Don’t have an account?'}{" "}
                   <Link href="/register" className="dark-terms">
                     {lang == 'ta' ? 'புதிய கணக்கு உருவாக்கவும்.' : 'Sign Up'}
                   </Link>
                 </p>
-              </div>
+              </div> */}
             </form>
           </div>
         </div>
