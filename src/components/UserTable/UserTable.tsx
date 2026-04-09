@@ -360,6 +360,70 @@ const UserTable = () => {
         return pageNumbers;
     };
 
+    // Export handler — builds query string from current filters and triggers CSV download
+    const [isExporting, setIsExporting] = useState(false);
+
+    const handleExport = async () => {
+        setIsExporting(true);
+        const toastId = toast.info(isTamil ? 'ஏற்றுமதி தயாராகிறது...' : 'Preparing export, please wait...', {
+            className: "sonner-toast-info",
+            duration: 5000,
+            cancel: {
+                label: 'Close',
+                onClick: () => console.log('Close'),
+            },
+        });
+
+        try {
+            const params = new URLSearchParams();
+            if (formState.name) params.set('name', formState.name);
+            if (formState.search) params.set('search', formState.search);
+            if (formState.selectOne) params.set('is_active', formState.selectOne);
+            if (formState.selectTwo) params.set('is_approve', formState.selectTwo);
+
+            const queryString = params.toString();
+            const url = `/api/export-users${queryString ? `?${queryString}` : ''}`;
+
+            // Use fetch + blob for reliable large file download
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                throw new Error('Export failed');
+            }
+
+            const blob = await response.blob();
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = `users_export_${new Date().toISOString().slice(0, 10)}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(downloadUrl);
+            document.body.removeChild(a);
+
+            toast.dismiss(toastId);
+            toast.success(isTamil ? 'ஏற்றுமதி வெற்றிகரமாக முடிந்தது!' : 'Export completed successfully!', {
+                className: "sonner-toast-success",
+                cancel: {
+                    label: 'Close',
+                    onClick: () => console.log('Close'),
+                },
+            });
+        } catch (error) {
+            console.error('Export error:', error);
+            toast.dismiss(toastId);
+            toast.error(isTamil ? 'ஏற்றுமதி தோல்வியடைந்தது. மீண்டும் முயற்சிக்கவும்.' : 'Export failed. Please try again.', {
+                className: "sonner-toast-error",
+                cancel: {
+                    label: 'Close',
+                    onClick: () => console.log('Close'),
+                },
+            });
+        } finally {
+            setIsExporting(false);
+        }
+    };
+
     if (isLoading) {
         return <Loader />
     }
@@ -398,8 +462,36 @@ const UserTable = () => {
         <>
             <Breadcrumb pageName={isTamil ? 'உறுப்பினர் பட்டியல்' : 'List Users'} />
             <div className="rounded-sm border border-stroke bg-white px-2 sm:px-4 pb-1 pt-2 shadow-default dark:border-strokedark dark:bg-boxdark xl:pb-6 max-w-full">
-                {/* Add member button */}
-                <div className="flex justify-end mb-2">
+                {/* Add member & Export buttons */}
+                <div className="flex justify-end gap-2 mb-2">
+                    <button
+                        onClick={handleExport}
+                        disabled={isExporting}
+                        className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 text-gray-700 border border-stroke dark:border-strokedark dark:text-white duration-150 font-medium bg-gray-50 dark:bg-transparent rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="w-4 h-4"
+                        >
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        {isExporting ? (
+                            <span>{isTamil ? 'ஏற்றுமதி...' : 'Exporting...'}</span>
+                        ) : (
+                            <>
+                                <span className="hidden sm:inline">{isTamil ? 'CSV ஏற்றுமதி' : 'Export CSV'}</span>
+                                <span className="sm:hidden">{isTamil ? 'ஏற்றுமதி' : 'Export'}</span>
+                            </>
+                        )}
+                    </button>
                     <Link
                         href="/admin/users/useradd"
                         className="inline-flex items-center px-3 sm:px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 text-sm bg-color-custom dark-text"
