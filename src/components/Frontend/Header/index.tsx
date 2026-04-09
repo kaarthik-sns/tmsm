@@ -60,8 +60,9 @@ function NavList() {
           </>
         ) : (
           <>
-            <NavItem label={lang === 'ta' ? 'பதிவு செய்' : 'Register'} href="/register" className="pr-5 headertext border-r border-black headertext" />
-            <NavItem label={lang === 'ta' ? 'உள்நுழை' : 'Login'} href="/login" className="pl-5" />
+            {/* <NavItem label={lang === 'ta' ? 'பதிவு செய்' : 'Register'} href="/register" className="pr-5 headertext border-r border-black headertext" /> */}
+            {/* <NavItem label={lang === 'ta' ? 'உள்நுழை' : 'Login'} href="/login" className="pl-5" /> */}
+            <NavItem label={lang === 'ta' ? 'உள்நுழை' : 'Login'} href="/login" className="" />
           </>
         )}
       </div>
