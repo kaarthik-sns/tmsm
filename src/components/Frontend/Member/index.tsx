@@ -438,6 +438,15 @@ const PaginatedUsers = () => {
                   <div>
 
                     {
+                      <button
+                        key={user._id}
+                        onClick={() => handleViewDetails(user._id)} // Define handleViewDetails function
+                        className="inline-block member-req-btn text-white duration-150 rounded-full  md:text-sm ftext-custom"
+                      >
+                        {lang == 'ta' ? 'விவரங்களைக் காண்க' : 'View Details'}
+                      </button>
+
+                    /* {
                       reqSentData?.[user._id] || reqRecData?.[user._id] ? (
                         reqSentData?.[user._id]?.status === "accepted" || reqRecData?.[user._id]?.status === "accepted" ? (
                           // If status is "accepted", show "View Details" button
@@ -483,7 +492,7 @@ const PaginatedUsers = () => {
                           {lang == 'ta' ? 'கோரிக்கையை அனுப்பவும்' : ' Send Request'}
                         </button>
                       )
-                    }
+                    } */}
 
                   </div>
                 </div>
