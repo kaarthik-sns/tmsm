@@ -27,6 +27,7 @@ export default function Profile({ userId }) {
     setIsLoading(true);
     try {
 
+      /*
       if (myId != userId) {
 
         const response = await fetch("/api/requests/check-profile-permission", {
@@ -50,7 +51,7 @@ export default function Profile({ userId }) {
           }
           return;
         }
-      }
+      } */
 
       const response2 = await fetch("/api/get-user-data", {
         method: "POST",
