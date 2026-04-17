@@ -11,6 +11,7 @@ import SelectGroupReligion from "@/components/SelectGroup/SelectGroupReligion";
 import SelectGroupCaste from "@/components/SelectGroup/SelectGroupCaste";
 import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
 import Swal from 'sweetalert2';
+import { validatePassword } from '@/utils/validation.util';
 
 
 const SignUp: React.FC = () => {
@@ -98,7 +99,7 @@ const SignUp: React.FC = () => {
 
       // Validate password
       if (name === "password") {
-        setPasswordError(validatePassword(value));
+        setPasswordError(validatePassword(value, lang));
       }
 
       // Validate confirm password
@@ -145,23 +146,6 @@ const SignUp: React.FC = () => {
 
       return updatedForm;
     });
-  };
-
-
-  const validatePassword = (password: string): string | null => {
-    const minLength = 6;
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasNumber = /[0-9]/.test(password);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-
-    if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
-      return lang == 'ta'
-        ? "குறைந்தபட்சம் 6 எழுத்துகள், பெரிய, சிறிய, எண், சிறப்பு எழுத்து உள்ளிடவும்"
-        : "Password must be at least 6 characters long and include uppercase, lowercase, number, and special character.";
-    }
-
-    return null; // Valid password
   };
 
 
@@ -216,7 +200,7 @@ const SignUp: React.FC = () => {
       newErrors.phonenumber = lang === 'ta' ? "சரியான 10 இலக்க தொலைபேசி எண்ணை உள்ளிடவும்." : "Enter a valid 10-digit phone number";
     }
 
-    const passwordValidationError = validatePassword(form.password);
+    const passwordValidationError = validatePassword(form.password, lang);
     if (passwordValidationError) {
       newErrors.password = passwordValidationError;
       setPasswordError(passwordValidationError);

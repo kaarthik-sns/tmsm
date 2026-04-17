@@ -247,7 +247,7 @@ const RequestStatus = () => {
             !isEditMode ? (
               <>
                 <Profile userId={myId} />
-                <div className="absolute top-2 right-2 z-10 p-2">
+                {/* <div className="absolute top-2 right-2 z-10 p-2">
                   <label
                     htmlFor="cover"
                     className="flex cursor-pointer items-center justify-center gap-2 rounded bg-edit px-2 py-1 text-sm font-medium text-white hover:bg-opacity-80"
@@ -255,7 +255,7 @@ const RequestStatus = () => {
                   >
                     <span>{lang == 'ta' ? 'சுயவிவரம் திருத்தவும்' : 'Edit Profile'}</span>
                   </label>
-                </div>
+                </div> */}
               </>
             ) : (
               <>

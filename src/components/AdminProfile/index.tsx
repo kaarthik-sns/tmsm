@@ -8,6 +8,7 @@ import CheckboxTwo from "@/components/Checkboxes/CheckboxTwo";
 import { toast } from "sonner";
 import { TriangleAlert } from "lucide-react";
 import React from "react";
+import { validatePassword } from '@/utils/validation.util';
 
 
 const AdminProfile = () => {
@@ -93,21 +94,7 @@ const AdminProfile = () => {
     }
   };
 
-  const validatePassword = (password: string): string | null => {
-    const minLength = 6;
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasNumber = /[0-9]/.test(password);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
-    if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
-      return isTamil
-        ? "குறைந்தபட்சம் 6 எழுத்துகள், பெரிய, சிறிய, எண், சிறப்பு எழுத்து வேண்டும்"
-        : "Password must be at least 6 characters long and include uppercase, lowercase, number, and special character.";
-    }
-
-    return null; // Valid password
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -132,7 +119,7 @@ const AdminProfile = () => {
         return;
       }
 
-      const passwordError = validatePassword(password || "");
+      const passwordError = validatePassword(password || "", lang);
 
       if (passwordError) {
         setError(passwordError);
