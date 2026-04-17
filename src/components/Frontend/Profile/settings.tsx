@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { signOut } from "next-auth/react";
 import Swal from 'sweetalert2';
 import { TriangleAlert, Lock, Eye, EyeOff, LogOut, Power } from "lucide-react";
+import { validatePassword } from '@/utils/validation.util';
 
 type ChangePasswordProps = {
   myId: string;
@@ -28,20 +29,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
     is_admin: "false",
   });
 
-  const validatePassword = (password: string): string | null => {
-    const minLength = 6;
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasNumber = /[0-9]/.test(password);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
-    if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
-      return lang === 'ta'
-        ? "குறைந்தபட்சம் 6 எழுத்துகள், பெரிய, சிறிய, எண், சிறப்பு எழுத்து வேண்டும்"
-        : "Password must be at least 6 characters long and include uppercase, lowercase, number, and special character.";
-    }
-    return null;
-  };
 
   const handleDeactivateAccount = async () => {
     const { value: reason } = await Swal.fire({
@@ -97,7 +85,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
     setForm((prev) => {
       const updated = { ...prev, [name]: value };
       if (name === "password") {
-        setPasswordError(validatePassword(value));
+        setPasswordError(validatePassword(value, lang));
         if (updated.confirmPassword && updated.confirmPassword !== value) {
           setConfirmPasswordError(lang === 'ta' ? "கடவுச்சொற்கள் பொருந்தவில்லை." : "Passwords do not match.");
         } else {
@@ -122,7 +110,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ myId }) => {
       setPasswordError(lang === 'ta' ? "கடவுச்சொல் காலியாக இருக்கக்கூடாது." : "Password cannot be empty.");
       valid = false;
     } else {
-      setPasswordError(validatePassword(form.password));
+      setPasswordError(validatePassword(form.password, lang));
     }
 
     if (!form.confirmPassword) {

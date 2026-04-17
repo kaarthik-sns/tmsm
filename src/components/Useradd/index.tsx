@@ -14,6 +14,7 @@ import RadioButtonGroup from "@/components/RadioButtonGroup/RadioButtonTwo";
 import { useRouter } from "next/navigation";
 import ImageUpload from "@/components/FormElements/ImageUpload";
 import FileUpload from "@/components/FormElements/FileUpload";
+import { validatePassword } from '@/utils/validation.util';
 
 const FormElements = () => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
@@ -246,21 +247,7 @@ const FormElements = () => {
     }
   };
 
-  const validatePassword = (password: string): string | null => {
-    const minLength = 6;
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasNumber = /[0-9]/.test(password);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
-    if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
-      return lang == 'ta'
-        ? "குறைந்தபட்சம் 6 எழுத்துகள், பெரிய, சிறிய, எண், சிறப்பு எழுத்து வேண்டும்"
-        : "Password must be at least 6 characters long and include uppercase, lowercase, number, and special character.";
-    }
-
-    return null; // Valid password
-  };
 
   const checkUniqueness = async (field: 'email' | 'phonenumber', value: string) => {
     if (!value || value.trim() === "") return true;
@@ -422,7 +409,7 @@ const FormElements = () => {
     }
 
     // Validate Password
-    const passwordError = validatePassword(formData.password || "");
+    const passwordError = validatePassword(formData.password || "", lang);
     if (passwordError) {
       errors.password = passwordError;
     }

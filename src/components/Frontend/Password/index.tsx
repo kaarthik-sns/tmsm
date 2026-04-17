@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import React from "react";
 import { useRouter } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
+import { validatePassword } from '@/utils/validation.util';
 
 const ChangePassword: React.FC = () => {
 
@@ -27,21 +28,7 @@ const ChangePassword: React.FC = () => {
     token: token
   });
 
-  const validatePassword = (password: string): string | null => {
-    const minLength = 6;
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasNumber = /[0-9]/.test(password);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
-    if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
-      return lang == 'ta'
-        ? "குறைந்தபட்சம் 6 எழுத்துகள், பெரிய, சிறிய, எண், சிறப்பு எழுத்து வேண்டும்"
-        : "Password must be at least 6 characters long and include uppercase, lowercase, number, and special character.";
-    }
-
-    return null; // Valid password
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,7 +58,7 @@ const ChangePassword: React.FC = () => {
     setPending(true);
     setPasswordError('');
     setConPasswordError('');
-    const passwordError = validatePassword(form.password);
+    const passwordError = validatePassword(form.password, lang);
 
     if (passwordError) {
       setError(passwordError);
