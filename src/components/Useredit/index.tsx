@@ -1544,9 +1544,8 @@ const FormElements = () => {
             </div>
             {/* <!-- Partner Preference end --> */}
 
-
             {/* <!-- Photo upload start --> */}
-            {/* <div className="rounded-lg border border-1 bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="rounded-lg border border-1 bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                 <h3 className="font-medium dark-text dark:text-white">
                   {lang === 'ta' ? 'கூடுதல் படங்கள்' : 'Additional  Pictures'}
@@ -1596,7 +1595,7 @@ const FormElements = () => {
                 </div>
 
               </div>
-            </div> */}
+            </div>
             {/* <!-- Photo upload end--> */}
 
             <div className="text-right">
