@@ -1594,7 +1594,7 @@ const UserProfile = (user_data) => {
 
 
                   {/* <!-- Photo upload start --> */}
-                  {/* <div className="rounded-sm border border-1 bg-light shadow-default dark:border-strokedark dark:bg-boxdark">
+                  <div className="rounded-sm border border-1 bg-light shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                       <h3 className="font-medium dark-text dark:text-white">
                         {lang === 'ta' ? 'கூடுதல் படங்கள்' : 'Additional  Pictures'}
@@ -1644,7 +1644,7 @@ const UserProfile = (user_data) => {
                       </div>
 
                     </div>
-                  </div> */}
+                  </div>
                   {/* <!-- Photo upload end--> */}
 
                   <div className="text-right">

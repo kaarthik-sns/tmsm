@@ -288,7 +288,7 @@ export default function Profile({ userId }) {
             <h2 className="profile-heading py-2 mb-2">{lang == 'ta' ? 'கல்வி / தொழில்' : 'Education / Occupation'}</h2>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">{lang == 'ta' ? 'கல்வி' : 'Education'}</strong>
-              <span>{profileData.partner_pref_education || ""}</span>
+              <span>{profileData.education || ""}</span>
             </p>
             <p className="flex gap-x-2 text-left">
               <strong className="w-auto md:w-40">{lang == 'ta' ? 'தொழில்' : 'Profession'}</strong>
@@ -418,7 +418,7 @@ export default function Profile({ userId }) {
         </div>
 
         {/*Additional Pictures */}
-        {/* {(profileData.photo1 || profileData.photo2 || profileData.photo3 || profileData.photo4) && (
+        {(profileData.photo1 || profileData.photo2 || profileData.photo3 || profileData.photo4) && (
           <>
             <div className="border-color mt-6 mb-6"></div>
             <div className="grid grid-cols-1 gap-4 mt-3">
@@ -476,7 +476,7 @@ export default function Profile({ userId }) {
 
             </div>
           </>
-        )} */}
+        )}
 
       </div>
     </div >
