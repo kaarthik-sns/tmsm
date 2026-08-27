@@ -18,6 +18,7 @@ export const GET = async (req: NextRequest) => {
         const toage = searchParams.get('toage') || '';
         const caste = searchParams.get('caste') || '';
         let subcaste = searchParams.get('subcaste') || '';
+        const maritalstatus = searchParams.get('maritalstatus') || '';
 
         // Connect to the database
         await connectToDatabase();
@@ -34,6 +35,12 @@ export const GET = async (req: NextRequest) => {
             query.subcaste = { $regex: subcaste, $options: 'i' }; // Case-insensitive regex search
         }
 
+        if (maritalstatus) {
+            query.$or = [
+                { maritalstatus: { $regex: `^${maritalstatus}$`, $options: 'i' } },
+                { marital_status: { $regex: `^${maritalstatus}$`, $options: 'i' } }
+            ];
+        }
 
         if (gender) {
             query.gender = { $regex: `^${gender}$`, $options: 'i' }; // Case-insensitive regex search
