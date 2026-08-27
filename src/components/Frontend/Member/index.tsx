@@ -165,6 +165,38 @@ const PaginatedUsers = () => {
     }
   };
 
+  const getPaginationItems = () => {
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, index) => index + 1);
+    }
+
+    const items: (number | string)[] = [];
+
+    if (currentPage <= 4) {
+      for (let i = 1; i <= 5; i++) {
+        items.push(i);
+      }
+      items.push('...');
+      items.push(totalPages);
+    } else if (currentPage >= totalPages - 3) {
+      items.push(1);
+      items.push('...');
+      for (let i = totalPages - 4; i <= totalPages; i++) {
+        items.push(i);
+      }
+    } else {
+      items.push(1);
+      items.push('...');
+      items.push(currentPage - 1);
+      items.push(currentPage);
+      items.push(currentPage + 1);
+      items.push('...');
+      items.push(totalPages);
+    }
+
+    return items;
+  };
+
   // Handle input change and filter suggestions
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -560,19 +592,28 @@ const PaginatedUsers = () => {
                     {/* Page Numbers */}
                     <li className="text-white p-2 page-number">
                       <div className="flex items-center justify-center space-x-2">
-                        {Array.from({ length: totalPages }, (_, index) => (
-                          <a
-                            key={index}
-                            className={`flex items-center justify-center rounded-full text-white mr-5 ml-5 ${currentPage === index + 1 ? 'bg-yellow text-black active-page-number' : ''
-                              }`}
-                            href="#"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handlePageChange(index + 1);
-                            }}
-                          >
-                            {index + 1}
-                          </a>
+                        {getPaginationItems().map((item, index) => (
+                          typeof item === 'number' ? (
+                            <a
+                              key={index}
+                              className={`flex items-center justify-center rounded-full text-white mr-5 ml-5 ${currentPage === item ? 'bg-yellow text-black active-page-number' : ''
+                                }`}
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handlePageChange(item);
+                              }}
+                            >
+                              {item}
+                            </a>
+                          ) : (
+                            <span
+                              key={index}
+                              className="flex items-center justify-center text-white mr-5 ml-5 select-none"
+                            >
+                              {item}
+                            </span>
+                          )
                         ))}
                       </div>
                     </li>

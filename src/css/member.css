@@ -124,23 +124,17 @@ main {
 .member-container .page-number {
     border-radius: 50px;
     background: #992222;
-    padding: 10px 50px;
+    padding: 10px 40px;
 }
 
-.member-container .page-number a {
+.member-container .page-number a,
+.member-container .page-number span {
     font-family: "Noto Sans";
     font-size: 16px;
     font-weight: 600;
     line-height: 30px;
-    margin-left: 1.25rem !important;
-    margin-right: 1.25rem !important;
-}
-
-.active-page-number {
-    height: 34px;
-    width: 34px;
-    background-color: #FFD16C;
-    color: #323232;
+    margin-left: 0.85rem !important;
+    margin-right: 0.85rem !important;
 }
 
 .active-page-number {
@@ -162,12 +156,34 @@ main {
 
 }
 
-.member-container .page-number a:last-child {
+.member-container .page-number a:last-child,
+.member-container .page-number span:last-child {
     margin-right: 0px !important;
 }
 
-.member-container .page-number a:first-child {
+.member-container .page-number a:first-child,
+.member-container .page-number span:first-child {
     margin-left: 0px !important;
+}
+
+@media (max-width: 640px) {
+    .member-container .page-number {
+        padding: 6px 16px;
+    }
+
+    .member-container .page-number a,
+    .member-container .page-number span {
+        font-size: 14px;
+        margin-left: 0.4rem !important;
+        margin-right: 0.4rem !important;
+    }
+
+    .prev-btn, .next-btn {
+        height: 38px;
+        width: 38px;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
 }
 
 
