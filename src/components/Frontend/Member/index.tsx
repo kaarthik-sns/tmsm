@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from "next/navigation";
 import SelectAge from "@/components/Frontend/HomeFilter/SelectGroup/SelectAge";
 import SelectBrideGroom from "@/components/Frontend/HomeFilter/SelectGroup/SelectBrideGroom";
+import SelectMaritalStatus from "@/components/Frontend/HomeFilter/SelectGroup/SelectMaritalStatus";
 import { useSession } from "next-auth/react";
 import Swal from 'sweetalert2'; // Import SweetAlert2
 import Loader from "@/components/common/Loader";
@@ -37,7 +38,7 @@ const PaginatedUsers = () => {
   const [homeFilterPage, setHomeFilterPage] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
 
-  const lang = localStorage.getItem('lang') || 'en';
+  const lang = typeof window !== 'undefined' ? (localStorage.getItem('lang') || 'en') : 'en';
 
   // Example data array of subcastes
   const subcastes = [
@@ -69,6 +70,7 @@ const PaginatedUsers = () => {
 
   const [filters, setFilters] = useState({
     lookingfor: searchParams.get("lookingfor") || "",
+    maritalstatus: searchParams.get("maritalstatus") || "",
     fromage: searchParams.get("fromage") || "",
     toage: searchParams.get("toage") || "",
     subcaste: searchParams.get("subcaste") || "",
@@ -99,10 +101,11 @@ const PaginatedUsers = () => {
       if (filters) {
         query = new URLSearchParams({
           page: String(page),
-          lookingfor: filters.lookingfor,
-          fromage: filters.fromage,
-          toage: filters.toage,
-          subcaste: filters.subcaste,
+          lookingfor: filters.lookingfor || '',
+          maritalstatus: filters.maritalstatus || '',
+          fromage: filters.fromage || '',
+          toage: filters.toage || '',
+          subcaste: filters.subcaste || '',
         }).toString();
       }
 
@@ -178,14 +181,17 @@ const PaginatedUsers = () => {
     }
   };
 
-  const handleAgeChange = (e) => {
+  const handleAgeChange = (e: any) => {
     setFilters({ ...filters, fromage: e.target.value });
   };
-  const handleAgeChangesto = (e) => {
+  const handleAgeChangesto = (e: any) => {
     setFilters({ ...filters, toage: e.target.value });
   };
-  const handleBrideGroomChange = (e) => {
+  const handleBrideGroomChange = (e: any) => {
     setFilters({ ...filters, lookingfor: e.target.value });
+  };
+  const handleMaritalStatusChange = (e: any) => {
+    setFilters({ ...filters, maritalstatus: e.target.value });
   };
 
   const handleSearch = () => {
@@ -202,6 +208,7 @@ const PaginatedUsers = () => {
   const handleReset = () => {
     setFilters({
       lookingfor: "",
+      maritalstatus: "",
       fromage: "",
       toage: "",
       subcaste: "",
@@ -318,12 +325,12 @@ const PaginatedUsers = () => {
     <>
 
       <div className="dark-bg">
-        <div className="container mx-auto flex items-center justify-center xs:p-1 md:p-10">
-          <form>
-            <div className="flex flex-wrap items-center gap-9 p-6.5 member-search-form">
+        <div className="container mx-auto flex items-center justify-center p-3 sm:p-6 lg:p-8">
+          <form className="w-full">
+            <div className="flex flex-wrap items-end justify-center gap-4 lg:gap-6 p-4 sm:p-6 member-search-form">
 
-              <div className="w-full md:w-auto">
-                <label className="mb-3 block text-sm font-medium text-white">
+              <div className="w-full sm:w-[calc(50%-0.75rem)] lg:w-auto min-w-[150px]">
+                <label className="mb-2 block text-sm font-medium text-white">
                   {lang == 'ta' ? 'துணையை தேடுகிறீர்களா' : 'Looking For'}
                 </label>
                 <SelectBrideGroom
@@ -333,8 +340,19 @@ const PaginatedUsers = () => {
                 />
               </div>
 
-              <div className="w-full md:w-auto">
-                <label className="mb-3 block text-sm font-medium text-white">
+              <div className="w-full sm:w-[calc(50%-0.75rem)] lg:w-auto min-w-[170px]">
+                <label className="mb-2 block text-sm font-medium text-white">
+                  {lang == 'ta' ? 'திருமண நிலை' : 'Marital Status'}
+                </label>
+                <SelectMaritalStatus
+                  name="maritalstatus"
+                  selectedMaritalStatus={filters.maritalstatus}
+                  onMaritalStatusChange={handleMaritalStatusChange}
+                />
+              </div>
+
+              <div className="w-full sm:w-[calc(50%-0.75rem)] lg:w-auto min-w-[120px]">
+                <label className="mb-2 block text-sm font-medium text-white">
                   {lang == 'ta' ? 'வயது வரம்பு' : 'From Age'}
                 </label>
                 <SelectAge
@@ -345,14 +363,12 @@ const PaginatedUsers = () => {
                 />
               </div>
 
-              <div className="hidden w-full md:w-auto md:mt-4 md:block">
-                <label className="mb-3 block text-sm font-medium text-white">
-                  -
-                </label>
+              <div className="hidden lg:flex items-center justify-center mb-6 text-white font-medium">
+                <span>-</span>
               </div>
 
-              <div className="w-full md:w-auto">
-                <label className="mb-3 block text-sm font-medium text-white">
+              <div className="w-full sm:w-[calc(50%-0.75rem)] lg:w-auto min-w-[120px]">
+                <label className="mb-2 block text-sm font-medium text-white">
                   {lang == 'ta' ? 'வயது வரை' : 'To Age'}
                 </label>
                 <SelectAge
@@ -363,47 +379,18 @@ const PaginatedUsers = () => {
                 />
               </div>
 
-              {/* <div className="w-full md:w-auto relative">
-                <label className="mb-3 block text-sm font-medium text-white">
-                  {lang == 'ta' ? 'உட்சாதி' : 'Subcaste in Mudaliyar'}
-                </label>
-                <div className="mb-4.5">
-                  <input
-                    type="text"
-                    name="subcaste"
-                    value={filters.subcaste}
-                    onChange={handleInputChange}
-                    className="relative z-20 md:w-64 w-full appearance-none rounded border border-stroke bg-white px-5 py-1.5 outline-none transition dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                  />
-                  {filteredSuggestions.length > 0 && filters.subcaste.length > 0 && (
-                    <ul className="absolute w-full bg-white border shadow-md z-30 max-h-60 overflow-y-auto">
-                      {filteredSuggestions.map((suggestion, index) => (
-                        <li
-                          key={index}
-                          onClick={() => handleSuggestionClick(suggestion)}
-                          className="px-4 py-2 cursor-pointer hover:bg-gray-200"
-                        >
-                          {suggestion}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div> */}
-
-              <div className="w-full md:w-auto flex justify-between gap-4 mt-5 md:mt-5">
+              <div className="w-full sm:w-auto flex justify-center items-center gap-3 mb-4.5">
                 <button
-                  className="inline-block member-search-btn text-white duration-150 rounded-full  md:text-sm ftext-custom"
+                  className="inline-block member-search-btn text-white duration-150 rounded-full px-6 py-2 md:text-sm ftext-custom cursor-pointer"
                   type="button"
                   onClick={handleSearch}
                 >
                   {lang == 'ta' ? 'தேடு' : 'Search'}
                 </button>
                 <button
-                  className="inline-block member-search-btn text-white duration-150 rounded-full  md:text-sm ftext-custom"
+                  className="inline-block member-search-btn text-white duration-150 rounded-full px-6 py-2 md:text-sm ftext-custom cursor-pointer"
                   type="button"
-                  onClick={handleReset} // Add onClick event
-
+                  onClick={handleReset}
                 >
                   {lang == 'ta' ? 'மீட்டமை' : 'Reset'}
                 </button>
