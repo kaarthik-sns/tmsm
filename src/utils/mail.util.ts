@@ -61,11 +61,6 @@ export const sendEmail = async (dto: SendEmailDto) => {
             user: smtpSettings.smtp_mail,
             pass: smtpSettings.smtp_password
         },
-        dkim: {
-            domainName: 'tmsmsaivamudaliyarmatrimony.com',
-            keySelector: 'default',
-            privateKey: process.env.DKIM_PRIVATE_KEY
-        },
         logger: true,
         debug: true
     } as SMTPTransport.Options)
@@ -78,7 +73,6 @@ export const sendEmail = async (dto: SendEmailDto) => {
         from: sender,
         to: receipientsData,
         subject,
-        html: finalMessage,
-        text: message
+        html: finalMessage
     });
 }
